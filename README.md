@@ -10,7 +10,7 @@ Lien vers le google drive : https://drive.google.com/drive/folders/0ABeoKr1061Db
 Presentations des membres d'équipe + répartition des rôles :<br> 
 | **Nom Prenom** | **Pseudo GitHub** | **Rôle itération 0** |      **Rôle itération 1**     | **Rôle itération 2** |
 |:--------------:|:-----------------:|:--------------------:|:-----------------------------:|:--------------------:|
-|    Noah MIQUEL |    NoahMiquel     |     Scrum Master     |               /               |   Product Owner      |
+|  Noah MIQUEL   |    NoahMiquel     |     Scrum Master     |               /               |     Product Owner    |
 | Jodie MONTERDE |   jodiemonterde   |     Product Owner    |               /               |           /          |
 | Benjamin NICOL |     Benicol       |           /          |         Product Owner         |     Scrum Master     |
 |   Ugo SCHARDT  |     UgoSchardt    |           /          |         Scrum Master          |           /          |
