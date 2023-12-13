@@ -10,7 +10,6 @@
     </head>
     <body>
         <?php
-            
             // Récupérer le nom de la page
             $currentPage = basename(__FILE__);
 

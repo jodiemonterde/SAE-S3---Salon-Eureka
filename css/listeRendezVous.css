@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+.texte {
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+.test {
+    float:right;
+}
+
+.ligneHaut {
+    border-bottom: 1px solid #ddd;
+}
+
+.colonneGauche {
+    height : 100vh;
+    border-right: 1px solid #ddd;
+}
+.boutonColonneGauche {
+    text-align: left !important;
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    font-family: 'Inter', sans-serif;
+    height : 56px;
+    width: 20%;
+}
+
+.btn-primary {
+    color: white !important;
+    background-color: #FFA800 !important;
+    border-radius: 0px !important;
+    border: none !important;
+}
+.btn-primary:hover {
+    background-color: #d89000 !important;
+}
+.btn-secondary {
+    color: #FFA800 !important;
+    background-color: white !important;
+    border-radius: 0px !important;
+    border: none !important;
+}
+.btn-secondary:hover {
+    background-color: lightgray !important;
+}
