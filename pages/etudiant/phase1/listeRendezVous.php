@@ -10,31 +10,38 @@
         <title>Eureka - Liste des shouaits</title>
     </head>
     <body>
-        <div class="row ligneHaut">
-            <div class="col-4 align-items-center justify-content-center box">
-                <Button class="btn"><img src="../../../ressources/logo.png"/><span class="h2 texte">Eureka</spawn></Button>
+        <div class="container-fluid">
+            <div class="row ligneHaut">
+                <div class="col-4 align-items-center justify-content-center">
+                    <Button class="btn"><img src="../../../ressources/logo.png"/><span class="h2 texte">Eureka</spawn></Button>
+                </div>
             </div>
-            <div class="col-8 d-md-none ">
-                <form action="../../deconnexion.php" method="post">
-                    <button type="submit" class="btn"><img src="../../../ressources/deconnexion.png"/></button>
-                </form>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p><h2>Vos demandes de rendez-vous</h2></p>
+                    <p>Pour le moment, au terme de la phase de prise de rendez-vous, Eureka vous proposera un planning avec les entreprises suivantes. Vous pouvez tout à fait changer d’avis !</P>
+                </div>
             </div>
-            <div class="col-8 d-none d-md-block test align-items-end">
-                <Button class="btn btn-secondary boutonColonneGauche">ENTREPRISES</Button>
-                <Button class="btn btn-primary boutonColonneGauche">RENDEZ-VOUS</Button>
+            <?php for ($i = 0; $i < 57; $i++) { ?>
+            <div class="row entreprise align-items-center">
+                <div class="col-2 col-lg-1">
+                    <img src="../../../ressources/test.png" alt="logo" class="logoEntreprise" width="75px" height="75px"/>
+                </div>
+                <div class="col-8 col-md-6 col-lg-8 col-xxl-9">
+                    <span class="nomEntreprise">Nom de l'entreprise</span></br>
+                    <i class="fa-solid fa-briefcase"></i>&nbsp;&nbsp;&nbsp;Secteur d'activité<br/>
+                    <i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;123 route de la route, 12345 Ville
+                </div>
+                <div class="col-2 d-none d-md-block">
+                    <input type=submit class="bouton" value="supprimer l'entreprise"/>
+                </div>
+                <div class="col-1 d-block d-md-none">
+                <Button class="btn"><img src="../../../ressources/supprimer.png"/></Button>
+                </div>
             </div>
-                <!-- <div class="col-xl-2 col-sm-8 align-items-center justify-content-center box">
-                <Button class="btn"><img src="../../../ressources/logo.png"/><span class="h2 texte">Eureka</spawn></Button>
-            </div>
-            <div class="col-2 d-lg-none">
-                <form action="../../deconnexion.php" method="post">
-                    <button type="submit" class="btn"><img src="../../../ressources/deconnexion.png"/></button>
-                </form>
-            </div>
-            <div class="col-xl-8 d-none d-lg-block test">
-                <Button class="btn btn-secondary boutonColonneGauche">ENTREPRISES</Button>
-                <Button class="btn btn-primary boutonColonneGauche">RENDEZ-VOUS</Button>
-            </div> -->
+            <?php }; ?>
         </div>
     </body>
 </html>
