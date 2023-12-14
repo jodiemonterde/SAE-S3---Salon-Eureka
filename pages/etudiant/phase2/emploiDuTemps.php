@@ -11,27 +11,29 @@
     <body>
         <?php
             
-            // Récupérer le nom de la page
-            $currentPage = basename(__FILE__);
+            // // Récupérer le nom de la page
+            // $currentPage = basename(__FILE__);
 
 
-            // Afficher le nom de la page
-            echo "<h1>Page: $currentPage</h1>";
+            // // Afficher le nom de la page
+            // echo "<h1>Page: $currentPage</h1>";
 
-            echo "<p>Cette page n'est pas développer.</p>";
+            // echo "<p>Cette page n'est pas développer.</p>";
 
 
-            // Afficher les variables de session
-            echo "<h2>Variables de session :</h2>";
-            var_dump($_SESSION);
+            // // Afficher les variables de session
+            // echo "<h2>Variables de session :</h2>";
+            // var_dump($_SESSION);
 
-            // Afficher les variables POST
-            echo "<h2>Variables POST :</h2>";
-            var_dump($_POST);
+            // // Afficher les variables POST
+            // echo "<h2>Variables POST :</h2>";
+            // var_dump($_POST);
+       
+            // // Afficher les variables GET       
+            // echo "<h2>Variables GET :</h2>";       
+            // var_dump($_GET);       
+        ?> 
 
-            // Afficher les variables GET
-            echo "<h2>Variables GET :</h2>";
-            var_dump($_GET);
-        ?>
+        
     </body>
 </html>
