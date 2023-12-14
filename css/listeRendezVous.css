@@ -39,6 +39,11 @@
     font-weight: 500;
 }
 
+.bouton:hover {
+    background-color: #e09602;
+
+}
+
 .nomEntreprise {
     font-size: 20px;
     font-weight: 600;
@@ -50,4 +55,8 @@
     border-radius: 5px;
     margin-bottom: 10px;
     padding: 10px;
+}
+
+.rouge {
+    color: red;
 }

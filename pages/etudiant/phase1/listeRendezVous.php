@@ -1,4 +1,12 @@
-<?php session_start(); ?>
+<?php 
+    session_start();
+    $user = 1;
+    include("../../../fonctions/baseDeDonnees.php");
+    $pdo = connecteBD();
+    if (isset($_POST["entreprise_id"])) {
+        removeWishStudent($pdo, $user, $_POST["entreprise_id"]);
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -24,24 +32,35 @@
                     <p>Pour le moment, au terme de la phase de prise de rendez-vous, Eureka vous proposera un planning avec les entreprises suivantes. Vous pouvez tout à fait changer d’avis !</P>
                 </div>
             </div>
-            <?php for ($i = 0; $i < 57; $i++) { ?>
+            <?php 
+            $pdo = connecteBD();
+            $stmt = getEntreprisesPerStudent($pdo, $user);
+            $vide = true;
+            while ($ligne = $stmt->fetch()) { 
+            $vide = false;?>
             <div class="row entreprise align-items-center">
                 <div class="col-2 col-lg-1">
                     <img src="../../../ressources/test.png" alt="logo" class="logoEntreprise" width="75px" height="75px"/>
                 </div>
                 <div class="col-8 col-md-6 col-lg-8 col-xxl-9">
-                    <span class="nomEntreprise">Nom de l'entreprise</span></br>
-                    <i class="fa-solid fa-briefcase"></i>&nbsp;&nbsp;&nbsp;Secteur d'activité<br/>
-                    <i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;123 route de la route, 12345 Ville
+                    <span class="nomEntreprise"><?php echo $ligne["name"]?></span></br>
+                    <i class="fa-solid fa-briefcase"></i>&nbsp;&nbsp;&nbsp;<?php echo $ligne["sector"]?><br/>
+                    <i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $ligne["address"]?>
                 </div>
                 <div class="col-2 d-none d-md-block">
-                    <input type=submit class="bouton" value="supprimer l'entreprise"/>
+                    <form action="listeRendezVous.php" method="post">
+                        <input type="hidden" name="entreprise_id" value="<?php echo $ligne["company_id"]?>"/>
+                        <input type="submit" class="bouton" value="supprimer l'entreprise"/>
+                    </form>
                 </div>
                 <div class="col-1 d-block d-md-none">
                 <Button class="btn"><img src="../../../ressources/supprimer.png"/></Button>
                 </div>
             </div>
-            <?php }; ?>
+            <?php };
+            if ($vide) {
+                echo '<p class="rouge">Vous n\'avez pas encore demandé de rendez-vous !</p>';
+            } ?>
         </div>
     </body>
 </html>
