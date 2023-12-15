@@ -1,4 +1,12 @@
-<?php session_start(); ?>
+<?php 
+    session_start();
+    $user = 1;
+    include("../../../fonctions/baseDeDonnees.php");
+    $pdo = connecteBD();
+    if (isset($_POST["entreprise_id"])) {
+        removeWishStudent($pdo, $user, $_POST["entreprise_id"]);
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -7,7 +15,7 @@
         <link rel="stylesheet" href="../../../lib/bootstrap-5.3.2-dist/css/bootstrap.css">
         <link rel="stylesheet" href="../../../lib/fontawesome-free-6.5.1-web/css/all.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
-        <link rel="stylesheet" href="jsp.css">
+        <link rel="stylesheet" href="./listeEntreprise.css">
         <title> Eureka - Liste des entreprises </title>
     </head>
     <body>
@@ -28,7 +36,7 @@
         </div>
 
         <div class="container">
-            <div class="row">
+            <div class="row d-flex align-items-center h-100">
                 <div class="form-outline order-md-2 col-md-4 col-12 order-1 align-middle" data-mdb-input-init>
                     <input type="search" id="recherche" class="form-control" placeholder="&#xf002 Rechercher une entreprise" aria-label="Search" />    
                 </div>
@@ -38,7 +46,12 @@
                     <p> Choisissez toutes les entreprises que vous souhaitez rencontrer au salon Eureka et prenez rendez-vous en un clic ! Dès le XX mois, vous pourrez venir consulter votre emploi du temps pour le salon créée à partir de vos demandes de rendez-vous. </p>
                 </div>
             </div>
-            <div class="row">
+            <div class="row mx-1">
+                <?php 
+                $pdo = connecteBD();
+                $stmt = getEntreprisesForStudent($pdo, $user);
+                while ($ligne = $stmt->fetch()) { 
+                ?>
                 <div class="col-12 company dl-search-result-title-container">
                     <div class="row">
                         <div>            
@@ -48,10 +61,10 @@
                                        <img src="../../../ressources/no-photo.png" alt="">
                                     </div>
                                     <div class="pd">
-                                        <h2>Nom de l'entreprise</h2>
+                                        <h2><?php echo $ligne["name"]?></h2>
                                         <ul>
-                                            <li><i class="fa-solid fa-briefcase"></i> Secteur d'activité</li>
-                                            <li><i class="fa-solid fa-location-dot"></i> Adresse de l'entreprise</li>
+                                            <li><i class="fa-solid fa-briefcase"></i><?php echo $ligne["sector"]?></li>
+                                            <li><i class="fa-solid fa-location-dot"></i> <?php echo $ligne["address"]?></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -61,206 +74,11 @@
                     <hr>
                     <div class="row">
                         <div class="col-12">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.
+                        <?php echo $ligne["description"]?>
                         </div>
                     </div>
                 </div>
+                <?php }?>
                 
-
-
-                <div class="col-12 company dl-search-result-title-container">
-                    <div class="row">
-                        <div>            
-                            <div class="col-md-4">
-                                <div class="profil-det-img d-flex">
-                                    <div class="dp">
-                                       <img src="../../../ressources/no-photo.png" alt="">
-                                    </div>
-                                    <div class="pd">
-                                        <h2>Nom de l'entreprise</h2>
-                                        <ul>
-                                            <li><i class="fa-solid fa-briefcase"></i> Secteur d'activité</li>
-                                            <li><i class="fa-solid fa-location-dot"></i> Adresse de l'entreprise</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-12">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-12 company dl-search-result-title-container">
-                    <div class="row">
-                        <div>            
-                            <div class="col-md-4">
-                                <div class="profil-det-img d-flex">
-                                    <div class="dp">
-                                       <img src="../../../ressources/no-photo.png" alt="">
-                                    </div>
-                                    <div class="pd">
-                                        <h2>Nom de l'entreprise</h2>
-                                        <ul>
-                                            <li><i class="fa-solid fa-briefcase"></i> Secteur d'activité</li>
-                                            <li><i class="fa-solid fa-location-dot"></i> Adresse de l'entreprise</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-12">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-12 company dl-search-result-title-container">
-                    <div class="row">
-                        <div>            
-                            <div class="col-md-4">
-                                <div class="profil-det-img d-flex">
-                                    <div class="dp">
-                                       <img src="../../../ressources/no-photo.png" alt="">
-                                    </div>
-                                    <div class="pd">
-                                        <h2>Nom de l'entreprise</h2>
-                                        <ul>
-                                            <li><i class="fa-solid fa-briefcase"></i> Secteur d'activité</li>
-                                            <li><i class="fa-solid fa-location-dot"></i> Adresse de l'entreprise</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-12">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-12 company dl-search-result-title-container">
-                    <div class="row">
-                        <div>            
-                            <div class="col-md-4">
-                                <div class="profil-det-img d-flex">
-                                    <div class="dp">
-                                       <img src="../../../ressources/no-photo.png" alt="">
-                                    </div>
-                                    <div class="pd">
-                                        <h2>Nom de l'entreprise</h2>
-                                        <ul>
-                                            <li><i class="fa-solid fa-briefcase"></i> Secteur d'activité</li>
-                                            <li><i class="fa-solid fa-location-dot"></i> Adresse de l'entreprise</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-12">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-12 company dl-search-result-title-container">
-                    <div class="row">
-                        <div>            
-                            
-                                <div class="profil-det-img d-flex">
-                                    <div class="dp">
-                                       <img src="../../../ressources/no-photo.png" alt="">
-                                    </div>
-                                    <div class="pd">
-                                        <h2>Nom de l'entreprise</h2>
-                                        <ul>
-                                            <li><i class="fa-solid fa-briefcase"></i> Secteur d'activité</li>
-                                            <li><i class="fa-solid fa-location-dot"></i> Adresse de l'entreprise</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-12">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-12 company dl-search-result-title-container">
-                    <div class="row">
-                        <div>            
-                            <div class="col-md-4">
-                                <div class="profil-det-img d-flex">
-                                    <div class="dp">
-                                       <img src="../../../ressources/no-photo.png" alt="">
-                                    </div>
-                                    <div class="pd">
-                                        <h2>Nom de l'entreprise</h2>
-                                        <ul>
-                                            <li><i class="fa-solid fa-briefcase"></i> Secteur d'activité</li>
-                                            <li><i class="fa-solid fa-location-dot"></i> Adresse de l'entreprise</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-12">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.
-                        </div>
-                    </div>
-                </div>
-            
-            </div>
-        </div>
     </body>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col-3">
-                <input type="submit" class="btn btn-light" value="Logo Bouton Entreprises">
-            </div>
-            <div class="col-2"></div>
-            <div class="col-3">
-                <input type="submit" class="btn btn-light" value="Logo Bouton Rendez-vous">
-            </div>
-            <div class="col-2"></div>
-        </div>
-    </div>
-
-    <div class="navbar navbar-default sticky-bottom d-sm-none bg-secondary" role="navigation">
-            <div class="container">
-                <div class="navbar-brand">
-                    Logo Eureka
-                </div>
-                <div class="navbar-right">
-                    <input type="submit" class="btn btn-light" value="Logo Bouton Déconnexion">
-                </div>
-            </div>
-        </div>
 </html>
