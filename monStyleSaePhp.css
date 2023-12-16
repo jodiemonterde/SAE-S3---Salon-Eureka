@@ -29,6 +29,10 @@ input::placeholder{
     text-decoration: underline;
 }
 
+.erreur{
+    color: red;
+}
+
 button {
     height: 40px;
     background-color: #FFA800;
