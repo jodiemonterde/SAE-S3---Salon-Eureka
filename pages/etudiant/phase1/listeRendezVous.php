@@ -17,16 +17,43 @@
         <link rel="stylesheet" href="../../../lib/bootstrap-5.3.2-dist/css/bootstrap.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="../../../lib/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+        <link rel="stylesheet" href="../../../css/navbars.css">
         <title>Eureka - Liste des shouaits</title>
     </head>
     <body>
-        <div class="container-fluid">
-            <div class="row ligneHaut">
-                <div class="col-4 align-items-center justify-content-center">
-                    <Button class="btn"><img src="../../../ressources/logo.png"/><span class="h2 texte">Eureka</spawn></Button>
+        <nav class="navbar navbar-expand sticky-top border bg-white">
+            <div class="container-fluid">
+                <div class="navbar-brand">
+                    <img src="../../../ressources/logo_black.png" alt="Logo Eureka" class="d-inline-block align-text-top">
+                    Eureka
+                </div>
+                <div class="navbar-right">
+                    <ul class="navbar-nav">
+                        <li class="nav-item nav-link p-2 d-none d-sm-block fond_inactif_haut">
+                            <!-- Si sur la liste des entreprises, mettre en jaune -->
+                            <a class="lien couleur_inactif_haut" href="listeEntreprises.php"> Liste des entreprises </a>
+                        </li>
+                        <li class="nav-item nav-link p-2 d-none d-sm-block fond_actif_haut">
+                            <!-- Si sur la liste des rendez-vous, mettre en jaune -->
+                            <a class="lien couleur_actif_haut" href="#"> Mes rendez-vous </a>
+                        </li>
+                        <li class="nav-item dropdown p-2 d-none d-sm-block fond_inactif_haut">
+                            <a class="dropdown-toggle lien couleur_inactif_haut" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Pseudo Utilisateur
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li> <a class="dropdown-item" href="../../deconnexion.php"> Se déconnecter </a> </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item d-sm-none">
+                            <a href="../../deconnexion.php">
+                                <img src="../../../ressources/icone_deconnexion.png" alt="Se déconnecter">
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </div>
+        </nav>
         <div class="container">
             <div class="row mx-1">
                 <div class="col-12">
@@ -82,5 +109,27 @@
                 echo '<p class="rouge">Vous n\'avez pas encore demandé de rendez-vous !</p>';
             } ?>
         </div>
+        <nav class="navbar navbar-expand fixed-bottom d-sm-none border bg-white">
+            <div class="container-fluid">
+                <ul class="navbar-nav w-100 justify-content-evenly">
+                    <li class="nav-item inactif_bas">
+                        <!-- Si sur la liste des entreprises, mettre l'icone blanche et le fond en jaune -->
+                        <a class="d-flex justify-content-center actif_bas" href="listeEntreprises.php">
+                            <img src="../../../ressources/entreprise_black.png" alt="Liste des entreprises">
+                        </a>
+                        <!-- Si sur la liste des entreprises, mettre en jaune -->
+                        Entreprises
+                    </li>
+                    <li class="nav-item actif_bas_texte">
+                        <!-- Si sur la liste des rendez-vous, mettre l'icone blanche et le fond en jaune -->
+                        <a class="d-flex justify-content-center actif_bas_icone" href="">
+                            <img src="../../../ressources/rendez-vous_white.png" alt="Mes rendez-vous">
+                        </a>
+                        <!-- Si sur la liste des rendez-vous, mettre en jaune -->
+                        Rendez-vous
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </body>
 </html>
