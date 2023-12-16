@@ -22,7 +22,7 @@ function connecteBD() {
 }
 
 function getEntreprisesPerStudent($pdo, $user_id) {
-    $stmt = $pdo->prepare("SELECT Company.company_id,name,logo,address,sector
+    $stmt = $pdo->prepare("SELECT Company.company_id,name,logo_file_name,address,sector
                            FROM Company
                            JOIN WishList ON Company.company_id = WishList.company_id
                            WHERE user_id = $user_id");

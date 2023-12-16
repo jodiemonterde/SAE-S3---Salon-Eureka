@@ -9,8 +9,14 @@
     vertical-align: middle;
     margin-left: 5px;
 }
+
+.colEntreprise {
+    margin-left: 20px;
+}
+
 .logoEntreprise {
     border-radius: 100%;
+    border: 2px solid gray;
 }
 .test {
     float:right;

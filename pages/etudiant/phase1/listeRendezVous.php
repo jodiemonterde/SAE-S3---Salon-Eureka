@@ -42,10 +42,10 @@
             while ($ligne = $stmt->fetch()) { 
             $vide = false;?>
             <div class="row entreprise align-items-center mx-1">
-                <div class="col-2 col-lg-1">
-                    <img src="../../../ressources/test.png" alt="logo" class="logoEntreprise" width="75px" height="75px"/>
+                <div class="col-2 col-md-1">
+                    <img src="../../../ressources/<?php echo $ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "companyDefault.png"?>" alt="logo" class="logoEntreprise" width="75px" height="75px"/>
                 </div>
-                <div class="col-8 col-md-6 col-lg-8">
+                <div class="col-8 col-md-6 col-lg-8 colEntreprise">
                     <span class="nomEntreprise"><?php echo $ligne["name"]?></span></br>
                     <i class="fa-solid fa-briefcase"></i>&nbsp;&nbsp;&nbsp;<?php echo $ligne["sector"]?><br/>
                     <i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $ligne["address"]?>
