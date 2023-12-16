@@ -79,7 +79,7 @@
                         </div>
                     </div>
                 <?php } ?>
-            <div class="row mx-1">
+            <div class="row mx-1 fixed-bottom barre-bas">
                 <div class="col-12 d-md-none d-block text-center" id="element-to-hide" data-html2canvas-ignore="true">
                     <button class="bouton boutonDeconnecterBas" id="downloadDown">Télécharger l'emploi du temps</button>
                 </div>
