@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php session_start(); 
+      require('../../../fonctions/baseDeDonnees.php');
+      //$pdo = connecteBD();?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -7,11 +9,12 @@
         <link rel="stylesheet" href="../../../css/emploiDuTemps.css">
         
         <link rel="stylesheet" href="../../../lib/bootstrap-5.3.2-dist/css/bootstrap.css">
-        <link rel="stylesheet" href="../../../lib/fontawesome-free-6.2.1-web/css/all.css">
-        
+        <link rel="stylesheet" href="../../../lib/fontawesome-free-6.5.1-web/css/all.css">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="../../../lib/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
         <link rel="stylesheet" href="../../../css/navbars.css">
-        <title>pas dev</title>
+        <title>Planning</title>
     </head>
     <body>
         <nav class="navbar navbar-expand sticky-top border bg-white">
@@ -39,20 +42,52 @@
                 </div>
             </div>
         </nav>
-        <?php
-            require('../../../fonctions/baseDeDonnees.php');
-            $pdo = connecteBD();
-            $planning = planningPerUser($pdo, 1);
-            echo "<h1>Planning</h1>";
-            foreach ($planning as $rdv) {
-                echo $rdv['start'] . ' ' . $rdv['company_name'] . ' ' . $rdv['end'] . '<br>';
-            }
-            echo '<h1>Entreprises non listées</h1>';
-            $unlistedCompany = unlistedCompanyPerUser($pdo, 1);
-            while ($ligne = $unlistedCompany->fetch()) {
-                echo $ligne['name'] . '<br>';
-            }
-        ?> 
-
+        <div class="container" id="toPrint">
+            <div class="row mx-1">
+                <div class="col-12 col-md-8">
+                    <p><h2>Vous pouvez consulter votre planning de rendez-vous !</h2></p>
+                    <p>Il est désormais trop tard pour demander de nouveaux rendez-vous. </P>
+                </div>
+                <div class="col-4 d-md-block d-none my-auto text-center" id="element-to-hide" data-html2canvas-ignore="true">
+                    <button class="bouton" id="downloadUp">Télécharger l'emploi du temps</button>
+                </div>
+            </div>
+            <?php
+                $pdo = connecteBD();
+                $planning = planningPerUser($pdo, 2);
+                foreach ($planning as $rdv) {?>
+                    <div class="row mx-1">
+                        <div class="col-12 rendez-vous ">
+                            <p class="text-center"><?php echo $rdv['start']?> - <?php echo $rdv['end']?></p>
+                            <p class="text-center text-jaune"><?php echo $rdv['company_name']; ?></p>
+                        </div>
+                    </div>
+                <?php }
+                $unlistedCompany = unlistedCompanyPerUser($pdo, 1);
+                if ($unlistedCompany->rowCount() > 0) {?>
+                    <div class="row mx-1">
+                        <div class="col-12">
+                            <p><h2>Consulter les rendez-vous non planifiables</h2></p>
+                            <p>Attention, certaines entreprises que vous souhaitiez voir ont reçues trop de demandes : ils n’ont pas pu être intégrés à votre emploi du temps. Si vous souhaitez obtenir un rendez-vous avec eux, il va falloir les contacter directement. </P>
+                        </div>
+                    </div>
+                <?php }
+                while ($ligne = $unlistedCompany->fetch()) {?>
+                    <div class="row mx-1">
+                        <div class="col-12 rendez-vous">
+                            <p class="text-center text-jaune"><?php echo $ligne['name']; ?></p>
+                        </div>
+                    </div>
+                <?php } ?>
+            <div class="row mx-1">
+                <div class="col-12 d-md-none d-block text-center" id="element-to-hide" data-html2canvas-ignore="true">
+                    <button class="bouton boutonDeconnecterBas" id="downloadDown">Télécharger l'emploi du temps</button>
+                </div>
+            </div>
+        </div>
+        <?php if (isset($_POST['telecharger'])) {?>
+            
+        <?php } ?>
     </body>
+    <script src="../../../js/downloadpage.js"></script>
 </html>

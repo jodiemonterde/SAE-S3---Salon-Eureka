@@ -23,6 +23,7 @@ body {
     padding-top: 18px !important;
     padding-bottom: 18px !important;
     max-height: 60px !important;
+    border-bottom: 1px solid #ddd;
 }
 
 .fond_inactif_haut {
@@ -30,6 +31,7 @@ body {
     padding-top: 18px !important;
     padding-bottom: 18px !important;
     max-height: 60px !important;
+    border-bottom: 1px solid #ddd;
 }
 
 .actif_bas_icone {

@@ -7,14 +7,8 @@ function connecteBD() {
     $password = 'NicolMonterdeMiquelSchardt';
 
     try {
-        // Create a new PDO instance
         $pdo = new PDO("mysql:host=$host;dbname=$dbName", $username, $password);
-        
-        // Set PDO error mode to exception
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
-        // You can now use the $pdo object to perform database operations
-        
     } catch (PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }
@@ -32,11 +26,11 @@ function planningPerUser($pdo, $user_id) {
     $planning = [];
     $i = 0;
     while ($ligne = $requete->fetch()) {
-        $planning[$i]['start'] = $ligne['start'];
+        $planning[$i]['start'] = substr($ligne['start'], 0, 5);
         $planning[$i]['company_name'] = $ligne['name'];
         list($hours, $minutes, $seconds) = sscanf($ligne['duration'], '%d:%d:%d');
         $interval = new DateInterval(sprintf('PT%dH%dM%dS', $hours, $minutes, $seconds));
-        $planning[$i]['end'] = (date_add(new DateTime($ligne['start']), $interval))->format('H:i:s');
+        $planning[$i]['end'] = (date_add(new DateTime($ligne['start']), $interval))->format('H:i');
         $i++;
     }
     return $planning;
