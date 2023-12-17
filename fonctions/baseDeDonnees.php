@@ -24,8 +24,8 @@
     function verifUtilisateur($pdo, $motDepasse, $identifiant){
         try{ 
 			$connecte=false;
-			$maRequete = $connexion->prepare("SELECT user_id, username, password from User where username = :leLogin and password = :lePWD");
-			$maRequete->bindParam(':leLogin', $identifient);
+			$maRequete = $pdo->prepare("SELECT user_id, username, password from User where username = :leLogin and password = :lePWD");
+			$maRequete->bindParam(':leLogin', $identifiant);
 			$maRequete->bindParam(':lePWD', $motDepasse);
 			if ($maRequete->execute()) {
 				$maRequete->setFetchMode(PDO::FETCH_OBJ);
@@ -34,28 +34,27 @@
 				}
 			}
 			return $connecte;
-		}
-		catch ( Exception $e ) {
-			echo "<h1>Erreur de connexion à la base de données ! </h1>";
+		} catch ( Exception $e ) {
+			echo "Connection failed: " . $e->getMessage();
 			return false;
 		} 
     }
 
     function infoUtilisateur($pdo, $motDepasse, $identifiant){
         try{ 
-			$maRequete = $connexion->prepare("SELECT user_id, responsability from User where username = :leLogin and password = :lePWD");
-			$maRequete->bindParam(':leLogin', $identifient);
+			$maRequete = $pdo->prepare("SELECT user_id, responsibility from User where username = :leLogin and password = :lePWD");
+			$maRequete->bindParam(':leLogin', $identifiant);
 			$maRequete->bindParam(':lePWD', $motDepasse);
 			if ($maRequete->execute()) {
 				$maRequete->setFetchMode(PDO::FETCH_OBJ);
 				while ($ligne=$maRequete->fetch()) {				
 					$_SESSION['idUtilisateur'] = $ligne->user_id;
-                    $_SESSION['typeUtilisateur'] = $ligne->responsability;
+                    $_SESSION['typeUtilisateur'] = $ligne->responsibility;
 				}
 			}
 		}
 		catch ( Exception $e ) {
-			echo "<h1>Erreur de connexion à la base de données ! </h1>";
+			echo "Connection failed: " . $e->getMessage();
 			return false;
 		} 
     }

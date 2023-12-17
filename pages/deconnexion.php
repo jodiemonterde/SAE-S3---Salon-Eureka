@@ -21,7 +21,7 @@
                         <button>Retour </button>
                         </div>
                         <div class="col-6">
-                            <button>Se déconnecter </button>
+                        <a href="../fonctions/deconnecter.php"><button>Se déconnecter </button>
                         </div>
                     </div>
                 </div>

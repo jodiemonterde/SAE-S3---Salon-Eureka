@@ -43,7 +43,7 @@
                     <div class="col-12 text-primary text-center">L'alternance plus simple que jamais !</div>
                     <div class="col-12 text-white text-center">Etudiant ou professionnel, facilitez vos échanges grâce au forum Eureka</div>
                 </div>
-                <div class="col-12 text-center"><button>Se connecter</button></div>
+                <div class="col-12 text-center"> <a href="pages/connexion.php"><button>Se connecter</button></div>
             </div>
             <div class="row">
                 <div class="col-12">

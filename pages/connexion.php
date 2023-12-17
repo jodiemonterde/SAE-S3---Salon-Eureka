@@ -3,18 +3,24 @@
     require("../fonctions/baseDedonnees.php");
     $pdo = connecteBD();
     $tentative = false;
-   
+    $_SESSION['connexion'] = false;
 
-    if(isset($_POST("motDePasse")) && isset($_POST("identifiant"))){
-        $_SESSION['connexion'] = verifUtilisateur($pdo, $_POST("motDePasse"), $_POST("identifiant"));
+    if(isset($_POST["motDePasse"]) && isset($_POST["identifiant"])){
+        $_SESSION['connexion'] = verifUtilisateur($pdo, $_POST["motDePasse"], $_POST["identifiant"]);
         if($_SESSION['connexion'] == false){
             $tentative = true;
         }
     }
 
     if($_SESSION['connexion']==true){
-        infoUtilisateur($pdo, $_POST("motDePasse"), $_POST("identifiant"));
-        header("../index.php");
+        infoUtilisateur($pdo, $_POST["motDePasse"], $_POST["identifiant"]);
+        if($_SESSION['typeUtilisateur'] == 'E'){
+            header('Location: etudiant/phase1/listeEntreprises.php');
+        }elseif($_SESSION['typeUtilisateur'] == 'G'){
+            header('Location: gestionnaire/phase1/detailEntreprise.php');
+        }else{
+            header('Location: administrateur/entreprises/detailEntreprise.php');
+        }
     }
     
 ?>
@@ -35,6 +41,17 @@
                 <div class="col-md-4 "></div>
                 <div class="col-12 col-md-4 centrer">
                     <form action="connexion.php" method="post">
+                        <?php
+                        if(isset($_POST['oublie'])){
+                        ?>
+                        <p>Si vous avez oublié votre mot de passe veuiller contacter un administrateur à l'aide de l'adresse mail suivante,afin qu'il vous le remplace</p>
+                        <p> exemple@gmail.com </p>
+                        <div class="col-6 text-center">
+                            <button type="submit" formaction="connexion.php"> Retour </button>
+                        </div>
+                        <?php
+                        } else {
+                        ?>
                         <?php 
                             if($tentative){
                                 echo  '<h1 class="erreur"> identifiant ou mot de passe invalide </h1>';
@@ -56,17 +73,18 @@
                             <div class="col-12">
                                 <label for="motDePasse"> Votre mot de passe : </label>
                                 <input type="password" name="motDePasse" value="" placeholder=" &#xf023 Saisir mot de passe" class="form-control zoneText"/>
-                                <label for="motDePasse" class="w-100 d-flex justify-content-end souligner"> Mot de passe oublié ? </label>
+                                <input type="submit" name="oublie" value = "Mot de passe oublié ?" class="w-100 d-flex justify-content-end souligner"> 
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6 text-center">
-                                <button> Retour </button>
+                                <button type="submit" formaction="../index.php"> Retour </button>
                             </div>
                             <div class="col-6 text-center">
                                 <button> Se connecter </button>
                             </div>
                         </div>
+                        <?php } ?>
                     </form>
                 </div>
                 <div class="col-md-4 "></div>
