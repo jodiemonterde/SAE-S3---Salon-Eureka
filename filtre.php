@@ -10,6 +10,19 @@
         <title>pas dev</title>
     </head>
     <body>
-        
+        <?php
+            include 'fonctions/baseDeDonnees.php';
+            $pdo = connecteBD();
+            $fields = getFields($pdo);
+            $longestTextLength = 0;
+            while ($ligne = $fields->fetch()) {
+                $field = $ligne['name'];
+                $textLength = strlen($field);
+                if ($textLength > $longestTextLength) {
+                    $longestTextLength = $textLength;
+                }
+                ?>
+                <button class="btn btn-primary"><?php echo $field; ?></button>
+            <?php } ?>
     </body>
 </html>
