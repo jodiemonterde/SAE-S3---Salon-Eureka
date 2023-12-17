@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="../../../lib/bootstrap-5.3.2-dist/css/bootstrap.css">
+  <link rel="stylesheet" href="../../../lib/fontawesome-free-6.5.1-web/css/all.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="./listeEntreprise.css">
+  <script src="script.js"></script>
+  <title>Accordéon & Modale Bootstrap</title>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row d-flex align-items-center h-100">
+        <div class="form-outline order-md-2 col-md-4 col-12 order-1 align-middle" data-mdb-input-init>
+            <input type="search" id="recherche" class="form-control" placeholder="&#xf002 Rechercher une entreprise" aria-label="Search" />    
+        </div>
+        <div class="searchButton order-3 d-none d-md-block col-md-2""><button class="bouton">Rechercher</button></div>
+        <div class="col-md-6 col-12 order-md-1 order-2">
+            <h2> Prenez rendez-vous avec les entreprises qui vous correspondent. </h2>
+            <p> Choisissez toutes les entreprises que vous souhaitez rencontrer au salon Eureka et prenez rendez-vous en un clic ! Dès le XX mois, vous pourrez venir consulter votre emploi du temps pour le salon créée à partir de vos demandes de rendez-vous. </p>
+        </div>
+    </div>  
+  <!-- Accordéon Bootstrap (écrans larges) -->
+  <div class="accordion" id="accordionExample">
+    <div class="card">
+      <div class="card-header bg-white" id="headingOne">
+        <h2 class="mb-0 d-flex">
+          <button class="btn btn-link text-start d-flex flex-fill align-items-center justify-content-between" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <div class="profil-det-img d-flex text-start">
+                    <div class="dp">
+                        <img src="../../../ressources/no-photo.png" alt="">
+                    </div>
+                    <div class="pd">
+                        <h2>Nom de l'entreprise 2</h2>
+                        <ul class="text-left">
+                            <li><i class="fa-solid fa-briefcase text-left"></i> Secteur d'activité</li>
+                            <li><i class="fa-solid fa-location-dot"></i> Adresse de l'entreprise</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="../../../ressources/bottomArrow.png" alt="Flèche" class="toggle-image d-none d-md-block">
+          </button> 
+        </h2>
+      </div>
+      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div class="card-body">
+          <!-- Contenu de l'accordéon -->
+          <!-- Ajoutez ici les informations supplémentaires -->
+            <div class="row">
+                <div class="description">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.
+                </div>
+                <hr>
+                <h2 class="student">Prénom Nom de l'étudiant</h2>
+                <p>Filière de l'étudiant</p>
+                <hr>
+                <h2 class="student">Prénom Nom de l'étudiant</h2>
+                <p>Filière de l'étudiant</p>
+                <hr>
+                <h2 class="student">Prénom Nom de l'étudiant</h2>
+                <p>Filière de l'étudiant</p>
+                <hr>
+                <h2 class="student">Prénom Nom de l'étudiant</h2>
+                <p>Filière de l'étudiant</p>
+                <hr>
+                <h2 class="student">Prénom Nom de l'étudiant</h2>
+                <p>Filière de l'étudiant</p>
+                <hr>
+                <h2 class="student">Prénom Nom de l'étudiant</h2>
+                <p>Filière de l'étudiant</p>
+                <hr>
+                <h2 class="student">Prénom Nom de l'étudiant</h2>
+                <p>Filière de l'étudiant</p>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!-- Ajoutez d'autres éléments d'accordéon ici selon vos besoins -->
+  </div>
+
+  <!-- Contenu de la Modale -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen " role="document">
+      <div class="modal-content">
+        <div class="modal-header justify-content-start">
+            <button type="button" class="close border border-white" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"><img src="../../../ressources/retour.png" alt="Retour arrière"></span>
+              </button>
+            <h2 class="modal-title" id="exampleModalLabel">Nom de l'entreprise</h2>
+        </div>
+        <div class="modal-body">
+          <!-- Contenu de la Modale -->
+          <div class="col-12 company dl-search-result-title-container">
+            <div class="row">
+                <div>
+                    <div class="profil-det-img d-flex">
+                        <div class="dp">
+                            <img src="../../../ressources/no-photo.png" alt="">
+                        </div>
+                        <div class="pd">
+                            <h2 class="companyName">Nom de l'entreprise</h2>
+                            <ul>
+                                <li><i class="fa-solid fa-briefcase"></i> Secteur d'activité</li>
+                                <li><i class="fa-solid fa-location-dot"></i> Adresse de l'entreprise</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <hr>
+            <div class="row">
+                <div class="col-12">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis consectetur massa. Nullam eleifend magna id convallis eleifend. Sed in tempus magna, sed vestibulum nisi. Suspendisse rhoncus, lorem nec elementum feugiat, erat neque aliquet risus, quis semper eros ligula a dolor. Sed sit amet vulputate neque. Morbi at vehicula lectus. Mauris ullamcorper ac elit eget luctus. Proin in lorem libero.
+                </div>
+            </div>
+          </div>
+                <hr>
+                <h2 class="student">Prénom Nom de l'étudiant</h2>
+                <p>Filière de l'étudiant</p>
+                <hr>
+                <h2 class="student">Prénom Nom de l'étudiant</h2>
+                <p>Filière de l'étudiant</p>
+                <hr>
+                <h2 class="student">Prénom Nom de l'étudiant</h2>
+                <p>Filière de l'étudiant</p>
+                <hr>
+                <h2 class="student">Prénom Nom de l'étudiant</h2>
+                <p>Filière de l'étudiant</p>
+                <hr>
+                <h2 class="student">Prénom Nom de l'étudiant</h2>
+                <p>Filière de l'étudiant</p>
+                <hr>
+                <h2 class="student">Prénom Nom de l'étudiant</h2>
+                <p>Filière de l'étudiant</p>
+                <hr>
+                <h2 class="student">Prénom Nom de l'étudiant</h2>
+                <p>Filière de l'étudiant</p>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

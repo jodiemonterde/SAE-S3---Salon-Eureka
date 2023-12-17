@@ -36,4 +36,33 @@ function getEntreprisesForStudent($pdo, $user_id) {
     return $stmt;
 }
 
+function getEntreprisesPerField($pdo, $field_id) {
+    $stmt = $pdo->prepare("SELECT DISTINCT Company.company_id, Company.name, Company.description, Company.address, Company.sector
+                           FROM Company
+                           JOIN Speaker
+                           ON Company.company_id = Speaker.company_id
+                           JOIN AssignmentSpeaker
+                           ON AssignmentSpeaker.speaker_id = Speaker.speaker_id");
+    $stmt->execute();
+    return $stmt;
+}
+
+function getStudentsPerCompany($pdo, $company_id) {
+    $stmt = $pdo->prepare("SELECT Field.name, User.username
+                           FROM Company
+                           JOIN Speaker
+                           ON Company.company_id = Speaker.company_id
+                           JOIN Appointment
+                           ON Speaker.speaker_id = Appointment.speaker_id
+                           JOIN User
+                           ON Appointment.user_id = User.user_id
+                           JOIN AssignmentUser
+                           ON User.user_id = AssignmentUser.user_id
+                           JOIN Field
+                           ON AssignmentUser.field_id = Field.field_id
+                           WHERE Company.company_id = $company_id;");
+    $stmt->execute();
+    return $stmt;
+}
+
 ?>
