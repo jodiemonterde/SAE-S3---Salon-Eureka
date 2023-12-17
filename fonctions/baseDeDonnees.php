@@ -15,7 +15,7 @@ function connecteBD() {
     return $pdo;
 }
 
-function getFIelds($pdo) {
+function getFields($pdo) {
     $sql = "SELECT * FROM `Field`";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();

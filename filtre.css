@@ -1,0 +1,30 @@
+.bouton-filtre {
+    border-radius: 50px;
+    min-width: 122px;
+    font-weight: 400;
+    font-size: 12px;
+    border: #FFA800 solid 2px;
+}
+
+.bouton-filtre-selectionner {
+    background-color: #FFFFFF;
+    color: #FFA800;
+}
+
+.bouton-filtre-selectionner:hover {
+    background-color: #dfdfdf;
+}
+
+.bouton-filtre-deselectionner {
+    background-color: #FFA800;
+    
+}
+
+.bouton-filtre-deselectionner:hover {
+    background-color: #da9100;
+    border-color: #da9100;
+}
+
+form {
+    display:inline;
+}
