@@ -81,7 +81,7 @@
                                 <button type="submit" formaction="../index.php"> Retour </button>
                             </div>
                             <div class="col-6 text-center">
-                                <button> Se connecter </button>
+                                <button type="submit"> Se connecter </button>
                             </div>
                         </div>
                         <?php } ?>

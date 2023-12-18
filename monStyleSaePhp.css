@@ -8,6 +8,10 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+.deco{
+    border : 0;
+}
+
 label{
     font-size: 13px;
 }
