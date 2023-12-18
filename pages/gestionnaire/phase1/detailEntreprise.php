@@ -12,11 +12,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="../../../lib/bootstrap-5.3.2-dist/css/bootstrap.css">
     <link rel="stylesheet" href="../../../lib/fontawesome-free-6.5.1-web/css/all.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="./listeEntreprise.css">
     <title>Eureka - Liste des entreprises</title>
 </head>
 <body>
-    <div class="container mt-5">
+     <!-- Navbar du haut -->
+     <nav class="navbar navbar-expand sticky-top border bg-white">
+            <div class="container-fluid">
+                <div class="navbar-brand">
+                    <img src="./ressources/logo_black.png" alt="Logo Eureka" class="d-inline-block align-text-top">
+                    Eureka
+                </div>
+                <div class="navbar-right">
+                    <ul class="navbar-nav">
+                        <li class="nav-item d-none d-md-block">
+                            <!-- Si sur la liste des entreprises, mettre en jaune -->
+                            <a class="actif_haut btn" role="button" href="#">
+                                Liste des entreprises
+                            </a>
+                        </li>
+                        <li class="nav-item d-none d-md-block">
+                            <!-- Si sur la liste des rendez-vous, mettre en jaune -->
+                            <a class="inactif_haut btn" role="button" href="#">
+                                Mes rendez-vous
+                            </a>
+                        </li>
+                        <li class="nav-item d-none d-md-block dropdown">
+                            <a class="inactif_haut btn dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Pseudo Utilisateur
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li> <a class="dropdown-item"> Se déconnecter </a> </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item d-md-none">
+                            <a href="#">
+                                <img src="./ressources/icone_deconnexion.png" alt="Se déconnecter">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    
+    <div class="container">
         <div class="row d-flex align-items-center h-100">
             <div class="form-outline order-md-2 col-md-4 col-12 order-1 align-middle" data-mdb-input-init>
                 <input type="search" name="motDePasse" value="" placeholder=" &#xf002 Rechercher une entreprise" class="form-control zoneText"/>    
@@ -71,7 +111,31 @@
         </div>
         <?php } ?>
     </div>
+
+     <!-- Navbar du bas -->
+     <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
+            <div class="container-fluid">
+                <ul class="navbar-nav w-100 justify-content-evenly">
+                    <li class="nav-item actif_bas_texte">
+                        <!-- Si sur la liste des entreprises, mettre l'icone blanche et le fond en jaune -->
+                        <a class="d-flex justify-content-center actif_bas_icone" href="#">
+                            <img src="./ressources/entreprise_white.png" alt="Liste des entreprises">
+                        </a>
+                        <!-- Si sur la liste des entreprises, mettre en jaune -->
+                        Entreprises
+                    </li>
+                    <li class="nav-item inactif_bas">
+                        <!-- Si sur la liste des rendez-vous, mettre l'icone blanche et le fond en jaune -->
+                        <a class="d-flex justify-content-center" href="#">
+                            <img src="./ressources/rendez-vous_black.png" alt="Mes rendez-vous">
+                        </a>
+                        <!-- Si sur la liste des rendez-vous, mettre en jaune -->
+                        Rendez-vous
+                    </li>
+                </ul>
+            </div>
+        </nav>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
 </body>
 </html>
