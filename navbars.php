@@ -20,16 +20,20 @@
                 </div>
                 <div class="navbar-right">
                     <ul class="navbar-nav">
-                        <li class="nav-item nav-link p-2 d-none d-sm-block fond_actif_haut">
+                        <li class="nav-item d-none d-sm-block">
                             <!-- Si sur la liste des entreprises, mettre en jaune -->
-                            <a class="lien couleur_actif_haut" href="#"> Liste des entreprises </a>
+                            <a class="actif_haut btn" role="button" href="#">
+                                Liste des entreprises
+                            </a>
                         </li>
-                        <li class="nav-item nav-link p-2 d-none d-sm-block fond_inactif_haut">
+                        <li class="nav-item d-none d-sm-block">
                             <!-- Si sur la liste des rendez-vous, mettre en jaune -->
-                            <a class="lien couleur_inactif_haut" href="#"> Mes rendez-vous </a>
+                            <a class="inactif_haut btn" role="button" href="#">
+                                Mes rendez-vous
+                            </a>
                         </li>
-                        <li class="nav-item dropdown p-2 d-none d-sm-block fond_inactif_haut">
-                            <a class="dropdown-toggle lien couleur_inactif_haut" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <li class="nav-item d-none d-sm-block dropdown">
+                            <a class="inactif_haut btn dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Pseudo Utilisateur
                             </a>
                             <ul class="dropdown-menu" role="menu">
@@ -37,7 +41,9 @@
                             </ul>
                         </li>
                         <li class="nav-item d-sm-none">
-                            <img src="./ressources/icone_deconnexion.png" alt="Se déconnecter">
+                            <a href="#">
+                                <img src="./ressources/icone_deconnexion.png" alt="Se déconnecter">
+                            </a>
                         </li>
                     </ul>
                 </div>
