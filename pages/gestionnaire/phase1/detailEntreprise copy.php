@@ -92,40 +92,45 @@
                 </div>
             </div>
         </div>
-        <!-- Accordéon Bootstrap -->
-        <div class="accordion" id="listeEntreprise">
         <?php
             
             $stmt = getEntreprisesPerField($pdo, $_SESSION['filtre']);
             while ($ligne = $stmt->fetch()) { 
         ?>
-        <div class="accordion-item my-3">
-            <h2 class="accordion-header" id="heading<?php echo $ligne['company_id']?>">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $ligne['company_id']?>" aria-expanded="false" aria-controls="collapse<?php echo $ligne['company_id']?>">
-                    <div class="profil-det-img d-flex text-start">
-                        <div class="dp"><img src="../../../ressources/no-photo.png" alt=""></div>
-                        <div class="pd">
-                            <h2 class="title"><?php echo $ligne["name"]?></h2>
-                            <ul class="text-left">
-                                <li><i class="fa-solid fa-briefcase text-left"></i> <?php echo $ligne["sector"]?></li>
-                                <li><i class="fa-solid fa-location-dot"></i> <?php echo $ligne["address"]?></li>
-                            </ul>
+        <!-- Accordéon Bootstrap -->
+        <div class="accordion" id=<?php echo '"companyAccordion'.$ligne['company_id'].'"'?>>
+            <div class="card">
+                <div class="card-header bg-white" id=<?php echo '"heading'.$ligne['company_id'].'"'?>>
+                    <h2 class="mb-0 d-flex">
+                        <button class="btn btn-link text-start d-flex flex-fill align-items-center justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $ligne['company_id']?>" aria-expanded="false" aria-controls="collapse<?php echo $ligne['company_id']?>">
+                            <div class="profil-det-img d-flex text-start">
+                                <div class="dp"><img src="../../../ressources/no-photo.png" alt=""></div>
+                                <div class="pd">
+                                    <h2><?php echo $ligne["name"]?></h2>
+                                    <ul class="text-left">
+                                        <li><i class="fa-solid fa-briefcase text-left"></i> <?php echo $ligne["sector"]?></li>
+                                        <li><i class="fa-solid fa-location-dot"></i> <?php echo $ligne["address"]?></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <img src="../../../ressources/arrow.png" alt="Flèche" class="toggle-image d-none d-md-block">
+                        </button> 
+                    </h2>
+                </div>
+                <div id=<?php echo '"collapse'.$ligne['company_id'].'"'?> class="collapse" aria-labelledby=<?php echo '"heading'.$ligne['company_id'].'"'?> data-bs-parent=<?php echo '"#companyAccordion'.$ligne['company_id'].'"'?>>
+                    <div class="card-body">
+                        <!-- Contenu de l'accordéon -->
+                        <div class="row">
+                            <div class="description"><?php echo $ligne["description"]?></div>
+                            <?php
+                            $stmtEtudiant = getStudentsPerCompany($pdo, $ligne["company_id"]);
+                            while ($ligneEtudiant = $stmtEtudiant->fetch()) { 
+                            ?>
+                            <hr>
+                            <h2 class="student"><?php echo $ligneEtudiant["username"]?></h2>
+                            <p><?php echo $ligneEtudiant["name"]?></p>
+                            <?php } ?>
                         </div>
-                    </div>
-                </button>
-            </h2>
-            <div id="collapse<?php echo $ligne['company_id']?>" class="accordion-collapse collapse" aria-labelledby="heading<?php echo $ligne['company_id']?>" data-bs-parent="#listeEntreprise">
-                <div class="accordion-body">
-                    <div class="row">
-                        <div class="description"><?php echo $ligne["description"]?></div>
-                        <?php
-                        $stmtEtudiant = getStudentsPerCompany($pdo, $ligne["company_id"]);
-                        while ($ligneEtudiant = $stmtEtudiant->fetch()) { 
-                        ?>
-                        <hr>
-                        <h2 class="student"><?php echo $ligneEtudiant["username"]?></h2>
-                        <p><?php echo $ligneEtudiant["name"]?></p>
-                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -156,5 +161,5 @@
             </ul>
         </div>
     </nav>   
-</body>
+    </body>
 </html>

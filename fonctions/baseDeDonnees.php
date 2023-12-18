@@ -36,13 +36,17 @@ function getEntreprisesForStudent($pdo, $user_id) {
     return $stmt;
 }
 
-function getEntreprisesPerField($pdo, $field_id) {
+function getEntreprisesPerField($pdo, $field_ids) {
+    // Utilisez la fonction implode pour convertir le tableau en une chaîne séparée par des virgules
+    $field_ids_str = implode(', ', $field_ids);
+    
     $stmt = $pdo->prepare("SELECT DISTINCT Company.company_id, Company.name, Company.description, Company.address, Company.sector
                            FROM Company
                            JOIN Speaker
                            ON Company.company_id = Speaker.company_id
                            JOIN AssignmentSpeaker
-                           ON AssignmentSpeaker.speaker_id = Speaker.speaker_id");
+                           ON AssignmentSpeaker.speaker_id = Speaker.speaker_id
+                           WHERE field_id IN ($field_ids_str)");
     $stmt->execute();
     return $stmt;
 }
@@ -61,6 +65,13 @@ function getStudentsPerCompany($pdo, $company_id) {
                            JOIN Field
                            ON AssignmentUser.field_id = Field.field_id
                            WHERE Company.company_id = $company_id;");
+    $stmt->execute();
+    return $stmt;
+}
+
+function getFields($pdo) {
+    $sql = "SELECT * FROM `Field`";
+    $stmt = $pdo->prepare($sql);
     $stmt->execute();
     return $stmt;
 }
