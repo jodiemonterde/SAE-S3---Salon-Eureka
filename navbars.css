@@ -15,8 +15,8 @@ body {
     max-height: 60px !important;
     border-bottom: 1px solid #DDDDDD !important;
     border-radius: 0% !important;
-    --bs-btn-hover-color: #FFA800;
-    --bs-btn-hover-bg: #E0E0E0;
+    --bs-btn-hover-color: #FFFFFF;
+    --bs-btn-hover-bg: #D98F00;
     --bs-btn-hover-border-color: #DDDDDD;
     --bs-btn-active-color: #FFA800;
     --bs-btn-active-bg: #FFFFFF;
@@ -34,7 +34,7 @@ body {
     max-height: 60px !important;
     border-bottom: 1px solid #DDDDDD !important;
     border-radius: 0% !important;
-    --bs-btn-hover-color: #FFFFFF;
+    --bs-btn-hover-color: #FFA800;
     --bs-btn-hover-bg: #E0E0E0;
     --bs-btn-hover-border-color: #DDDDDD;
     --bs-btn-active-color: #FFFFFF;
