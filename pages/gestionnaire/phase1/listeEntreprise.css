@@ -6,6 +6,20 @@
     font-size: 12px;
 }
 
+.zoneText {
+    font-family: 'Montserrat', FontAwesome;
+    height: 40px;
+    border-bottom: 2px solid #bfbfbf;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+}
+
+input ::placeholder {
+    color: #bfbfbf !important;
+}
+
 .rounded-circle {
     width: 75px;
     height: 75px;

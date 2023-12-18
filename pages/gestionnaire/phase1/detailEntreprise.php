@@ -19,7 +19,7 @@
     <div class="container mt-5">
         <div class="row d-flex align-items-center h-100">
             <div class="form-outline order-md-2 col-md-4 col-12 order-1 align-middle" data-mdb-input-init>
-                <input type="search" id="recherche" class="form-control" placeholder="&#xf002 Rechercher une entreprise" aria-label="Search" />    
+                <input type="search" name="motDePasse" value="" placeholder=" &#xf002 Rechercher une entreprise" class="form-control zoneText"/>    
             </div>
             <div class="searchButton order-3 d-none d-md-block col-md-2"><button class="bouton">Rechercher</button></div>
             <div class="col-md-6 col-12 order-md-1 order-2">
