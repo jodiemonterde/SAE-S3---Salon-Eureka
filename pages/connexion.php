@@ -5,15 +5,15 @@
     $tentative = false;
     $_SESSION['connexion'] = false;
 
-    if(isset($_POST["motDePasse"]) && isset($_POST["identifiant"])){
-        $_SESSION['connexion'] = verifUtilisateur($pdo, $_POST["motDePasse"], $_POST["identifiant"]);
+    if(isset($_GET["motDePasse"]) && isset($_GET["identifiant"])){
+        $_SESSION['connexion'] = verifUtilisateur($pdo, $_GET["motDePasse"], $_GET["identifiant"]);
         if($_SESSION['connexion'] == false){
             $tentative = true;
         }
     }
 
     if($_SESSION['connexion']==true){
-        infoUtilisateur($pdo, $_POST["motDePasse"], $_POST["identifiant"]);
+        infoUtilisateur($pdo, $_GET["motDePasse"], $_GET["identifiant"]);
         if($_SESSION['typeUtilisateur'] == 'E'){
             header('Location: etudiant/phase1/listeEntreprises.php');
         }elseif($_SESSION['typeUtilisateur'] == 'G'){
@@ -40,9 +40,9 @@
             <div class="row mx-1">
                 <div class="col-md-4 "></div>
                 <div class="col-12 col-md-4 centrer">
-                    <form action="connexion.php" method="post">
+                    <form action="connexion.php" method="get">
                         <?php
-                        if(isset($_POST['oublie'])){
+                        if(isset($_GET['oublie'])){
                         ?>
                         <p>Si vous avez oublié votre mot de passe veuiller contacter un administrateur à l'aide de l'adresse mail suivante,afin qu'il vous le remplace</p>
                         <p> exemple@gmail.com </p>
@@ -66,14 +66,14 @@
                         <div class="row">
                             <div class="col-12">
                                 <label for="identifiant"> Votre identifiant : </label>
-                                <input type="text" name="identifiant" value="" placeholder=" &#xf007 Saisir votre identifiant" class="form-control zoneText"/>
+                                <input type="text" name="identifiant" value="" placeholder="&#xf007 Saisir votre identifiant" class="form-control zoneText"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
                                 <label for="motDePasse"> Votre mot de passe : </label>
-                                <input type="password" name="motDePasse" value="" placeholder=" &#xf023 Saisir mot de passe" class="form-control zoneText"/>
-                                <input type="submit" name="oublie" value = "Mot de passe oublié ?" class="w-100 d-flex justify-content-end souligner"> 
+                                <input type="password" name="motDePasse" value="" placeholder="&#xf023 Saisir mot de passe" class="form-control zoneText"/>
+                                <p class="w-100 d-flex justify-content-end souligner"><a  name="oublie" href="connexion.php?oublie=true" >Mot de passe oublié ?</a></p>
                             </div>
                         </div>
                         <div class="row">

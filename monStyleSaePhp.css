@@ -12,7 +12,7 @@ label{
 }
 
 input{
-    font-family: FontAwesome, Arial;
+    font-family: Arial, FontAwesome;
     height: 40px;
     border-bottom: 2px solid #bfbfbf;
     border-top: 0;
@@ -25,8 +25,13 @@ input::placeholder{
     font-size: 16px;
 }
 
+a{
+    color : black;
+}
+
 .souligner{
     text-decoration: underline;
+    color : black;
 }
 
 .erreur{
