@@ -38,6 +38,7 @@
                                 Mes rendez-vous
                             </a>
                         </li>
+
                         <li class="nav-item d-none d-md-block dropdown">
                             <a class="inactif_haut btn dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Pseudo Utilisateur
@@ -55,7 +56,7 @@
                 </div>
             </div>
         </nav>
-    
+
     <div class="container">
         <div class="row d-flex align-items-center h-100">
             <div class="form-outline order-md-2 col-md-4 col-12 order-1 align-middle" data-mdb-input-init>
