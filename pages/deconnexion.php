@@ -18,7 +18,7 @@
                     <P>Êtes-vous sûr(e) de vouloir vous déconnecter</P>
                     <div class="row">
                         <div class="col-6">
-                        <button>Retour </button>
+                        <a href="connexion.php"><button>Retour </button>
                         </div>
                         <div class="col-6">
                         <a href="../fonctions/deconnecter.php"><button>Se déconnecter </button>

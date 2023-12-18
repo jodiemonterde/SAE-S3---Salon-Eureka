@@ -30,11 +30,6 @@ a{
     color : black;
 }
 
-.souligner{
-    text-decoration: underline;
-    color : black;
-}
-
 .erreur{
     color: red;
 }

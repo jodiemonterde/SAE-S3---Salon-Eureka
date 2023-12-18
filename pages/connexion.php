@@ -5,15 +5,15 @@
     $tentative = false;
     $_SESSION['connexion'] = false;
 
-    if(isset($_GET["motDePasse"]) && isset($_GET["identifiant"])){
-        $_SESSION['connexion'] = verifUtilisateur($pdo, $_GET["motDePasse"], $_GET["identifiant"]);
+    if(isset($_POST["motDePasse"]) && isset($_POST["identifiant"])){
+        $_SESSION['connexion'] = verifUtilisateur($pdo, $_POST["motDePasse"], $_POST["identifiant"]);
         if($_SESSION['connexion'] == false){
             $tentative = true;
         }
     }
 
     if($_SESSION['connexion']==true){
-        infoUtilisateur($pdo, $_GET["motDePasse"], $_GET["identifiant"]);
+        infoUtilisateur($pdo, $_POST["motDePasse"], $_POST["identifiant"]);
         if($_SESSION['typeUtilisateur'] == 'E'){
             header('Location: etudiant/phase1/listeEntreprises.php');
         }elseif($_SESSION['typeUtilisateur'] == 'G'){
@@ -40,7 +40,7 @@
             <div class="row mx-1">
                 <div class="col-md-4 "></div>
                 <div class="col-12 col-md-4 centrer">
-                    <form action="connexion.php" method="get">
+                    <form action="connexion.php" method="post">
                         <?php
                         if(isset($_GET['oublie'])){
                         ?>
@@ -73,7 +73,7 @@
                             <div class="col-12">
                                 <label for="motDePasse"> Votre mot de passe : </label>
                                 <input type="password" name="motDePasse" value="" placeholder="&#xf023 Saisir mot de passe" class="form-control zoneText"/>
-                                <p class="w-100 d-flex justify-content-end souligner"><a  name="oublie" href="connexion.php?oublie=true" >Mot de passe oublié ?</a></p>
+                                <p class="w-100 d-flex justify-content-end"><a  name="oublie" href="connexion.php?oublie=true" >Mot de passe oublié ?</a></p>
                             </div>
                         </div>
                         <div class="row">
