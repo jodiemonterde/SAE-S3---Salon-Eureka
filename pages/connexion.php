@@ -38,8 +38,8 @@
     <body>
         <div class="container">
             <div class="row mx-1">
-                <div class="col-md-4 "></div>
-                <div class="col-12 col-md-4 centrer">
+                <div class="col-lg-3 col-md-2 "></div>
+                <div class="col-12 col-lg-6 col-md-8 centrer">
                     <form action="connexion.php" method="post">
                         <?php
                         if(isset($_GET['oublie'])){
@@ -87,7 +87,7 @@
                         <?php } ?>
                     </form>
                 </div>
-                <div class="col-md-4 "></div>
+                <div class="col-lg-3 col-md-2"></div>
             </div>
         </div>
     </body>
