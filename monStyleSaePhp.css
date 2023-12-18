@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 .centrer{
-    margin-top: 20%;
+    margin-top: 15%;
+    padding:2%;
     background: white;
     border : 2px solid #bfbfbf;
     font-family: 'Montserrat', sans-serif;
