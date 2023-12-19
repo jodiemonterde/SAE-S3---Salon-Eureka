@@ -8,6 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="./lib/bootstrap-5.3.2-dist/css/bootstrap.css">
         <link rel="stylesheet" href="../fontawesome-free-6.2.1-web/css/all.css">
+        <link rel="stylesheet" href="./css/all.css">
         <link rel="stylesheet" href="./css/index.css">
         <title> Eureka accueil </title>
     </head>
@@ -33,8 +34,8 @@
                 </div>
                 <div class="col-12 d-flex justify-content-center">
                     <form action="./pages/connexion.php">
-                        <button type="submit" class="d-none d-sm-block bouton-pc"> Se connecter </button>
-                        <button type="submit" class="d-sm-none bouton-tel"> Se connecter </button>
+                        <button type="submit" class="d-none d-sm-block bouton bouton-pc"> Se connecter </button>
+                        <button type="submit" class="d-sm-none bouton bouton-tel"> Se connecter </button>
                     </form>
                 </div>
             </div>
