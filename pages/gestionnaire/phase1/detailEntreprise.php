@@ -1,6 +1,10 @@
 <?php
     session_start();
     $user = 1;
+
+    // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
+    $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
+
     // $_SESSION['filtre'] est un tableau qui contient les id des filtres selectionnes
     if (!isset($_SESSION['filtre']) || $_SESSION['filtre'] == null) {
         $_SESSION['filtre'] = array();
@@ -40,15 +44,15 @@
             </div>
             <div class="navbar-right h-100">
                 <ul class="navbar-nav">
-                    <li class="nav-item nav-link p-0 d-none d-md-block h-100 col">
+                    <li class="nav-item nav-link p-0 d-none d-md-block h-100">
                         <!-- Si sur la liste des entreprises, mettre en jaune -->
                         <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeEntreprises.php"> Liste des entreprises </a>
                     </li>
-                    <li class="nav-item nav-link p-0 h-100 d-none d-md-block col">
+                    <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
                         <!-- Si sur la liste des rendez-vous, mettre en jaune -->
                         <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Mes rendez-vous </a>
                     </li>
-                    <li class="nav-item dropdown p-0 h-100 d-none d-md-block col">
+                    <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
                         <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Pseudo Utilisateur
                         </a>
@@ -68,18 +72,25 @@
 
     <div class="container mt-2">
         <div class="row d-flex align-items-center h-100">
-            <div class="form-outline order-md-2 col-md-4 col-12 order-1 align-middle" data-mdb-input-init>
-                <input type="search" name="motDePasse" value="" placeholder=" &#xf002 Rechercher une entreprise" class="form-control zoneText"/>    
-            </div>
-            <div class="searchButton order-3 d-none d-md-block col-md-2"><button class="bouton">Rechercher</button></div>
-            <div class="col-md-6 col-12 order-md-1 order-2">
+            <div class="col-12 col-md-6">
                 <h2>Liste des entreprises</h2>
                 <p>Voici toutes les entreprises présentes au salon Euréka cette année. Cliquez sur l’une d’elle pour voir tous les étudiants qui veulent un rendez-vous avec celle-ci ! Vous pouvez également filtrer quelles filières vous intéressent grâce à la liste de filtres ci-dessous.</p>
             </div>
+            <form action="detailEntreprise.php" method="post" class="col-12 col-md-6 my-2">
+                <div class="row">
+                    <div class="col-8">
+                        <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="zoneText"/>    
+                    </div>
+                    <div class="col-4">
+                        <input type="submit" class="bouton" value="Rechercher"/>
+                    </div>
+                </div>
+            </form>
         </div>
         <div class="container p-0">
             <div class="row">
                 <div class="col-12">
+                    <h2>Filières</h2>
                     <?php
                         $fields = getFields($pdo);
                         while ($ligne = $fields->fetch()) {
@@ -95,9 +106,14 @@
         <!-- Accordéon Bootstrap -->
         <div class="accordion" id="listeEntreprise">
         <?php
-            
-            $stmt = getEntreprisesPerField($pdo, $_SESSION['filtre']);
-            while ($ligne = $stmt->fetch()) { 
+            $stmt = getEntreprises($pdo, $_SESSION['filtre'], $_SESSION['recherche']);
+
+            if (empty($_SESSION['filtre'])) {
+                echo '<p>Aucune filière sélectionnée. Veuillez choisir au moins une filière.</p>';
+            } elseif ($stmt->rowCount() === 0) {
+                echo '<p>Aucun résultat trouvé.</p>';
+            } else {
+                while ($ligne = $stmt->fetch()) { 
         ?>
         <div class="accordion-item my-3">
             <h2 class="accordion-header" id="heading<?php echo $ligne['company_id']?>">
@@ -130,7 +146,8 @@
                 </div>
             </div>
         </div>
-        <?php } ?>
+        <?php   } 
+            } ?>
     </div>
 
      <!-- Navbar du bas -->

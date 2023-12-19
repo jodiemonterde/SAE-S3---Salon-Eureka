@@ -36,18 +36,41 @@ function getEntreprisesForStudent($pdo, $user_id) {
     return $stmt;
 }
 
-function getEntreprisesPerField($pdo, $field_ids) {
+function getEntreprises($pdo, $field_ids, $recherche) {
     // Utilisez la fonction implode pour convertir le tableau en une chaîne séparée par des virgules
     $field_ids_str = implode(', ', $field_ids);
-    
-    $stmt = $pdo->prepare("SELECT DISTINCT Company.company_id, Company.name, Company.description, Company.address, Company.sector
-                           FROM Company
-                           JOIN Speaker
-                           ON Company.company_id = Speaker.company_id
-                           JOIN AssignmentSpeaker
-                           ON AssignmentSpeaker.speaker_id = Speaker.speaker_id
-                           WHERE field_id IN ($field_ids_str)");
+
+    if ($field_ids_str == null) {
+        return null;
+    }
+
+    // Requête SQL de base
+    $sql = "SELECT DISTINCT Company.company_id, Company.name, Company.description, Company.address, Company.sector
+            FROM Company
+            JOIN Speaker ON Company.company_id = Speaker.company_id
+            JOIN AssignmentSpeaker ON AssignmentSpeaker.speaker_id = Speaker.speaker_id
+            WHERE field_id IN ($field_ids_str)";
+
+    // Ajoutez la condition de recherche à la requête si elle est fournie
+    if ($recherche != null) {
+        $sql .= " AND Company.name LIKE :recherche";
+    }
+
+    // Ajout de l'ordre de tri à la requête
+    $sql .= " ORDER BY Company.name";
+
+    // Préparation de la requête
+    $stmt = $pdo->prepare($sql);
+
+    // Si une recherche est fournie, liez le paramètre
+    if ($recherche != null) {
+        $stmt->bindValue(':recherche', '%' . $recherche . '%', PDO::PARAM_STR);
+    }
+
+    // Exécution de la requête
     $stmt->execute();
+
+    // Retourne le résultat de la requête
     return $stmt;
 }
 
@@ -72,6 +95,16 @@ function getStudentsPerCompany($pdo, $company_id) {
 function getFields($pdo) {
     $sql = "SELECT * FROM `Field`";
     $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    return $stmt;
+}
+
+function search($query) {
+    $query = htmlspecialchars($query);
+    $stmt = $pdo->prepare("SELECT DISTINCT Company.company_id, Company.name, Company.description, Company.address, Company.sector
+                           FROM Company
+                           WHERE (Company.name LIKE '%".$query."%')
+                           ORDER BY Company.name");
     $stmt->execute();
     return $stmt;
 }
