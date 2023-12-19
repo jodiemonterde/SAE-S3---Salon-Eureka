@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="../../../lib/fontawesome-free-6.5.1-web/css/all.css">
         <link rel="stylesheet" href="../../../css/listeEntreprise.css">
         <link rel="stylesheet" href="../../../css/navbars.css">
-        <script src="./lib/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+        <script src="../../../lib/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
         
         <title> Eureka - Liste des entreprises </title>
     </head>
@@ -84,8 +84,8 @@
                                     <div class="pd">
                                         <h2><?php echo $ligne["name"]?></h2>
                                         <ul>
-                                            <li><i class="fa-solid fa-briefcase"></i><?php echo $ligne["sector"]?></li>
-                                            <li><i class="fa-solid fa-location-dot"></i> <?php echo $ligne["address"]?></li>
+                                            <li><i class="fa-solid fa-briefcase"></i> <?php echo $ligne["sector"]?></li>
+                                            <li><i class="fa-solid fa-location-dot"></i>  <?php echo $ligne["address"]?></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -100,6 +100,28 @@
                     </div>
                 </div>
                 <?php }?>
-                
+        <!-- Navbar du bas -->
+        <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
+            <div class="container-fluid">
+                <ul class="navbar-nav w-100 justify-content-evenly">
+                    <!-- Si sur la liste des entreprises, mettre le texte en actif -->
+                    <li class="nav-item d-flex flex-column text-center actif_bas_texte">
+                        <!-- Si sur la liste des entreprises, mettre l'icone en actif et lien_inactif -->
+                        <a class="d-flex justify-content-center actif_bas_icone inactiveLink">
+                            <img src="../../../ressources/entreprise_white.png" alt="Liste des entreprises">
+                        </a>
+                        Entreprises
+                    </li>
+                    <!-- Si sur la liste des rendez-vous, mettre le texte en actif -->
+                    <li class="nav-item d-flex flex-column text-center inactif_bas">
+                        <!-- Si sur la liste des rendez-vous, mettre l'icône en actif et lien_inactif -->
+                        <a class="d-flex justify-content-center" href="listeRendezVous.php">
+                            <img src="../../../ressources/rendez-vous_black.png" alt="Mes rendez-vous">
+                        </a>
+                        Rendez-vous
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </body>
 </html>
