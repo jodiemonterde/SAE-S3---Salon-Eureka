@@ -53,4 +53,16 @@
 			return false;
 		} 
     }
+
+	function getPhase($pdo){
+        try{ 
+			$maRequete = $pdo->prepare("SELECT phase from Meeting");
+			$maRequete->execute();
+			return $maRequete->fetch()[0];
+		}
+		catch ( Exception $e ) {
+			echo "Connection failed: " . $e->getMessage();
+			return false;
+		} 
+    }
 ?>

@@ -1,6 +1,8 @@
-<?php if (isset($_SESSION)) {
-    header('Location: pages/connexion.php');
-} ?>
+<?php 
+    session_start();
+    if(isset($_SESSION['idUtilisateur']) && $_SESSION['idUtilisateur']!= null){
+        header('Location: pages/connexion.php');
+    } ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -38,7 +40,6 @@
                         <button type="submit" class="d-sm-none bouton bouton-tel"> Se connecter </button>
                     </form>
                 </div>
-                <div class="col-12 text-center"> <a href="pages/connexion.php"><button>Se connecter</button></div>
             </div>
             <div class="row">
                 <div class="col-12 p-2">

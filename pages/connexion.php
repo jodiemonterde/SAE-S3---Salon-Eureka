@@ -4,36 +4,43 @@
     $pdo = connecteBD();
     $tentative = false;
     $_SESSION['connexion'] = false;
-    
+    $phase = getPhase($pdo);
     if(isset($_SESSION['idUtilisateur']) && $_SESSION['idUtilisateur']!= null){
-        if($_SESSION['typeUtilisateur'] == 'E'){
-            header('Location: etudiant/phase1/listeEntreprises.php');
-        }elseif($_SESSION['typeUtilisateur'] == 'G'){
-            header('Location: gestionnaire/phase1/detailEntreprise.php');
+        if($_SESSION['type_utilisateur'] == 'E'){
+            if ($phase == 1) {
+                header('Location: etudiant/phase1/listeEntreprises.php');
+            } else {
+                header('Location: etudiant/phase2/emploiDuTemps.php');
+            }
+        }elseif($_SESSION['type_utilisateur'] == 'G'){
+            if ($phase == 1) {
+                header('Location: gestionnaire/phase1/detailEntreprise.php');
+            } else {
+                header('Location: gestionnaire/phase2/detailEntreprise.php');
+            }
         }else{
             header('Location: administrateur/entreprises/modifierEntreprise.php');
         }
     }
 
     if(isset($_POST["motDePasse"]) && isset($_POST["identifiant"])){
-        $_SESSION['connexion'] = verifUtilisateur($pdo, $_POST["motDePasse"], $_POST["identifiant"]);
+        $_SESSION['connexion'] = verifUtilisateur($pdo, htmlspecialchars($_POST["motDePasse"]), htmlspecialchars($_POST["identifiant"]));
         if($_SESSION['connexion'] == false){
             $tentative = true;
         }
     }
 
     if($_SESSION['connexion']==true){
-        $info = infoUtilisateur($pdo, $_POST["motDePasse"], $_POST["identifiant"]);
-        $info->setFetchMode(PDO::FETCH_OBJ);
+        $info = infoUtilisateur($pdo, htmlspecialchars($_POST["motDePasse"]), htmlspecialchars($_POST["identifiant"]));
         $ligne = $info->fetch();
-        $_SESSION['idUtilisateur'] = $ligne->user_id;
-        $type = $ligne->responsibility;	
+        $_SESSION['idUtilisateur'] = $ligne['user_id'];
+        $_SESSION['type_utilisateur'] = $ligne['responsibility'];	
     }
 
     if($_SESSION['connexion']==true){
-        if($type == 'E'){
+        if($_SESSION['type_utilisateur'] == 'E'){
             header('Location: etudiant/phase1/listeEntreprises.php');
-        }elseif($type == 'G'){
+        }elseif($_SESSION['type_utilisateur'] == 'G'){
             header('Location: gestionnaire/phase1/detailEntreprise.php');
         }else{
             header('Location: administrateur/entreprises/detailEntreprise.php');
@@ -48,7 +55,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../../outils/bootstrap-5.3.2-dist/css/bootstrap.css">
         <link rel="stylesheet" href="../../outils/fontawesome-free-6.5.1-web/css/all.css">
-        <link rel="stylesheet" href="../monStyleSaePhp.css">
+        <link rel="stylesheet" href="../css/all.css">
+        <link rel="stylesheet" href="../css/connexionDeconnexion.css">
         <title>pas dev</title>
     </head> 
 
@@ -61,10 +69,11 @@
                         <?php
                         if(isset($_GET['oublie'])){
                         ?>
-                        <p>Si vous avez oublié votre mot de passe veuiller contacter un administrateur à l'aide de l'adresse mail suivante,afin qu'il vous le remplace</p>
+                        <h2 class="text-center"> Mot de passe oublié </h2>
+                        <p>Si vous avez oublié votre mot de passe veuiller contacter un administrateur à l'aide de l'adresse mail suivante, afin qu'il vous le remplace</p>
                         <p> exemple@gmail.com </p>
-                        <div class="col-6 text-center">
-                            <button type="submit" formaction="connexion.php"> Retour </button>
+                        <div class="text-center d-flex justify-content-end">
+                            <button type="submit" formaction="connexion.php" class="bouton"> Retour </button>
                         </div>
                         <?php
                         } else {
@@ -95,10 +104,10 @@
                         </div>
                         <div class="row">
                             <div class="col-6 text-center">
-                                <a href="../index.php"><button> Retour </button></a>
+                                <a href="../index.php"><button class="bouton"> Retour </button></a>
                             </div>
                             <div class="col-6 text-center">
-                                <button type="submit"> Se connecter </button>
+                                <button type="submit" class="bouton"> Se connecter </button>
                             </div>
                         </div>
                         <?php } ?>
