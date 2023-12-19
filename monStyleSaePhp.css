@@ -1,11 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 .centrer{
-    margin-top: 15%;
+    margin-top: 20%;
     padding:2%;
     background: white;
     border : 2px solid #bfbfbf;
     font-family: 'Montserrat', sans-serif;
+}
+
+.container{
+    max-width: 800px;
 }
 
 .deco{
@@ -36,6 +40,12 @@ a{
 
 .erreur{
     color: red;
+}
+
+.blanc{
+    background-color: white;
+    border:0;
+    width: 40px;
 }
 
 button {

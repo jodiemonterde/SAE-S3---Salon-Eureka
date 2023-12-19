@@ -45,13 +45,8 @@
 			$maRequete = $pdo->prepare("SELECT user_id, responsibility from User where username = :leLogin and password = :lePWD");
 			$maRequete->bindParam(':leLogin', $identifiant);
 			$maRequete->bindParam(':lePWD', $motDepasse);
-			if ($maRequete->execute()) {
-				$maRequete->setFetchMode(PDO::FETCH_OBJ);
-				while ($ligne=$maRequete->fetch()) {				
-					$_SESSION['idUtilisateur'] = $ligne->user_id;
-                    $_SESSION['typeUtilisateur'] = $ligne->responsibility;
-				}
-			}
+			$maRequete->execute();
+			return $maRequete;
 		}
 		catch ( Exception $e ) {
 			echo "Connection failed: " . $e->getMessage();

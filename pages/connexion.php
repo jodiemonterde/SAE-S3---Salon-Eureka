@@ -4,6 +4,16 @@
     $pdo = connecteBD();
     $tentative = false;
     $_SESSION['connexion'] = false;
+    
+    if(isset($_SESSION['idUtilisateur']) && $_SESSION['idUtilisateur']!= null){
+        if($_SESSION['typeUtilisateur'] == 'E'){
+            header('Location: etudiant/phase1/listeEntreprises.php');
+        }elseif($_SESSION['typeUtilisateur'] == 'G'){
+            header('Location: gestionnaire/phase1/detailEntreprise.php');
+        }else{
+            header('Location: administrateur/entreprises/modifierEntreprise.php');
+        }
+    }
 
     if(isset($_POST["motDePasse"]) && isset($_POST["identifiant"])){
         $_SESSION['connexion'] = verifUtilisateur($pdo, $_POST["motDePasse"], $_POST["identifiant"]);
@@ -13,10 +23,17 @@
     }
 
     if($_SESSION['connexion']==true){
-        infoUtilisateur($pdo, $_POST["motDePasse"], $_POST["identifiant"]);
-        if($_SESSION['typeUtilisateur'] == 'E'){
+        $info = infoUtilisateur($pdo, $_POST["motDePasse"], $_POST["identifiant"]);
+        $info->setFetchMode(PDO::FETCH_OBJ);
+        $ligne = $info->fetch();
+        $_SESSION['idUtilisateur'] = $ligne->user_id;
+        $type = $ligne->responsibility;	
+    }
+
+    if($_SESSION['connexion']==true){
+        if($type == 'E'){
             header('Location: etudiant/phase1/listeEntreprises.php');
-        }elseif($_SESSION['typeUtilisateur'] == 'G'){
+        }elseif($type == 'G'){
             header('Location: gestionnaire/phase1/detailEntreprise.php');
         }else{
             header('Location: administrateur/entreprises/detailEntreprise.php');
@@ -38,8 +55,8 @@
     <body>
         <div class="container">
             <div class="row mx-1">
-                <div class="col-lg-3 col-md-2 "></div>
-                <div class="col-12 col-lg-6 col-md-8 centrer">
+                <div class=" col-md-2 "></div>
+                <div class="col-12 col-md-8 centrer">
                     <form action="connexion.php" method="post">
                         <?php
                         if(isset($_GET['oublie'])){
@@ -78,7 +95,7 @@
                         </div>
                         <div class="row">
                             <div class="col-6 text-center">
-                                <button type="submit" formaction="../index.php"> Retour </button>
+                                <a href="../index.php"><button> Retour </button></a>
                             </div>
                             <div class="col-6 text-center">
                                 <button type="submit"> Se connecter </button>
@@ -87,7 +104,7 @@
                         <?php } ?>
                     </form>
                 </div>
-                <div class="col-lg-3 col-md-2"></div>
+                <div class="col-md-2"></div>
             </div>
         </div>
     </body>
