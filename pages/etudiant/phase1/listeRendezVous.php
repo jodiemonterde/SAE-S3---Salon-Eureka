@@ -1,6 +1,8 @@
 <?php 
     session_start();
-    $user = 1;
+    if(!isset($_SESSION['idUtilisateur'])){
+        header('Location: ../../connexion.php');
+    }
     include("../../../fonctions/baseDeDonnees.php");
     $pdo = connecteBD();
     if (isset($_POST["entreprise_id"])) {
@@ -17,6 +19,7 @@
         <link rel="stylesheet" href="../../../lib/bootstrap-5.3.2-dist/css/bootstrap.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="../../../lib/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+        <link rel="stylesheet" href="../../../css/all.css">
         <link rel="stylesheet" href="../../../css/navbars.css">
         <title>Eureka - Liste des shouaits</title>
     </head>
@@ -39,7 +42,7 @@
                         </li>
                         <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Pseudo Utilisateur
+                                <?php echo $_SESSION['nom_utilisateur']?>
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li> <a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#deconnexion"> Se déconnecter </a> </li>
@@ -64,7 +67,7 @@
             <!-- Button trigger modal -->
             <?php
             $pdo = connecteBD();
-            $stmt = getEntreprisesPerStudent($pdo, $user);
+            $stmt = getEntreprisesPerStudent($pdo, $_SESSION['idUtilisateur']);
             $vide = true;
             while ($ligne = $stmt->fetch()) { 
             $vide = false;?>
@@ -105,9 +108,13 @@
                 </div>
             </div>
             <?php };
-            if ($vide) {
-                echo '<p class="rouge">Vous n\'avez pas encore demandé de rendez-vous !</p>';
-            } ?>
+            if ($vide) { ?>
+                <div class="row">
+                    <div class="col-12">
+                        <p class="erreur">Vous n'avez pas encore demandé de rendez-vous !</p>
+                    </div>
+                </div>
+            <?php } ?>
         </div>
         <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
             <div class="container-fluid">
@@ -115,7 +122,7 @@
                     <!-- Si sur la liste des entreprises, mettre le texte en actif -->
                     <li class="nav-item d-flex flex-column text-center inactif_bas_texte">
                         <!-- Si sur la liste des entreprises, mettre l'icone en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center" href="#">
+                        <a class="d-flex justify-content-center" href="listeEntreprises.php">
                             <img src="../../../ressources/entreprise_black.png" alt="Liste des entreprises">
                         </a>
                         Entreprises
@@ -123,7 +130,7 @@
                     <!-- Si sur la liste des rendez-vous, mettre le texte en actif -->
                     <li class="nav-item d-flex flex-column text-center actif_bas lien_inactif">
                         <!-- Si sur la liste des rendez-vous, mettre l'icône en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center actif_bas_icone" href="#">
+                        <a class="d-flex justify-content-center actif_bas_icone" >
                             <img src="../../../ressources/rendez-vous_white.png" alt="Mes rendez-vous">
                         </a>
                         Rendez-vous
