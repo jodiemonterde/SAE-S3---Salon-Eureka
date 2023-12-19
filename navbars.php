@@ -21,11 +21,11 @@
                 <div class="navbar-right h-100">
                     <ul class="navbar-nav d-flex h-100 align-items-center">
                         <li class="nav-item nav-link p-0 d-none d-md-block h-100">
-                            <!-- Si sur la liste des entreprises, mettre en actif -->
+                            <!-- Si sur la liste des entreprises, mettre en actif et lien_inactif-->
                             <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Liste des entreprises </a>
                         </li>
                         <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
-                            <!-- Si sur la liste des rendez-vous, mettre en actif -->
+                            <!-- Si sur la liste des rendez-vous, mettre en actif et lien_inactif -->
                             <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Mes rendez-vous </a>
                         </li>
                         <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
@@ -82,7 +82,7 @@
                 <ul class="navbar-nav w-100 justify-content-evenly">
                     <!-- Si sur la liste des entreprises, mettre le texte en actif -->
                     <li class="nav-item d-flex flex-column text-center actif_bas_texte">
-                        <!-- Si sur la liste des entreprises, mettre l'icone en actif -->
+                        <!-- Si sur la liste des entreprises, mettre l'icone en actif et lien_inactif -->
                         <a class="d-flex justify-content-center actif_bas_icone" href="#">
                             <img src="./ressources/entreprise_white.png" alt="Liste des entreprises">
                         </a>
@@ -90,7 +90,7 @@
                     </li>
                     <!-- Si sur la liste des rendez-vous, mettre le texte en actif -->
                     <li class="nav-item d-flex flex-column text-center inactif_bas">
-                        <!-- Si sur la liste des rendez-vous, mettre l'icône en actif -->
+                        <!-- Si sur la liste des rendez-vous, mettre l'icône en actif et lien_inactif -->
                         <a class="d-flex justify-content-center" href="#">
                             <img src="./ressources/rendez-vous_black.png" alt="Mes rendez-vous">
                         </a>
