@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.row {
+    margin: 0px !important;
+}
+
+.bouton-pc {
+    height: 50px;
+    width: 300px;
+    background-color: #FFA800;
+    text-transform: uppercase;
+    border-style: none;
+    border-radius: 40px 20px 40px 20px;
+    padding: 10px 16px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.bouton-pc:hover {
+    background-color: #dd9300;
+}
+
+.bouton-tel {
+    height: 40px;
+    width: 200px;
+    background-color: #FFA800;
+    text-transform: uppercase;
+    border-style: none;
+    border-radius: 40px 20px 40px 20px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.bouton-tel:hover {
+    background-color: #dd9300;
+}
+
+.texte-bleu-pc {
+    color: #39E2F8;
+    font-size: 64px;
+    font-weight: 900;
+}
+
+.texte-blanc-pc {
+    color: #FFFFFF;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.eureka-pc {
+    color: #FFFFFF;
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.texte-bleu-tel {
+    color: #39E2F8;
+    font-size: 32px;
+    font-weight: 900;
+}
+
+.texte-blanc-tel {
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.eureka-tel {
+    color: #FFFFFF;
+    font-size: 24px;
+    font-weight: 600;
+}
