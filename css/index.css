@@ -20,6 +20,10 @@ body {
     font-weight: 500;
 }
 
+.bouton-pc:hover {
+    background-color: #dd9300;
+}
+
 .bouton-tel {
     height: 40px;
     width: 200px;
@@ -30,6 +34,10 @@ body {
     padding: 10px 16px;
     font-size: 14px;
     font-weight: 500;
+}
+
+.bouton-tel:hover {
+    background-color: #dd9300;
 }
 
 .texte-bleu-pc {

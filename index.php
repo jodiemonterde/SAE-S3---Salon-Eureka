@@ -32,8 +32,10 @@
                     <p class="texte-blanc-tel text-center"> Etudiant ou professionnel, facilitez vos échanges grâce au forum Eureka </p>
                 </div>
                 <div class="col-12 d-flex justify-content-center">
-                    <button class="d-none d-sm-block bouton-pc"> Se connecter </button>
-                    <button class="d-sm-none bouton-tel"> Se connecter </button>
+                    <form action="./pages/connexion.php">
+                        <button type="submit" class="d-none d-sm-block bouton-pc"> Se connecter </button>
+                        <button type="submit" class="d-sm-none bouton-tel"> Se connecter </button>
+                    </form>
                 </div>
             </div>
             <div class="row">
