@@ -71,7 +71,7 @@
                         ?>
                         <?php 
                             if($tentative){
-                                echo  '<h1 class="erreur"> identifiant ou mot de passe invalide </h1>';
+                                echo  '<p class="erreur text-center"> identifiant ou mot de passe invalide </p>';
                             }
                         ?>
 
