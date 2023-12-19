@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    font-family: 'Montserrat', sans-serif;
+    list-style: none;
+    font-size: 12px;
+}
+
+.zoneText {
+    font-family: 'Montserrat', FontAwesome;
+    height: 40px;
+    border-bottom: 2px solid #bfbfbf;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+}
+
+input ::placeholder {
+    color: #bfbfbf !important;
+}
+
+.rounded-circle {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    border-style: solid;
+    border-color: #D9D9D9;
+}
+
+.company {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 4px;
+    border-color: #D9D9D9;
+    padding: 16px 8px 8px 8px;
+    margin-top: 16px;
+    cursor: pointer;
+}
+
+.profil-det-img .dp {
+    padding: 16px 8px 8px 8px; }
+.profil-det-img .dp img {
+    border-radius: 50px;
+    width: 80px; 
+    border-style: solid;
+    border-color: #D9D9D9;}
+.profil-det-img .pd {
+    padding: 10px;
+    vertical-align: middle;
+    margin: auto 0; }
+.profil-det-img .pd h2 {
+    font-size: 22px;
+    margin-bottom: 0px; }
+@media screen and (max-width: 850px) {
+    .profil-det-img .pd h2 {
+        font-size: 18px; } }
+.profil-det-img .pd p {
+    font-size: 14px; 
+    margin-bottom: 0px;}
+
+li, ul {
+    padding: 0;
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.container {
+    max-width: 1000px;
+}
+
+.form-outline {
+    /*margin-top: 4em;*/
+    height: 40px;
+}
+
+.form-control {
+    height: 40px;
+}
+
+.bouton {
+    height: 40px;
+    background-color: #FFA800;
+    text-transform: uppercase;
+    border-style: none;
+    border-radius: 40px 20px 40px 20px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+button {
+    background-color: white;
+}
+
+hr {
+    margin-bottom: 8px;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 4px;
+}
+
+.student {
+    color: #FFA800;
+    margin-bottom: 0;
+}
+
+.description {
+    margin-bottom: 8px;
+}
+
+.btn-link {
+    text-decoration: none;
+}
+
+.btn-link h2 {
+    color: #FFA800;
+}
+
+.btn-link li {
+    color: black;
+}

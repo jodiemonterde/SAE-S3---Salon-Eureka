@@ -69,6 +69,19 @@ function getStudentsPerCompany($pdo, $company_id) {
     return $stmt;
 }
 
+function getIntervenant($pdo, $company_id){
+    $requetes=$pdo->prepare("SELECT Speaker.name, Field.name 
+                             FROM `Speaker` 
+                             JOIN AssignmentSpeaker 
+                             ON Speaker.speaker_id = AssignmentSpeaker.speaker_id 
+                             JOIN Field 
+                             ON AssignmentSpeaker.field_id = Field.field_id 
+                             WHERE company_id = :company_id");
+    $requetes = $pdo->bindParam(':company_id', $company_id);
+    $requetes->execute();
+    return $requetes;
+}
+
 function getFields($pdo) {
     $sql = "SELECT * FROM `Field`";
     $stmt = $pdo->prepare($sql);
