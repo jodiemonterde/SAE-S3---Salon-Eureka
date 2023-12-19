@@ -79,4 +79,19 @@
 		$stmt->execute();
 		return $stmt;
 	}
+    
+    function getEntreprisesPerStudent($pdo, $user_id) {
+        $stmt = $pdo->prepare("SELECT Company.company_id,name,logo_file_name,address,sector
+                            FROM Company
+                            JOIN WishList ON Company.company_id = WishList.company_id
+                            WHERE user_id = $user_id");
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function removeWishStudent($pdo, $user_id, $company_id) {
+        $stmt = $pdo->prepare("DELETE FROM WishList
+                            WHERE user_id = $user_id AND company_id = $company_id");
+        return $stmt->execute();
+    }
 ?>
