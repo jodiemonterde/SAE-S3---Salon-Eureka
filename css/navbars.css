@@ -6,32 +6,53 @@ body {
     height: 60px;
 }
 
-.lien {
+.navbar-brand {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.logo {
+    height: 50px;
+}
+
+@media screen and (min-width: 1200px) {
+    .nav-item {
+        min-width: 180px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .nav-item {
+        min-width: 100px;
+    }
+}
+
+.actif_haut {
     text-decoration: none;
-}
-
-.couleur_actif_haut {
     color: #FFFFFF;
-}
-
-.couleur_inactif_haut {
-    color: #FFA800;
-}
-
-.fond_actif_haut {
     background-color: #FFA800;
-    padding-top: 18px !important;
-    padding-bottom: 18px !important;
-    max-height: 60px !important;
-    border-bottom: 1px solid #ddd;
+    max-height: 60px;
+    border-radius: 0%;
 }
 
-.fond_inactif_haut {
+.actif_haut:hover {
+    color: #FFFFFF;
+    background-color: #D98F00;
+    border-color: #DDDDDD;
+}
+
+.inactif_haut {
+    text-decoration: none;
+    color: #FFA800;
     background-color: #FFFFFF;
-    padding-top: 18px !important;
-    padding-bottom: 18px !important;
-    max-height: 60px !important;
-    border-bottom: 1px solid #ddd;
+    max-height: 60px;
+    border-radius: 0%;
+}
+
+.inactif_haut:hover {
+    color: #FFA800;
+    background-color: #E0E0E0;
+    border-color: #DDDDDD;
 }
 
 .actif_bas_icone {
