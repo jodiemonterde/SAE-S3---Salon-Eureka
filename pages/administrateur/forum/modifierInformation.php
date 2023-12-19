@@ -4,34 +4,54 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../bootstrap-4.6.2-dist/css/bootstrap.css">
-        <link rel="stylesheet" href="../fontawesome-free-6.2.1-web/css/all.css">
-        <title>pas dev</title>
+        <link rel="stylesheet" href="../../../../outils/bootstrap-5.3.2-dist/css/bootstrap.css">
+        <link rel="stylesheet" href="../../../../outils/fontawesome-free-6.5.1-web/css/all.css">
+        <link rel="stylesheet" href="forum.css">
+        <title>informations eureka</title>
     </head>
     <body>
-        <?php
-            
-            // Récupérer le nom de la page
-            $currentPage = basename(__FILE__);
-
-
-            // Afficher le nom de la page
-            echo "<h1>Page: $currentPage</h1>";
-
-            echo "<p>Cette page n'est pas développer.</p>";
-
-
-            // Afficher les variables de session
-            echo "<h2>Variables de session :</h2>";
-            var_dump($_SESSION);
-
-            // Afficher les variables POST
-            echo "<h2>Variables POST :</h2>";
-            var_dump($_POST);
-
-            // Afficher les variables GET
-            echo "<h2>Variables GET :</h2>";
-            var_dump($_GET);
-        ?>
+        <h1 class="text-center">Informations sur Eureka </h1>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="date">Date du forum :</label><br/>
+                            <input type="date" name="dateForum" placeholder="Choisir la date du forum">
+                        </div>
+                        <div class="col-12">
+                            <label for="date">Heure de début du forum :</label><br/>
+                            <input type="time" name="heureDebut" placeholder="Selectionner heure de début">
+                        </div>
+                        <div class="col-12">
+                            <label for="date">Heure de fin du forum :</label><br/>
+                            <input type="time" name="heureFin" placeholder="Selectionner heure de fin">
+                        </div>
+                        <div class="col-12">
+                            <label for="date">durée par défaut d'un rendez-vous :</label><br/>
+                            <input type="time" name="duree" placeholder="Selectionner durée par défaut">
+                        </div>
+                        <div class="col-12">
+                            <label for="date">durée secondaire d'un rendez-vous :</label><br/>
+                            <input type="time" name="secDuree" placeholder="Selectionner 2nde durée">
+                        </div>
+                        <div class="col-12">
+                            <label for="date">Date limite avant la création du planning :</label><br/>
+                            <input type="date" name="dateLim" placeholder="Selectionner date limite">
+                        </div>
+                        <div class="row">
+                            <div class="col-3 ">
+                                <button type="submit">Annuler</button>
+                            </div>
+                            <div class="col-3 ">
+                                <button type="submit">Valider</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+        </div>
     </body>
 </html>

@@ -77,7 +77,7 @@ function getIntervenant($pdo, $company_id){
                              JOIN Field 
                              ON AssignmentSpeaker.field_id = Field.field_id 
                              WHERE company_id = :company_id");
-    $requetes = $pdo->bindParam(':company_id', $company_id);
+    $requetes->bindParam(':company_id', $company_id);
     $requetes->execute();
     return $requetes;
 }
