@@ -43,11 +43,11 @@
                                 Pseudo Utilisateur
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                <li> <a class="dropdown-item" href="#"> Se déconnecter </a> </li>
+                                <li> <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deconnexion"> Se déconnecter </a> </li>
                             </ul>
                         </li>
                         <li class="nav-item d-md-none d-flex justify-content-end">
-                            <a href="#">
+                            <a data-bs-toggle="modal" data-bs-target="#deconnexion">
                                 <img src="../../../ressources/icone_deconnexion.png" alt="Se déconnecter">
                             </a>
                         </li>
@@ -123,5 +123,36 @@
                 </ul>
             </div>
         </nav>
+        <div class="modal fade " id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                <div class="modal-content">
+                    <div class="modal-header deco">
+                        <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class = "row">
+                                <div class="col-12">
+                                    <h1 class="text-center" id="Sedeconnecter">DÉCONNEXION</h1>
+                                </div>
+                            </div>
+                            <div class = "row">
+                                <div class="col-12">
+                                    <P class="text-center">Êtes-vous sûr(e) de vouloir vous déconnecter ?</P>
+                                </div>
+                            </div>
+                            <div class = "row">
+                                <div class="col-6 d-flex justify-content-evenly">
+                                    <button type="button" data-bs-dismiss="modal">Retour</button>
+                                </div>
+                                <div class="col-6 d-flex justify-content-evenly">
+                                    <a href="../../../fonctions/deconnecter.php"><button type="button" >Se déconnecter </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
