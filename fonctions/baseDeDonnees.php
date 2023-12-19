@@ -65,4 +65,18 @@
 			return false;
 		} 
     }
+
+	function getEntreprisesForStudent($pdo, $user_id) {
+		$stmt = $pdo->prepare("SELECT DISTINCT Company.name, Company.description, Company.address, Company.sector
+							   FROM Company
+							   JOIN Speaker
+							   ON Company.company_id = Speaker.company_id
+							   JOIN AssignmentSpeaker
+							   ON AssignmentSpeaker.speaker_id = Speaker.speaker_id
+							   JOIN AssignmentUser
+							   ON AssignmentUser.field_id = AssignmentSpeaker.field_id
+							   WHERE user_id = $user_id;");
+		$stmt->execute();
+		return $stmt;
+	}
 ?>
