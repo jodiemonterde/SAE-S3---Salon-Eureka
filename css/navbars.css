@@ -62,10 +62,6 @@ body {
     padding: 2px 0;
 }
 
-.actif_bas_icone:hover {
-    background-color: #D98F00;
-}
-
 .actif_bas_texte {
     color: #FFA800;
     text-decoration: none;
