@@ -1,3 +1,6 @@
+<?php if (session_status() != PHP_SESSION_NONE) {
+    header('Location: pages/connexion.php');
+} ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
