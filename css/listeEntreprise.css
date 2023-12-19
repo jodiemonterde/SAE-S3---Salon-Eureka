@@ -78,3 +78,8 @@ button {
     font-size: 13px;
     font-weight: 500;
 }
+
+.inactiveLink {
+    pointer-events: none;
+    cursor: default;
+}
