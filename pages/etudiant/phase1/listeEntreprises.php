@@ -1,5 +1,8 @@
 <?php 
     session_start();
+    if(!isset($_SESSION['idUtilisateur'])){
+        header('Location: ../../connexion.php');
+    }
     $user = 1;
     include("../../../fonctions/baseDeDonnees.php");
     $pdo = connecteBD();

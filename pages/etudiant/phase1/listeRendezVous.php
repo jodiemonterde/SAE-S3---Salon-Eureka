@@ -1,10 +1,10 @@
 <?php 
     session_start();
-    if(!isset($_SESSION['idUtilisateur'])){
+    require('../../../fonctions/baseDeDonnees.php');
+    $pdo = connecteBD();
+    if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1){
         header('Location: ../../connexion.php');
     }
-    include("../../../fonctions/baseDeDonnees.php");
-    $pdo = connecteBD();
     if (isset($_POST["entreprise_id"])) {
         removeWishStudent($pdo, $user, $_POST["entreprise_id"]);
     }
@@ -19,6 +19,7 @@
         <link rel="stylesheet" href="../../../lib/bootstrap-5.3.2-dist/css/bootstrap.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="../../../lib/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+        <script src="../../../js/downloadPage.js"></script>
         <link rel="stylesheet" href="../../../css/all.css">
         <link rel="stylesheet" href="../../../css/navbars.css">
         <title>Eureka - Liste des shouaits</title>

@@ -1,11 +1,16 @@
 <?php session_start(); 
-      require('../../../fonctions/baseDeDonnees.php');
-      //$pdo = connecteBD();?>
+    require('../../../fonctions/baseDeDonnees.php');
+    $pdo = connecteBD();
+    if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 2){
+        header('Location: ../../connexion.php');
+    }
+    ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../../css/all.css">
         <link rel="stylesheet" href="../../../css/emploiDuTemps.css">
         
         <link rel="stylesheet" href="../../../lib/bootstrap-5.3.2-dist/css/bootstrap.css">
@@ -13,7 +18,7 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="../../../lib/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
-        <script src="../../../js/downloadpage.js"></script>
+        
         <link rel="stylesheet" href="../../../css/navbars.css">
         <title>Planning</title>
     </head>
@@ -83,7 +88,7 @@
                 <?php } ?>
             <div class="row mx-1 fixed-bottom barre-bas">
                 <div class="col-12 d-md-none d-block text-center" id="element-to-hide" data-html2canvas-ignore="true">
-                    <button class="bouton boutonDeconnecterBas" id="downloadDown">Télécharger l'emploi du temps</button>
+                    <button class="bouton boutonTelechargerBas" id="downloadDown">Télécharger l'emploi du temps</button>
                 </div>
             </div>
         </div>
@@ -118,5 +123,6 @@
                 </div>
             </div>
         </div>
+        <script src="../../../js/downloadpage.js"></script>
     </body>
 </html>
