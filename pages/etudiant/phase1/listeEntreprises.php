@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="../../../css/listeEntreprise.css">
         <link rel="stylesheet" href="../../../css/navbars.css">
         <script src="./lib/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+        
         <title> Eureka - Liste des entreprises </title>
     </head>
     <body>
@@ -31,11 +32,11 @@
                     <ul class="navbar-nav d-flex h-100 align-items-center">
                         <li class="nav-item nav-link p-0 d-none d-md-block h-100">
                             <!-- Si sur la liste des entreprises, mettre en actif -->
-                            <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center inactiveLink" href="#"> Liste des entreprises </a>
+                            <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center inactiveLink"> Liste des entreprises </a>
                         </li>
                         <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
                             <!-- Si sur la liste des rendez-vous, mettre en actif -->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Mes rendez-vous </a>
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeRendezVous.php"> Mes rendez-vous </a>
                         </li>
                         <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
