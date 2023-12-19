@@ -1,4 +1,3 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -6,14 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="./lib/bootstrap-5.3.2-dist/css/bootstrap.css">
         <link rel="stylesheet" href="../fontawesome-free-6.2.1-web/css/all.css">
-        <link rel="stylesheet" href="./index.css">
+        <link rel="stylesheet" href="./css/index.css">
         <title> Eureka accueil </title>
     </head>
     <body>
-        <?php 
-            // Récupérer le nom de la page
-            $currentPage = basename(__FILE__);
-        ?> 
         <div class="container-flex">
             <div class="row" class="img-fluid" style="background-image: url('./ressources/homepage-background.png'); height: 800px; width:100%; background-size: cover;">
                 <div class="col-12 d-none d-md-block eureka-pc">
