@@ -33,38 +33,38 @@
 <body>
      <!-- Navbar du haut -->
      <nav class="navbar navbar-expand sticky-top border bg-white">
-            <div class="container-fluid">
-                <div class="navbar-brand d-flex align-items-center h-100">
-                    <img src="../../../ressources/logo_black.png" alt="Logo Eureka" class="d-inline-block align-text-top me-2">
-                    Eureka
-                </div>
-                <div class="navbar-right">
-                    <ul class="navbar-nav">
-                        <li class="nav-item nav-link p-2 d-none d-md-block fond_inactif_haut">
-                            <!-- Si sur la liste des entreprises, mettre en jaune -->
-                            <a class="lien couleur_inactif_haut" href="listeEntreprises.php"> Liste des entreprises </a>
-                        </li>
-                        <li class="nav-item nav-link p-2 d-none d-md-block fond_actif_haut">
-                            <!-- Si sur la liste des rendez-vous, mettre en jaune -->
-                            <a class="lien couleur_actif_haut" href="#"> Mes rendez-vous </a>
-                        </li>
-                        <li class="nav-item dropdown p-2 d-none d-md-block fond_inactif_haut">
-                            <a class="dropdown-toggle lien couleur_inactif_haut" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Pseudo Utilisateur
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li> <a class="dropdown-item" href="../../deconnexion.php"> Se déconnecter </a> </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item d-md-none">
-                            <a href="../../deconnexion.php">
-                                <img src="../../../ressources/icone_deconnexion.png" alt="Se déconnecter">
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+        <div class="container-fluid h-100">
+            <div class="navbar-brand d-flex align-items-center h-100">
+                <img src="../../../ressources/logo_black.png" alt="Logo Eureka" class="d-inline-block align-text-top me-2">
+                Eureka
             </div>
-        </nav>
+            <div class="navbar-right h-100">
+                <ul class="navbar-nav">
+                    <li class="nav-item nav-link p-0 d-none d-md-block h-100 col">
+                        <!-- Si sur la liste des entreprises, mettre en jaune -->
+                        <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeEntreprises.php"> Liste des entreprises </a>
+                    </li>
+                    <li class="nav-item nav-link p-0 h-100 d-none d-md-block col">
+                        <!-- Si sur la liste des rendez-vous, mettre en jaune -->
+                        <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Mes rendez-vous </a>
+                    </li>
+                    <li class="nav-item dropdown p-0 h-100 d-none d-md-block col">
+                        <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Pseudo Utilisateur
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li> <a class="dropdown-item" href="../../deconnexion.php"> Se déconnecter </a> </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item d-md-none d-flex justify-content-end">
+                        <a href="../../deconnexion.php">
+                            <img src="../../../ressources/icone_deconnexion.png" alt="Se déconnecter">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <div class="container mt-2">
         <div class="row d-flex align-items-center h-100">
