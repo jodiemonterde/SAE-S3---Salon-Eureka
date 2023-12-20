@@ -25,8 +25,16 @@
                             <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Liste des entreprises </a>
                         </li>
                         <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
-                            <!-- Si sur la liste des rendez-vous, mettre en actif et lien_inactif -->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Mes rendez-vous </a>
+                            <!-- Si sur la liste des étudiants, mettre en actif et lien_inactif -->
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Liste des étudiants </a>
+                        </li>
+                        <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
+                            <!-- Si sur la liste des gestionnaires, mettre en actif et lien_inactif -->
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Liste des gestionnaires </a>
+                        </li>
+                        <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
+                            <!-- Si sur les paramètres du forum, mettre en actif et lien_inactif -->
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Paramètres du forum </a>
                         </li>
                         <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -38,7 +46,7 @@
                         </li>
                         <li class="nav-item d-md-none d-flex justify-content-end">
                             <a href="#">
-                                <img src="./ressources/icone_deconnexion.svg" alt="Se déconnecter">
+                                <img src="./ressources/icone_deconnexion.svg" alt="Se déconnecter" class="logo">
                             </a>
                         </li>
                     </ul>
@@ -97,6 +105,24 @@
                             <img src="./ressources/icone_etudiant_black.svg" alt="Liste des étudiants" class="icone">
                         </a>
                         Etudiants
+                    </li>
+                    <!-- Si sur la liste des gestionnaires, mettre le texte en actif -->
+                    <li class="nav-item d-flex flex-column text-center inactif_bas">
+                        <!-- Si sur la liste des gestionnaires, mettre l'icône en actif et lien_inactif -->
+                        <a class="d-flex justify-content-center" href="#">
+                            <!-- Si sur la liste des gestionnaires, mettre l'icône blanche, sinon mettre l'icône en noir -->
+                            <img src="./ressources/icone_gestionnaire_black.svg" alt="Liste des gestionnaires" class="icone">
+                        </a>
+                        Gestionnaires
+                    </li>
+                    <!-- Si sur les paramètres du forum, mettre le texte en actif -->
+                    <li class="nav-item d-flex flex-column text-center inactif_bas">
+                        <!-- Si sur les paramètres du forum, mettre l'icône en actif et lien_inactif -->
+                        <a class="d-flex justify-content-center" href="#">
+                            <!-- Si sur les paramètres du forum, mettre l'icône blanche, sinon mettre l'icône en noir -->
+                            <img src="./ressources/icone_forum_black.svg" alt="Paramètres du forum" class="icone">
+                        </a>
+                        Forum
                     </li>
                 </ul>
             </div>
