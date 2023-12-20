@@ -22,18 +22,47 @@ function connecteBD() {
     return $pdo;
 }
 
-function getEntreprisesForStudent($pdo, $user_id) {
-    $stmt = $pdo->prepare("SELECT DISTINCT Company.name, Company.description, Company.address, Company.sector
-                           FROM Company
-                           JOIN Speaker
-                           ON Company.company_id = Speaker.company_id
-                           JOIN AssignmentSpeaker
-                           ON AssignmentSpeaker.speaker_id = Speaker.speaker_id
-                           JOIN AssignmentUser
-                           ON AssignmentUser.field_id = AssignmentSpeaker.field_id
-                           WHERE user_id = $user_id;");
+function getEntreprisesForStudent($pdo, $user_id, $recherche) {
+    $sql = ("SELECT DISTINCT Company.company_id, Company.name, Company.description, Company.address, Company.sector, WishList.company_id as wish
+            FROM Company
+            JOIN Speaker
+            ON Company.company_id = Speaker.company_id
+            JOIN AssignmentSpeaker
+            ON AssignmentSpeaker.speaker_id = Speaker.speaker_id
+            JOIN AssignmentUser
+            ON AssignmentUser.field_id = AssignmentSpeaker.field_id
+            LEFT JOIN WishList
+            ON Company.company_id = WishList.company_id
+            WHERE AssignmentUser.user_id = :user_id");
+    if ($recherche != null) {
+        $sql.= " AND Company.name LIKE :recherche";
+    }
+    $stmt = $pdo->prepare($sql);
+    
+    if ($recherche != null) {
+        $stmt->bindValue(':recherche', '%' . $recherche . '%');
+    }
+    $stmt->bindParam(':user_id', $user_id);
+    
     $stmt->execute();
     return $stmt;
+}
+
+function deleteWishStudent($pdo, $user_id, $company_id) {
+    $stmt = $pdo->prepare("DELETE IGNORE FROM WishList
+                           WHERE user_id = :user_id 
+                           AND company_id = :company_id");
+    $stmt->bindParam(':user_id', $user_id);                  
+    $stmt->bindParam(':company_id', $company_id);
+    return $stmt->execute();
+}
+
+function addWishStudent($pdo, $user_id, $company_id) {
+    $stmt = $pdo->prepare("INSERT IGNORE INTO WishList (user_id, company_id)
+                          VALUES (:user_id, :company_id)");
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->bindParam(':company_id', $company_id);
+    return $stmt->execute();
 }
 
 ?>
