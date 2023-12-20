@@ -12,9 +12,13 @@ button {
     font-weight: 500;
 }
 
+.container {
+    max-width: 1000px;
+}
+
 .formulaire{
     padding: 2%;
-    margin: 5%;
+    border: 2px solid #bfbfbf;
 }
 
 div{
@@ -29,7 +33,7 @@ div{
 
 input{
     height: 40px;
-    width: 300px;
+    width: 343px;
     border-bottom: 2px solid #bfbfbf;
     border-top: 0;
     border-left: 0;

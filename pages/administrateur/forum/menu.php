@@ -1,37 +1,68 @@
-<?php session_start(); ?>
+<?php 
+    session_start();
+    require("../../../fonctions/baseDeDonnees.php");
+    $pdo = connecteBD();
+    $infoForum = infoForum($pdo); 
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../bootstrap-4.6.2-dist/css/bootstrap.css">
-        <link rel="stylesheet" href="../fontawesome-free-6.2.1-web/css/all.css">
-        <title>pas dev</title>
+        <link rel="stylesheet" href="../../../../outils/bootstrap-5.3.2-dist/css/bootstrap.css">
+        <link rel="stylesheet" href="../../../../outils/fontawesome-free-6.5.1-web/css/all.css">
+        <link rel="stylesheet" href="forum.css">
+        <title>informations eureka</title>
     </head>
     <body>
-        <?php
-            
-            // Récupérer le nom de la page
-            $currentPage = basename(__FILE__);
-
-
-            // Afficher le nom de la page
-            echo "<h1>Page: $currentPage</h1>";
-
-            echo "<p>Cette page n'est pas développer.</p>";
-
-
-            // Afficher les variables de session
-            echo "<h2>Variables de session :</h2>";
-            var_dump($_SESSION);
-
-            // Afficher les variables POST
-            echo "<h2>Variables POST :</h2>";
-            var_dump($_POST);
-
-            // Afficher les variables GET
-            echo "<h2>Variables GET :</h2>";
-            var_dump($_GET);
-        ?>
+        <h1 class="text-center"> navbar </h1>
+        <div class="container">
+            <div class="row">
+                <div class=" col-12 text-center formulaire">
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="date">Date du forum :</label><br/>
+                            <input type="date"   name="dateForum">
+                        </div>
+                        <div class="col-12">
+                            <label for="date">Heure de début du forum :</label><br/>
+                            <input type="time" name="heureDebut">
+                        </div>
+                        <div class="col-12">
+                            <label for="date">Heure de fin du forum :</label><br/>
+                            <input type="time" name="heureFin">
+                        </div>
+                        <div class="col-12">
+                            <label for="date">durée par défaut d'un rendez-vous :</label><br/>
+                            <input type="time" name="duree">
+                        </div>
+                        <div class="col-12">
+                            <label for="date">durée secondaire d'un rendez-vous :</label><br/>
+                            <input type="time" name="secDuree">
+                        </div>
+                        <div class="col-12">
+                            <label for="date">Date limite avant la création du planning :</label><br/>
+                            <input type="date" name="dateLim" >
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-3 col-6 ">
+                                <button type="submit">Annuler</button>
+                            </div>
+                            <div class="col-md-3 col-6 ">
+                                <button type="submit">Valider</button>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 text-center">
+                    <button>Génerer le planning </button>
+                </div>
+                <div class="col-12 text-center">
+                    <button>Réinitialiser les données</button>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

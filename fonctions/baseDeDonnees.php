@@ -69,6 +69,11 @@ function getStudentsPerCompany($pdo, $company_id) {
     return $stmt;
 }
 
+function infoForum($pdo){
+    $maRequete=$pdo->query('SELECT date,start,end, primary_appointment_duration, secondary_appointment_duration, wish_period_end FROM Meeting');
+    return $maRequete;
+}
+
 function getIntervenant($pdo, $company_id){
     $requetes=$pdo->prepare("SELECT Speaker.name, Field.name 
                              FROM `Speaker` 
