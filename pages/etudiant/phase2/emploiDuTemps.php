@@ -10,19 +10,17 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../../../css/all.css">
-        <link rel="stylesheet" href="../../../css/emploiDuTemps.css">
-        
         <link rel="stylesheet" href="../../../lib/bootstrap-5.3.2-dist/css/bootstrap.css">
         <link rel="stylesheet" href="../../../lib/fontawesome-free-6.5.1-web/css/all.css">
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="../../../lib/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
-        
+        <link rel="stylesheet" href="../../../css/all.css">
+        <link rel="stylesheet" href="../../../css/emploiDuTemps.css">
         <link rel="stylesheet" href="../../../css/navbars.css">
         <title>Planning</title>
     </head>
     <body>
+        <!-- Navbar du haut -->
         <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
             <div class="container-fluid h-100">
                 <div class="navbar-brand d-flex align-items-center h-100">
@@ -48,6 +46,7 @@
                 </div>
             </div>
         </nav>
+        <!-- Contenu principal de la page -->
         <div class="container" id="toPrint">
             <div class="row mx-1">
                 <div class="col-12 col-md-8">
@@ -64,8 +63,8 @@
                 foreach ($planning as $rdv) {?>
                     <div class="row mx-1">
                         <div class="col-12 rendez-vous ">
-                            <p class="text-center"><?php echo $rdv['start']?> - <?php echo $rdv['end']?></p>
-                            <p class="text-center text-jaune"><?php echo $rdv['company_name']; ?></p>
+                            <p class="text-center"><?php echo htmlspecialchars($rdv['start'])?> - <?php echo htmlspecialchars($rdv['end'])?></p>
+                            <p class="text-center text-jaune"><?php echo htmlspecialchars($rdv['company_name']); ?></p>
                         </div>
                     </div>
                 <?php }
@@ -81,7 +80,7 @@
                 while ($ligne = $unlistedCompany->fetch()) {?>
                     <div class="row mx-1">
                         <div class="col-12 rendez-vous">
-                            <p class="text-center text-jaune"><?php echo $ligne['name']; ?></p>
+                            <p class="text-center text-jaune"><?php echo htmlspecialchars($ligne['name']); ?></p>
                         </div>
                     </div>
                 <?php } ?>
@@ -91,6 +90,7 @@
                 </div>
             </div>
         </div>
+        <!-- modal de deconnexion -->
         <div class="modal fade " id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content">

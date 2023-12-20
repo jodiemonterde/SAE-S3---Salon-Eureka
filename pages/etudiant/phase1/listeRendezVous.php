@@ -25,6 +25,7 @@
         <title>Eureka - Liste des shouaits</title>
     </head>
     <body>
+        <!-- barre de nvaigation du haut -->
         <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
             <div class="container-fluid h-100">
                 <div class="navbar-brand d-flex align-items-center h-100">
@@ -58,6 +59,7 @@
                 </div>
             </div>
         </nav>
+        <!-- Contenu principal -->
         <div class="container">
             <div class="row mx-1">
                 <div class="col-12">
@@ -117,25 +119,20 @@
                 </div>
             <?php } ?>
         </div>
+        <!-- Barre de navigation du bas -->
         <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
             <div class="container-fluid">
                 <ul class="navbar-nav w-100 justify-content-evenly">
-                    <!-- Si sur la liste des entreprises, mettre le texte en actif -->
                     <li class="nav-item d-flex flex-column text-center inactif_bas_texte">
-                        <!-- Si sur la liste des entreprises, mettre l'icone en actif et lien_inactif -->
                         <a class="d-flex justify-content-center" href="listeEntreprises.php">
-                            <!-- Si sur la liste des entreprises, mettre l'icône blanche, sinon mettre l'icône en noir -->
                             <img src="../../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone">
                         </a>
                         <a class="d-flex justify-content-cente lien_barre_basse" href="listeEntreprises.php">
                             Entreprises
                         </a>
                     </li>
-                    <!-- Si sur la liste des rendez-vous, mettre le texte en actif -->
                     <li class="nav-item d-flex flex-column text-center actif_bas lien_inactif">
-                        <!-- Si sur la liste des rendez-vous, mettre l'icône en actif et lien_inactif -->
                         <a class="d-flex justify-content-center actif_bas_icone">
-                            <!-- Si sur la liste des rendez-vous, mettre l'icône blanche, sinon mettre l'icône en noir -->
                             <img src="../../../ressources/icone_rdv_white.svg" alt="Mes rendez-vous" class="icone">
                         </a>
                         Rendez-vous
@@ -143,6 +140,7 @@
                 </ul>
             </div>
         </nav>
+        <!-- Modal pour la deconnexion-->
         <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content">
