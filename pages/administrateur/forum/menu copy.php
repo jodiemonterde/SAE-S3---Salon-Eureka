@@ -18,9 +18,8 @@
         <h1 class="text-center"> navbar </h1>
         <div class="container">
             <div class="row mx-1">
-                <div class="col-md-4"></div>
-                <div class="col-md-4 col-12 text-center formulaire">
-                    <div class="row p-0">
+                <div class=" col-12 text-center formulaire">
+                    <div class="row">
                         <div class="col-12">
                             <label for="date">Date du forum :</label><br/>
                             <input type="date"   name="dateForum">
@@ -45,23 +44,24 @@
                             <label for="date">Date limite avant la création du planning :</label><br/>
                             <input type="date" name="dateLim" >
                         </div>
-                        <div class="row text-center p-0 m-0 d-flex justify-content-evenly">
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-3 col-6 ">
                                 <button type="submit">Annuler</button>
+                            </div>
+                            <div class="col-md-3 col-6 ">
                                 <button type="submit">Valider</button>
+                            </div>
+                            <div class="col-md-3"></div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4"></div>
-                <div class="col-md-4"></div>
-                <div class="col-md-4 col-12 text-center">
+                <div class="col-12 text-center">
                     <button class="bouton">Génerer le planning </button>
                 </div>
-                <div class="col-md-4"></div>
-                <div class="col-md-4"></div>
-                <div class="col-md-4 col-12 text-center">
+                <div class="col-12 text-center">
                     <button class="bouton">Réinitialiser les données</button>
                 </div>
-                <div class="col-md-4"></div>
             </div>
         </div>
     </body>

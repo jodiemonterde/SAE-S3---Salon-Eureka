@@ -5,15 +5,23 @@ button {
     background-color: #FFA800;
     text-transform: uppercase;
     border-style: none;
-    width: 150px;
+    width: 10px;
     border-radius: 40px 20px 40px 20px;
     padding: 10px 16px;
     font-size: 13px;
     font-weight: 500;
 }
 
+label{
+    font-weight: bold;
+}
+
 .container {
     max-width: 1000px;
+}
+
+.bouton{
+    width: 100%;
 }
 
 .formulaire{
@@ -33,7 +41,7 @@ div{
 
 input{
     height: 40px;
-    width: 343px;
+    width: 100%;
     border-bottom: 2px solid #bfbfbf;
     border-top: 0;
     border-left: 0;
