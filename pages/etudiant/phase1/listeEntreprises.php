@@ -22,11 +22,6 @@
         <title> Eureka - Liste des entreprises </title>
     </head>
     <body>
-        <?php
-            // Récupérer le nom de la page
-            $currentPage = basename(__FILE__);
-        ?>
-
         <div class="navbar navbar-default sticky-top d-none d-sm-block bg-secondary" role="navigation">
             <div class="container">
                 <div class="navbar-brand">
@@ -77,11 +72,11 @@
                     <hr>
                     <div class="row">
                         <div class="col-12">
-                        <?php echo $ligne["description"]?>
-                        </div>
+                        <?php echo htmlspecialchars($ligne["description"])?>
                     </div>
                 </div>
+            </div>
                 <?php }?>
-                
+        </div>
     </body>
 </html>

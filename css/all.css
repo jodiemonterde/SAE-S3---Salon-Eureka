@@ -49,3 +49,14 @@ body {
     font-weight: 500;
     margin-bottom: 0px;
 }
+
+.blanc{
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+}
+
+.blanc:hover{
+    background-color: #eee;
+}

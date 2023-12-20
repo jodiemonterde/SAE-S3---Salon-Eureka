@@ -7,12 +7,16 @@ body {
 }
 
 .navbar-brand {
-    font-size: 24px;
+    font-size: 30px;
     font-weight: 600;
 }
 
 .logo {
-    height: 50px;
+    height: 40px;
+}
+
+.icone {
+    height: 25px;
 }
 
 @media screen and (min-width: 1200px) {
@@ -33,12 +37,8 @@ body {
     background-color: #FFA800;
     max-height: 60px;
     border-radius: 0%;
-}
-
-.actif_haut:hover {
-    color: #FFFFFF;
-    background-color: #D98F00;
-    border-color: #DDDDDD;
+    pointer-events: none;
+    cursor: default;
 }
 
 .inactif_haut {
@@ -82,8 +82,7 @@ body {
     cursor: default;
 }
 
-.blanc{
-    background-color: white;
-    border:0;
-    width: 40px;
+.lien_barre_basse {
+    color: black;
+    text-decoration: none;
 }
