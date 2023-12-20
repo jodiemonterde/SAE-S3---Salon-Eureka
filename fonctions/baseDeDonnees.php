@@ -92,6 +92,19 @@ function getStudentsPerCompany($pdo, $company_id) {
     return $stmt;
 }
 
+function getInfoStudents($pdo) {
+    $stmt = $pdo->prepare("SELECT u.username, f.name AS filiere, COUNT(w.company_id) AS nbSouhait
+                          FROM User u
+                          JOIN AssignmentUser au
+                          ON u.user_id = au.user_id
+                          JOIN Field f
+                          ON au.field_id = f.field_id
+                          LEFT JOIN WishList w
+                          ON u.user_id = w.user_id
+                          WHERE u.responsibility = 'E'
+                          GROUP BY u.username, filiere;")
+}
+
 function getFields($pdo) {
     $sql = "SELECT * FROM `Field`";
     $stmt = $pdo->prepare($sql);
