@@ -23,15 +23,14 @@
         <title>Planning</title>
     </head>
     <body>
-    <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
+        <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
             <div class="container-fluid h-100">
                 <div class="navbar-brand d-flex align-items-center h-100">
-                    <img src="../../../ressources/logo_black.png" alt="Logo Eureka" class="logo me-2">
+                    <img src="../../../ressources/logo_black.svg" alt="Logo Eureka" class="logo me-2">
                     Eureka
                 </div>
                 <div class="navbar-right h-100">
                     <ul class="navbar-nav d-flex h-100 align-items-center">
-                        
                         <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Pseudo Utilisateur
@@ -42,7 +41,7 @@
                         </li>
                         <li class="nav-item d-md-none d-flex justify-content-end">
                             <a data-bs-toggle="modal" data-bs-target="#deconnexion">
-                                <img src="../../../ressources/icone_deconnexion.png" alt="Se déconnecter">
+                                <img src="../../../ressources/icone_deconnexion.svg" alt="Se déconnecter" class="logo">
                             </a>
                         </li>
                     </ul>

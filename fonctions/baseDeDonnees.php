@@ -75,7 +75,8 @@
 							   ON AssignmentSpeaker.speaker_id = Speaker.speaker_id
 							   JOIN AssignmentUser
 							   ON AssignmentUser.field_id = AssignmentSpeaker.field_id
-							   WHERE user_id = $user_id;");
+							   WHERE user_id = :user_id;");
+        $stmt->bindParam(':user_id', $user_id);
 		$stmt->execute();
 		return $stmt;
 	}
@@ -84,14 +85,17 @@
         $stmt = $pdo->prepare("SELECT Company.company_id,name,logo_file_name,address,sector
                             FROM Company
                             JOIN WishList ON Company.company_id = WishList.company_id
-                            WHERE user_id = $user_id");
+                            WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
         return $stmt;
     }
 
     function removeWishStudent($pdo, $user_id, $company_id) {
         $stmt = $pdo->prepare("DELETE FROM WishList
-                            WHERE user_id = $user_id AND company_id = $company_id");
+                            WHERE user_id = :user_id AND company_id = :company_id");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':company_id', $company_id);
         return $stmt->execute();
     }
 
@@ -101,8 +105,9 @@
                                 JOIN User u on ap.user_id = u.user_id
                                 JOIN Speaker s on ap.speaker_id = s.speaker_id
                                 JOIN Company c on s.company_id = c.company_id
-                                WHERE u.user_id = ?");
-        $requete->execute([$user_id]);
+                                WHERE u.user_id = :user_id");
+        $requete->bindParam(':user_id', $user_id);
+        $requete->execute();
         $planning = [];
         $i = 0;
         while ($ligne = $requete->fetch()) {
@@ -121,8 +126,9 @@
                                 FROM Company c
                                 JOIN WishList w on c.company_id = w.company_id
                                 WHERE c.excluded = 1
-                                AND w.user_id = ?");
-        $requete->execute([$user_id]);
+                                AND w.user_id = :user_id");
+        $requete->bindParam(':user_id', $user_id);
+        $requete->execute();
         return $requete;
     }
 ?>
