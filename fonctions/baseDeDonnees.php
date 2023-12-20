@@ -36,6 +36,20 @@ function getEntreprisesForStudent($pdo, $user_id) {
     return $stmt;
 }
 
+function getEntreprisesForStudentWithoutDesc($pdo, $user_id) {
+    $stmt = $pdo->prepare("SELECT DISTINCT Company.name, Company.address, Company.sector
+                           FROM Company
+                           JOIN Speaker
+                           ON Company.company_id = Speaker.company_id
+                           JOIN AssignmentSpeaker
+                           ON AssignmentSpeaker.speaker_id = Speaker.speaker_id
+                           JOIN AssignmentUser
+                           ON AssignmentUser.field_id = AssignmentSpeaker.field_id
+                           WHERE user_id = $user_id;");
+    $stmt->execute();
+    return $stmt;
+}
+
 function getEntreprises($pdo, $field_ids, $recherche) {
     // Utilisez la fonction implode pour convertir le tableau en une chaîne séparée par des virgules
     $field_ids_str = implode(', ', $field_ids);
@@ -92,17 +106,39 @@ function getStudentsPerCompany($pdo, $company_id) {
     return $stmt;
 }
 
-function getInfoStudents($pdo) {
-    $stmt = $pdo->prepare("SELECT u.username, f.name AS filiere, COUNT(w.company_id) AS nbSouhait
-                          FROM User u
-                          JOIN AssignmentUser au
-                          ON u.user_id = au.user_id
-                          JOIN Field f
-                          ON au.field_id = f.field_id
-                          LEFT JOIN WishList w
-                          ON u.user_id = w.user_id
-                          WHERE u.responsibility = 'E'
-                          GROUP BY u.username, filiere;")
+function getInfoStudents($pdo, $recherche, $field_ids) {
+    $field_ids_str = implode(', ', $field_ids);
+
+    if ($field_ids_str == null) {
+        return null;
+    }
+
+    $sql = "SELECT u.username, f.name AS filiere, COUNT(w.company_id) AS nbShouait, u.user_id
+            FROM User u
+            JOIN AssignmentUser au
+            ON u.user_id = au.user_id
+            JOIN Field f
+            ON au.field_id = f.field_id
+            LEFT JOIN WishList w
+            ON u.user_id = w.user_id
+            WHERE u.responsibility = 'E'
+            AND f.field_id IN ($field_ids_str)
+            GROUP BY u.username, filiere";
+
+    if ($recherche != null) {
+        $sql .= " HAVING u.username LIKE :recherche";
+    }
+
+    $sql .= " ORDER BY u.username";
+
+    $stmt = $pdo->prepare($sql);
+
+    if ($recherche != null) {
+        $stmt->bindValue(':recherche', '%' . $recherche . '%', PDO::PARAM_STR);
+    }
+
+    $stmt->execute();
+    return $stmt;
 }
 
 function getFields($pdo) {

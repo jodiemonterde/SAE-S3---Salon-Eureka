@@ -17,7 +17,7 @@
             array_push($_SESSION['filtre'], $_POST['nouveauFiltre']);
         }
         
-        header("Location: detailEntreprise.php");
+        header("Location: detailEtudiant.php");
         exit();
     }
     include("../../../fonctions/baseDeDonnees.php");
@@ -79,7 +79,7 @@
                 <h2>Liste des étudiants</h2>
                 <p>Voici tous les étudiants inscrits au forum Eureka de cette année. Cliquez sur l’un d’eux pour voir la liste des entreprises auprès desquels il souhaite obtenir un rendez-vous !</p>
             </div>
-            <form action="detailEntreprise.php" method="post" class="col-12 col-md-6 my-2">
+            <form action="detailEtudiant.php" method="post" class="col-12 col-md-6 my-2">
                 <div class="row">
                     <div class="col-8">
                         <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="zoneText"/>    
@@ -98,7 +98,7 @@
                         $fields = getFields($pdo);
                         while ($ligne = $fields->fetch()) {
                     ?>
-                    <form action="detailEntreprise.php" method="post">
+                    <form action="detailEtudiant.php" method="post">
                         <input type="hidden" name="nouveauFiltre" value="<?php echo $ligne['field_id']; ?>">
                         <button class="bouton-filtre <?php echo in_array($ligne['field_id'], $_SESSION['filtre']) ? "bouton-filtre-selectionner" : "bouton-filtre-deselectionner"?>"><?php echo $ligne['name']; ?></button>
                     </form>
@@ -109,8 +109,7 @@
         <!-- Accordéon Bootstrap -->
         <div class="accordion" id="listeEntreprise">
         <?php
-            $stmt = getEntreprises($pdo, $_SESSION['filtre'], $_SESSION['recherche']);
-
+            $stmt = getInfoStudents($pdo, $_SESSION['recherche'], $_SESSION['filtre']);
             if (empty($_SESSION['filtre'])) {
                 echo '<p>Aucune filière sélectionnée. Veuillez choisir au moins une filière.</p>';
             } elseif ($stmt->rowCount() === 0) {
@@ -119,32 +118,28 @@
                 while ($ligne = $stmt->fetch()) { 
         ?>
         <div class="accordion-item my-3">
-            <h2 class="accordion-header" id="heading<?php echo $ligne['company_id']?>">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $ligne['company_id']?>" aria-expanded="false" aria-controls="collapse<?php echo $ligne['company_id']?>">
+            <h2 class="accordion-header" id="heading<?php echo $ligne['user_id']?>">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $ligne['user_id']?>" aria-expanded="false" aria-controls="collapse<?php echo $ligne['user_id']?>">
                     <div class="profil-det-img d-flex text-start">
-                        <div class="dp"><img src="../../../ressources/no-photo.png" alt=""></div>
-                        <div class="pd">
-                            <h2 class="title"><?php echo $ligne["name"]?></h2>
-                            <ul class="text-left">
-                                <li><i class="fa-solid fa-briefcase text-left"></i> <?php echo $ligne["sector"]?></li>
-                                <li><i class="fa-solid fa-location-dot"></i> <?php echo $ligne["address"]?></li>
-                            </ul>
+                        <div class="pd detailEtudiant">
+                            <h2 class="title"><?php echo $ligne["username"]?></h2>
+                            <?php echo $ligne["filiere"]?></br>
+                            <span class="<?php echo $ligne["nbShouait"] < 1 ? "erreur" : ""?>"> <?php echo $ligne["nbShouait"]?> souhaits </span>
                         </div>
                     </div>
                 </button>
             </h2>
-            <div id="collapse<?php echo $ligne['company_id']?>" class="accordion-collapse collapse" aria-labelledby="heading<?php echo $ligne['company_id']?>" data-bs-parent="#listeEntreprise">
+            <div id="collapse<?php echo $ligne['user_id']?>" class="accordion-collapse collapse" aria-labelledby="heading<?php echo $ligne['user_id']?>" data-bs-parent="#listeEntreprise">
                 <div class="accordion-body">
                     <div class="row">
-                        <div class="description"><?php echo $ligne["description"]?></div>
                         <?php
-                        $stmtEtudiant = getStudentsPerCompany($pdo, $ligne["company_id"]);
-                        while ($ligneEtudiant = $stmtEtudiant->fetch()) { 
+                        
+                            $stmt2 = getEntreprisesForStudentWithoutDesc($pdo, $ligne['user_id']);
+                            while ($ligne2 = $stmt2->fetch()) {
+                                var_dump($ligne2);
+                                echo '<br/>';
+                            }
                         ?>
-                        <hr>
-                        <h2 class="student"><?php echo $ligneEtudiant["username"]?></h2>
-                        <p><?php echo $ligneEtudiant["name"]?></p>
-                        <?php } ?>
                     </div>
                 </div>
             </div>
