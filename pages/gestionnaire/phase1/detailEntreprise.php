@@ -32,9 +32,9 @@
     <link rel="stylesheet" href="../../../lib/fontawesome-free-6.5.1-web/css/all.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <link rel="stylesheet" href="./listeEntreprise.css">
+    <link rel="stylesheet" href="../../../css/listeEntreprise.css">
     <link rel="stylesheet" href="../../../css/navbars.css">
-    <link rel="stylesheet" href="filtre.css">
+    <link rel="stylesheet" href="../../../css/filtre.css">
     <title>Eureka - Liste des entreprises</title>
 </head>
     <body>
