@@ -70,8 +70,35 @@ function getStudentsPerCompany($pdo, $company_id) {
 }
 
 function infoForum($pdo){
-    $maRequete=$pdo->query('SELECT date,start,end, primary_appointment_duration, secondary_appointment_duration, wish_period_end FROM Meeting');
+    $maRequete=$pdo->prepare('SELECT date,start,end, primary_appointment_duration, secondary_appointment_duration, wish_period_end FROM Meeting');
+    $maRequete->execute();
     return $maRequete;
+}
+
+function updateForum($pdo,$dateForum,$debut,$fin,$dureePrincipal,$dureeSecondaire,$jourFin){
+    try{
+        $pdo->beginTransaction();
+        $maRequete=$pdo->prepare("UPDATE Meeting 
+                                  SET 
+                                    date = DATE(:dateForum),
+                                    start = :debut,
+                                    end = :fin,
+                                    primary_appointment_duration = :dureePrincipal, 
+                                    secondary_appointment_duration = :dureeSecondaire,
+                                    wish_period_end = :jourFin
+                                  WHERE meeting_id = 1");
+        $maRequete->bindParam(':dateForum', $dateForum);
+        $maRequete->bindParam(':debut', $debut);
+        $maRequete->bindParam(':fin', $fin);
+        $maRequete->bindParam(':dureePrincipal', $dureePrincipal);
+        $maRequete->bindParam(':dureeSecondaire', $dureeSecondaire);
+        $maRequete->bindParam(':jourFin', $jourFin);
+        $maRequete->execute();
+        $pdo->commit();
+    }catch(Exception $e){
+        $pdo->rollBack();
+    }
+
 }
 
 function getIntervenant($pdo, $company_id){
