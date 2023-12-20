@@ -36,16 +36,11 @@ function getEntreprisesForStudent($pdo, $user_id) {
     return $stmt;
 }
 
-function getEntreprisesForStudentWithoutDesc($pdo, $user_id) {
-    $stmt = $pdo->prepare("SELECT DISTINCT Company.name, Company.address, Company.sector
+function getEntreprisesPerStudent($pdo, $user_id) {
+    $stmt = $pdo->prepare("SELECT Company.company_id,name,logo_file_name,address,sector
                            FROM Company
-                           JOIN Speaker
-                           ON Company.company_id = Speaker.company_id
-                           JOIN AssignmentSpeaker
-                           ON AssignmentSpeaker.speaker_id = Speaker.speaker_id
-                           JOIN AssignmentUser
-                           ON AssignmentUser.field_id = AssignmentSpeaker.field_id
-                           WHERE user_id = $user_id;");
+                           JOIN WishList ON Company.company_id = WishList.company_id
+                           WHERE user_id = $user_id");
     $stmt->execute();
     return $stmt;
 }

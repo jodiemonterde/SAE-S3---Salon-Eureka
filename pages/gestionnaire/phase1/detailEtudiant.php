@@ -133,12 +133,19 @@
                 <div class="accordion-body">
                     <div class="row">
                         <?php
-                        
-                            $stmt2 = getEntreprisesForStudentWithoutDesc($pdo, $ligne['user_id']);
-                            while ($ligne2 = $stmt2->fetch()) {
-                                var_dump($ligne2);
-                                echo '<br/>';
-                            }
+                            $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
+                            while ($ligne2 = $stmt2->fetch()) {?>
+                                <div class="row entreprise align-items-center mx-1">
+                                    <div class="col-2 col-md-1">
+                                        <img src="../../../ressources/<?php echo $ligne2["logo_file_name"] != "" ? $ligne2["logo_file_name"] : "no-photo.png"?>" alt="logo" class="logoEntreprise" width="75px" height="75px"/>
+                                    </div>
+                                    <div class="col-8 col-md-6 col-lg-8 colEntreprise">
+                                        <span class="nomEntreprise"><?php echo $ligne2["name"]?></span></br>
+                                        <i class="fa-solid fa-briefcase"></i>&nbsp;&nbsp;&nbsp;<?php echo $ligne2["sector"]?><br/>
+                                        <i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $ligne2["address"]?>
+                                    </div>
+                                </div>
+                            <?php }
                         ?>
                     </div>
                 </div>
