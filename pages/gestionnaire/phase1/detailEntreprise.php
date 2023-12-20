@@ -16,7 +16,9 @@
         } else {
             array_push($_SESSION['filtre'], $_POST['nouveauFiltre']);
         }
+        
         header("Location: detailEntreprise.php");
+        exit();
     }
     include("../../../fonctions/baseDeDonnees.php");
     $pdo = connecteBD();
