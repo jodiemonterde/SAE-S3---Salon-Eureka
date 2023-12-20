@@ -35,6 +35,7 @@
         $ligne = $info->fetch();
         $_SESSION['idUtilisateur'] = $ligne['user_id'];
         $_SESSION['type_utilisateur'] = $ligne['responsibility'];	
+        $_SESSION['nom_utilisateur'] = $ligne['username'];
     }
 
     if($_SESSION['connexion']==true){
