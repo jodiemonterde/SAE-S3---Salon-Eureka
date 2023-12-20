@@ -26,7 +26,7 @@
                         </li>
                         <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
                             <!-- Si sur la liste des rendez-vous, mettre en actif et lien_inactif -->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Mes rendez-vous </a>
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Liste des étudiants </a>
                         </li>
                         <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -82,21 +82,21 @@
                 <ul class="navbar-nav w-100 justify-content-evenly">
                     <!-- Si sur la liste des entreprises, mettre le texte en actif -->
                     <li class="nav-item d-flex flex-column text-center actif_bas_texte">
-                        <!-- Si sur la liste des entreprises, mettre l'icone en actif et lien_inactif -->
+                        <!-- Si sur la liste des entreprises, mettre l'icône en actif et lien_inactif -->
                         <a class="d-flex justify-content-center actif_bas_icone" href="#">
                             <!-- Si sur la liste des entreprises, mettre l'icône blanche, sinon mettre l'icône en noir -->
                             <img src="./ressources/icone_entreprise_white.svg" alt="Liste des entreprises" class="icone">
                         </a>
                         Entreprises
                     </li>
-                    <!-- Si sur la liste des rendez-vous, mettre le texte en actif -->
+                    <!-- Si sur la liste des étudiants, mettre le texte en actif -->
                     <li class="nav-item d-flex flex-column text-center inactif_bas">
-                        <!-- Si sur la liste des rendez-vous, mettre l'icône en actif et lien_inactif -->
+                        <!-- Si sur la liste des étudiants, mettre l'icône en actif et lien_inactif -->
                         <a class="d-flex justify-content-center" href="#">
-                            <!-- Si sur la liste des rendez-vous, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="./ressources/icone_rdv_black.svg" alt="Mes rendez-vous" class="icone">
+                            <!-- Si sur la liste des étudiants, mettre l'icône blanche, sinon mettre l'icône en noir -->
+                            <img src="./ressources/icone_etudiant_black.svg" alt="Liste des étudiants" class="icone">
                         </a>
-                        Rendez-vous
+                        Etudiants
                     </li>
                 </ul>
             </div>

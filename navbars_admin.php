@@ -89,14 +89,14 @@
                         </a>
                         Entreprises
                     </li>
-                    <!-- Si sur la liste des rendez-vous, mettre le texte en actif -->
+                    <!-- Si sur la liste des étudiants, mettre le texte en actif -->
                     <li class="nav-item d-flex flex-column text-center inactif_bas">
-                        <!-- Si sur la liste des rendez-vous, mettre l'icône en actif et lien_inactif -->
+                        <!-- Si sur la liste des étudiants, mettre l'icône en actif et lien_inactif -->
                         <a class="d-flex justify-content-center" href="#">
-                            <!-- Si sur la liste des rendez-vous, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="./ressources/icone_rdv_black.svg" alt="Mes rendez-vous" class="icone">
+                            <!-- Si sur la liste des étudiants, mettre l'icône blanche, sinon mettre l'icône en noir -->
+                            <img src="./ressources/icone_etudiant_black.svg" alt="Liste des étudiants" class="icone">
                         </a>
-                        Rendez-vous
+                        Etudiants
                     </li>
                 </ul>
             </div>
