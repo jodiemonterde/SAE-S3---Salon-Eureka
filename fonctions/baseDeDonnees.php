@@ -62,20 +62,31 @@
 		} 
     }
 
-	function getEntreprisesForStudent($pdo, $user_id) {
-		$stmt = $pdo->prepare("SELECT DISTINCT Company.name, Company.description, Company.address, Company.sector
-							   FROM Company
-							   JOIN Speaker
-							   ON Company.company_id = Speaker.company_id
-							   JOIN AssignmentSpeaker
-							   ON AssignmentSpeaker.speaker_id = Speaker.speaker_id
-							   JOIN AssignmentUser
-							   ON AssignmentUser.field_id = AssignmentSpeaker.field_id
-							   WHERE user_id = :user_id;");
+	function getEntreprisesForStudent($pdo, $user_id, $recherche) {
+        $sql = ("SELECT DISTINCT Company.company_id, Company.name, Company.logo_file_name, Company.description, Company.address, Company.sector, WishList.company_id as wish
+                FROM Company
+                JOIN Speaker
+                ON Company.company_id = Speaker.company_id
+                JOIN AssignmentSpeaker
+                ON AssignmentSpeaker.speaker_id = Speaker.speaker_id
+                JOIN AssignmentUser
+                ON AssignmentUser.field_id = AssignmentSpeaker.field_id
+                LEFT JOIN WishList
+                ON Company.company_id = WishList.company_id
+                WHERE AssignmentUser.user_id = :user_id");
+        if ($recherche != null) {
+            $sql.= " AND Company.name LIKE :recherche";
+        }
+        $stmt = $pdo->prepare($sql);
+        
+        if ($recherche != null) {
+            $stmt->bindValue(':recherche', '%' . $recherche . '%');
+        }
         $stmt->bindParam(':user_id', $user_id);
-		$stmt->execute();
-		return $stmt;
-	}
+        
+        $stmt->execute();
+        return $stmt;
+    }
 
     function getEntreprisesPerStudent($pdo, $user_id) {
         $stmt = $pdo->prepare("SELECT Company.company_id,name,logo_file_name,address,sector

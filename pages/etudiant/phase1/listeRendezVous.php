@@ -14,14 +14,14 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link  rel="stylesheet" href="../../../css/listeRendezVous.css">
         <link rel="stylesheet" href="../../../lib/fontAwesome-free-6.5.1-web/css/all.css">
         <link rel="stylesheet" href="../../../lib/bootstrap-5.3.2-dist/css/bootstrap.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="../../../lib/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
         <script src="../../../js/downloadPage.js"></script>
-        <link rel="stylesheet" href="../../../css/all.css">
         <link rel="stylesheet" href="../../../css/navbars.css">
+        <link rel="stylesheet" href="../../../css/all.css">
+        <link  rel="stylesheet" href="../../../css/listeRendezVous.css">
         <title>Eureka - Liste des shouaits</title>
     </head>
     <body>
@@ -74,7 +74,7 @@
             $vide = true;
             while ($ligne = $stmt->fetch()) { 
             $vide = false;?>
-            <div class="row entreprise align-items-center mx-1">
+            <div class="row entreprise align-items-center ">
                 <div class="col-2 col-md-1">
                     <img src="../../../ressources/<?php echo htmlspecialchars($ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "companyDefault.png")?>" alt="logo" class="logoEntreprise" width="75px" height="75px"/>
                 </div>
@@ -127,7 +127,7 @@
                         <a class="d-flex justify-content-center" href="listeEntreprises.php">
                             <img src="../../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone">
                         </a>
-                        <a class="d-flex justify-content-cente lien_barre_basse" href="listeEntreprises.php">
+                        <a class="d-flex justify-content-center lien_barre_basse" href="listeEntreprises.php">
                             Entreprises
                         </a>
                     </li>

@@ -23,6 +23,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../../../lib/bootstrap-5.3.2-dist/css/bootstrap.css">
         <link rel="stylesheet" href="../../../lib/fontawesome-free-6.5.1-web/css/all.css">
+        <link rel="stylesheet" href="../../../css/all.css">
         <link rel="stylesheet" href="../../../css/listeEntreprise.css">
         <link rel="stylesheet" href="../../../css/navbars.css">
         <script src="../../../lib/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
@@ -74,7 +75,7 @@
                 <form action="listeEntreprises.php" method="post" class="col-12 col-md-6 my-2">
                     <div class="row">
                         <div class="col-8">
-                            <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="zoneText"/>    
+                            <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="zoneRecherche"/>    
                         </div>
                         <div class="col-4">
                             <input type="submit" class="bouton" value="Rechercher"/>
@@ -98,11 +99,11 @@
                             <input type="hidden" name="mode" value="<?php if ($ligne['wish'] != null) { echo 'delete';} else { echo 'add';}?>"/>                                         
                                     <div class="profil-det-img d-flex">
                                         <div class="dp">
-                                        <img src="../../../ressources/no-photo.png" alt="">
+                                        <img src="../../../ressources/<?php echo htmlspecialchars($ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "companyDefault.png")?>" alt="">
                                         </div>
                                         <div class="pd">
-                                            <h2 class="title"><?php echo $ligne["name"]?></h2>
-                                            <ul>
+                                            <h2 class="text-jaune"><?php echo $ligne["name"]?></h2>
+                                            <ul class="listeEntreprise">
                                                 <li><i class="fa-solid fa-briefcase"></i> <?php echo $ligne["sector"]?></li>
                                                 <li><i class="fa-solid fa-location-dot"></i>  <?php echo $ligne["address"]?></li>
                                             </ul>
@@ -115,7 +116,7 @@
                                 <?php echo $ligne["description"]?>
                             </div>
                             <?php if ($ligne['wish'] != null) { ?>
-                                <div class="added">
+                                <div class="textInWishList">
                                     Vous souhaitez prendre rendez-vous avec cette entreprise !
                                 </div>
                             <?php } ?>
@@ -143,7 +144,9 @@
                         <a class="d-flex justify-content-center" href="listeRendezVous.php">
                             <img src="../../../ressources/rendez-vous_black.png" alt="Mes rendez-vous">
                         </a>
-                        Rendez-vous
+                        <a class="d-flex justify-content-center lien_barre_basse" href="listeRendezVous.php">
+                            Rendez-vous
+                        </a>
                     </li>
                 </ul>
             </div>

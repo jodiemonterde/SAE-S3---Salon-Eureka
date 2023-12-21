@@ -1,12 +1,10 @@
-.container {
-    max-width: 1000px !important;
-    margin-right: 20px;
-    margin-left: 20px;
-}
+
 .texte {
     vertical-align: middle;
     margin-left: 5px;
 }
+
+
 
 .colEntreprise {
     margin-left: 20px;
@@ -23,6 +21,7 @@
     background-repeat: no-repeat;  
     background-position: 0px 0px; 
     width: 30px;
+    height: 30px;
     border: none;
 }
 
@@ -47,6 +46,6 @@
 .entreprise {
     border: 2px solid #e9e9e9;
     border-radius: 5px;
-    margin: 10px;
+    margin: 10px !important;
     padding: 10px;
 }

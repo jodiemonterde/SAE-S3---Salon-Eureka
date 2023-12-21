@@ -1,10 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 body {
     font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
 }
 
 .row {
     margin: 0px !important;
+}
+
+.container {
+    max-width: 1000px;
 }
 
 .bouton {
@@ -13,7 +18,7 @@ body {
     border-style: none;
     border-radius: 40px 20px 40px 20px;
     padding: 10px 16px;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 500;
 }
 
@@ -30,7 +35,7 @@ body {
     border-color : #FFA800;
     border-radius: 40px 20px 40px 20px;
     padding: 10px 16px;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 500;
 }
 
@@ -59,4 +64,15 @@ body {
 
 .blanc:hover{
     background-color: #eee;
+}
+
+.zoneRecherche {
+    font-family: 'Montserrat', FontAwesome;
+    height: 40px;
+    border-bottom: 2px solid #bfbfbf;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+    width: 100%;
 }
