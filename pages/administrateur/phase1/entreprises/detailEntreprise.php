@@ -22,6 +22,10 @@
     }
     include("../../../../fonctions/baseDeDonnees.php");
     $pdo = connecteBD();
+
+    if (isset($_POST["entreprise_id"])) {
+        supprimerEntreprise($pdo, $_POST["entreprise_id"]);
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +34,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="../../../../lib/bootstrap-5.3.2-dist/css/bootstrap.css">
     <link rel="stylesheet" href="../../../../lib/fontawesome-free-6.5.1-web/css/all.css">
-    <script src="../../../../lib/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+    <script src="../../../../lib/bootstrap-5.3.2-dist/js/bootstrap.js"></script>
     <script src="../../../../lib/jquery/jquery-3.3.1.js"></script>
     <link rel="stylesheet" href="./listeEntreprise.css">
     <link rel="stylesheet" href="../../../../css/navbars.css">
@@ -163,8 +167,8 @@
                             <?php } ?>
                         </div>
                         <div class="row">
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#idDeLaModal"> Modifier </button>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#idDeLaModal"> Supprimer </button>
+                            <button class="bouton" type="button" data-bs-toggle="modal" data-bs-target="#modification"> Modifier </button>
+                            <button class="bouton" type="button" data-bs-toggle="modal" data-bs-target="#suppression"> Supprimer </button>
                         </div>
                         <div class="row">
                             <?php
@@ -182,6 +186,70 @@
             <?php   } 
                 } ?>
         </div>
+        
+        <!-- TODO finir cette modal de merde -->
+        <div class="modal fade" id="modification" tabindex="-1" aria-labelledby="Modifier" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                <div class="modal-content">
+                    <div class="modal-header deco">
+                        <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class = "row">
+                                <div class="col-12">
+                                    <h1 class="text-center" id="Sedeconnecter">DÉCONNEXION</h1>
+                                </div>
+                            </div>
+                            <div class = "row">
+                                <div class="col-12">
+                                    <P class="text-center">Êtes-vous sûr(e) de vouloir vous déconnecter ?</P>
+                                </div>
+                            </div>
+                            <div class = "row">
+                                <div class="col-6 d-flex justify-content-evenly">
+                                    <button type="button" data-bs-dismiss="modal">Retour</button>
+                                </div>
+                                <div class="col-6 d-flex justify-content-evenly">
+                                    <a href="../fonctions/supprimerEntreprise.php"><button type="button" >Se déconnecter </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="suppression" tabindex="-1" aria-labelledby="Supprimer" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                <div class="modal-content">
+                    <div class="modal-header deco">
+                        <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p class="text-center"> Êtes-vous sûr(e) de vouloir supprimer cette entreprise ? </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 d-flex justify-content-evenly">
+                                    <button type="button" data-bs-dismiss="modal"> Annuler </button>
+                                </div>
+                                <div class="col-6 d-flex justify-content-evenly">
+                                    <form action="detailEntreprise.php" method="post">
+                                        <input type="hidden" name="entreprise_id" value="<?php echo $ligne["company_id"]?>"/>
+                                        <input type="submit" class="bouton" value="Supprimer"/>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Navbar du bas -->
         <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">

@@ -131,4 +131,10 @@ function search($query) {
     return $stmt;
 }
 
+function supprimerEntreprise($pdo, $company_id) {
+    $stmt = $pdo->prepare("DELETE FROM Company
+                           WHERE company_id = $company_id");
+    return $stmt->execute();
+}
+
 ?>
