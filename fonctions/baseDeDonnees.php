@@ -20,7 +20,7 @@
     function verifUtilisateur($pdo, $motDepasse, $identifiant){
         try{ 
 			$connecte=false;
-			$maRequete = $pdo->prepare("SELECT user_id, username, password from User where username = :leLogin and password = :lePWD");
+			$maRequete = $pdo->prepare("SELECT user_id, username, password from User where email = :leLogin and password = :lePWD");
 			$maRequete->bindParam(':leLogin', $identifiant);
 			$maRequete->bindParam(':lePWD', $motDepasse);
 			if ($maRequete->execute()) {
@@ -38,7 +38,7 @@
 
     function infoUtilisateur($pdo, $motDepasse, $identifiant){
         try{ 
-			$maRequete = $pdo->prepare("SELECT user_id, responsibility, username from User where username = :leLogin and password = :lePWD");
+			$maRequete = $pdo->prepare("SELECT user_id, responsibility, username from User where email = :leLogin and password = :lePWD");
 			$maRequete->bindParam(':leLogin', $identifiant);
 			$maRequete->bindParam(':lePWD', $motDepasse);
 			$maRequete->execute();
