@@ -146,8 +146,30 @@
                         <div class="row">
                             <div class="description"><?php echo $ligne["description"]?></div>
                             <?php
-                            $stmtEtudiant = getStudentsPerCompany($pdo, $ligne["company_id"]);
-                            while ($ligneEtudiant = $stmtEtudiant->fetch()) { 
+                            $stmtIntervenant = getSpeakersPerCompany($pdo, $ligne["company_id"]);
+                            while ($ligneIntervenant = $stmtIntervenant->fetch()) { 
+                            ?>
+                            <hr>
+                            <h2 class="student"><?php echo $ligneIntervenant["name"]?></h2>
+                            <p> Fonction de l'intervenant </p>
+                            <div class="row d-flex align-text-top">
+                            <?php
+                                $stmtFiliere = getFieldsPerSpeakers($pdo, $ligneIntervenant["speaker_id"]);
+                                while ($ligneFiliere = $stmtFiliere->fetch()) {
+                                    echo '<span class="filiere">'.$ligneFiliere["name"].'</span>';
+                                }
+                            ?>
+                            </div>
+                            <?php } ?>
+                        </div>
+                        <div class="row">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#idDeLaModal"> Modifier </button>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#idDeLaModal"> Supprimer </button>
+                        </div>
+                        <div class="row">
+                            <?php
+                                $stmtEtudiant = getStudentsPerCompany($pdo, $ligne["company_id"]);
+                                while ($ligneEtudiant = $stmtEtudiant->fetch()) { 
                             ?>
                             <hr>
                             <h2 class="student"><?php echo $ligneEtudiant["username"]?></h2>

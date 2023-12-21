@@ -92,6 +92,28 @@ function getStudentsPerCompany($pdo, $company_id) {
     return $stmt;
 }
 
+function getSpeakersPerCompany($pdo, $company_id) {
+    $stmt = $pdo->prepare("SELECT Speaker.name, Speaker.speaker_id
+                           FROM Company
+                           JOIN Speaker
+                           ON Company.company_id = Speaker.company_id
+                           WHERE Company.company_id = $company_id;");
+    $stmt->execute();
+    return $stmt;
+}
+
+function getFieldsPerSpeakers($pdo, $speaker_id) {
+    $stmt = $pdo->prepare("SELECT Field.name
+                           FROM Speaker
+                           JOIN AssignmentSpeaker
+                           ON Speaker.speaker_id = AssignmentSpeaker.speaker_id
+                           JOIN Field
+                           ON AssignmentSpeaker.field_id = Field.field_id
+                           WHERE Speaker.speaker_id = $speaker_id;");
+    $stmt->execute();
+    return $stmt;
+}
+
 function getFields($pdo) {
     $sql = "SELECT * FROM `Field`";
     $stmt = $pdo->prepare($sql);
