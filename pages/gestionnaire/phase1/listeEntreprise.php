@@ -22,6 +22,10 @@
     }
     include("../../../fonctions/baseDeDonnees.php");
     $pdo = connecteBD();
+
+    if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1 || $_SESSION['type_utilisateur'] != 'G'){
+        header('Location: ../../connexion.php');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +37,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <link rel="stylesheet" href="../../../css/all.css">
-    <link rel="stylesheet" href="../../../css/listeEntrepriseGestionnaire.css">
+    <link rel="stylesheet" href="../../../css/listeEntrepriseGestionnaire1.css">
     <link rel="stylesheet" href="../../../css/navbars.css">
     <link rel="stylesheet" href="../../../css/filtre.css">
     <title>Eureka - Liste des entreprises</title>

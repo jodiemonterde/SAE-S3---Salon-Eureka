@@ -17,11 +17,15 @@
             array_push($_SESSION['filtre'], $_POST['nouveauFiltre']);
         }
         
-        header("Location: detailEntreprise.php");
+        header("Location: listeEtudiant.php");
         exit();
     }
     include("../../../fonctions/baseDeDonnees.php");
     $pdo = connecteBD();
+
+    if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 2 || $_SESSION['type_utilisateur'] != 'G'){
+        header('Location: ../../connexion.php');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,6 +36,7 @@
     <link rel="stylesheet" href="../../../lib/fontawesome-free-6.5.1-web/css/all.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <link rel="stylesheet" href="../../../css/all.css">
     <link rel="stylesheet" href="../../../css/listeEntreprise.css">
     <link rel="stylesheet" href="../../../css/navbars.css">
     <link rel="stylesheet" href="../../../css/filtre.css">
@@ -49,22 +54,22 @@
                     <ul class="navbar-nav d-flex h-100 align-items-center">
                         <li class="nav-item nav-link p-0 d-none d-md-block h-100">
                             <!-- Si sur la liste des entreprises, mettre en actif et lien_inactif-->
-                            <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Liste des entreprises </a>
+                            <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"> Liste des entreprises </a>
                         </li>
                         <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
-                            <!-- Si sur la liste des rendez-vous, mettre en actif et lien_inactif -->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Mes rendez-vous </a>
+                            <!-- Si sur la liste des étudiants, mettre en actif et lien_inactif -->
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeEtudiant.php"> Liste des étudiants </a>
                         </li>
                         <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Pseudo Utilisateur
+                                <?php echo htmlspecialchars($_SESSION['nom_utilisateur'])?>
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                <li> <a class="dropdown-item" href="#"> Se déconnecter </a> </li>
+                                <li> <a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#deconnexion"> Se déconnecter </a> </li>
                             </ul>
                         </li>
                         <li class="nav-item d-md-none d-flex justify-content-end">
-                            <a href="#">
+                            <a  data-bs-toggle="modal" data-bs-target="#deconnexion">
                                 <img src="../../../ressources/icone_deconnexion.svg" alt="Se déconnecter" class="logo">
                             </a>
                         </li>
@@ -79,7 +84,7 @@
                     <h2>Liste des entreprises</h2>
                     <p>Voici toutes les entreprises présentes au salon Euréka cette année. Cliquez sur l’une d’elle pour voir tous les étudiants qui veulent un rendez-vous avec celle-ci ! Vous pouvez également filtrer quelles filières vous intéressent grâce à la liste de filtres ci-dessous.</p>
                 </div>
-                <form action="detailEntreprise.php" method="post" class="col-12 col-md-6 my-2">
+                <form action="listeEtudiant.php" method="post" class="col-12 col-md-6 my-2">
                     <div class="row">
                         <div class="col-8">
                             <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="zoneText"/>    
@@ -98,7 +103,7 @@
                             $fields = getFields($pdo);
                             while ($ligne = $fields->fetch()) {
                         ?>
-                        <form action="detailEntreprise.php" method="post">
+                        <form action="listeEtudiant.php" method="post">
                             <input type="hidden" name="nouveauFiltre" value="<?php echo $ligne['field_id']; ?>">
                             <button class="bouton-filtre <?php echo in_array($ligne['field_id'], $_SESSION['filtre']) ? "bouton-filtre-selectionner" : "bouton-filtre-deselectionner"?>"><?php echo $ligne['name']; ?></button>
                         </form>
@@ -168,7 +173,7 @@
                     <!-- Si sur la liste des entreprises, mettre le texte en actif -->
                     <li class="nav-item d-flex flex-column text-center actif_bas_texte">
                         <!-- Si sur la liste des entreprises, mettre l'icône en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center actif_bas_icone" href="#">
+                        <a class="d-flex justify-content-center actif_bas_icone">
                             <!-- Si sur la liste des entreprises, mettre l'icône blanche, sinon mettre l'icône en noir -->
                             <img src="../../../ressources/icone_entreprise_white.svg" alt="Liste des entreprises" class="icone">
                         </a>
@@ -177,7 +182,7 @@
                     <!-- Si sur la liste des étudiants, mettre le texte en actif -->
                     <li class="nav-item d-flex flex-column text-center inactif_bas">
                         <!-- Si sur la liste des étudiants, mettre l'icône en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center" href="#">
+                        <a class="d-flex justify-content-center" href="listeEtudiant.php">
                             <!-- Si sur la liste des étudiants, mettre l'icône blanche, sinon mettre l'icône en noir -->
                             <img src="../../../ressources/icone_etudiant_black.svg" alt="Liste des étudiants" class="icone">
                         </a>
@@ -186,5 +191,36 @@
                 </ul>
             </div>
         </nav>
+        <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                <div class="modal-content">
+                    <div class="modal-header deco">
+                        <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class = "row">
+                                <div class="col-12">
+                                    <h1 class="text-center" id="Sedeconnecter">DÉCONNEXION</h1>
+                                </div>
+                            </div>
+                            <div class = "row">
+                                <div class="col-12">
+                                    <P class="text-center">Êtes-vous sûr(e) de vouloir vous déconnecter ?</P>
+                                </div>
+                            </div>
+                            <div class = "row">
+                                <div class="col-6 d-flex justify-content-evenly">
+                                    <button type="button" data-bs-dismiss="modal" class="bouton">Retour</button>
+                                </div>
+                                <div class="col-6 d-flex justify-content-evenly">
+                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton">Se déconnecter </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

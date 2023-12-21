@@ -16,11 +16,12 @@
             if ($phase == 1) {
                 header('Location: gestionnaire/phase1/listeEntreprise.php');
             } else {
-                header('Location: gestionnaire/phase2/detailEntreprise.php');
+                header('Location: gestionnaire/phase2/listeEntreprise.php');
             }
         }else{
             header('Location: administrateur/entreprises/modifierEntreprise.php');
         }
+        exit();
     }
 
     if(isset($_POST["motDePasse"]) && isset($_POST["identifiant"])){

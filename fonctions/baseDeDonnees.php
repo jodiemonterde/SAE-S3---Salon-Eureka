@@ -233,7 +233,7 @@
         return $stmt;
     }
 
-    function getStudentsPerCompany($pdo, $company_id) {
+    function getStudentsPerCompanyWishList($pdo, $company_id) {
         $stmt = $pdo->prepare("SELECT Field.name, User.username
                             FROM Company
                             JOIN WishList
@@ -252,7 +252,7 @@
 
     function getStudentsAppointmentsPerCompany($pdo, $company_id, $isExcluded) {
         if ($isExcluded == 1) {
-            return getStudentsPerCompany($pdo, $company_id);
+            return getStudentsPerCompanyWishList($pdo, $company_id);
         } else {
             $stmt = $pdo->prepare("SELECT Field.name, User.username, TIME_FORMAT(Appointment.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(Appointment.start, Appointment.duration), '%H:%i') as duration
                                 FROM Company
@@ -271,14 +271,6 @@
             $stmt->execute();
             return $stmt;
         }
-    }
-
-
-    function getFields($pdo) {
-        $sql = "SELECT * FROM `Field`";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        return $stmt;
     }
 
     function getEntreprises($pdo, $field_ids, $recherche) {

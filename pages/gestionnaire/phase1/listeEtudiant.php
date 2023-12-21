@@ -22,6 +22,10 @@
     }
     include("../../../fonctions/baseDeDonnees.php");
     $pdo = connecteBD();
+
+    if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1 || $_SESSION['type_utilisateur'] != 'G'){
+        header('Location: ../../connexion.php');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
