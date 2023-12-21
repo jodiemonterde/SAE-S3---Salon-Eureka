@@ -50,22 +50,22 @@
                 <ul class="navbar-nav d-flex h-100 align-items-center">
                     <li class="nav-item nav-link p-0 d-none d-md-block h-100">
                         <!-- Si sur la liste des entreprises, mettre en actif et lien_inactif-->
-                        <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Liste des entreprises </a>
+                        <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="detailEntreprise.php"> Liste des entreprises </a>
                     </li>
                     <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
                         <!-- Si sur la liste des étudiants, mettre en actif et lien_inactif -->
-                        <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Liste des étudiants </a>
+                        <a class="actif_haut inactiveLink d-flex align-items-center h-100 px-2 justify-content-center text-center"> Liste des étudiants </a>
                     </li>
                     <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
                         <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Pseudo Utilisateur
+                            <?php echo htmlspecialchars($_SESSION['nom_utilisateur'])?>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li> <a class="dropdown-item" href="#"> Se déconnecter </a> </li>
+                            <li> <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deconnexion"> Se déconnecter </a> </li>
                         </ul>
                     </li>
                     <li class="nav-item d-md-none d-flex justify-content-end">
-                        <a href="#">
+                        <a data-bs-toggle="modal" data-bs-target="#deconnexion">
                             <img src="../../../ressources/icone_deconnexion.svg" alt="Se déconnecter" class="logo">
                         </a>
                     </li>
@@ -83,7 +83,7 @@
             <form action="detailEtudiant.php" method="post" class="col-12 col-md-6 my-2">
                 <div class="row">
                     <div class="col-8">
-                        <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="zoneText"/>    
+                        <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="zoneRecherche"/>    
                     </div>
                     <div class="col-4">
                         <input type="submit" class="bouton" value="Rechercher"/>
@@ -174,25 +174,59 @@
         <div class="container-fluid">
             <ul class="navbar-nav w-100 justify-content-evenly">
                 <!-- Si sur la liste des entreprises, mettre le texte en actif -->
-                <li class="nav-item d-flex flex-column text-center actif_bas_texte">
+                <li class="nav-item d-flex flex-column text-center inactif_bas">
                     <!-- Si sur la liste des entreprises, mettre l'icône en actif et lien_inactif -->
-                    <a class="d-flex justify-content-center actif_bas_icone" href="#">
+                    <a class="d-flex justify-content-center" href="./detailEntreprise.php">
                         <!-- Si sur la liste des entreprises, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                        <img src="../../../ressources/icone_entreprise_white.svg" alt="Liste des entreprises" class="icone">
+                        <img src="../../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone">
                     </a>
-                    Entreprises
+                    <a class="d-flex justify-content-center lien_barre_basse" href="./detailEntreprise.php">
+                        Entreprises
+                    </a>
+                    
                 </li>
                 <!-- Si sur la liste des étudiants, mettre le texte en actif -->
-                <li class="nav-item d-flex flex-column text-center inactif_bas">
+                <li class="nav-item d-flex flex-column text-center actif_bas_texte">
                     <!-- Si sur la liste des étudiants, mettre l'icône en actif et lien_inactif -->
-                    <a class="d-flex justify-content-center" href="#">
+                    <a class="d-flex justify-content-center actif_bas_icone inactiveLink">
                         <!-- Si sur la liste des étudiants, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                        <img src="../../../ressources/icone_etudiant_black.svg" alt="Liste des étudiants" class="icone">
+                        <img src="../../../ressources/icone_etudiant_white.svg" alt="Liste des étudiants" class="icone">
                     </a>
                     Etudiants
                 </li>
             </ul>
         </div>
     </nav>
+    <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                <div class="modal-content">
+                    <div class="modal-header deco">
+                        <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class = "row">
+                                <div class="col-12">
+                                    <h1 class="text-center" id="Sedeconnecter">DÉCONNEXION</h1>
+                                </div>
+                            </div>
+                            <div class = "row">
+                                <div class="col-12">
+                                    <P class="text-center">Êtes-vous sûr(e) de vouloir vous déconnecter ?</P>
+                                </div>
+                            </div>
+                            <div class = "row">
+                                <div class="col-6 d-flex justify-content-evenly">
+                                    <button type="button" data-bs-dismiss="modal" class="bouton">Retour</button>
+                                </div>
+                                <div class="col-6 d-flex justify-content-evenly">
+                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton">Se déconnecter </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 </body>
 </html>
