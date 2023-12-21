@@ -108,7 +108,7 @@ function getInfoStudents($pdo, $recherche, $field_ids) {
         return null;
     }
 
-    $sql = "SELECT u.username, f.name AS filiere, COUNT(w.company_id) AS nbShouait, u.user_id
+    $sql = "SELECT u.username, f.name AS filiere, COUNT(w.company_id) AS nbSouhait, u.user_id
             FROM User u
             JOIN AssignmentUser au
             ON u.user_id = au.user_id

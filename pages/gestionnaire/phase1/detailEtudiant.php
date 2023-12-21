@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="../../../lib/fontawesome-free-6.5.1-web/css/all.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <link rel="stylesheet" href="./listeEntreprise.css">
+    <link rel="stylesheet" href="./listeEtudiant.css">
     <link rel="stylesheet" href="../../../css/navbars.css">
     <link rel="stylesheet" href="filtre.css">
     <title>Eureka - Liste des entreprises</title>
@@ -124,16 +124,19 @@
                         <div class="pd detailEtudiant">
                             <h2 class="title"><?php echo $ligne["username"]?></h2>
                             <?php echo $ligne["filiere"]?></br>
-                            <span class="<?php echo $ligne["nbShouait"] < 1 ? "erreur" : ""?>"> <?php echo $ligne["nbShouait"]?> souhaits </span>
+                            <span class="<?php echo $ligne["nbSouhait"] < 1 ? "erreur" : ""?>"> <?php echo $ligne["nbSouhait"]?> souhaits </span>
                         </div>
                     </div>
                 </button>
             </h2>
             <div id="collapse<?php echo $ligne['user_id']?>" class="accordion-collapse collapse" aria-labelledby="heading<?php echo $ligne['user_id']?>" data-bs-parent="#listeEntreprise">
-                <div class="accordion-body">
+                <div class="accordion-body pb-1">
                     <div class="row m-0">
                         <?php
                             $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
+                            if ($ligne["nbSouhait"] < 1) {
+                                echo "<p class='erreur text-center'>Cet(te) étudiant(e) n'a pris aucun rendez-vous pour l'instant !</p>";
+                            }
                             while ($ligne2 = $stmt2->fetch()) {?>
                                 <div class="row entreprise align-items-center">
                                     <div class="col-2 col-md-1">
