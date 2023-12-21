@@ -38,8 +38,8 @@
     <title>Eureka - Liste des entreprises</title>
 </head>
 <body>
-     <!-- Navbar du haut -->
-     <nav class="navbar navbar-expand sticky-top border bg-white">
+         <!-- Navbar du haut -->
+    <nav class="navbar navbar-expand sticky-top border bg-white">
         <div class="container-fluid h-100">
             <div class="navbar-brand d-flex align-items-center h-100">
                 <img src="../../../ressources/logo_black.png" alt="Logo Eureka" class="d-inline-block align-text-top me-2">
@@ -124,38 +124,49 @@
                         <div class="pd detailEtudiant">
                             <h2 class="title"><?php echo $ligne["username"]?></h2>
                             <?php echo $ligne["filiere"]?></br>
-                            <span class="<?php echo $ligne["nbShouait"] < 1 ? "erreur" : ""?>"> <?php echo $ligne["nbShouait"]?> souhaits </span>
+                            <span class="<?php echo $ligne["nbSouhait"] < 1 ? "erreur" : ""?>"> <?php echo $ligne["nbSouhait"]?> souhaits </span>
                         </div>
                     </div>
                 </button>
             </h2>
-            <div id="collapse<?php echo $ligne['user_id']?>" class="accordion-collapse collapse" aria-labelledby="heading<?php echo $ligne['user_id']?>" data-bs-parent="#listeEntreprise">
-                <div class="accordion-body">
+            <!--<div id="collapse<?php echo $ligne['user_id']?>" class="accordion-collapse collapse" aria-labelledby="heading<?php echo $ligne['user_id']?>" data-bs-parent="#listeEntreprise">
+                <div class="accordion-body pb-1">
                     <div class="row m-0">
                         <?php
-                            $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
-                            while ($ligne2 = $stmt2->fetch()) {?>
-                                <div class="row entreprise align-items-center">
-                                    <div class="col-2 col-md-1">
-                                        <img src="../../../ressources/<?php echo $ligne2["logo_file_name"] != "" ? $ligne2["logo_file_name"] : "no-photo.png"?>" alt="logo" class="logoEntreprise" width="75px" height="75px"/>
-                                    </div>
-                                    <div class="col-8 col-md-6 col-lg-8 colEntreprise">
-                                        <span class="nomEntreprise"><?php echo $ligne2["name"]?></span></br>
-                                        <i class="fa-solid fa-briefcase"></i>&nbsp;&nbsp;&nbsp;<?php echo $ligne2["sector"]?><br/>
-                                        <i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $ligne2["address"]?>
+                           /* $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
+                            if ($ligne["nbSouhait"] < 1) {
+                                echo "<p class='erreur text-center'>Cet(te) étudiant(e) n'a pris aucun rendez-vous pour l'instant !</p>";
+                            }
+                            $rowNumber = 0;
+                            while ($ligne2 = $stmt2->fetch()) {
+                             $rowNumber++;
+                             if ($rowNumber != 1) {
+                                echo '<hr>';
+                             }
+                             ?> 
+                                <div>
+                                    <div class="profil-det-img d-flex text-start">
+                                        <div class="dp"><img src="../../.../../../ressources/<?php echo $ligne2["logo_file_name"] != "" ? $ligne2["logo_file_name"] : "no-photo.png"?>" alt="Logo de l'entreprise"></div>
+                                        <div class="pd">
+                                            <h2 class="title"><?php echo $ligne2["name"]?></h2>
+                                            <ul class="text-left">
+                                                <li><i class="fa-solid fa-briefcase text-left"></i> <?php echo $ligne2["sector"]?></li>
+                                                <li><i class="fa-solid fa-location-dot"></i> <?php echo $ligne2["address"]?></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             <?php }
-                        ?>
+                        */?>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
         <?php   } 
             } ?>
     </div>
 
-     <!-- Navbar du bas -->
+    <!-- Navbar du bas -->
     <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
         <div class="container-fluid">
             <ul class="navbar-nav w-100 justify-content-evenly">
