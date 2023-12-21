@@ -137,15 +137,23 @@
                             if ($ligne["nbSouhait"] < 1) {
                                 echo "<p class='erreur text-center'>Cet(te) étudiant(e) n'a pris aucun rendez-vous pour l'instant !</p>";
                             }
-                            while ($ligne2 = $stmt2->fetch()) {?>
-                                <div class="row entreprise align-items-center">
-                                    <div class="col-2 col-md-1">
-                                        <img src="../../../ressources/<?php echo $ligne2["logo_file_name"] != "" ? $ligne2["logo_file_name"] : "no-photo.png"?>" alt="logo" class="logoEntreprise" width="75px" height="75px"/>
-                                    </div>
-                                    <div class="col-8 col-md-6 col-lg-8 colEntreprise">
-                                        <span class="nomEntreprise"><?php echo $ligne2["name"]?></span></br>
-                                        <i class="fa-solid fa-briefcase"></i>&nbsp;&nbsp;&nbsp;<?php echo $ligne2["sector"]?><br/>
-                                        <i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $ligne2["address"]?>
+                            $rowNumber = 0;
+                            while ($ligne2 = $stmt2->fetch()) {
+                             $rowNumber++;
+                             if ($rowNumber != 1) {
+                                echo '<hr>';
+                             }
+                             ?> 
+                                <div>
+                                    <div class="profil-det-img d-flex text-start">
+                                        <div class="dp"><img src="../../.../../../ressources/<?php echo $ligne2["logo_file_name"] != "" ? $ligne2["logo_file_name"] : "no-photo.png"?>" alt="Logo de l'entreprise"></div>
+                                        <div class="pd">
+                                            <h2 class="title"><?php echo $ligne2["name"]?></h2>
+                                            <ul class="text-left">
+                                                <li><i class="fa-solid fa-briefcase text-left"></i> <?php echo $ligne2["sector"]?></li>
+                                                <li><i class="fa-solid fa-location-dot"></i> <?php echo $ligne2["address"]?></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             <?php }
