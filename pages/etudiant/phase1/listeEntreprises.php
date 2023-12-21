@@ -1,10 +1,19 @@
 <?php 
     session_start();
+    // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
+    $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
     $user = 1;
     include("../../../fonctions/baseDeDonnees.php");
     $pdo = connecteBD();
-    if (isset($_POST["entreprise_id"])) {
-        removeWishStudent($pdo, $user, $_POST["entreprise_id"]);
+    if (isset($_POST["entreprise_id"]) && isset($_POST["mode"])) {
+        if ($_POST["mode"] == 'add') {
+            addWishStudent($pdo, $user, $_POST["entreprise_id"]);
+        } else {
+            deleteWishStudent($pdo, $user, $_POST["entreprise_id"]);
+        }
+        
+        header("location: listeEntreprises.php");
+        exit();
     }
 ?>
 <!DOCTYPE html>
@@ -56,50 +65,66 @@
             </div>
         </nav>
 
-        <div class="container">
+        <div class="container mt-2">
             <div class="row d-flex align-items-center h-100">
-                <div class="form-outline order-md-2 col-md-4 col-12 order-1 align-middle" data-mdb-input-init>
-                    <input type="search" id="recherche" class="form-control" placeholder="&#xf002 Rechercher une entreprise" aria-label="Search" />    
+                <div class="col-12 col-md-6">
+                    <h2>Prenez rendez-vous avec les entreprises qui vous correspondent.</h2>
+                    <p>Choisissez toutes les entreprises que vous souhaitez rencontrer au salon Eureka et prenez rendez-vous en un clic ! Dès le XX mois, vous pourrez venir consulter votre emploi du temps pour le salon créée à partir de vos demandes de rendez-vous. Si vous souhaitez annuler l'un de vos rendez-vous, il suffit de cliquer à nouveau.</p>
                 </div>
-                <div class="searchButton order-3 d-none d-md-block col-md-2""><button>Rechercher</button></div>
-                <div class="col-md-6 col-12 order-md-1 order-2">
-                    <h2> Prenez rendez-vous avec les entreprises qui vous correspondent. </h2>
-                    <p> Choisissez toutes les entreprises que vous souhaitez rencontrer au salon Eureka et prenez rendez-vous en un clic ! Dès le XX mois, vous pourrez venir consulter votre emploi du temps pour le salon créée à partir de vos demandes de rendez-vous. </p>
-                </div>
+                <form action="listeEntreprises.php" method="post" class="col-12 col-md-6 my-2">
+                    <div class="row">
+                        <div class="col-8">
+                            <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="zoneText"/>    
+                        </div>
+                        <div class="col-4">
+                            <input type="submit" class="bouton" value="Rechercher"/>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="row mx-1">
                 <?php 
                 $pdo = connecteBD();
-                $stmt = getEntreprisesForStudent($pdo, $user);
-                while ($ligne = $stmt->fetch()) { 
+                $stmt = getEntreprisesForStudent($pdo, $user, $_SESSION['recherche']);
+                if ($stmt->rowCount() === 0) {
+                    echo '<h2>Aucune entreprise trouvée avec cette recherche.</h2>';
+                } else {
+                    while ($ligne = $stmt->fetch()) { 
                 ?>
-                <div class="col-12 company dl-search-result-title-container">
-                    <div class="row">
-                        <div>            
-                            <div class="col-md-4">
-                                <div class="profil-det-img d-flex">
-                                    <div class="dp">
-                                       <img src="../../../ressources/no-photo.png" alt="">
+                <form action="listeEntreprises.php" method="post">
+                    <button type="submit" class="col-12 pb-0 company dl-search-result-title-container <?php if ($ligne['wish'] != null) { echo 'inWishList';} else { echo 'notInWishList';}?>">
+                        
+                            <input type="hidden" name="entreprise_id" value="<?php echo $ligne['company_id']?>"/>
+                            <input type="hidden" name="mode" value="<?php if ($ligne['wish'] != null) { echo 'delete';} else { echo 'add';}?>"/>                                         
+                                    <div class="profil-det-img d-flex">
+                                        <div class="dp">
+                                        <img src="../../../ressources/no-photo.png" alt="">
+                                        </div>
+                                        <div class="pd">
+                                            <h2 class="title"><?php echo $ligne["name"]?></h2>
+                                            <ul>
+                                                <li><i class="fa-solid fa-briefcase"></i> <?php echo $ligne["sector"]?></li>
+                                                <li><i class="fa-solid fa-location-dot"></i>  <?php echo $ligne["address"]?></li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <div class="pd">
-                                        <h2><?php echo $ligne["name"]?></h2>
-                                        <ul>
-                                            <li><i class="fa-solid fa-briefcase"></i> <?php echo $ligne["sector"]?></li>
-                                            <li><i class="fa-solid fa-location-dot"></i>  <?php echo $ligne["address"]?></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                
+                            <hr>
+                            <div class="row">
+                            <div class="col-12 pb-2">
+                                <?php echo $ligne["description"]?>
                             </div>
+                            <?php if ($ligne['wish'] != null) { ?>
+                                <div class="added">
+                                    Vous souhaitez prendre rendez-vous avec cette entreprise !
+                                </div>
+                            <?php } ?>
                         </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-12">
-                        <?php echo $ligne["description"]?>
-                        </div>
-                    </div>
-                </div>
-                <?php }?>
+                    </button>
+                </form>
+                <?php   }
+                    }
+                ?>
         <!-- Navbar du bas -->
         <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
             <div class="container-fluid">

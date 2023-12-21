@@ -14,15 +14,60 @@
     border-color: #D9D9D9;
 }
 
+.zoneText {
+    font-family: 'Montserrat', FontAwesome;
+    height: 40px;
+    border-bottom: 2px solid #bfbfbf;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+    width: 100%;
+}
+
+.title {
+    color: #FFA800;
+}
+
+.bouton {
+    height: 40px;
+    background-color: #FFA800;
+    text-transform: uppercase;
+    border-style: none;
+    border-radius: 40px 20px 40px 20px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    width: 100%;
+}
+
+.inWishList {
+    border-color: #FFA800;
+    border-width: 3px;
+}
+
+.added {
+    color: #FFA800;
+    text-align: center;
+    font-size: 12px;
+    padding: 0;
+    font-weight: 700;
+}
+
+.notInWishList {
+    border-width: 1px;
+    border-color: #D9D9D9;
+}
+
 .company {
     border-style: solid;
-    border-width: 1px;
     border-radius: 4px;
-    border-color: #D9D9D9;
     padding: 16px 8px 8px 8px;
     margin-top: 16px;
     cursor: pointer;
 }
+
+
 
 .profil-det-img .dp {
     padding: 16px 8px 8px 8px; }
@@ -68,18 +113,18 @@ h2 {
     height: 40px;
 }
 
-button {
-    height: 40px;
-    background-color: #FFA800;
-    text-transform: uppercase;
-    border-style: none;
-    border-radius: 40px 20px 40px 20px;
-    padding: 10px 16px;
-    font-size: 13px;
-    font-weight: 500;
-}
-
 .inactiveLink {
     pointer-events: none;
     cursor: default;
+}
+
+button {
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+    text-align: inherit;
 }
