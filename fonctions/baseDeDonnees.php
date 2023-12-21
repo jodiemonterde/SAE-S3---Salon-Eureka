@@ -115,23 +115,22 @@ function getEntreprisesPhase2($pdo, $field_ids, $recherche) {
 function getStudentsPerCompany($pdo, $company_id) {
     $stmt = $pdo->prepare("SELECT Field.name, User.username
                            FROM Company
-                           JOIN Speaker
-                           ON Company.company_id = Speaker.company_id
-                           JOIN Appointment
-                           ON Speaker.speaker_id = Appointment.speaker_id
+                           JOIN WishList
+                           ON Company.company_id = WishList.company_id
                            JOIN User
-                           ON Appointment.user_id = User.user_id
+                           ON WishList.user_id = User.user_id
                            JOIN AssignmentUser
                            ON User.user_id = AssignmentUser.user_id
                            JOIN Field
                            ON AssignmentUser.field_id = Field.field_id
-                           WHERE Company.company_id = $company_id;");
+                           WHERE Company.company_id = :company_id");
+    $stmt->bindParam(':company_id', $company_id);
     $stmt->execute();
     return $stmt;
 }
 
 function getStudentsAppointmentsPerCompany($pdo, $company_id, $isExcluded) {
-    if ($isExcluded === 1) {
+    if ($isExcluded == 1) {
         return getStudentsPerCompany($pdo, $company_id);
     } else {
         $stmt = $pdo->prepare("SELECT Field.name, User.username, TIME_FORMAT(Appointment.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(Appointment.start, Appointment.duration), '%H:%i') as duration

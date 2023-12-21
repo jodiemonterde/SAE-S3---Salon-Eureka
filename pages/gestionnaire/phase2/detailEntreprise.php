@@ -137,13 +137,17 @@
                     <div class="accordion-body">
                         <div class="row">
                             <div class="description"><?php echo $ligne["description"]?></div>
-                            <?php
+                            <?php if ($ligne["excluded"] === 1) { ?>
+                            <p class="fw-bold text-danger">Le planning de l'entreprise <?php echo $ligne["name"]; ?> ne peut pas être généré : trop d’étudiants souhaitent la rencontrer ! Ci-dessous, la liste des étudiants intéressés par <?php echo $ligne["name"]; ?>.</p>
+                            <?php }
                             $stmtEtudiant = getStudentsAppointmentsPerCompany($pdo, $ligne["company_id"], $ligne["excluded"]);
+                            if ($stmtEtudiant->rowCount() === 0) {
+                                echo '<hr><p class="fw-bold text-danger">Aucun étudiant ne souhaite rencontrer cette entreprise.</p>';
+                            }
                             while ($ligneEtudiant = $stmtEtudiant->fetch()) { 
-                                var_dump($ligneEtudiant);
                             ?>
                             <hr>
-                            <?php if ($ligne["excluded"] === 1) { ?>
+                            <?php if ($ligne["excluded"]!= 1) { ?>
                             <p class="text-center fw-bold fs-5"><?php echo $ligneEtudiant["start"].'-'.$ligneEtudiant["duration"]?></p>
                             <?php } ?>
                             <h2 class="student"><?php echo $ligneEtudiant["username"]?></h2>
