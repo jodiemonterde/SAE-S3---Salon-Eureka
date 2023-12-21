@@ -59,7 +59,7 @@
             </div>
             <?php
                 $pdo = connecteBD();
-                $planning = planningPerUser($pdo, 2);
+                $planning = planningPerUser($pdo, $_SESSION['idUtilisateur']);
                 foreach ($planning as $rdv) {?>
                     <div class="row mx-1">
                         <div class="col-12 rendez-vous ">

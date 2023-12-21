@@ -6,7 +6,7 @@
         header('Location: ../../connexion.php');
     }
     if (isset($_POST["entreprise_id"])) {
-        removeWishStudent($pdo, $user, $_POST["entreprise_id"]);
+        removeWishStudent($pdo, $_SESSION['idUtilisateur'], $_POST["entreprise_id"]);
     }
 ?>
 <!DOCTYPE html>

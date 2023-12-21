@@ -17,7 +17,7 @@
             array_push($_SESSION['filtre'], $_POST['nouveauFiltre']);
         }
         
-        header("Location: listeEtudiant.php");
+        header("Location: listeEntreprise.php");
         exit();
     }
     include("../../../fonctions/baseDeDonnees.php");
@@ -84,7 +84,7 @@
                     <h2>Liste des entreprises</h2>
                     <p>Voici toutes les entreprises présentes au salon Euréka cette année. Cliquez sur l’une d’elle pour voir tous les étudiants qui veulent un rendez-vous avec celle-ci ! Vous pouvez également filtrer quelles filières vous intéressent grâce à la liste de filtres ci-dessous.</p>
                 </div>
-                <form action="listeEtudiant.php" method="post" class="col-12 col-md-6 my-2">
+                <form action="listeEntreprise.php" method="post" class="col-12 col-md-6 my-2">
                     <div class="row">
                         <div class="col-8">
                             <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="zoneText"/>    
@@ -103,7 +103,7 @@
                             $fields = getFields($pdo);
                             while ($ligne = $fields->fetch()) {
                         ?>
-                        <form action="listeEtudiant.php" method="post">
+                        <form action="listeEntreprise.php" method="post">
                             <input type="hidden" name="nouveauFiltre" value="<?php echo $ligne['field_id']; ?>">
                             <button class="bouton-filtre <?php echo in_array($ligne['field_id'], $_SESSION['filtre']) ? "bouton-filtre-selectionner" : "bouton-filtre-deselectionner"?>"><?php echo $ligne['name']; ?></button>
                         </form>
