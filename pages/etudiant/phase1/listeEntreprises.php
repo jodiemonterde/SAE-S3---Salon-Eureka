@@ -92,7 +92,7 @@
                     while ($ligne = $stmt->fetch()) { 
                 ?>
                 <form action="listeEntreprises.php" method="post">
-                    <button type="submit" class="col-12 pb-0 company dl-search-result-title-container <?php if ($ligne['wish'] != null) { echo 'inWishList';} else { echo 'notInWishList';}?>">
+                    <button type="submit" class="col-12 pb-0 company dl-search-result-title-container <?php echo $ligne['wish'] != null ? 'inWishList' : 'notInWishList';?>">
                         
                             <input type="hidden" name="entreprise_id" value="<?php echo $ligne['company_id']?>"/>
                             <input type="hidden" name="mode" value="<?php if ($ligne['wish'] != null) { echo 'delete';} else { echo 'add';}?>"/>                                         
