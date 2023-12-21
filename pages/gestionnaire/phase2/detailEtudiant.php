@@ -125,7 +125,6 @@
                         <div class="pd detailEtudiant">
                             <h2 class="title"><?php echo $ligne["username"]?></h2>
                             <?php echo $ligne["filiere"]?></br>
-                            <span class="<?php echo $ligne["nbSouhait"] < 1 ? "erreur" : ""?>"> <?php echo $ligne["nbSouhait"]?> souhaits </span>
                         </div>
                     </div>
                 </button>
