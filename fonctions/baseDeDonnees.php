@@ -12,15 +12,11 @@
             
             // Set PDO error mode to exception
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            
-            // You can now use the $pdo object to perform database operations
-            
         } catch (PDOException $e) {
             echo "Connection failed: " . $e->getMessage();
         }
         return $pdo;
     }
-
     function verifUtilisateur($pdo, $motDepasse, $identifiant){
         try{ 
 			$connecte=false;
@@ -130,5 +126,22 @@
         $requete->bindParam(':user_id', $user_id);
         $requete->execute();
         return $requete;
+    }
+
+    function deleteWishStudent($pdo, $user_id, $company_id) {
+        $stmt = $pdo->prepare("DELETE IGNORE FROM WishList
+                               WHERE user_id = :user_id 
+                               AND company_id = :company_id");
+        $stmt->bindParam(':user_id', $user_id);                  
+        $stmt->bindParam(':company_id', $company_id);
+        return $stmt->execute();
+    }
+    
+    function addWishStudent($pdo, $user_id, $company_id) {
+        $stmt = $pdo->prepare("INSERT IGNORE INTO WishList (user_id, company_id)
+                              VALUES (:user_id, :company_id)");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':company_id', $company_id);
+        return $stmt->execute();
     }
 ?>
