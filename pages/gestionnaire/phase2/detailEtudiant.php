@@ -33,7 +33,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../../../outils/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <link rel="stylesheet" href="listeEtudiant.css">
+    <link rel="stylesheet" href="./listeEtudiant.css">
     <link rel="stylesheet" href="../../../css/navbars.css">
     <link rel="stylesheet" href="filtre.css">
     <title>Eureka - Liste des entreprises</title>
@@ -130,38 +130,41 @@
                     </div>
                 </button>
             </h2>
-            <!--<div id="collapse<?php echo $ligne['user_id']?>" class="accordion-collapse collapse" aria-labelledby="heading<?php echo $ligne['user_id']?>" data-bs-parent="#listeEntreprise">
+            <div id="collapse<?php echo $ligne['user_id']?>" class="accordion-collapse collapse" aria-labelledby="heading<?php echo $ligne['user_id']?>" data-bs-parent="#listeEntreprise">
                 <div class="accordion-body pb-1">
                     <div class="row m-0">
+                        <div class="container" id="toPrint">
                         <?php
-                           /* $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
-                            if ($ligne["nbSouhait"] < 1) {
-                                echo "<p class='erreur text-center'>Cet(te) étudiant(e) n'a pris aucun rendez-vous pour l'instant !</p>";
-                            }
-                            $rowNumber = 0;
-                            while ($ligne2 = $stmt2->fetch()) {
-                             $rowNumber++;
-                             if ($rowNumber != 1) {
-                                echo '<hr>';
-                             }
-                             ?> 
-                                <div>
-                                    <div class="profil-det-img d-flex text-start">
-                                        <div class="dp"><img src="../../.../../../ressources/<?php echo $ligne2["logo_file_name"] != "" ? $ligne2["logo_file_name"] : "no-photo.png"?>" alt="Logo de l'entreprise"></div>
-                                        <div class="pd">
-                                            <h2 class="title"><?php echo $ligne2["name"]?></h2>
-                                            <ul class="text-left">
-                                                <li><i class="fa-solid fa-briefcase text-left"></i> <?php echo $ligne2["sector"]?></li>
-                                                <li><i class="fa-solid fa-location-dot"></i> <?php echo $ligne2["address"]?></li>
-                                            </ul>
-                                        </div>
+                            $planning = planningPerUser($pdo, $ligne['user_id']);
+                            foreach ($planning as $rdv) {?>
+                                <div class="row mx-1">
+                                    <div class="col-12 rendez-vous ">
+                                        <p class="text-center"><?php echo htmlspecialchars($rdv['start'])?> - <?php echo htmlspecialchars($rdv['end'])?></p>
+                                        <p class="text-center text-jaune"><?php echo htmlspecialchars($rdv['company_name']); ?></p>
                                     </div>
                                 </div>
                             <?php }
-                        */?>
+                            $unlistedCompany = unlistedCompanyPerUser($pdo, $ligne['user_id']);
+                            if ($unlistedCompany->rowCount() > 0) {?>
+                                <div class="row mx-1">
+                                    <div class="col-12">
+                                        <p><h2>rendez-vous non planifiables</h2></p>
+                                    </div>
+                                </div>
+                            <?php }
+                            while ($ligne3 = $unlistedCompany->fetch()) {?>
+                                <div class="row mx-1">
+                                    <div class="col-12 rendez-vous">
+                                        <p class="text-center text-jaune"><?php echo htmlspecialchars($ligne3['name']); ?></p>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                            <div class="row mx-1 fixed-bottom barre-bas">
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>-->
+            </div>
         </div>
         <?php   } 
             } ?>
