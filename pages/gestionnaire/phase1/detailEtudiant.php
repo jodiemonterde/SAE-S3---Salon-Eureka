@@ -131,11 +131,11 @@
             </h2>
             <div id="collapse<?php echo $ligne['user_id']?>" class="accordion-collapse collapse" aria-labelledby="heading<?php echo $ligne['user_id']?>" data-bs-parent="#listeEntreprise">
                 <div class="accordion-body">
-                    <div class="row">
+                    <div class="row m-0">
                         <?php
                             $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
                             while ($ligne2 = $stmt2->fetch()) {?>
-                                <div class="row entreprise align-items-center mx-1">
+                                <div class="row entreprise align-items-center">
                                     <div class="col-2 col-md-1">
                                         <img src="../../../ressources/<?php echo $ligne2["logo_file_name"] != "" ? $ligne2["logo_file_name"] : "no-photo.png"?>" alt="logo" class="logoEntreprise" width="75px" height="75px"/>
                                     </div>
