@@ -17,6 +17,10 @@
     width: 100%;
 }
 
+.zoneText select { 
+    color: #bfbfbf; 
+}
+
 input ::placeholder {
     color: #bfbfbf !important;
 }
@@ -120,10 +124,21 @@ h2 {
     width: 100%;
 }
 
-addStudent {
+.boutonNegatif {
+    height: 40px;
     background-color: white;
-    border: solid 1px #D9D9D9;
+    text-transform: uppercase;
+    border: solid 1px #FFA800;
     color: #FFA800;
+    border-radius: 40px 20px 40px 20px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    width: 100%;
+}
+
+button {
+    background-color: white;
 }
 
 hr {
@@ -138,6 +153,18 @@ p {
 .student {
     color: #FFA800;
     margin-bottom: 0;
+}
+
+.modalLabel {
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.addStudent {
+    background-color: white;
+    border: solid 2px #FFA800;
+    color: #FFA800;
+    border-radius: 4px;
 }
 
 .description {
@@ -177,9 +204,7 @@ p {
     border-color: #FFA800 !important;
 }
 
-.accordion-item button {
-    border-radius: 4px;
-}
+
 
 .title {
     color: #FFA800;
@@ -192,4 +217,16 @@ p {
 
 .erreur {
     color: red;
+}
+
+.blanc{
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.blanc:hover{
+    background-color: #eee;
 }

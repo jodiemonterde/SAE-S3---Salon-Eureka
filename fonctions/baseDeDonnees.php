@@ -36,6 +36,31 @@ function getEntreprisesForStudent($pdo, $user_id) {
     return $stmt;
 }
 
+function addNewStudent($pdo, $nom, $prenom, $email, $mdp, $filiere) {
+    $nom = htmlspecialchars($nom);
+    $prenom = htmlspecialchars($prenom);
+    $email = htmlspecialchars($email);
+    $mdp = htmlspecialchars($mdp);
+    $filiere = htmlspecialchars($filiere);
+
+    $username = $prenom.' '.$nom;
+    $stmt = $pdo->prepare("INSERT INTO User (username, password, responsibility, email)
+                           VALUES (:username, :password, 'E', :email)");
+    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':password', $mdp);
+    $stmt->bindParam(':email', $email);
+    $stmt->execute(); 
+
+    // Récupérer l'ID généré automatiquement
+    $user_id = $pdo->lastInsertId();
+
+    $stmt = $pdo->prepare("INSERT INTO AssignmentUser (field_id, user_id)
+                           VALUES (:field_id, :user_id)");
+    $stmt->bindParam(':field_id', $filiere);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
+}
+
 function getEntreprisesPerStudent($pdo, $user_id) {
     $stmt = $pdo->prepare("SELECT Company.company_id,name,logo_file_name,address,sector
                            FROM Company
