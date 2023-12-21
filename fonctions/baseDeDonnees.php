@@ -80,7 +80,7 @@ function updateForum($pdo,$dateForum,$debut,$fin,$dureePrincipal,$dureeSecondair
         $pdo->beginTransaction();
         $maRequete=$pdo->prepare("UPDATE Meeting 
                                   SET 
-                                    date = DATE(:dateForum),
+                                    date = :dateForum,
                                     start = :debut,
                                     end = :fin,
                                     primary_appointment_duration = :dureePrincipal, 

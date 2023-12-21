@@ -2,8 +2,8 @@
     session_start();
     require("../../../fonctions/baseDeDonnees.php");
     $pdo = connecteBD();
-    if(isset($_POST['dateForum']) && isset($_POST['heureDebut']) && isset($_POST['HeureFin']) && isset($_POST['duree']) && isset($_POST['secDuree']) && isset($_POST['dateLim'])){
-        updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['HeureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
+    if(isset($_POST['dateForum']) && isset($_POST['heureDebut']) && isset($_POST['heureFin']) && isset($_POST['duree']) && isset($_POST['secDuree']) && isset($_POST['dateLim'])){
+        updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['heureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
     }
     $infoForum = infoForum($pdo); 
 ?>
@@ -25,9 +25,7 @@
                 <div class="col-md-4"></div>
                 <div class="col-md-4 col-12 text-center formulaire">
                     <form action="menu.php" method="POST">
-                        <?php 
-                            echo var_dump($_POST);
-                            $ligne = $infoForum->fetch();?>
+                        <?php $ligne = $infoForum->fetch();?>
                         <div class="row p-0">
                             <div class="col-12">
                                 <label for="dateForum">Date du forum :</label><br/>
