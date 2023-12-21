@@ -14,7 +14,7 @@
             }
         }elseif($_SESSION['type_utilisateur'] == 'G'){
             if ($phase == 1) {
-                header('Location: gestionnaire/phase1/detailEntreprise.php');
+                header('Location: gestionnaire/phase1/listeEntreprise.php');
             } else {
                 header('Location: gestionnaire/phase2/detailEntreprise.php');
             }
@@ -42,7 +42,7 @@
         if($_SESSION['type_utilisateur'] == 'E'){
             header('Location: etudiant/phase1/listeEntreprises.php');
         }elseif($_SESSION['type_utilisateur'] == 'G'){
-            header('Location: gestionnaire/phase1/detailEntreprise.php');
+            header('Location: gestionnaire/phase1/listeEntreprise.php');
         }else{
             header('Location: administrateur/entreprises/detailEntreprise.php');
         }
