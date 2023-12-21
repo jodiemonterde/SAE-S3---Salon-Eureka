@@ -102,6 +102,48 @@
         return $stmt;
     }
 
+    function getFields($pdo) {
+        $sql = "SELECT * FROM `Field`";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function getInfoStudents($pdo, $recherche, $field_ids) {
+        $field_ids_str = implode(', ', $field_ids);
+    
+        if ($field_ids_str == null) {
+            return null;
+        }
+    
+        $sql = "SELECT u.username, f.name AS filiere, COUNT(w.company_id) AS nbSouhait, u.user_id
+                FROM User u
+                JOIN AssignmentUser au
+                ON u.user_id = au.user_id
+                JOIN Field f
+                ON au.field_id = f.field_id
+                LEFT JOIN WishList w
+                ON u.user_id = w.user_id
+                WHERE u.responsibility = 'E'
+                AND f.field_id IN ($field_ids_str)
+                GROUP BY u.username, filiere";
+    
+        if ($recherche != null) {
+            $sql .= " HAVING u.username LIKE :recherche";
+        }
+    
+        $sql .= " ORDER BY u.username";
+    
+        $stmt = $pdo->prepare($sql);
+    
+        if ($recherche != null) {
+            $stmt->bindValue(':recherche', '%' . $recherche . '%', PDO::PARAM_STR);
+        }
+    
+        $stmt->execute();
+        return $stmt;
+    }
+    
     function removeWishStudent($pdo, $user_id, $company_id) {
         $stmt = $pdo->prepare("DELETE FROM WishList
                             WHERE user_id = :user_id AND company_id = :company_id");
