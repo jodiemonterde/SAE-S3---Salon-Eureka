@@ -15,6 +15,8 @@
         <link rel="stylesheet" href="../../../../outils/bootstrap-5.3.2-dist/css/bootstrap.css">
         <link rel="stylesheet" href="../../../../outils/fontawesome-free-6.5.1-web/css/all.css">
         <script src="../../../../outils/bootstrap-5.3.2-dist/js/bootstrap.js"></script>
+        <link rel="stylesheet" href="../../../css/navbars.css">
+        <script src="../../../../outils/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
         <link rel="stylesheet" href="forum.css">
         <title>informations eureka</title>
     </head>
