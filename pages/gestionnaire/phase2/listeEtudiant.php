@@ -17,7 +17,7 @@
             array_push($_SESSION['filtre'], $_POST['nouveauFiltre']);
         }
         
-        header("Location: detailEtudiant.php");
+        header("Location: listeEtudiant.php");
         exit();
     }
     include("../../../fonctions/baseDeDonnees.php");
@@ -33,9 +33,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../../../outils/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <link rel="stylesheet" href="./listeEtudiant.css">
+    <link rel="stylesheet" href="../../../css/all.css">
+    <link rel="stylesheet" href="../../../css/listeEtudiant.css">
     <link rel="stylesheet" href="../../../css/navbars.css">
-    <link rel="stylesheet" href="filtre.css">
+    <link rel="stylesheet" href="../../../css/filtre.css">
     <title>Eureka - Liste des entreprises</title>
 </head>
 <body>
@@ -50,7 +51,7 @@
                 <ul class="navbar-nav d-flex h-100 align-items-center">
                     <li class="nav-item nav-link p-0 d-none d-md-block h-100">
                         <!-- Si sur la liste des entreprises, mettre en actif et lien_inactif-->
-                        <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="detailEntreprise.php"> Liste des entreprises </a>
+                        <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeEntreprise.php"> Liste des entreprises </a>
                     </li>
                     <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
                         <!-- Si sur la liste des étudiants, mettre en actif et lien_inactif -->
@@ -80,7 +81,7 @@
                 <h2>Liste des étudiants</h2>
                 <p>Voici tous les étudiants inscrits au forum Eureka de cette année. Cliquez sur l’un d’eux pour voir la liste des entreprises auprès desquels il souhaite obtenir un rendez-vous !</p>
             </div>
-            <form action="detailEtudiant.php" method="post" class="col-12 col-md-6 my-2">
+            <form action="listeEtudiant.php" method="post" class="col-12 col-md-6 my-2">
                 <div class="row">
                     <div class="col-8">
                         <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="zoneRecherche"/>    
@@ -99,7 +100,7 @@
                         $fields = getFields($pdo);
                         while ($ligne = $fields->fetch()) {
                     ?>
-                    <form action="detailEtudiant.php" method="post">
+                    <form action="listeEtudiant.php" method="post">
                         <input type="hidden" name="nouveauFiltre" value="<?php echo $ligne['field_id']; ?>">
                         <button class="bouton-filtre <?php echo in_array($ligne['field_id'], $_SESSION['filtre']) ? "bouton-filtre-selectionner" : "bouton-filtre-deselectionner"?>"><?php echo $ligne['name']; ?></button>
                     </form>
@@ -180,7 +181,7 @@
                         <!-- Si sur la liste des entreprises, mettre l'icône blanche, sinon mettre l'icône en noir -->
                         <img src="../../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone">
                     </a>
-                    <a class="d-flex justify-content-center lien_barre_basse" href="./detailEntreprise.php">
+                    <a class="d-flex justify-content-center lien_barre_basse" href="listeEntreprise.php">
                         Entreprises
                     </a>
                     

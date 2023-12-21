@@ -36,7 +36,7 @@
     <link rel="stylesheet" href="../../../lib/fontawesome-free-6.5.1-web/css/all.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <link rel="stylesheet" href="../../../css/listeEtudiantGestionnaire.css">
+    <link rel="stylesheet" href="../../../css/listeEtudiantGestionnaire1.css">
     <link rel="stylesheet" href="../../../css/all.css">
     <link rel="stylesheet" href="../../../css/filtre.css">
     <link rel="stylesheet" href="../../../css/navbars.css">
