@@ -162,9 +162,13 @@ p {
 
 .addStudent {
     background-color: white;
-    border: solid 2px #FFA800;
+    border: solid 1px #FFA800;
     color: #FFA800;
     border-radius: 4px;
+}
+
+.addStudent:hover {
+    background-color: #eee;
 }
 
 .description {

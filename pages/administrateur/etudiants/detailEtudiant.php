@@ -112,12 +112,13 @@
                 </div>
             </div>
         </div>
-        <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modal">
+        <hr class="mb-4">
+        <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalAddStudent">
             <i class="fa-solid fa-plus text-left justify-content-center"></i>
             <h2 class="text-center m-2">Ajouter un(e) étudiant(e)</h2>
         </button>
 
-        <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modalAddStudent" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content  px-4 pb-4">
                     <div class="modal-header deco justify-content-start px-0">
@@ -185,10 +186,32 @@
                     <div class="row m-0">
                         <div class="row my-3">
                             <div class="col-md-6 py-2">
-                                <button class="boutonNegatif">Supprimer</button>
+                                <button class="boutonNegatif" data-bs-toggle="modal" data-bs-target="#modalDeleteStudent">Supprimer</button>
+                            </div>
+                            <div class="modal fade" id="modalDeleteStudent" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                                    <div class="modal-content  px-4 pb-4">
+                                        <div class="modal-header deco justify-content-start px-0">
+                                            <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
+                                            <h2 class="modal-title" id="deleteStudentModalLabel"><?php echo $ligne['username'];?></h2>
+                                        </div>
+                                        <h2>Êtes-vous sûr(e) de vouloir supprimer cet(te) étudiant(e) ?</h2>
+                                        <form action="detailEtudiant.php" method="post">
+                                            <input type="hidden" name="supprimer" value="<?php echo $ligne['user_id'];?>">
+                                            <div class="row mt-3">
+                                                <div class="col-6">
+                                                    <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                                </div>
+                                                <div class="col-6">
+                                                    <button type="submit" class="bouton confirmation col-6" value="Valider">Valider</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6 py-2">
-                                <button class="bouton col-md-6">Modifier le mot de passe</button>
+                                <button class="bouton col-md-6" data-bs-toggle="modal" data-bs-target="#modalModifyPassword">Modifier le mot de passe</button>
                             </div>
                         </div>
                         <hr>

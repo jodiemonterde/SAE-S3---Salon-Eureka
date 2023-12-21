@@ -61,6 +61,22 @@ function addNewStudent($pdo, $nom, $prenom, $email, $mdp, $filiere) {
     $stmt->execute();
 }
 
+function deleteStudent($pdo, $user_id) {
+    $user_id = htmlspecialchars($user_id);
+
+    $stmt = $pdo->prepare("DELETE 
+                           FROM AssignmentUser
+                           WHERE AssignmentUser.user_id = :user_id;");
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute(); 
+
+    $stmt = $pdo->prepare("DELETE 
+                           FROM User
+                           WHERE User.user_id = :user_id;");
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
+}
+
 function getEntreprisesPerStudent($pdo, $user_id) {
     $stmt = $pdo->prepare("SELECT Company.company_id,name,logo_file_name,address,sector
                            FROM Company
