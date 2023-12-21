@@ -23,7 +23,7 @@
              <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
             <div class="container-fluid h-100">
                 <div class="navbar-brand d-flex align-items-center h-100">
-                    <img src="./ressources/logo_black.svg" alt="Logo Eureka" class="logo me-2">
+                    <img src="../../../ressources/logo_black.svg" alt="Logo Eureka" class="logo me-2">
                     Eureka
                 </div>
                 <div class="navbar-right h-100">
@@ -54,7 +54,7 @@
                         </li>
                         <li class="nav-item d-md-none d-flex justify-content-end">
                             <a href="#">
-                                <img src="./ressources/icone_deconnexion.svg" alt="Se déconnecter" class="logo">
+                                <img src="../../../ressources/icone_deconnexion.svg" alt="Se déconnecter" class="logo">
                             </a>
                         </li>
                     </ul>
@@ -125,7 +125,7 @@
                         <!-- Si sur la liste des entreprises, mettre l'icone en actif et lien_inactif -->
                         <a class="d-flex justify-content-center actif_bas_icone" href="#">
                             <!-- Si sur la liste des entreprises, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="./ressources/icone_entreprise_white.svg" alt="Liste des entreprises" class="icone">
+                            <img src="../../../ressources/icone_entreprise_white.svg" alt="Liste des entreprises" class="icone">
                         </a>
                         Entreprises
                     </li>
@@ -134,7 +134,7 @@
                         <!-- Si sur la liste des étudiants, mettre l'icône en actif et lien_inactif -->
                         <a class="d-flex justify-content-center" href="#">
                             <!-- Si sur la liste des étudiants, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="./ressources/icone_etudiant_black.svg" alt="Liste des étudiants" class="icone">
+                            <img src="../../../ressources/icone_etudiant_black.svg" alt="Liste des étudiants" class="icone">
                         </a>
                         Etudiants
                     </li>
@@ -143,7 +143,7 @@
                         <!-- Si sur la liste des gestionnaires, mettre l'icône en actif et lien_inactif -->
                         <a class="d-flex justify-content-center" href="#">
                             <!-- Si sur la liste des gestionnaires, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="./ressources/icone_gestionnaire_black.svg" alt="Liste des gestionnaires" class="icone">
+                            <img src="../../../ressources/icone_gestionnaire_black.svg" alt="Liste des gestionnaires" class="icone">
                         </a>
                         Gestionnaires
                     </li>
@@ -152,7 +152,7 @@
                         <!-- Si sur les paramètres du forum, mettre l'icône en actif et lien_inactif -->
                         <a class="d-flex justify-content-center" href="#">
                             <!-- Si sur les paramètres du forum, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="./ressources/icone_forum_black.svg" alt="Paramètres du forum" class="icone">
+                            <img src="../../../ressources/icone_forum_black.svg" alt="Paramètres du forum" class="icone">
                         </a>
                         Forum
                     </li>
