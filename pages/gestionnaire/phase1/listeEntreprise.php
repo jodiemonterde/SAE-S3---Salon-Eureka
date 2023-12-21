@@ -54,7 +54,7 @@
                         </li>
                         <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
                             <!-- Si sur la liste des étudiants, mettre en actif et lien_inactif -->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="detailEtudiant.php"> Liste des étudiants </a>
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeEtudiant.php"> Liste des étudiants </a>
                         </li>
                         <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -170,11 +170,11 @@
                     <!-- Si sur la liste des étudiants, mettre le texte en actif -->
                     <li class="nav-item d-flex flex-column text-center inactif_bas">
                         <!-- Si sur la liste des étudiants, mettre l'icône en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center" href="listeRendezVous.php">
+                        <a class="d-flex justify-content-center" href="listeEtudiant.php">
                             <!-- Si sur la liste des étudiants, mettre l'icône blanche, sinon mettre l'icône en noir -->
                             <img src="../../../ressources/icone_etudiant_black.svg" alt="Liste des étudiants" class="icone">
                         </a>
-                        <a class="d-flex justify-content-center lien_barre_basse" href="listeRendezVous.php">
+                        <a class="d-flex justify-content-center lien_barre_basse" href="listeEtudiant.php">
                             Etudiants
                         </a>
                     </li>
