@@ -2,7 +2,7 @@
     session_start();
     require('../../../fonctions/baseDeDonnees.php');
     $pdo = connecteBD();
-    if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1){
+    if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1 || $_SESSION['type_utilisateur'] != 'E'){
         header('Location: ../../connexion.php');
     }
     if (isset($_POST["entreprise_id"])) {
@@ -44,7 +44,7 @@
                         </li>
                         <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <?php echo htmlspecialchars($_SESSION['nom_utilisateur'])?>
+                                <?php echo htmlspecialchars($_SESSION['nom_utilisateur'])?>
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li> <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deconnexion"> Se déconnecter </a> </li>
@@ -76,10 +76,10 @@
             $vide = false;?>
             <div class="row entreprise align-items-center ">
                 <div class="col-2 col-md-1">
-                    <img src="../../../ressources/<?php echo htmlspecialchars($ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "companyDefault.png")?>" alt="logo" class="logoEntreprise" width="75px" height="75px"/>
+                    <img src="../../../ressources/<?php echo htmlspecialchars($ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "no-photo.png")?>" alt="logo" class="logoEntreprise" width="75px" height="75px"/>
                 </div>
                 <div class="col-8 col-md-6 col-lg-8 colEntreprise">
-                    <span class="nomEntreprise"><?php echo htmlspecialchars($ligne["name"])?></span></br>
+                    <span class="text-jaune"><?php echo htmlspecialchars($ligne["name"])?></span></br>
                     <i class="fa-solid fa-briefcase"></i>&nbsp;&nbsp;&nbsp;<?php echo htmlspecialchars($ligne["sector"])?><br/>
                     <i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo htmlspecialchars($ligne["address"])?>
                 </div>

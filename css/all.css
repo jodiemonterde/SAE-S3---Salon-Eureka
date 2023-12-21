@@ -15,6 +15,7 @@ body {
 .bouton {
     background-color: #FFA800;
     text-transform: uppercase;
+    color: black;
     border-style: none;
     border-radius: 40px 20px 40px 20px;
     padding: 10px 16px;

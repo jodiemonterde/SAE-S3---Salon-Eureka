@@ -5,6 +5,9 @@
     $user = 1;
     include("../../../fonctions/baseDeDonnees.php");
     $pdo = connecteBD();
+    if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1 || $_SESSION['type_utilisateur'] != 'E'){
+        header('Location: ../../connexion.php');
+    }
     if (isset($_POST["entreprise_id"]) && isset($_POST["mode"])) {
         if ($_POST["mode"] == 'add') {
             addWishStudent($pdo, $user, $_POST["entreprise_id"]);
@@ -50,14 +53,14 @@
                         </li>
                         <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Pseudo Utilisateur
+                                <?php echo htmlspecialchars($_SESSION['nom_utilisateur'])?>
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                <li> <a class="dropdown-item" href="#"> Se déconnecter </a> </li>
+                                <li> <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deconnexion"> Se déconnecter </a> </li>
                             </ul>
                         </li>
                         <li class="nav-item d-md-none d-flex justify-content-end">
-                            <a href="#">
+                            <a data-bs-toggle="modal" data-bs-target="#deconnexion">
                                 <img src="../../../ressources/icone_deconnexion.png" alt="Se déconnecter">
                             </a>
                         </li>
@@ -69,7 +72,7 @@
         <div class="container mt-2">
             <div class="row d-flex align-items-center h-100">
                 <div class="col-12 col-md-6">
-                    <h2>Prenez rendez-vous avec les entreprises qui vous correspondent.</h2>
+                    <h2>Prenez rendez-vous avec les entreprises qui vous correspondent.<?php echo date("d/m/Y")?></h2>
                     <p>Choisissez toutes les entreprises que vous souhaitez rencontrer au salon Eureka et prenez rendez-vous en un clic ! Dès le XX mois, vous pourrez venir consulter votre emploi du temps pour le salon créée à partir de vos demandes de rendez-vous. Si vous souhaitez annuler l'un de vos rendez-vous, il suffit de cliquer à nouveau.</p>
                 </div>
                 <form action="listeEntreprises.php" method="post" class="col-12 col-md-6 my-2">
@@ -99,7 +102,7 @@
                             <input type="hidden" name="mode" value="<?php if ($ligne['wish'] != null) { echo 'delete';} else { echo 'add';}?>"/>                                         
                                     <div class="profil-det-img d-flex">
                                         <div class="dp">
-                                        <img src="../../../ressources/<?php echo htmlspecialchars($ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "companyDefault.png")?>" alt="">
+                                        <img src="../../../ressources/<?php echo htmlspecialchars($ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "no-photo.png")?>" alt="">
                                         </div>
                                         <div class="pd">
                                             <h2 class="text-jaune"><?php echo $ligne["name"]?></h2>
@@ -151,5 +154,36 @@
                 </ul>
             </div>
         </nav>
+        <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                <div class="modal-content">
+                    <div class="modal-header deco">
+                        <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class = "row">
+                                <div class="col-12">
+                                    <h1 class="text-center" id="Sedeconnecter">DÉCONNEXION</h1>
+                                </div>
+                            </div>
+                            <div class = "row">
+                                <div class="col-12">
+                                    <P class="text-center">Êtes-vous sûr(e) de vouloir vous déconnecter ?</P>
+                                </div>
+                            </div>
+                            <div class = "row">
+                                <div class="col-6 d-flex justify-content-evenly">
+                                    <button type="button" data-bs-dismiss="modal" class="bouton">Retour</button>
+                                </div>
+                                <div class="col-6 d-flex justify-content-evenly">
+                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton">Se déconnecter </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

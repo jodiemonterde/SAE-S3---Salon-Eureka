@@ -52,9 +52,13 @@
 
 	function getPhase($pdo){
         try{ 
-			$maRequete = $pdo->prepare("SELECT phase from Meeting");
+			$maRequete = $pdo->prepare("SELECT phase, wish_period_end from Meeting");
 			$maRequete->execute();
-			return $maRequete->fetch()[0];
+            $ligne = $maRequete->fetch();
+            $phase = $ligne['phase'];
+            $phase = $phase == 1 && $ligne['wish_period_end'] < date("Y-m-d") ? 1.5 : $phase;
+
+			return $phase;
 		}
 		catch ( Exception $e ) {
 			echo "Connection failed: " . $e->getMessage();
