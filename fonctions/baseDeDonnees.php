@@ -50,17 +50,49 @@
 		} 
     }
 
-	function getPhase($pdo){
+	
+
+    function infoForum($pdo){
+        $maRequete=$pdo->prepare('SELECT date,start,end, primary_appointment_duration, secondary_appointment_duration, wish_period_end FROM Meeting');
+        $maRequete->execute();
+        return $maRequete;
+    }
+
+    function updateForum($pdo,$dateForum,$debut,$fin,$dureePrincipal,$dureeSecondaire,$jourFin){
+        try{
+            $pdo->beginTransaction();
+            $maRequete=$pdo->prepare("UPDATE Meeting 
+                                    SET 
+                                        date = :dateForum,
+                                        start = :debut,
+                                        end = :fin,
+                                        primary_appointment_duration = :dureePrincipal, 
+                                        secondary_appointment_duration = :dureeSecondaire,
+                                        wish_period_end = :jourFin
+                                    WHERE meeting_id = 1");
+            $maRequete->bindParam(':dateForum', $dateForum);
+            $maRequete->bindParam(':debut', $debut);
+            $maRequete->bindParam(':fin', $fin);
+            $maRequete->bindParam(':dureePrincipal', $dureePrincipal);
+            $maRequete->bindParam(':dureeSecondaire', $dureeSecondaire);
+            $maRequete->bindParam(':jourFin', $jourFin);
+            $maRequete->execute();
+            $pdo->commit();
+        }catch(Exception $e){
+            $pdo->rollBack();
+        }
+
+    }
+
+    function getPhase($pdo){
         try{ 
-			$maRequete = $pdo->prepare("SELECT phase, wish_period_end from Meeting");
-			$maRequete->execute();
+            $maRequete = $pdo->prepare("SELECT phase, wish_period_end from Meeting");
+            $maRequete->execute();
             $ligne = $maRequete->fetch();
             $phase = $ligne['phase'];
             $phase = $phase == 1 && $ligne['wish_period_end'] < date("Y-m-d") ? 1.5 : $phase;
-
-			return $phase;
-		}
-		catch ( Exception $e ) {
+            return $phase;
+		} catch ( Exception $e ) {
 			echo "Connection failed: " . $e->getMessage();
 			return false;
 		} 
