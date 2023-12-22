@@ -8,6 +8,11 @@
     color: #FFA800;
 }
 
+.logoEntreprise {
+    border-radius: 100%;
+    border: 2px solid #e9e9e9;
+}
+
 .inWishList {
     border-color: #FFA800;
     border-width: 3px;
@@ -37,6 +42,7 @@
 .profil-det-img .dp {
     padding: 16px 8px 8px 8px; }
 .profil-det-img .dp img {
+    border: 2px solid #e9e9e9;
     border-radius: 50px;
     width: 80px; }
 .profil-det-img .pd {

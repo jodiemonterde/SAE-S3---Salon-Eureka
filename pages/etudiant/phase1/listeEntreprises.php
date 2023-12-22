@@ -102,7 +102,7 @@
                             <input type="hidden" name="mode" value="<?php if ($ligne['wish'] != null) { echo 'delete';} else { echo 'add';}?>"/>                                         
                                     <div class="profil-det-img d-flex">
                                         <div class="dp">
-                                        <img src="../../../ressources/<?php echo htmlspecialchars($ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "no-photo.png")?>" alt="">
+                                        <img class="logoEntrerise" src="../../../ressources/<?php echo htmlspecialchars($ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "no-photo.png")?>" alt="">
                                         </div>
                                         <div class="pd">
                                             <h2 class="text-jaune"><?php echo $ligne["name"]?></h2>
