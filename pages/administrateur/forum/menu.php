@@ -35,19 +35,19 @@
                     <ul class="navbar-nav d-flex h-100 align-items-center">
                         <li class="nav-item nav-link p-0 d-none d-md-block h-100">
                             <!-- Si sur la liste des entreprises, mettre en actif et lien_inactif-->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Liste des entreprises </a>
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../entreprises/listeEntreprises.php"> Liste des entreprises </a>
                         </li>
                         <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
                             <!-- Si sur la liste des étudiants, mettre en actif et lien_inactif -->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Liste des étudiants </a>
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../etudiants/listeEtudiants.php"> Liste des étudiants </a>
                         </li>
                         <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
                             <!-- Si sur la liste des gestionnaires, mettre en actif et lien_inactif -->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Liste des gestionnaires </a>
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../gestionnaire/listeGestionnaires.php"> Liste des gestionnaires </a>
                         </li>
                         <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
                             <!-- Si sur les paramètres du forum, mettre en actif et lien_inactif -->
-                            <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="#"> Paramètres du forum </a>
+                            <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"> Paramètres du forum </a>
                         </li>
                         <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
