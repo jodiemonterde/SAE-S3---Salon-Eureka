@@ -22,6 +22,10 @@
     }
     include("../../../fonctions/baseDeDonnees.php");
     $pdo = connecteBD();
+
+    if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 2 || $_SESSION['type_utilisateur'] != 'G'){
+        header('Location: ../../connexion.php');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +34,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="../../../../outils/bootstrap-5.3.2-dist/css/bootstrap.css">
     <link rel="stylesheet" href="../../../../outils/fontawesome-free-6.5.1-web/css/all.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../../../outils/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <link rel="stylesheet" href="../../../css/all.css">
