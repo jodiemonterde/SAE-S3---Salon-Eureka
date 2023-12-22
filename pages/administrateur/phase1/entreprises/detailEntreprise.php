@@ -24,11 +24,12 @@
     $pdo = connecteBD();
 
     if (isset($_POST["suppression_entreprise_id"])) {
-        supprimerEntreprise($pdo, $_POST["entreprise_id"]);
+        supprimerEntreprise($pdo, $_POST["suppression_entreprise_id"]);
     }
 
+    //TODO réussir à récupérer toutes les informations des différents intervenants pour la fonction
     if (isset($_POST["modification_entreprise_id"])) {
-        supprimerEntreprise($pdo, $_POST["entreprise_id"]);
+        modifierEntreprise($pdo, $_POST["modification_entreprise_id"], $_POST["nom_entreprise"], $_POST["secteur_activite"], $_POST["lieu"], $_POST["description"]);
     }
 ?>
 <!DOCTYPE html>
@@ -205,70 +206,70 @@
                     </div>
                     <div class="modal-body">
                         <div class="container">
-                            <div class="row">
-                                <div class="col-12">
-                                    <h1>Information sur l'entreprise</h1>
+                            <form action="detailEntreprise.php" method="post">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h1>Information sur l'entreprise</h1>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="nom_entreprise"> Nom de l'entreprise </label> <br/>
+                                        <input type="text" name="nom_entreprise" value=<?php echo $ligne["name"] ?>>
+                                    </div>
+                                    <hr/>
+                                    <div class="col-12">
+                                        <label for="secteur_activite"> Secteur d'activité </label> <br/>
+                                        <input type="text" name="secteur_activite" value=<?php echo $ligne["sector"] ?>>
+                                    </div>
+                                    <hr/>
+                                    <div class="col-12">
+                                        <label for="lieu"> Lieu </label> <br/>
+                                        <input type="text" name="lieu" value=<?php echo $ligne["address"] ?>>
+                                    </div>
+                                    <hr/>
+                                    <div class="col-12">
+                                        <label for="description"> Description </label> <br/>
+                                        <input type="textarea" name="description" value=<?php echo $ligne["description"] ?>>
+                                    </div>
+                                    <hr/>
                                 </div>
-                                <div class="col-12">
-                                    <label for="nom_entreprise"> Nom de l'entreprise </label> <br/>
-                                    <input type="text" name="nom_entreprise" value="<?php echo $ligne["name"] ?>">
+                                <?php $i = 1;
+                                $count = getSpeakersPerCompany($pdo, $ligne["company_id"]);
+                                while ($speaker = $count->fetch()) { ?>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h1> Intervenant <?php echo $i ?> </h1>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="nom_intervenant"> Nom de l'intervenant </label> <br/>
+                                        <input type="text" name="nom_intervenant" value="Saisir le nom de l'intervenant">
+                                    </div>
+                                    <hr/>
+                                    <div class="col-12">
+                                        <label for="fonction_intervenant"> Fonction de l'intervenant </label> <br/>
+                                        <input type="text" name="fonction_intervenant" value="Saisir la fonction de l'intervenant">
+                                    </div>
+                                    <hr/>
+                                    <div class="col-12">
+                                        <h5> Filières d'intérêt </h5> <br/>
+                                        <?php $liste_filieres = getFields($pdo);
+                                        while ($filiere = $liste_filieres->fetch()) { ?>
+                                        <button class="bouton"> <?php $filiere["name"] ?> </button>
+                                        <?php } ?>
+                                    </div>
+                                    <hr/>
                                 </div>
-                                <hr/>
-                                <div class="col-12">
-                                    <label for="secteur_activite"> Secteur d'activité </label> <br/>
-                                    <input type="text" name="secteur_activite" value="<?php echo $ligne["sector"] ?>">
-                                </div>
-                                <hr/>
-                                <div class="col-12">
-                                    <label for="lieu"> Lieu </label> <br/>
-                                    <input type="text" name="lieu" value="<?php echo $ligne["address"] ?>">
-                                </div>
-                                <hr/>
-                                <div class="col-12">
-                                    <label for="description"> Description </label> <br/>
-                                    <input type="textarea" name="description" value="<?php echo $ligne["description"] ?>">
-                                </div>
-                                <hr/>
-                            </div>
-                            <?php $i = 1;
-                            $count = getSpeakersPerCompany($pdo, $ligne["company_id"]);
-                            while ($speaker = $count->fetch()) { ?>
-                            <div class="row">
-                                <div class="col-12">
-                                    <h1> Intervenant <?php echo $i ?> </h1>
-                                </div>
-                                <div class="col-12">
-                                    <label for="nom_intervenant"> Nom de l'intervenant </label> <br/>
-                                    <input type="text" name="nom_intervenant" value="Saisir le nom de l'intervenant">
-                                </div>
-                                <hr/>
-                                <div class="col-12">
-                                    <label for="fonction_intervenant"> Fonction de l'intervenant </label> <br/>
-                                    <input type="text" name="fonction_intervenant" value="Saisir la fonction de l'intervenant">
-                                </div>
-                                <hr/>
-                                <div class="col-12">
-                                    <h5> Filières d'intérêt </h5> <br/>
-                                    <?php $liste_filieres = getFields($pdo);
-                                    while ($filiere = $liste_filieres->fetch()) { ?>
-                                    <button class="bouton"> <?php $filiere["name"] ?> </button>
-                                    <?php } ?>
-                                </div>
-                                <hr/>
-                            </div>
-                            <?php $i += 1;
-                            } ?>
-                            <div class="row">
-                                <div class="col-6 d-flex justify-content-evenly">
-                                    <button type="button" data-bs-dismiss="modal"> Annuler </button>
-                                </div>
-                                <div class="col-6 d-flex justify-content-evenly">
-                                    <form action="detailEntreprise.php" method="post">
+                                <?php $i += 1;
+                                } ?>
+                                <div class="row">
+                                    <div class="col-6 d-flex justify-content-evenly">
+                                        <button type="button" data-bs-dismiss="modal"> Annuler </button>
+                                    </div>
+                                    <div class="col-6 d-flex justify-content-evenly">
                                         <input type="hidden" name="modification_entreprise_id" value="<?php echo $ligne["company_id"]?>"/>
                                         <input type="submit" class="bouton" value="Modifier"/>
-                                    </form>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

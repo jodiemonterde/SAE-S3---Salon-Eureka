@@ -137,4 +137,10 @@ function supprimerEntreprise($pdo, $company_id) {
     return $stmt->execute();
 }
 
+//TODO faire la requête pour mettre à jour et ajouter les données
+function modifierEntreprise($pdo, $company_id, $nom_entreprise, $secteur_activite, $lieu, $description) {
+    $stmt = $pdo->prepare("");
+    return $stmt->execute();
+}
+
 ?>
