@@ -26,6 +26,8 @@
     
     if (isset($_POST['nomEtudiant'])) {
         addNewStudent($pdo, $_POST['prenomEtudiant'], $_POST['nomEtudiant'], $_POST['emailEtudiant'], $_POST['motDePasseEtudiant'], $_POST['filiereEtudiant']);
+        header("Location: detailEtudiant.php");
+        exit();
     }
     
 ?>
@@ -188,9 +190,16 @@
                             <div class="col-md-6 py-2">
                                 <button class="boutonNegatif" data-bs-toggle="modal" data-bs-target="#modalDeleteStudent">Supprimer</button>
                             </div>
+                            <div class="col-md-6 py-2">
+                                <button class="bouton col-md-6" data-bs-toggle="modal" data-bs-target="#modalModifyPassword">Modifier le mot de passe</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <?php
+                            $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
                             <div class="modal fade" id="modalDeleteStudent" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-                                    <div class="modal-content  px-4 pb-4">
+                                    <div class="modal-content px-4 pb-4">
                                         <div class="modal-header deco justify-content-start px-0">
                                             <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
                                             <h2 class="modal-title" id="deleteStudentModalLabel"><?php echo $ligne['username'];?></h2>
@@ -210,13 +219,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 py-2">
-                                <button class="bouton col-md-6" data-bs-toggle="modal" data-bs-target="#modalModifyPassword">Modifier le mot de passe</button>
-                            </div>
-                        </div>
-                        <hr>
-                        <?php
-                            $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
                             if ($ligne["nbSouhait"] < 1) {
                                 echo "<p class='erreur text-center'>Cet(te) étudiant(e) n'a pris aucun rendez-vous pour l'instant !</p>";
                             }
