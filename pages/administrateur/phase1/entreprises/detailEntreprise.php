@@ -166,9 +166,14 @@
                             </div>
                             <?php } ?>
                         </div>
-                        <div class="row">
-                            <button class="bouton" type="button" data-bs-toggle="modal" data-bs-target="#modification"> Modifier </button>
-                            <button class="bouton" type="button" data-bs-toggle="modal" data-bs-target="#suppression"> Supprimer </button>
+                        <hr>
+                        <div class="row d-flex justify-content-evenly">
+                            <div class="col-4">
+                                <button class="bouton" type="button" data-bs-toggle="modal" data-bs-target="#modification"> Modifier </button>
+                            </div>
+                            <div class="col-4">
+                                <button class="bouton" type="button" data-bs-toggle="modal" data-bs-target="#suppression"> Supprimer </button>
+                            </div>
                         </div>
                         <div class="row">
                             <?php
@@ -196,9 +201,9 @@
                     </div>
                     <div class="modal-body">
                         <div class="container">
-                            <div class = "row">
+                            <div class="row">
                                 <div class="col-12">
-                                    <h1 class="text-center" id="Sedeconnecter">DÉCONNEXION</h1>
+                                    <h1 class="text-center">Information sur l'entreprise</h1>
                                 </div>
                             </div>
                             <div class = "row">
