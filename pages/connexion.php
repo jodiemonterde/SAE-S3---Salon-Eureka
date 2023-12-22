@@ -94,7 +94,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <label for="identifiant"> Votre identifiant : </label>
-                                <input type="text" name="identifiant" value="" placeholder="&#xf007 Saisir votre identifiant" class="form-control zoneText"/>
+                                <input type="text" name="identifiant" value="<?php echo isset($_POST["identifiant"]) ? $_POST["identifiant"] : ""?>" placeholder="&#xf007 Saisir votre identifiant" class="form-control zoneText"/>
                             </div>
                         </div>
                         <div class="row">
