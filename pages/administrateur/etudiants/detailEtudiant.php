@@ -29,6 +29,12 @@
         header("Location: detailEtudiant.php");
         exit();
     }
+
+    if (isset($_POST['supprimer']) && isset($_POST['souhaits'])) {
+        deleteStudentWithWishes($pdo, $_POST['supprimer']);
+    } else if (isset($_POST['supprimer'])) {
+        deleteStudent($pdo, $_POST['supprimer']);
+    }
     
 ?>
 <!DOCTYPE html>
@@ -195,8 +201,6 @@
                             </div>
                         </div>
                         <hr>
-                        <?php
-                            $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
                             <div class="modal fade" id="modalDeleteStudent" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                                     <div class="modal-content px-4 pb-4">
@@ -204,24 +208,31 @@
                                             <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
                                             <h2 class="modal-title" id="deleteStudentModalLabel"><?php echo $ligne['username'];?></h2>
                                         </div>
-                                        <h2>Êtes-vous sûr(e) de vouloir supprimer cet(te) étudiant(e) ?</h2>
-                                        <form action="detailEtudiant.php" method="post">
-                                            <input type="hidden" name="supprimer" value="<?php echo $ligne['user_id'];?>">
-                                            <div class="row mt-3">
-                                                <div class="col-6">
-                                                    <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                        <div class="modal-body">
+                                            <h2>Êtes-vous sûr(e) de vouloir supprimer cet(te) étudiant(e) ?</h2>
+                                            <form action="detailEtudiant.php" method="post">
+                                            <?php if ($ligne["nbSouhait"] >= 1) { ?>
+                                                <input type="hidden" name="souhaits" value="<?php echo $ligne["nbSouhait"];?>"/>
+                                                <p class="text-danger">Attention, cet(te) étudiant(e) souhaite rencontrer des entreprises ! </p>
+                                                <?php } ?>
+                                                <input type="hidden" name="supprimer" value="<?php echo $ligne['user_id'];?>">
+                                                <div class="row mt-3">
+                                                    <div class="col-6">
+                                                        <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <button type="submit" class="bouton confirmation col-6" value="Valider">Valider</button>
+                                                    </div>
                                                 </div>
-                                                <div class="col-6">
-                                                    <button type="submit" class="bouton confirmation col-6" value="Valider">Valider</button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            if ($ligne["nbSouhait"] < 1) {
+                            <?php if ($ligne["nbSouhait"] < 1) {
                                 echo "<p class='erreur text-center'>Cet(te) étudiant(e) n'a pris aucun rendez-vous pour l'instant !</p>";
                             }
+                            $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
                             $rowNumber = 0;
                             while ($ligne2 = $stmt2->fetch()) {
                              $rowNumber++;
