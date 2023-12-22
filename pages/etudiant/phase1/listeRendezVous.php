@@ -101,9 +101,9 @@
                             </div>
                             <div class="modal-footer">
                                 <form action="listeRendezVous.php" method="post">
-                                <input type="hidden" name="entreprise_id" value="<?php echo htmlspecialchars($ligne["company_id"])?>"/>
-                                <input type="submit" class="bouton confirmation" value="Oui"/>
-                                <input type="button" class="boutonNegatif confirmation" data-bs-dismiss="modal" value="Non"/>
+                                    <input type="hidden" name="entreprise_id" value="<?php echo htmlspecialchars($ligne["company_id"])?>"/>
+                                    <input type="submit" class="bouton confirmation" value="Oui"/>
+                                    <input type="button" class="boutonNegatif confirmation" data-bs-dismiss="modal" value="Non"/>
                                 </form>
                             </div>
                         </div>
