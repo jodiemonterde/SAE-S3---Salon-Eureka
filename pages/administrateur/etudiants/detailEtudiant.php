@@ -242,7 +242,7 @@
                                         <div class="modal-body">
                                             <form action="detailEtudiant.php" method="post">
                                                 <label for="newPassword"  class="modalLabel mb-0 mt-2">Choisir un nouveau mot de passe (à transmettre à l'étudiant !) :</label>
-                                                <input type="text" class="zoneText" name="newPassword" placeholder="Saisir un mot de passe" required>
+                                                <input type="text" class="zoneText" name="newPassword" pattern="^(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$" placeholder="Saisir un mot de passe" required>
                                                 <input type="hidden" name="modifyPassword" value="<?php echo $ligne['user_id'];?>">
                                                 <div class="row mt-3">
                                                     <div class="col-6">
