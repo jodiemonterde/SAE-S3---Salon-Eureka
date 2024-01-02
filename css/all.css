@@ -67,7 +67,7 @@ body {
     background-color: #eee;
 }
 
-.zoneRecherche {
+.entreeUtilisateur {
     font-family: 'Montserrat', FontAwesome;
     height: 40px;
     border-bottom: 2px solid #bfbfbf;
@@ -76,4 +76,8 @@ body {
     border-right: 0;
     border-radius: 0;
     width: 100%;
+}
+
+.entreeUtilisateur::placeholder {
+    color: #bfbfbf !important;
 }

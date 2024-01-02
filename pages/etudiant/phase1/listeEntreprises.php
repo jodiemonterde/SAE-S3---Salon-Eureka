@@ -2,7 +2,6 @@
     session_start();
     // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
     $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
-    $user = 1;
     include("../../../fonctions/baseDeDonnees.php");
     $pdo = connecteBD();
     if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1 || $_SESSION['type_utilisateur'] != 'E'){
@@ -10,9 +9,9 @@
     }
     if (isset($_POST["entreprise_id"]) && isset($_POST["mode"])) {
         if ($_POST["mode"] == 'add') {
-            addWishStudent($pdo, $user, $_POST["entreprise_id"]);
+            addWishStudent($pdo, $_SESSION['idUtilisateur'], $_POST["entreprise_id"]);
         } else {
-            deleteWishStudent($pdo, $user, $_POST["entreprise_id"]);
+            deleteWishStudent($pdo, $_SESSION['idUtilisateur'], $_POST["entreprise_id"]);
         }
         
         header("location: listeEntreprises.php");
@@ -78,7 +77,7 @@
                 <form action="listeEntreprises.php" method="post" class="col-12 col-md-6 my-2">
                     <div class="row">
                         <div class="col-8">
-                            <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="zoneRecherche"/>    
+                            <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="entreeUtilisateur"/>    
                         </div>
                         <div class="col-4">
                             <input type="submit" class="bouton" value="Rechercher"/>
@@ -89,7 +88,7 @@
             <div class="row mx-1">
                 <?php 
                 $pdo = connecteBD();
-                $stmt = getEntreprisesForStudent($pdo, $user, $_SESSION['recherche']);
+                $stmt = getEntreprisesForStudent($pdo, $_SESSION['idUtilisateur'], $_SESSION['recherche']);
                 if ($stmt->rowCount() === 0) {
                     echo '<h2>Aucune entreprise trouvée avec cette recherche.</h2>';
                 } else {
