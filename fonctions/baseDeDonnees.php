@@ -36,7 +36,7 @@ function getEntreprisesForStudent($pdo, $user_id) {
     return $stmt;
 }
 
-function addNewStudent($pdo, $nom, $prenom, $email, $mdp, $filiere) {
+function addNewStudent($pdo, $prenom, $nom, $email, $mdp, $filiere) {
     $nom = htmlspecialchars($nom);
     $prenom = htmlspecialchars($prenom);
     $email = htmlspecialchars($email);
@@ -63,6 +63,19 @@ function addNewStudent($pdo, $nom, $prenom, $email, $mdp, $filiere) {
 
 function deleteStudent($pdo, $user_id) {
     $user_id = htmlspecialchars($user_id);
+
+    
+    $stmt = $pdo->prepare("DELETE 
+                           FROM WishList
+                           WHERE WishList.user_id = :user_id;");
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
+    
+    $stmt = $pdo->prepare("DELETE 
+                           FROM Appointment
+                           WHERE Appointment.user_id = :user_id;");
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
 
     $stmt = $pdo->prepare("DELETE 
                            FROM AssignmentUser
@@ -192,6 +205,19 @@ function search($query) {
                            ORDER BY Company.name");
     $stmt->execute();
     return $stmt;
+}
+
+function modifyStudentPassword($pdo, $user_id, $new_password) {
+    $new_password = htmlspecialchars($new_password);
+
+    $stmt = $pdo->prepare("UPDATE User
+                           SET password = :new_password
+                           WHERE User.user_id = :user_id");
+
+    $stmt->bindParam(':new_password', $new_password);
+    $stmt->bindParam(':user_id', $user_id);
+    
+    $stmt->execute();
 }
 
 ?>

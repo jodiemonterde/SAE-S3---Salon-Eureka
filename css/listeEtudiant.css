@@ -195,6 +195,10 @@ p {
     border-radius: 4px;
 }
 
+.accordion-header {
+    padding: 1px;
+}
+
 .accordion-item:not(:first-of-type) {
     border: 1px solid #D9D9D9 !important;
 }

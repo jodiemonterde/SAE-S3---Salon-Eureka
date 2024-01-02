@@ -30,10 +30,12 @@
         exit();
     }
 
-    if (isset($_POST['supprimer']) && isset($_POST['souhaits'])) {
-        deleteStudentWithWishes($pdo, $_POST['supprimer']);
-    } else if (isset($_POST['supprimer'])) {
+    if (isset($_POST['supprimer'])) {
         deleteStudent($pdo, $_POST['supprimer']);
+    }
+
+    if (isset($_POST['modifyPassword'])) {
+        modifyStudentPassword($pdo, $_POST['modifyPassword'], $_POST['newPassword']);
     }
     
 ?>
@@ -137,10 +139,10 @@
                     <form action="detailEtudiant.php" method="post">
                         <label for="email" class="modalLabel mb-0 mt-2">Adresse mail / Identifiant</label>
                         <input class="zoneText" type="email" name="emailEtudiant" placeholder="Saisir l'adresse mail de l'étudiant" required/>
-                        <label for="nomEtudiant" class="modalLabel mb-0 mt-2">Nom</label>
-                        <input class="zoneText" type="text" name="nomEtudiant" placeholder="Saisir le nom de l’étudiant" required/>
                         <label for="prenomEtudiant" class="modalLabel mb-0 mt-2">Prénom</label>
                         <input class="zoneText" type="text" name="prenomEtudiant" placeholder="Saisir le prénom de l’étudiant" required/>
+                        <label for="nomEtudiant" class="modalLabel mb-0 mt-2">Nom</label>
+                        <input class="zoneText" type="text" name="nomEtudiant" placeholder="Saisir le nom de l’étudiant" required/>
                         <label for="filiereEtudiant" class="modalLabel mb-0 mt-2">Filière</label>
                         <select id="FieldValues" name="filiereEtudiant" class="zoneText" required/>
                             <option value="" disabled selected>Sélectionner la filière de l’étudiant</option>
@@ -194,14 +196,14 @@
                     <div class="row m-0">
                         <div class="row my-3">
                             <div class="col-md-6 py-2">
-                                <button class="boutonNegatif" data-bs-toggle="modal" data-bs-target="#modalDeleteStudent">Supprimer</button>
+                                <button class="boutonNegatif" data-bs-toggle="modal" data-bs-target="#modalDeleteStudent<?php echo $ligne['user_id']; ?>">Supprimer</button>
                             </div>
                             <div class="col-md-6 py-2">
-                                <button class="bouton col-md-6" data-bs-toggle="modal" data-bs-target="#modalModifyPassword">Modifier le mot de passe</button>
+                                <button class="bouton col-md-6" data-bs-toggle="modal" data-bs-target="#modalModifyStudentPassword<?php echo $ligne['user_id']; ?>">Modifier le mot de passe</button>
                             </div>
                         </div>
                         <hr>
-                            <div class="modal fade" id="modalDeleteStudent" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="modalDeleteStudent<?php echo $ligne['user_id']; ?>" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                                     <div class="modal-content px-4 pb-4">
                                         <div class="modal-header deco justify-content-start px-0">
@@ -229,6 +231,33 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="modal fade" id="modalModifyStudentPassword<?php echo $ligne['user_id']; ?>" tabindex="-1" aria-labelledby="modifyStudentPasswordLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                                    <div class="modal-content px-4 pb-4">
+                                        <div class="modal-header deco justify-content-start px-0">
+                                            <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
+                                            <h2 class="modal-title" id="modifyStudentPassword"><?php echo $ligne['username'];?></h2>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="detailEtudiant.php" method="post">
+                                                <label for="newPassword"  class="modalLabel mb-0 mt-2">Choisir un nouveau mot de passe (à transmettre à l'étudiant !) :</label>
+                                                <input type="text" class="zoneText" name="newPassword" placeholder="Saisir un mot de passe" required>
+                                                <input type="hidden" name="modifyPassword" value="<?php echo $ligne['user_id'];?>">
+                                                <div class="row mt-3">
+                                                    <div class="col-6">
+                                                        <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <button type="submit" class="bouton confirmation col-6" value="Valider">Valider</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <?php if ($ligne["nbSouhait"] < 1) {
                                 echo "<p class='erreur text-center'>Cet(te) étudiant(e) n'a pris aucun rendez-vous pour l'instant !</p>";
                             }
