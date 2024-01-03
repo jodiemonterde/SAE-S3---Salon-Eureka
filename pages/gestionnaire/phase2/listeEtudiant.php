@@ -24,7 +24,7 @@
     $pdo = connecteBD();
 
     if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 2 || $_SESSION['type_utilisateur'] != 'G'){
-        header('Location: ../../connexion.php');
+        //header('Location: ../../connexion.php');
     }
 ?>
 <!DOCTYPE html>
@@ -37,7 +37,8 @@
     <script src="../../../../outils/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <link rel="stylesheet" href="../../../css/all.css">
-    <link rel="stylesheet" href="../../../css/listeEtudiant.css">
+    <link rel="stylesheet" href="../../../css/emploiDuTemps.css">
+    <link rel="stylesheet" href="../../../css/listeEtudiantGestionnaire2.css">
     <link rel="stylesheet" href="../../../css/navbars.css">
     <link rel="stylesheet" href="../../../css/filtre.css">
     <title>Eureka - Liste des entreprises</title>
@@ -137,11 +138,11 @@
                 <div class="accordion-body pb-1">
                     <div class="row m-0">
                         <div class="container" id="toPrint">
-                        <?php
+                            <?php
                             $planning = planningPerUser($pdo, $ligne['user_id']);
                             foreach ($planning as $rdv) {?>
                                 <div class="row mx-1">
-                                    <div class="col-12 rendez-vous ">
+                                    <div class="col-12">
                                         <p class="text-center"><?php echo htmlspecialchars($rdv['start'])?> - <?php echo htmlspecialchars($rdv['end'])?></p>
                                         <p class="text-center text-jaune"><?php echo htmlspecialchars($rdv['company_name']); ?></p>
                                     </div>
@@ -151,13 +152,14 @@
                             if ($unlistedCompany->rowCount() > 0) {?>
                                 <div class="row mx-1">
                                     <div class="col-12">
-                                        <p><h2>rendez-vous non planifiables</h2></p>
+                                        <p><h2>Consulter les rendez-vous non planifiables</h2>
+                                        Attention, certaines entreprises que vous souhaitiez voir ont reçues trop de demandes : ils n’ont pas pu être intégrés à votre emploi du temps. Si vous souhaitez obtenir un rendez-vous avec eux, il va falloir les contacter directement. </p>
                                     </div>
                                 </div>
                             <?php }
                             while ($ligne3 = $unlistedCompany->fetch()) {?>
                                 <div class="row mx-1">
-                                    <div class="col-12 rendez-vous">
+                                    <div class="col-12">
                                         <p class="text-center text-jaune"><?php echo htmlspecialchars($ligne3['name']); ?></p>
                                     </div>
                                 </div>
