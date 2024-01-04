@@ -83,7 +83,7 @@
         <div class="row d-flex align-items-center h-100">
             <div class="col-12 col-md-6">
                 <h2>Liste des étudiants</h2>
-                <p>Voici tous les étudiants inscrits au forum Eureka de cette année. Cliquez sur l’un d’eux pour voir la liste des entreprises auprès desquels il souhaite obtenir un rendez-vous !</p>
+                <p>Voici tous les étudiants inscrits au forum Eureka de cette année. Cliquez sur l’un d’eux pour voir leur planning de rendez-vous !</p>
             </div>
             <form action="listeEtudiant.php" method="post" class="col-12 col-md-6 my-2">
                 <div class="row">
@@ -140,32 +140,46 @@
                         <div class="container" id="toPrint">
                             <?php
                             $planning = planningPerUser($pdo, $ligne['user_id']);
-                            foreach ($planning as $rdv) {?>
-                                <div class="row mx-1">
-                                    <div class="col-12">
-                                        <p class="text-center"><?php echo htmlspecialchars($rdv['start'])?> - <?php echo htmlspecialchars($rdv['end'])?></p>
-                                        <p class="text-center text-jaune"><?php echo htmlspecialchars($rdv['company_name']); ?></p>
-                                    </div>
-                                </div>
-                            <?php }
                             $unlistedCompany = unlistedCompanyPerUser($pdo, $ligne['user_id']);
-                            if ($unlistedCompany->rowCount() > 0) {?>
-                                <div class="row mx-1">
-                                    <div class="col-12">
-                                        <p><h2>Consulter les rendez-vous non planifiables</h2>
-                                        Attention, certaines entreprises que vous souhaitiez voir ont reçues trop de demandes : ils n’ont pas pu être intégrés à votre emploi du temps. Si vous souhaitez obtenir un rendez-vous avec eux, il va falloir les contacter directement. </p>
+                            if(Count($planning) > 0 || $unlistedCompany->rowCount() > 0){
+                                foreach ($planning as $rdv) {?>
+                                    <div class="row mx-1">
+                                        <div class="col-12">
+                                            <p class="text-center"><?php echo htmlspecialchars($rdv['start'])?> - <?php echo htmlspecialchars($rdv['end'])?></p>
+                                            <p class="text-center text-jaune"><?php echo htmlspecialchars($rdv['company_name']); ?></p>
+                                        </div>
                                     </div>
-                                </div>
-                            <?php }
-                            while ($ligne3 = $unlistedCompany->fetch()) {?>
-                                <div class="row mx-1">
-                                    <div class="col-12">
-                                        <p class="text-center text-jaune"><?php echo htmlspecialchars($ligne3['name']); ?></p>
+                                <?php }
+                                if ($unlistedCompany->rowCount() > 0) {?>
+                                    <div class="row mx-1">
+                                        <div class="col-12">
+                                            <p><h2>Consulter les rendez-vous non planifiables</h2>
+                                            Attention, certaines entreprises ont reçues trop de demandes : ils n’ont pas pu être intégrés à l'emploi du temps des étudiant. Si ils souhaitent obtenir un rendez-vous avec eux, il faudra les contacter directement. </p>
+                                        </div>
                                     </div>
+                                <?php }
+                                while ($ligne3 = $unlistedCompany->fetch()) {?>
+                                    <div class="row mx-1">
+                                        <div class="col-12">
+                                            <p class="text-center text-jaune"><?php echo htmlspecialchars($ligne3['name']); ?></p>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                                <div class="row mx-1 fixed-bottom barre-bas">
                                 </div>
-                            <?php } ?>
-                            <div class="row mx-1 fixed-bottom barre-bas">
-                            </div>
+                            <?php
+                            } else {
+                            ?>
+                                <div class="row mx-1">
+                                        <div class="col-12">
+                                            <p class="erreur">L'étudiant n'as pas de rendez-vous</p>
+                                        </div>
+                                </div>
+                                <div class="row mx-1 fixed-bottom barre-bas">
+                                </div>
+                            <?php
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
