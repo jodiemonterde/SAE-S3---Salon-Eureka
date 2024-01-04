@@ -238,3 +238,53 @@ p {
 .blanc:hover{
     background-color: #eee;
 }
+
+.buttonToCheck {
+    cursor: pointer;
+    display: flex;
+  }
+  
+  .buttonToCheck input[type="checkbox"] {
+    display: none;
+  }
+  
+  .buttonToCheck .icon-box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 0.5s;
+    user-select: none;
+
+    background-color: #FFFFFF;
+    color: #FFA800;  
+    border-radius: 50px;
+    min-width: 122px;
+    font-weight: 400;
+    font-size: 12px;
+    border: #FFA800 solid 1px;
+    margin-bottom: 4px;
+  }
+
+
+  .buttonToCheck .icon-box:hover {
+    background-color: #dfdfdf;
+}
+  
+  .buttonToCheck input[type="checkbox"]:checked ~ .icon-box {
+    background-color: #FFA800;
+    color: black;
+  }
+  .buttonToCheck input[type="checkbox"]:checked ~ .icon-box:hover {
+    background-color: #da9100;
+    border-color: #da9100;
+  }
+  
+  .buttonToCheck .icon-box span {
+    font-size: 12px;
+  }
+  
+  .rowForChecks {
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }

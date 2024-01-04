@@ -35,7 +35,7 @@
     }
 
     if (isset($_POST['modifyPassword'])) {
-        modifyStudentPassword($pdo, $_POST['modifyPassword'], $_POST['newPassword']);
+        modifyPassword($pdo, $_POST['modifyPassword'], $_POST['newPassword']);
     }
     
 ?>
