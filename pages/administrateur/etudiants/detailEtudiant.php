@@ -120,9 +120,19 @@
                     </form>
                     <?php } ?>
                 </div>
-            </div>
+            </div> 
         </div>
-        <hr class="mb-4">
+        <hr class="m-0">
+        <div class="d-flex flex-row-reverse sort">
+            <form action="detailEtudiant.php" method="post">
+                <select id="triPar" name="triPar" class="form-control sort text-end" onchange="this.form.submit()">
+                    <option value="default" disabled selected>&#x21C5; TRIER PAR</option>
+                    <option value="alpha">Ordre alphabétique</option>
+                    <option value="croissant">Nombre de souhait croissant</option>
+                    <option value="decroissant">Nombre de souhait décroissant</option>
+                </select>
+            </form>
+        </div>
         <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalAddStudent">
             <i class="fa-solid fa-plus text-left justify-content-center"></i>
             <h2 class="text-center m-2">Ajouter un(e) étudiant(e)</h2>
@@ -171,7 +181,7 @@
         <!-- Accordéon Bootstrap -->
         <div class="accordion" id="listeEntreprise">
         <?php
-            $stmt = getInfoStudents($pdo, $_SESSION['recherche'], $_SESSION['filtre']);
+            $stmt = getInfoStudents($pdo, $_SESSION['recherche'], $_SESSION['filtre'], $_POST['triPar']);
             if (empty($_SESSION['filtre'])) {
                 echo '<p>Aucune filière sélectionnée. Veuillez choisir au moins une filière.</p>';
             } elseif ($stmt->rowCount() === 0) {

@@ -288,3 +288,11 @@ p {
     display: grid;
     grid-template-columns: auto auto auto;
   }
+
+  .sort {
+    font-size: 13px;
+    color: #FFA800;
+    background-color: white;
+    border: none;
+    
+  }

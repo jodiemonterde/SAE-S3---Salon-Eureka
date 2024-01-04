@@ -198,8 +198,10 @@ function getStudentsPerCompany($pdo, $company_id) {
     return $stmt;
 }
 
-function getInfoStudents($pdo, $recherche, $field_ids) {
+function getInfoStudents($pdo, $recherche, $field_ids, $sort) {
     $field_ids_str = implode(', ', $field_ids);
+
+    $sort = htmlspecialchars($sort);
 
     if ($field_ids_str == null) {
         return null;
@@ -221,7 +223,14 @@ function getInfoStudents($pdo, $recherche, $field_ids) {
         $sql .= " HAVING u.username LIKE :recherche";
     }
 
-    $sql .= " ORDER BY u.username";
+    if ($sort == "default" || $sort == "alpha") { 
+        $sql .= " ORDER BY u.username";
+    } else if ($sort == "croissant") {
+        $sql .= " ORDER BY nbSouhait";
+    } else if ($sort == "decroissant") {
+        $sql .= " ORDER BY nbSouhait DESC";
+    }
+    
 
     $stmt = $pdo->prepare($sql);
 
