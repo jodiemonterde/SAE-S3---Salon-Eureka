@@ -123,6 +123,52 @@
                     </div>
                 </div>
             </div>
+            <hr class="mb-4">
+            <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalAddStudent">
+                <i class="fa-solid fa-plus text-left justify-content-center"></i>
+                <h2 class="text-center m-2">Ajouter une entreprise</h2>
+            </button>
+            
+            <div class="modal fade" id="modalAddStudent" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                    <div class="modal-content  px-4 pb-4">
+                        <div class="modal-header deco justify-content-start px-0">
+                            <button type="button" class="blanc border-0" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
+                            <h2 class="modal-title" id="addStudentModalLabel">Nouvelle entreprise</h2>
+                        </div>
+                        <h2>Informations sur l’entreprise</h2>
+                        <form action="detailEtudiant.php" method="post">
+                            <label for="email" class="modalLabel mb-0 mt-2">Adresse mail / Identifiant</label>
+                            <input class="zoneText" type="email" name="emailEtudiant" placeholder="Saisir l'adresse mail de l'étudiant" required/>
+                            <label for="prenomEtudiant" class="modalLabel mb-0 mt-2">Prénom</label>
+                            <input class="zoneText" type="text" name="prenomEtudiant" placeholder="Saisir le prénom de l’étudiant" required/>
+                            <label for="nomEtudiant" class="modalLabel mb-0 mt-2">Nom</label>
+                            <input class="zoneText" type="text" name="nomEtudiant" placeholder="Saisir le nom de l’étudiant" required/>
+                            <label for="filiereEtudiant" class="modalLabel mb-0 mt-2">Filière</label>
+                            <select id="FieldValues" name="filiereEtudiant" class="zoneText" required/>
+                                <option value="" disabled selected>Sélectionner la filière de l’étudiant</option>
+                                <?php 
+                                $fields = getFields($pdo);
+                                while ($ligne = $fields->fetch()) { ?>
+                                    <option value="<?php echo $ligne['field_id'];?>"><?php echo $ligne['name'];?></option>
+
+                                <?php } ?>
+                            </select>
+                            <p class="modalLabel mb-0 mt-2">Mot de passe (à transmettre à l’étudiant !)</p>
+                            <input class="zoneText" type="text" name="motDePasseEtudiant" placeholder="Saisir le mot de passe" pattern="^(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$" required/>
+                            <div class="row mt-3">
+                                <div class="col-6">
+                                    <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                </div>
+                                <div class="col-6">
+                                    <button type="submit" class="bouton confirmation col-6" value="Valider">Valider</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <!-- Accordéon Bootstrap -->
             <div class="accordion" id="listeEntreprise">
             <?php
