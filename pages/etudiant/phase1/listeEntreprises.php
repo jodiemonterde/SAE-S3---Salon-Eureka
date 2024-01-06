@@ -92,7 +92,7 @@
                 if ($stmt->rowCount() === 0) {
                     echo '<h2>Aucune entreprise trouvée avec cette recherche.</h2>';
                 } else {
-                    while ($ligne = $stmt->fetch()) { 
+                    while ($ligne = $stmt->fetch()) {
                 ?>
                 <form action="listeEntreprises.php" method="post">
                     <button type="submit" class="col-12 pb-0 company dl-search-result-title-container <?php echo $ligne['wish'] != null ? 'inWishList' : 'notInWishList';?>">

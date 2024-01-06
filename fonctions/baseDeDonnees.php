@@ -109,6 +109,7 @@
                 ON AssignmentUser.field_id = AssignmentSpeaker.field_id
                 LEFT JOIN WishList
                 ON Company.company_id = WishList.company_id
+                AND AssignmentUser.user_id = WishList.user_id
                 WHERE AssignmentUser.user_id = :user_id");
         if ($recherche != null) {
             $sql.= " AND Company.name LIKE :recherche";
