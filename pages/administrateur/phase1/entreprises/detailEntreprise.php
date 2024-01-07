@@ -31,6 +31,12 @@
     if (isset($_POST["modification_entreprise_id"])) {
         modifierEntreprise($pdo, $_POST["modification_entreprise_id"], $_POST["nom_entreprise"], $_POST["secteur_activite"], $_POST["lieu"], $_POST["description"]);
     }
+
+    if (isset($_POST["nomEntreprise"]) && isset($_FILES["logoEntreprise"])) {
+        addCompany($pdo, $_POST["nomEntreprise"], $_POST["descriptionEntreprise"], $_POST["adresseEntreprise"], $_POST["codePostalEntreprise"], $_POST["villeEntreprise"], $_POST["secteurEntreprise"], $_FILES["logoEntreprise"]);
+        header("Location: detailEntreprise.php");
+        exit();
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,6 +47,7 @@
     <link rel="stylesheet" href="../../../../lib/fontawesome-free-6.5.1-web/css/all.css">
     <script src="../../../../lib/bootstrap-5.3.2-dist/js/bootstrap.js"></script>
     <script src="../../../../lib/jquery/jquery-3.3.1.js"></script>
+    <script src="js.js"></script>
     <link rel="stylesheet" href="./listeEntreprise.css">
     <link rel="stylesheet" href="../../../../css/navbars.css">
     <link rel="stylesheet" href="./filtre.css">
@@ -124,38 +131,68 @@
                 </div>
             </div>
             <hr class="mb-4">
-            <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalAddStudent">
+            <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalAddCompany">
                 <i class="fa-solid fa-plus text-left justify-content-center"></i>
                 <h2 class="text-center m-2">Ajouter une entreprise</h2>
             </button>
             
-            <div class="modal fade" id="modalAddStudent" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+            <div class="modal fade" id="modalAddCompany" tabindex="-1" aria-labelledby="addCompanyModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                     <div class="modal-content  px-4 pb-4">
                         <div class="modal-header deco justify-content-start px-0">
                             <button type="button" class="blanc border-0" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
-                            <h2 class="modal-title" id="addStudentModalLabel">Nouvelle entreprise</h2>
+                            <h2 class="modal-title" id="addCompanyModalLabel">Nouvelle entreprise</h2>
                         </div>
-                        <h2>Informations sur l’entreprise</h2>
-                        <form action="detailEtudiant.php" method="post">
-                            <label for="email" class="modalLabel mb-0 mt-2">Adresse mail / Identifiant</label>
-                            <input class="zoneText" type="email" name="emailEtudiant" placeholder="Saisir l'adresse mail de l'étudiant" required/>
-                            <label for="prenomEtudiant" class="modalLabel mb-0 mt-2">Prénom</label>
-                            <input class="zoneText" type="text" name="prenomEtudiant" placeholder="Saisir le prénom de l’étudiant" required/>
-                            <label for="nomEtudiant" class="modalLabel mb-0 mt-2">Nom</label>
-                            <input class="zoneText" type="text" name="nomEtudiant" placeholder="Saisir le nom de l’étudiant" required/>
-                            <label for="filiereEtudiant" class="modalLabel mb-0 mt-2">Filière</label>
-                            <select id="FieldValues" name="filiereEtudiant" class="zoneText" required/>
-                                <option value="" disabled selected>Sélectionner la filière de l’étudiant</option>
-                                <?php 
-                                $fields = getFields($pdo);
-                                while ($ligne = $fields->fetch()) { ?>
-                                    <option value="<?php echo $ligne['field_id'];?>"><?php echo $ligne['name'];?></option>
+                        <form action="detailEntreprise.php" method="post" enctype="multipart/form-data">
+                            <label for="nomEntreprise" class="modalLabel mb-0 mt-2">Nom</label>
+                            <input class="zoneText" type="text" name="nomEntreprise" id="nomEntreprise" placeholder="Saisir le nom de l’entreprise" required/>
+                            <label for="descriptionEntreprise" class="modalLabel mb-0 mt-2">Description</label>
+                            <input class="zoneText" type="text" name="descriptionEntreprise" id="descriptionEntreprise" placeholder="Saisir un texte permettant de décrire en détail l'entreprise"/>
+                            <label for="adresseEntreprise" class="modalLabel mb-0 mt-2">Adresse</label>
+                            <input class="zoneText" type="text" name="adresseEntreprise" id="adresseEntreprise" placeholder="Saisir l'adresse complète de l'entreprise" required/>
+                            <label for="codePostalEntreprise" class="modalLabel mb-0 mt-2">Code Postal</label>
+                            <input class="zoneText" type="text" name="codePostalEntreprise" id="codePostalEntreprise" placeholder="Saisir le code postal de l'entreprise" required/>
+                            <label for="villeEntreprise" class="modalLabel mb-0 mt-2">Ville</label>
+                            <input class="zoneText" type="text" name="villeEntreprise" id="villeEntreprise" placeholder="Saisir la ville où se situe l'entreprise" required/>
+                            <label for="secteurEntreprise" class="modalLabel mb-0 mt-2">Secteur d'activité</label>
+                            <input class="zoneText" type="text" name="secteurEntreprise" id="secteurEntreprise" placeholder="Saisir le secteur d'activité" required/>
+                            <label for="logo" class="modalLabel mb-0 mt-2 w-100">Logo de l'entreprise</label>
+                            <input type="file" name="logoEntreprise" id="logo" accept="image/*">
+                            <hr>
 
-                                <?php } ?>
-                            </select>
-                            <p class="modalLabel mb-0 mt-2">Mot de passe (à transmettre à l’étudiant !)</p>
-                            <input class="zoneText" type="text" name="motDePasseEtudiant" placeholder="Saisir le mot de passe" pattern="^(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$" required/>
+                            <div id="intervenantsContainer">
+                                <div id="intervenantTemplate" style="display: block;">
+                                    <div class="intervenantContainer">
+                                       <div class="d-flex flex-wrap">
+                                            <h2>Intervenant &nbsp;<h2 id="numeroIntervenant">1</h2></h2>
+                                            <button type ="button" class="border-0 icon-title"><i class="fa-solid fa-trash icon"></i></button>
+                                        </div>
+                                        <label for="nomIntervenant" class="modalLabel mb-0 mt-2">Nom</label>
+                                        <input class="zoneText" type="text" name="nomIntervenant" id="nomIntervenant" placeholder="Saisir le nom de l’intervenant" required/>
+                                        <div class="rowForChecks d-flex flex-wrap">
+                                            <?php
+                                                $fields = getFields($pdo); 
+                                                while ($ligne = $fields->fetch()) { ?>
+                                                    <label class="buttonToCheck me-2">
+                                                        <input type="checkbox" name="filieresGestionnaire[]" value="<?php echo $ligne['field_id'];?>" />
+                                                        <div class="icon-box">
+                                                            <span><?php echo $ligne['name'];?></span>
+                                                        </div>
+                                                    </label>
+                                            <?php } ?>
+                                        </div>
+                                        <hr>
+                                                </div>
+                                </div>
+                            </div>
+                                
+                            <button type="button" class="addStudent d-flex w-100 text-center align-items-center justify-content-center" onclick="ajouterIntervenant(event)">
+                                <i class="fa-solid fa-plus text-left justify-content-center"></i>
+                                <h2 class="text-center m-2">Ajouter un intervenant</h2>
+                            </button>
+                            
+
+
                             <div class="row mt-3">
                                 <div class="col-6">
                                     <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
@@ -201,21 +238,22 @@
                         <div class="row">
                             <div class="description"><?php echo $ligne["description"]?></div>
                             <?php
-                            $stmtIntervenant = getSpeakersPerCompany($pdo, $ligne["company_id"]);
-                            while ($ligneIntervenant = $stmtIntervenant->fetch()) { 
+                            $intervenants = getSpeakersPerCompany($ligne["intervenants_roles"]);
                             ?>
                             <hr>
-                            <h2 class="student"><?php echo $ligneIntervenant["name"]?></h2>
-                            <p> Fonction de l'intervenant </p>
-                            <div class="row d-flex align-text-top">
-                            <?php
-                                $stmtFiliere = getFieldsPerSpeakers($pdo, $ligneIntervenant["speaker_id"]);
-                                while ($ligneFiliere = $stmtFiliere->fetch()) {
-                                    echo '<span class="filiere">'.$ligneFiliere["name"].'</span>';
-                                }
-                            ?>
-                            </div>
+                            <?php foreach ($intervenants as $intervenant) { ?>
+                                <div class="my-1">
+                            <span class="speakerName m-0"><?php echo $intervenant["nom"]?></span>
+                            <?php if ($intervenant["fonction"] != null) { ?>
+                                <span class="speakerRole m-0"> <?php echo '- '.$intervenant["fonction"]?> </span>
                             <?php } ?>
+                            <div class="d-flex">
+                                <?php foreach ($intervenant["fields"] as $field) {
+                                    echo '<div class="tag text-center">'.$field.'</div>';
+                                }
+                                echo '</div></div>'; 
+                            } ?>
+                            
                         </div>
                         <hr>
                         <div class="row d-flex justify-content-evenly">
@@ -243,116 +281,6 @@
                 } ?>
         </div>
         
-        <!-- TODO finir cette modal de merde -->
-        <div class="modal fade" id="modification" tabindex="-1" aria-labelledby="Modifier" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-                <div class="modal-content">
-                    <div class="modal-header deco">
-                        <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left"></i></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <form action="detailEntreprise.php" method="post">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h1>Information sur l'entreprise</h1>
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="nom_entreprise"> Nom de l'entreprise </label> <br/>
-                                        <input type="text" name="nom_entreprise" value=<?php echo $ligne["name"] ?>>
-                                    </div>
-                                    <hr/>
-                                    <div class="col-12">
-                                        <label for="secteur_activite"> Secteur d'activité </label> <br/>
-                                        <input type="text" name="secteur_activite" value=<?php echo $ligne["sector"] ?>>
-                                    </div>
-                                    <hr/>
-                                    <div class="col-12">
-                                        <label for="lieu"> Lieu </label> <br/>
-                                        <input type="text" name="lieu" value=<?php echo $ligne["address"] ?>>
-                                    </div>
-                                    <hr/>
-                                    <div class="col-12">
-                                        <label for="description"> Description </label> <br/>
-                                        <input type="textarea" name="description" value=<?php echo $ligne["description"] ?>>
-                                    </div>
-                                    <hr/>
-                                </div>
-                                <?php $i = 1;
-                                $count = getSpeakersPerCompany($pdo, $ligne["company_id"]);
-                                while ($speaker = $count->fetch()) { ?>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h1> Intervenant <?php echo $i ?> </h1>
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="nom_intervenant"> Nom de l'intervenant </label> <br/>
-                                        <input type="text" name="nom_intervenant" value="Saisir le nom de l'intervenant">
-                                    </div>
-                                    <hr/>
-                                    <div class="col-12">
-                                        <label for="fonction_intervenant"> Fonction de l'intervenant </label> <br/>
-                                        <input type="text" name="fonction_intervenant" value="Saisir la fonction de l'intervenant">
-                                    </div>
-                                    <hr/>
-                                    <div class="col-12">
-                                        <h5> Filières d'intérêt </h5> <br/>
-                                        <?php $liste_filieres = getFields($pdo);
-                                        while ($filiere = $liste_filieres->fetch()) { ?>
-                                        <button class="bouton"> <?php $filiere["name"] ?> </button>
-                                        <?php } ?>
-                                    </div>
-                                    <hr/>
-                                </div>
-                                <?php $i += 1;
-                                } ?>
-                                <div class="row">
-                                    <div class="col-6 d-flex justify-content-evenly">
-                                        <button type="button" data-bs-dismiss="modal"> Annuler </button>
-                                    </div>
-                                    <div class="col-6 d-flex justify-content-evenly">
-                                        <input type="hidden" name="modification_entreprise_id" value="<?php echo $ligne["company_id"]?>"/>
-                                        <input type="submit" class="bouton" value="Modifier"/>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="suppression" tabindex="-1" aria-labelledby="Supprimer" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-                <div class="modal-content">
-                    <div class="modal-header deco">
-                        <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left"></i></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12">
-                                    <p class="text-center"> Êtes-vous sûr(e) de vouloir supprimer cette entreprise ? </p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 d-flex justify-content-evenly">
-                                    <button type="button" data-bs-dismiss="modal"> Annuler </button>
-                                </div>
-                                <div class="col-6 d-flex justify-content-evenly">
-                                    <form action="detailEntreprise.php" method="post">
-                                        <input type="hidden" name="suppression_entreprise_id" value="<?php echo $ligne["company_id"]?>"/>
-                                        <input type="submit" class="bouton" value="Supprimer"/>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
         <!-- Navbar du bas -->
         <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
             <div class="container-fluid">
