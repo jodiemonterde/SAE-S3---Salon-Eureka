@@ -20,11 +20,17 @@
         header("Location: listeEtudiant.php");
         exit();
     }
-    include("../../../fonctions/baseDeDonnees.php");
-    $pdo = connecteBD();
-
-    if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 2 || $_SESSION['type_utilisateur'] != 'G'){
-        //header('Location: ../../connexion.php');
+    try {
+        require("../../../fonctions/baseDeDonnees.php");
+        $pdo = connecteBD();
+        $fields = getFieldsPerUsers($pdo, $_SESSION['idUtilisateur']);
+        $stmt = getInfoStudents($pdo, $_SESSION['recherche'], $_SESSION['filtre']);
+        if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 2 || $_SESSION['type_utilisateur'] != 'G'){
+            //header('Location: ../../connexion.php');
+        }
+    } catch (Exception $e) {
+        header('Location: ../../maintenance.php');
+        exit();
     }
 ?>
 <!DOCTYPE html>
@@ -96,26 +102,26 @@
                 </div>
             </form>
         </div>
-        <div class="container p-0">
-            <div class="row">
-                <div class="col-12">
-                    <h2>Filières</h2>
-                    <?php
-                        $fields = getFields($pdo);
-                        while ($ligne = $fields->fetch()) {
-                    ?>
-                    <form action="listeEtudiant.php" method="post">
-                        <input type="hidden" name="nouveauFiltre" value="<?php echo $ligne['field_id']; ?>">
-                        <button class="bouton-filtre <?php echo in_array($ligne['field_id'], $_SESSION['filtre']) ? "bouton-filtre-selectionner" : "bouton-filtre-deselectionner"?>"><?php echo $ligne['name']; ?></button>
-                    </form>
-                    <?php } ?>
-                </div>
+        <div class="row">
+            <div class="col-12">
+                <?php
+                    if ($fields->rowCount() > 1) {
+                        echo '<h2>Filières</h2>';
+                    while ($ligne = $fields->fetch()) {
+                ?>
+                <form action="listeEtudiant.php" method="post">
+                    <input type="hidden" name="nouveauFiltre" value="<?php echo $ligne['field_id']; ?>">
+                    <button class="bouton-filtre <?php echo in_array($ligne['field_id'], $_SESSION['filtre']) ? "bouton-filtre-selectionner" : "bouton-filtre-deselectionner"?>"><?php echo $ligne['name']; ?></button>
+                </form>
+                <?php } } else {
+                        $_SESSION['filtre'] = [];
+                        array_push($_SESSION['filtre'], $fields->fetch()['field_id']);
+                    } ?>
             </div>
         </div>
         <!-- Accordéon Bootstrap -->
         <div class="accordion" id="listeEntreprise">
         <?php
-            $stmt = getInfoStudents($pdo, $_SESSION['recherche'], $_SESSION['filtre']);
             if (empty($_SESSION['filtre'])) {
                 echo '<p>Aucune filière sélectionnée. Veuillez choisir au moins une filière.</p>';
             } elseif ($stmt->rowCount() === 0) {
@@ -137,10 +143,14 @@
             <div id="collapse<?php echo $ligne['user_id']?>" class="accordion-collapse collapse" aria-labelledby="heading<?php echo $ligne['user_id']?>" data-bs-parent="#listeEntreprise">
                 <div class="accordion-body pb-1">
                     <div class="row m-0">
-                        <div class="container" id="toPrint">
+                        <div class="container">
                             <?php
+                            try {
                             $planning = planningPerUser($pdo, $ligne['user_id']);
                             $unlistedCompany = unlistedCompanyPerUser($pdo, $ligne['user_id']);
+                            } catch (Exception $e) {
+                                redirect("../../maintenance.php");
+                            }
                             if(Count($planning) > 0 || $unlistedCompany->rowCount() > 0){
                                 foreach ($planning as $rdv) {?>
                                     <div class="row mx-1">
@@ -175,7 +185,7 @@
                             ?>
                                 <div class="row mx-1">
                                         <div class="col-12">
-                                            <p class="erreur">L'étudiant n'as pas de rendez-vous</p>
+                                            <h5 class="erreur">L'étudiant n'as pas de rendez-vous</h5>
                                         </div>
                                 </div>
                                 <div class="row mx-1 fixed-bottom barre-bas">
@@ -199,7 +209,7 @@
                 <!-- Si sur la liste des entreprises, mettre le texte en actif -->
                 <li class="nav-item d-flex flex-column text-center inactif_bas">
                     <!-- Si sur la liste des entreprises, mettre l'icône en actif et lien_inactif -->
-                    <a class="d-flex justify-content-center" href="./detailEntreprise.php">
+                    <a class="d-flex justify-content-center" href="./listeEntreprise.php">
                         <!-- Si sur la liste des entreprises, mettre l'icône blanche, sinon mettre l'icône en noir -->
                         <img src="../../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone">
                     </a>
@@ -240,10 +250,10 @@
                             </div>
                             <div class = "row">
                                 <div class="col-6 d-flex justify-content-evenly">
-                                    <button type="button" data-bs-dismiss="modal" class="bouton">Retour</button>
+                                    <button type="button" data-bs-dismiss="modal" class="bouton boutonDeconnexion">Retour</button>
                                 </div>
                                 <div class="col-6 d-flex justify-content-evenly">
-                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton">Se déconnecter </button>
+                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton boutonDeconnexion">Se déconnecter </button>
                                 </div>
                             </div>
                         </div>
