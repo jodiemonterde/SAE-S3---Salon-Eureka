@@ -145,6 +145,7 @@
                                 foreach ($planning as $rdv) {?>
                                     <div class="row mx-1">
                                         <div class="col-12">
+                                            <hr>
                                             <p class="text-center"><?php echo htmlspecialchars($rdv['start'])?> - <?php echo htmlspecialchars($rdv['end'])?></p>
                                             <p class="text-center text-jaune"><?php echo htmlspecialchars($rdv['company_name']); ?></p>
                                         </div>
@@ -153,6 +154,7 @@
                                 if ($unlistedCompany->rowCount() > 0) {?>
                                     <div class="row mx-1">
                                         <div class="col-12">
+                                            <hr>
                                             <p><h2>Consulter les rendez-vous non planifiables</h2>
                                             Attention, certaines entreprises ont reçues trop de demandes : ils n’ont pas pu être intégrés à l'emploi du temps des étudiant. Si ils souhaitent obtenir un rendez-vous avec eux, il faudra les contacter directement. </p>
                                         </div>
@@ -161,6 +163,7 @@
                                 while ($ligne3 = $unlistedCompany->fetch()) {?>
                                     <div class="row mx-1">
                                         <div class="col-12">
+                                            <hr>
                                             <p class="text-center text-jaune"><?php echo htmlspecialchars($ligne3['name']); ?></p>
                                         </div>
                                     </div>
