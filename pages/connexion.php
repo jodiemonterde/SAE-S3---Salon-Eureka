@@ -63,9 +63,8 @@
         <link rel="stylesheet" href="../../outils/fontawesome-free-6.5.1-web/css/all.css">
         <link rel="stylesheet" href="../css/all.css">
         <link rel="stylesheet" href="../css/connexionDeconnexion.css">
-        <title>Connexion</title>
-    </head> 
-
+        <title>Eureka - Connexion</title>
+    </head>
     <body>
         <div class="container">
             <div class="row mx-1">

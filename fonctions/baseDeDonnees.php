@@ -138,6 +138,14 @@
         return $stmt;
     }
 
+    function getFieldsPerUsers($pdo, $user_id) {
+        $sql = "SELECT * FROM `Field` WHERE field_id IN (SELECT field_id FROM AssignmentUser WHERE user_id = :user_id)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        return $stmt;
+    }
+
     function getInfoStudents($pdo, $recherche, $field_ids) {
         $field_ids_str = implode(', ', $field_ids);
     
@@ -240,7 +248,7 @@
         }
 
         // Requête SQL de base
-        $sql = "SELECT DISTINCT Company.company_id, Company.name, Company.description, Company.address, Company.sector, Company.excluded
+        $sql = "SELECT DISTINCT Company.company_id, Company.name, Company.description, Company.address, Company.sector, Company.excluded, Company.logo_file_name
                 FROM Company
                 JOIN Speaker ON Company.company_id = Speaker.company_id
                 JOIN AssignmentSpeaker ON AssignmentSpeaker.speaker_id = Speaker.speaker_id
@@ -268,6 +276,30 @@
         // Retourne le résultat de la requête
         return $stmt;
     }
+
+    function getSpeakersPerCompany($pdo, $company_id) {
+        $stmt = $pdo->prepare("SELECT speaker_id, name, role FROM Speaker WHERE company_id = :company_id");
+        $stmt->bindParam(':company_id', $company_id);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function getAppointmentPerSpeaker($pdo, $speaker_id) {
+        $stmt = $pdo->prepare("SELECT TIME_FORMAT(app.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(app.start, app.duration), '%H:%i') as end, us.username, fie.name
+                                FROM Appointment app
+                                JOIN User us
+                                ON app.user_id = us.user_id
+                                JOIN AssignmentUser ass
+                                ON ass.user_id = us.user_id
+                                JOIN Field fie
+                                ON ass.field_id = fie.field_id
+                                WHERE app.speaker_id = :speaker_id;");
+        $stmt->bindParam(':speaker_id', $speaker_id);
+        $stmt->execute();
+        return $stmt;
+    }
+
+
 
     function getStudentsPerCompanyWishList($pdo, $company_id) {
         $stmt = $pdo->prepare("SELECT Field.name, User.username
@@ -318,7 +350,7 @@
         }
 
         // Requête SQL de base
-        $sql = "SELECT DISTINCT Company.company_id, Company.name, Company.description, Company.address, Company.sector
+        $sql = "SELECT DISTINCT Company.company_id, Company.name, Company.description, Company.address, Company.sector, Company.logo_file_name
                 FROM Company
                 JOIN Speaker ON Company.company_id = Speaker.company_id
                 JOIN AssignmentSpeaker ON AssignmentSpeaker.speaker_id = Speaker.speaker_id
@@ -349,18 +381,17 @@
 
     function getStudentsPerCompany($pdo, $company_id) {
         $stmt = $pdo->prepare("SELECT Field.name, User.username
-                            FROM Company
-                            JOIN Speaker
-                            ON Company.company_id = Speaker.company_id
-                            JOIN Appointment
-                            ON Speaker.speaker_id = Appointment.speaker_id
-                            JOIN User
-                            ON Appointment.user_id = User.user_id
-                            JOIN AssignmentUser
-                            ON User.user_id = AssignmentUser.user_id
-                            JOIN Field
-                            ON AssignmentUser.field_id = Field.field_id
-                            WHERE Company.company_id = $company_id;");
+                               FROM Company
+                               JOIN WishList
+                               ON WishList.company_id = Company.company_id
+                               JOIN User
+                               ON WishList.user_id = User.user_id
+                               JOIN AssignmentUser
+                               ON User.user_id = AssignmentUser.user_id
+                               JOIN Field
+                               ON AssignmentUser.field_id = Field.field_id
+                               WHERE Company.company_id = :company_id;");
+        $stmt->bindParam(':company_id', $company_id);
         $stmt->execute();
         return $stmt;
     }

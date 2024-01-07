@@ -20,11 +20,17 @@
         header("Location: listeEntreprise.php");
         exit();
     }
-    include("../../../fonctions/baseDeDonnees.php");
-    $pdo = connecteBD();
-
-    if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 2 || $_SESSION['type_utilisateur'] != 'G'){
-        header('Location: ../../connexion.php');
+    try {
+        include("../../../fonctions/baseDeDonnees.php");
+        $pdo = connecteBD();
+        $fields = getFieldsPerUsers($pdo, $_SESSION['idUtilisateur']);
+        $stmt = getEntreprisesPhase2($pdo, $_SESSION['filtre'], $_SESSION['recherche']);
+        if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 2 || $_SESSION['type_utilisateur'] != 'G'){
+            header('Location: ../../connexion.php');
+        }
+    } catch (Exception $e) {
+        header('Location: ../../maintenance.php');
+        exit();
     }
 ?>
 <!DOCTYPE html>
@@ -96,26 +102,27 @@
                 </form>
             </div>
             <div class="container p-0">
-                <div class="row">
-                    <div class="col-12">
-                        <h2>Filières</h2>
-                        <?php
-                            $fields = getFields($pdo);
-                            while ($ligne = $fields->fetch()) {
-                        ?>
-                        <form action="listeEntreprise.php" method="post">
-                            <input type="hidden" name="nouveauFiltre" value="<?php echo $ligne['field_id']; ?>">
-                            <button class="bouton-filtre <?php echo in_array($ligne['field_id'], $_SESSION['filtre']) ? "bouton-filtre-selectionner" : "bouton-filtre-deselectionner"?>"><?php echo $ligne['name']; ?></button>
-                        </form>
-                        <?php } ?>
-                    </div>
+            <div class="row">
+                <div class="col-12">
+                    <?php
+                        if ($fields->rowCount() > 1) {
+                            echo '<h2>Filières</h2>';
+                        while ($ligne = $fields->fetch()) {
+                    ?>
+                    <form action="listeEtudiant.php" method="post">
+                        <input type="hidden" name="nouveauFiltre" value="<?php echo $ligne['field_id']; ?>">
+                        <button class="bouton-filtre <?php echo in_array($ligne['field_id'], $_SESSION['filtre']) ? "bouton-filtre-selectionner" : "bouton-filtre-deselectionner"?>"><?php echo $ligne['name']; ?></button>
+                    </form>
+                    <?php } } else {
+                            $_SESSION['filtre'] = [];
+                            array_push($_SESSION['filtre'], $fields->fetch()['field_id']);
+                        } ?>
                 </div>
             </div>
+        </div>
             <!-- Accordéon Bootstrap -->
             <div class="accordion" id="listeEntreprise">
             <?php
-                $stmt = getEntreprisesPhase2($pdo, $_SESSION['filtre'], $_SESSION['recherche']);
-
                 if (empty($_SESSION['filtre'])) {
                     echo '<p>Aucune filière sélectionnée. Veuillez choisir au moins une filière.</p>';
                 } elseif ($stmt->rowCount() === 0) {
@@ -127,7 +134,7 @@
                 <h2 class="accordion-header" id="heading<?php echo $ligne['company_id']?>">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $ligne['company_id']?>" aria-expanded="false" aria-controls="collapse<?php echo $ligne['company_id']?>">
                         <div class="profil-det-img d-flex text-start">
-                            <div class="dp"><img src="../../.../../../ressources/no-photo.png" alt=""></div>
+                            <div class="dp"><img src="../../../ressources/<?php echo $ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "no-photo.png"?>" alt=""></div>
                             <div class="pd">
                                 <h2 class="title"><?php echo $ligne["name"]?></h2>
                                 <ul class="text-left">
@@ -142,28 +149,43 @@
                     <div class="accordion-body">
                         <div class="row">
                             <div class="description"><?php echo $ligne["description"]?></div>
-                            <?php if ($ligne["excluded"] === 1) { ?>
-                            <p class="fw-bold text-danger">Le planning de l'entreprise <?php echo $ligne["name"]; ?> ne peut pas être généré : trop d’étudiants souhaitent la rencontrer ! Ci-dessous, la liste des étudiants intéressés par <?php echo $ligne["name"]; ?>.</p>
-                            <?php }
-                            $stmtEtudiant = getStudentsAppointmentsPerCompany($pdo, $ligne["company_id"], $ligne["excluded"]);
-                            if ($stmtEtudiant->rowCount() === 0) {
-                                echo '<hr><p class="fw-bold text-danger">Aucun étudiant ne souhaite rencontrer cette entreprise.</p>';
-                            }
-                            while ($ligneEtudiant = $stmtEtudiant->fetch()) { 
-                            ?>
-                            <hr>
-                            <?php if ($ligne["excluded"]!= 1) { ?>
-                            <p class="text-center fw-bold fs-5"><?php echo $ligneEtudiant["start"].'-'.$ligneEtudiant["duration"]?></p>
-                            <?php } ?>
-                            <h2 class="student"><?php echo $ligneEtudiant["username"]?></h2>
-                            <p><?php echo $ligneEtudiant["name"]?></p>
-                            <?php } ?>
+                            <?php
+                            try {
+                                if ($ligne["excluded"] === 1) { ?>
+                                <p class="fw-bold text-danger">Le planning de l'entreprise <?php echo $ligne["name"]; ?> ne peut pas être généré : trop d’étudiants souhaitent la rencontrer ! Ci-dessous, la liste des étudiants intéressés par <?php echo $ligne["name"]; ?>.</p>
+                                <?php $stmtEtudiant = getStudentsPerCompanyWishList($pdo, $ligne['company_id']);
+                                    while ($ligneEtudiant = $stmtEtudiant->fetch()) { 
+                                    ?>
+                                    <hr>
+                                    <h2 class="student"><?php echo $ligneEtudiant["username"]?></h2>
+                                    <p><?php echo $ligneEtudiant["name"]?></p>
+                                    <?php }
+                                    } else { 
+                                        $speakers = getSpeakersPerCompany($pdo, $ligne['company_id']);
+                                        while ($speaker = $speakers->fetch()) {
+                                            
+                                            echo '<hr><h5 class="fw-bold text-center">Intervenant : '.$speaker['name'].' - '.$speaker['role'].'</h5>';
+                                            $stmtEtudiant = getAppointmentPerSpeaker($pdo, $speaker['speaker_id']);
+                                            if ($stmtEtudiant->rowCount() === 0) {
+                                                echo '<hr><p class="fw-bold text-danger">Aucun étudiant ne souhaite rencontrer cette entreprise avec cet intervenant.</p>';
+                                            }
+                                            while ($ligneEtudiant = $stmtEtudiant->fetch()) { 
+                                            ?>
+                                            <hr>
+                                            <p class="text-center fw-bold fs-5"><?php echo $ligneEtudiant["start"].'-'.$ligneEtudiant["end"]?></p>
+                                            <h2 class="student"><?php echo $ligneEtudiant["username"]?></h2>
+                                            <p><?php echo $ligneEtudiant["name"]?></p>
+                                        <?php } }  
+                                    }
+                            } catch (Exception $e) {
+                                redirect("../../maintenance.php");
+                            }?>
                         </div>
                     </div>
                 </div>
             </div>
-            <?php   } 
-                } ?>
+            <?php } 
+            } ?>
         </div>
 
         <!-- Navbar du bas -->

@@ -81,3 +81,8 @@ body {
 .entreeUtilisateur::placeholder {
     color: #bfbfbf !important;
 }
+
+.boutonDeconnexion{
+    width: 180px;
+    text-align: center;
+}

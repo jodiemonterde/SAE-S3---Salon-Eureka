@@ -1,8 +1,16 @@
-<?php session_start(); 
-    require('../../../fonctions/baseDeDonnees.php');
-    $pdo = connecteBD();
-    if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 2 || $_SESSION['type_utilisateur'] != 'E'){
-        header('Location: ../../connexion.php');
+<?php 
+    try {
+        session_start(); 
+        require('../../../fonctions/baseDeDonnees.php');
+        $pdo = connecteBD();
+        if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 2 || $_SESSION['type_utilisateur'] != 'E'){
+            header('Location: ../../connexion.php');
+        }
+        $planning = planningPerUser($pdo, $_SESSION['idUtilisateur']);
+        $unlistedCompany = unlistedCompanyPerUser($pdo, $_SESSION['idUtilisateur']);
+    } catch (Exception $e) {
+        header('Location: ../../maintenance.php');
+        exit();
     }
     ?>
 <!DOCTYPE html>
@@ -17,7 +25,7 @@
         <link rel="stylesheet" href="../../../css/all.css">
         <link rel="stylesheet" href="../../../css/emploiDuTemps.css">
         <link rel="stylesheet" href="../../../css/navbars.css">
-        <title>Planning</title>
+        <title>Eureka - emploi du temps</title>
     </head>
     <body>
         <!-- Navbar du haut -->
@@ -58,8 +66,6 @@
                 </div>
             </div>
             <?php
-                $pdo = connecteBD();
-                $planning = planningPerUser($pdo, $_SESSION['idUtilisateur']);
                 foreach ($planning as $rdv) {?>
                     <div class="row mx-1">
                         <div class="col-12 rendez-vous ">
@@ -68,7 +74,6 @@
                         </div>
                     </div>
                 <?php }
-                $unlistedCompany = unlistedCompanyPerUser($pdo, 1);
                 if ($unlistedCompany->rowCount() > 0) {?>
                     <div class="row mx-1">
                         <div class="col-12">
@@ -111,10 +116,10 @@
                             </div>
                             <div class = "row">
                                 <div class="col-6 d-flex justify-content-evenly">
-                                    <button type="button" data-bs-dismiss="modal" class="bouton">Retour</button>
+                                    <button type="button" data-bs-dismiss="modal" class="bouton boutonDeconnexion">Retour</button>
                                 </div>
                                 <div class="col-6 d-flex justify-content-evenly">
-                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton" >Se déconnecter </button>
+                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton boutonDeconnexion" >Se déconnecter </button>
                                 </div>
                             </div>
                         </div>

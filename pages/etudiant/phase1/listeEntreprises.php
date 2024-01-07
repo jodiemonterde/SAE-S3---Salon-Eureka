@@ -1,20 +1,25 @@
-<?php 
-    session_start();
-    // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
-    $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
-    include("../../../fonctions/baseDeDonnees.php");
-    $pdo = connecteBD();
-    if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1 || $_SESSION['type_utilisateur'] != 'E'){
-        header('Location: ../../connexion.php');
-    }
-    if (isset($_POST["entreprise_id"]) && isset($_POST["mode"])) {
-        if ($_POST["mode"] == 'add') {
-            addWishStudent($pdo, $_SESSION['idUtilisateur'], $_POST["entreprise_id"]);
-        } else {
-            deleteWishStudent($pdo, $_SESSION['idUtilisateur'], $_POST["entreprise_id"]);
+<?php
+    try {
+        session_start();
+        // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
+        $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
+        include("../../../fonctions/baseDeDonnees.php");
+        $pdo = connecteBD();
+        if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1 || $_SESSION['type_utilisateur'] != 'E'){
+            header('Location: ../../connexion.php');
         }
-        
-        header("location: listeEntreprises.php");
+        if (isset($_POST["entreprise_id"]) && isset($_POST["mode"])) {
+            if ($_POST["mode"] == 'add') {
+                addWishStudent($pdo, $_SESSION['idUtilisateur'], $_POST["entreprise_id"]);
+            } else {
+                deleteWishStudent($pdo, $_SESSION['idUtilisateur'], $_POST["entreprise_id"]);
+            }
+            
+            header("location: listeEntreprises.php");
+            exit();
+        }
+    } catch (Exception $e) {
+        header('Location: ../../maintenance.php');
         exit();
     }
 ?>
@@ -173,10 +178,10 @@
                             </div>
                             <div class = "row">
                                 <div class="col-6 d-flex justify-content-evenly">
-                                    <button type="button" data-bs-dismiss="modal" class="bouton">Retour</button>
+                                    <button type="button" data-bs-dismiss="modal" class="bouton boutonDeconnexion">Retour</button>
                                 </div>
                                 <div class="col-6 d-flex justify-content-evenly">
-                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton">Se déconnecter </button>
+                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton boutonDeconnexion">Se déconnecter </button>
                                 </div>
                             </div>
                         </div>

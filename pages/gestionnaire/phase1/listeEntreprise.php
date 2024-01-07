@@ -1,7 +1,5 @@
 <?php
     session_start();
-    $user = 1;
-
     // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
     $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
 
@@ -20,11 +18,18 @@
         header("Location: listeEntreprise.php");
         exit();
     }
-    include("../../../fonctions/baseDeDonnees.php");
-    $pdo = connecteBD();
-
-    if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1 || $_SESSION['type_utilisateur'] != 'G'){
-        header('Location: ../../connexion.php');
+    try {
+        include("../../../fonctions/baseDeDonnees.php");
+        include("../../../fonctions/fonctions.php");
+        $pdo = connecteBD();
+        $fields = getFieldsPerUsers($pdo, $_SESSION['idUtilisateur']);
+        $entreprises = getEntreprises($pdo, $_SESSION['filtre'], $_SESSION['recherche']);
+        if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) == 2 || $_SESSION['type_utilisateur'] != 'G'){
+            header('Location: ../../connexion.php');
+        }
+    } catch (Exception $e) {
+        header('Location: ../../maintenance.php');
+        exit();
     }
 ?>
 <!DOCTYPE html>
@@ -98,36 +103,39 @@
             <div class="container p-0">
                 <div class="row">
                     <div class="col-12">
-                        <h2>Filières</h2>
                         <?php
-                            $fields = getFields($pdo);
-                            while ($ligne = $fields->fetch()) {
+                            if ($fields->rowCount() > 1) {
+                                echo '<h2>Filières</h2>';
+                                while ($ligne = $fields->fetch()) {
                         ?>
+                        
                         <form action="listeEntreprise.php" method="post">
                             <input type="hidden" name="nouveauFiltre" value="<?php echo $ligne['field_id']; ?>">
                             <button class="bouton-filtre <?php echo in_array($ligne['field_id'], $_SESSION['filtre']) ? "bouton-filtre-selectionner" : "bouton-filtre-deselectionner"?>"><?php echo $ligne['name']; ?></button>
                         </form>
-                        <?php } ?>
+                        <?php } } else {
+                            $_SESSION['filtre'] = [];
+                            array_push($_SESSION['filtre'], $fields->fetch()['field_id']);
+                        } ?>
                     </div>
                 </div>
             </div>
             <!-- Accordéon Bootstrap -->
             <div class="accordion" id="listeEntreprise">
             <?php
-                $stmt = getEntreprises($pdo, $_SESSION['filtre'], $_SESSION['recherche']);
 
                 if (empty($_SESSION['filtre'])) {
                     echo '<p>Aucune filière sélectionnée. Veuillez choisir au moins une filière.</p>';
-                } elseif ($stmt->rowCount() === 0) {
+                } elseif ($entreprises->rowCount() === 0) {
                     echo '<p>Aucun résultat trouvé.</p>';
                 } else {
-                    while ($ligne = $stmt->fetch()) { 
+                    while ($ligne = $entreprises->fetch()) {
             ?>
             <div class="accordion-item my-3">
                 <h2 class="accordion-header" id="heading<?php echo $ligne['company_id']?>">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $ligne['company_id']?>" aria-expanded="false" aria-controls="collapse<?php echo $ligne['company_id']?>">
                         <div class="profil-det-img d-flex text-start">
-                            <div class="dp"><img src="../../.../../../ressources/no-photo.png" alt=""></div>
+                            <div class="dp"><img src="../../../ressources/<?php echo $ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "no-photo.png"?>" alt=""></div>
                             <div class="pd">
                                 <h2 class="title"><?php echo $ligne["name"]?></h2>
                                 <ul class="text-left">
@@ -143,8 +151,12 @@
                         <div class="row">
                             <div class="description"><?php echo $ligne["description"]?></div>
                             <?php
-                            $stmtEtudiant = getStudentsPerCompany($pdo, $ligne["company_id"]);
-                            while ($ligneEtudiant = $stmtEtudiant->fetch()) { 
+                            try {
+                                $stmtEtudiant = getStudentsPerCompany($pdo, $ligne["company_id"]);
+                            } catch (Exception $e) {
+                                redirect("../../maintenance.php");
+                            }
+                            while ($ligneEtudiant = $stmtEtudiant->fetch()) {
                             ?>
                             <hr>
                             <h2 class="student"><?php echo $ligneEtudiant["username"]?></h2>
@@ -205,10 +217,10 @@
                             </div>
                             <div class = "row">
                                 <div class="col-6 d-flex justify-content-evenly">
-                                    <button type="button" data-bs-dismiss="modal" class="bouton">Retour</button>
+                                    <button type="button" data-bs-dismiss="modal" class="bouton boutonDeconnexion">Retour</button>
                                 </div>
                                 <div class="col-6 d-flex justify-content-evenly">
-                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton">Se déconnecter </button>
+                                    <a href="../../../fonctions/deconnecter.php"><button type="button boutonDeconnexion" class="bouton">Se déconnecter </button>
                                 </div>
                             </div>
                         </div>

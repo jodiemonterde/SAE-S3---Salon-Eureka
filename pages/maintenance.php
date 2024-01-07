@@ -13,20 +13,20 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
-                    <img src="../ressources/logo_black.svg" alt="logo" class="img-fluid logo">
+                        <img src="../ressources/logo_black.svg" alt="logo" class="img-fluid logo">
+                    </div>
+                    <div class="col-12 d-flex justify-content-center">
+                        <h1 class="text-center">Eureka</h1>
+                    </div>
+                    <div class="col-12 d-flex justify-content-center mt-3">
+                        <h5 class="text-center">Le site est actuellement en cours de maintenance. Veuillez revenir plus tard.</br> Si le problème persiste, veuillez contacter un administrateur.</h5>
+                    </div>
+                    <div class="col-12 d-flex justify-content-center mt-3">
+                        <a href="../fonctions/deconnecter.php">
+                            <button type="button" class="bouton">Retour à l'accueil</button>
+                        </a>
+                    </div>
                 </div>
-                <div class="col-12 d-flex justify-content-center">
-                    <h1 class="text-center">Eureka</h1>
-                </div>
-                <div class="col-12 d-flex justify-content-center mt-3">
-                    <h5 class="text-center">Le site est actuellement en cours de maintenance veuillez revenir plus tard,</br> si le problème persiste veuilliez contacter un administrateur</h5>
-                </div>
-                <div class="col-12 d-flex justify-content-center mt-3">
-                    <a href="../fonctions/deconnecter.php">
-                        <button type="button" class="bouton">Retour à l'accueil</button>
-                    </a>
-                </div>
-                
             </div>
         </div>
     </body>

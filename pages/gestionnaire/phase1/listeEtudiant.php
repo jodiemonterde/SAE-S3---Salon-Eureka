@@ -20,11 +20,17 @@
         header("Location: listeEtudiant.php");
         exit();
     }
-    include("../../../fonctions/baseDeDonnees.php");
-    $pdo = connecteBD();
-
-    if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1 || $_SESSION['type_utilisateur'] != 'G'){
-        header('Location: ../../connexion.php');
+    try {
+        include("../../../fonctions/baseDeDonnees.php");
+        $pdo = connecteBD();
+        $stmt = getInfoStudents($pdo, $_SESSION['recherche'], $_SESSION['filtre']);
+        $fields = getFieldsPerUsers($pdo, $_SESSION['idUtilisateur']);
+        if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) == 2 || $_SESSION['type_utilisateur'] != 'G'){
+            header('Location: ../../connexion.php');
+        }
+    } catch (Exception $e) {
+        header('Location: ../../maintenance.php');
+        exit();
     }
 ?>
 <!DOCTYPE html>
@@ -40,7 +46,7 @@
     <link rel="stylesheet" href="../../../css/all.css">
     <link rel="stylesheet" href="../../../css/filtre.css">
     <link rel="stylesheet" href="../../../css/navbars.css">
-    <title>Eureka - Liste des entreprises</title>
+    <title>Eureka - Liste des etudiants</title>
 </head>
 <body>
     <!-- Navbar du haut -->
@@ -98,23 +104,26 @@
         <div class="container p-0">
             <div class="row">
                 <div class="col-12">
-                    <h2>Filières</h2>
                     <?php
-                        $fields = getFields($pdo);
+                        if ($fields->rowCount() > 1) {
+                            echo '<h2>Filières</h2>';
                         while ($ligne = $fields->fetch()) {
                     ?>
                     <form action="listeEtudiant.php" method="post">
                         <input type="hidden" name="nouveauFiltre" value="<?php echo $ligne['field_id']; ?>">
                         <button class="bouton-filtre <?php echo in_array($ligne['field_id'], $_SESSION['filtre']) ? "bouton-filtre-selectionner" : "bouton-filtre-deselectionner"?>"><?php echo $ligne['name']; ?></button>
                     </form>
-                    <?php } ?>
+                    <?php } } else {
+                            $_SESSION['filtre'] = [];
+                            array_push($_SESSION['filtre'], $fields->fetch()['field_id']);
+                        } ?>
                 </div>
             </div>
         </div>
         <!-- Accordéon Bootstrap -->
         <div class="accordion" id="listeEntreprise">
         <?php
-            $stmt = getInfoStudents($pdo, $_SESSION['recherche'], $_SESSION['filtre']);
+            
             if (empty($_SESSION['filtre'])) {
                 echo '<p>Aucune filière sélectionnée. Veuillez choisir au moins une filière.</p>';
             } elseif ($stmt->rowCount() === 0) {
@@ -138,7 +147,11 @@
                 <div class="accordion-body pb-1">
                     <div class="row m-0">
                         <?php
-                            $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
+                            try {
+                                $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
+                            } catch (Exception $e) {
+                                redirect("../../maintenance.php");
+                            }
                             if ($ligne["nbSouhait"] < 1) {
                                 echo "<p class='erreur text-center'>Cet(te) étudiant(e) n'a pris aucun rendez-vous pour l'instant !</p>";
                             }
@@ -151,7 +164,7 @@
                              ?> 
                                 <div>
                                     <div class="profil-det-img d-flex text-start">
-                                        <div class="dp"><img src="../../.../../../ressources/<?php echo $ligne2["logo_file_name"] != "" ? $ligne2["logo_file_name"] : "no-photo.png"?>" alt="Logo de l'entreprise"></div>
+                                        <div class="dp"><img src="../../../ressources/<?php echo $ligne2["logo_file_name"] != "" ? $ligne2["logo_file_name"] : "no-photo.png"?>" alt="Logo de l'entreprise"></div>
                                         <div class="pd">
                                             <h2 class="title"><?php echo $ligne2["name"]?></h2>
                                             <ul class="text-left">
@@ -218,10 +231,10 @@
                             </div>
                             <div class = "row">
                                 <div class="col-6 d-flex justify-content-evenly">
-                                    <button type="button" data-bs-dismiss="modal" class="bouton">Retour</button>
+                                    <button type="button" data-bs-dismiss="modal" class="bouton boutonDeconnexion">Retour</button>
                                 </div>
                                 <div class="col-6 d-flex justify-content-evenly">
-                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton">Se déconnecter </button>
+                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton boutonDeconnexion">Se déconnecter </button>
                                 </div>
                             </div>
                         </div>

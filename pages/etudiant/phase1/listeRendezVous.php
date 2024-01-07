@@ -1,12 +1,18 @@
-<?php 
-    session_start();
-    require('../../../fonctions/baseDeDonnees.php');
-    $pdo = connecteBD();
-    if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1 || $_SESSION['type_utilisateur'] != 'E'){
-        header('Location: ../../connexion.php');
-    }
-    if (isset($_POST["entreprise_id"])) {
-        removeWishStudent($pdo, $_SESSION['idUtilisateur'], $_POST["entreprise_id"]);
+<?php
+    try {
+        session_start();
+        require('../../../fonctions/baseDeDonnees.php');
+        $pdo = connecteBD();
+        if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1 || $_SESSION['type_utilisateur'] != 'E'){
+            header('Location: ../../connexion.php');
+        }
+        if (isset($_POST["entreprise_id"])) {
+            removeWishStudent($pdo, $_SESSION['idUtilisateur'], $_POST["entreprise_id"]);
+        }
+        $stmt = getEntreprisesPerStudent($pdo, $_SESSION['idUtilisateur']);
+    }catch (Exception $e) {
+        header('Location: ../../maintenance.php');
+        exit();
     }
 ?>
 <!DOCTYPE html>
@@ -69,8 +75,6 @@
             </div>
             <!-- Button trigger modal -->
             <?php
-            $pdo = connecteBD();
-            $stmt = getEntreprisesPerStudent($pdo, $_SESSION['idUtilisateur']);
             $vide = true;
             while ($ligne = $stmt->fetch()) { 
             $vide = false;?>
@@ -161,10 +165,10 @@
                             </div>
                             <div class = "row">
                                 <div class="col-6 d-flex justify-content-evenly">
-                                    <button type="button" data-bs-dismiss="modal" class="bouton">Retour</button>
+                                    <button type="button" data-bs-dismiss="modal" class="bouton boutonDeconnexion">Retour</button>
                                 </div>
                                 <div class="col-6 d-flex justify-content-evenly">
-                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton">Se déconnecter </button>
+                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton boutonDeconnexion">Se déconnecter </button>
                                 </div>
                             </div>
                         </div>
