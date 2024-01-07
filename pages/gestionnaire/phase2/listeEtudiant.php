@@ -24,7 +24,7 @@
     $pdo = connecteBD();
 
     if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 2 || $_SESSION['type_utilisateur'] != 'G'){
-        header('Location: ../../connexion.php');
+        //header('Location: ../../connexion.php');
     }
 ?>
 <!DOCTYPE html>
@@ -37,7 +37,8 @@
     <script src="../../../../outils/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <link rel="stylesheet" href="../../../css/all.css">
-    <link rel="stylesheet" href="../../../css/listeEtudiant.css">
+    <link rel="stylesheet" href="../../../css/emploiDuTemps.css">
+    <link rel="stylesheet" href="../../../css/listeEtudiantGestionnaire2.css">
     <link rel="stylesheet" href="../../../css/navbars.css">
     <link rel="stylesheet" href="../../../css/filtre.css">
     <title>Eureka - Liste des entreprises</title>
@@ -82,7 +83,7 @@
         <div class="row d-flex align-items-center h-100">
             <div class="col-12 col-md-6">
                 <h2>Liste des étudiants</h2>
-                <p>Voici tous les étudiants inscrits au forum Eureka de cette année. Cliquez sur l’un d’eux pour voir la liste des entreprises auprès desquels il souhaite obtenir un rendez-vous !</p>
+                <p>Voici tous les étudiants inscrits au forum Eureka de cette année. Cliquez sur l’un d’eux pour voir leur planning de rendez-vous !</p>
             </div>
             <form action="listeEtudiant.php" method="post" class="col-12 col-md-6 my-2">
                 <div class="row">
@@ -137,33 +138,51 @@
                 <div class="accordion-body pb-1">
                     <div class="row m-0">
                         <div class="container" id="toPrint">
-                        <?php
+                            <?php
                             $planning = planningPerUser($pdo, $ligne['user_id']);
-                            foreach ($planning as $rdv) {?>
-                                <div class="row mx-1">
-                                    <div class="col-12 rendez-vous ">
-                                        <p class="text-center"><?php echo htmlspecialchars($rdv['start'])?> - <?php echo htmlspecialchars($rdv['end'])?></p>
-                                        <p class="text-center text-jaune"><?php echo htmlspecialchars($rdv['company_name']); ?></p>
-                                    </div>
-                                </div>
-                            <?php }
                             $unlistedCompany = unlistedCompanyPerUser($pdo, $ligne['user_id']);
-                            if ($unlistedCompany->rowCount() > 0) {?>
-                                <div class="row mx-1">
-                                    <div class="col-12">
-                                        <p><h2>rendez-vous non planifiables</h2></p>
+                            if(Count($planning) > 0 || $unlistedCompany->rowCount() > 0){
+                                foreach ($planning as $rdv) {?>
+                                    <div class="row mx-1">
+                                        <div class="col-12">
+                                            <hr>
+                                            <p class="text-center"><?php echo htmlspecialchars($rdv['start'])?> - <?php echo htmlspecialchars($rdv['end'])?></p>
+                                            <p class="text-center text-jaune"><?php echo htmlspecialchars($rdv['company_name']); ?></p>
+                                        </div>
                                     </div>
-                                </div>
-                            <?php }
-                            while ($ligne3 = $unlistedCompany->fetch()) {?>
-                                <div class="row mx-1">
-                                    <div class="col-12 rendez-vous">
-                                        <p class="text-center text-jaune"><?php echo htmlspecialchars($ligne3['name']); ?></p>
+                                <?php }
+                                if ($unlistedCompany->rowCount() > 0) {?>
+                                    <div class="row mx-1">
+                                        <div class="col-12">
+                                            <hr>
+                                            <p><h2>Consulter les rendez-vous non planifiables</h2>
+                                            Attention, certaines entreprises ont reçues trop de demandes : ils n’ont pas pu être intégrés à l'emploi du temps des étudiant. Si ils souhaitent obtenir un rendez-vous avec eux, il faudra les contacter directement. </p>
+                                        </div>
                                     </div>
+                                <?php }
+                                while ($ligne3 = $unlistedCompany->fetch()) {?>
+                                    <div class="row mx-1">
+                                        <div class="col-12">
+                                            <hr>
+                                            <p class="text-center text-jaune"><?php echo htmlspecialchars($ligne3['name']); ?></p>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                                <div class="row mx-1 fixed-bottom barre-bas">
                                 </div>
-                            <?php } ?>
-                            <div class="row mx-1 fixed-bottom barre-bas">
-                            </div>
+                            <?php
+                            } else {
+                            ?>
+                                <div class="row mx-1">
+                                        <div class="col-12">
+                                            <p class="erreur">L'étudiant n'as pas de rendez-vous</p>
+                                        </div>
+                                </div>
+                                <div class="row mx-1 fixed-bottom barre-bas">
+                                </div>
+                            <?php
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
