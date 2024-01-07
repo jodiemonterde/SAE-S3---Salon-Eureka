@@ -3,7 +3,7 @@
         session_start();
         // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
         $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
-        include("../../../fonctions/baseDeDonnees.php");
+        require("../../../fonctions/baseDeDonnees.php");
         $pdo = connecteBD();
         if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1 || $_SESSION['type_utilisateur'] != 'E'){
             header('Location: ../../connexion.php');

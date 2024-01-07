@@ -19,8 +19,8 @@
         exit();
     }
     try {
-        include("../../../fonctions/baseDeDonnees.php");
-        include("../../../fonctions/fonctions.php");
+        require("../../../fonctions/baseDeDonnees.php");
+        require("../../../fonctions/fonctions.php");
         $pdo = connecteBD();
         $fields = getFieldsPerUsers($pdo, $_SESSION['idUtilisateur']);
         $entreprises = getEntreprises($pdo, $_SESSION['filtre'], $_SESSION['recherche']);

@@ -21,7 +21,7 @@
         exit();
     }
     try {
-        include("../../../fonctions/baseDeDonnees.php");
+        require("../../../fonctions/baseDeDonnees.php");
         $pdo = connecteBD();
         $stmt = getInfoStudents($pdo, $_SESSION['recherche'], $_SESSION['filtre']);
         $fields = getFieldsPerUsers($pdo, $_SESSION['idUtilisateur']);
