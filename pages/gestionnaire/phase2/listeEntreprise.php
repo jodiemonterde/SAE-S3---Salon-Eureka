@@ -27,6 +27,7 @@
         $stmt = getEntreprisesPhase2($pdo, $_SESSION['filtre'], $_SESSION['recherche']);
         if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 2 || $_SESSION['type_utilisateur'] != 'G'){
             header('Location: ../../connexion.php');
+            exit();
         }
     } catch (Exception $e) {
         header('Location: ../../maintenance.php');

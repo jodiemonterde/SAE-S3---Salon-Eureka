@@ -5,6 +5,7 @@
         $pdo = connecteBD();
         if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 2 || $_SESSION['type_utilisateur'] != 'E'){
             header('Location: ../../connexion.php');
+            exit();
         }
         $planning = planningPerUser($pdo, $_SESSION['idUtilisateur']);
         $unlistedCompany = unlistedCompanyPerUser($pdo, $_SESSION['idUtilisateur']);

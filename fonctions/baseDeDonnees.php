@@ -260,7 +260,7 @@
                 LEFT JOIN WishList w
                 ON u.user_id = w.user_id
                 WHERE u.responsibility = 'E'
-                AND f.field_id IN ($field_ids_str)
+                AND f.field_id IN (:fields)
                 GROUP BY u.username, filiere";
     
         if ($recherche != null) {
@@ -270,7 +270,7 @@
         $sql .= " ORDER BY u.username";
     
         $stmt = $pdo->prepare($sql);
-    
+        $stmt->bindParam(':fields', $field_ids_str);
         if ($recherche != null) {
             $stmt->bindValue(':recherche', '%' . $recherche . '%', PDO::PARAM_STR);
         }

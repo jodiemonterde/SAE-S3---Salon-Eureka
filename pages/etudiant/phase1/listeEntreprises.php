@@ -7,6 +7,7 @@
         $pdo = connecteBD();
         if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1 || $_SESSION['type_utilisateur'] != 'E'){
             header('Location: ../../connexion.php');
+            exit();
         }
         if (isset($_POST["entreprise_id"]) && isset($_POST["mode"])) {
             if ($_POST["mode"] == 'add') {

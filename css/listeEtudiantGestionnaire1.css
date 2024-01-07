@@ -168,3 +168,15 @@ p {
 .erreur {
     color: red;
 }
+
+.sort {
+    font-size: 13px;
+    color: #FFA800;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.sort:hover {
+    color: #df9400;
+}

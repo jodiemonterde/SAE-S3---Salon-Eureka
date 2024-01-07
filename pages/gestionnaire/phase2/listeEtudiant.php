@@ -20,18 +20,33 @@
         header("Location: listeEtudiant.php");
         exit();
     }
+
+    if (!isset($_SESSION['triPar'])) {
+        $_SESSION['triPar'] = "alpha";
+    }
+
+    if (isset($_POST['triPar'])) {
+        $_SESSION['triPar'] = $_POST['triPar'];
+        header("Location: listeEtudiant.php");
+        exit();
+    }
+
     try {
         require("../../../fonctions/baseDeDonnees.php");
         $pdo = connecteBD();
+        $phase = getPhase($pdo);
         $fields = getFieldsPerUsers($pdo, $_SESSION['idUtilisateur']);
-        $stmt = getInfoStudents($pdo, $_SESSION['recherche'], $_SESSION['filtre']);
-        if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 2 || $_SESSION['type_utilisateur'] != 'G'){
-            //header('Location: ../../connexion.php');
+        $stmt = getInfoStudentsSort($pdo, $_SESSION['recherche'], $_SESSION['filtre'], $_SESSION['triPar']);
+        if(!isset($_SESSION['idUtilisateur']) || $phase != 2 || $_SESSION['type_utilisateur'] != 'G'){
+            header('Location: ../../connexion.php');
+            exit();
         }
     } catch (Exception $e) {
         header('Location: ../../maintenance.php');
         exit();
     }
+
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -94,7 +109,7 @@
             <form action="listeEtudiant.php" method="post" class="col-12 col-md-6 my-2">
                 <div class="row">
                     <div class="col-8">
-                        <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="entreeUtilisateur"/>    
+                        <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher un etudiant" class="entreeUtilisateur"/>    
                     </div>
                     <div class="col-4">
                         <input type="submit" class="bouton" value="Rechercher"/>
@@ -119,6 +134,17 @@
                     } ?>
             </div>
         </div>
+        <hr class="m-0">
+        <div class="d-flex flex-row-reverse">
+            <form action="listeEtudiant.php" method="post">
+                <select id="triPar" name="triPar" class="form-control sort text-end" onchange="this.form.submit()">
+                    <option value="default" disabled selected>&#x21C5; TRIER PAR</option>
+                    <option value="alpha">Ordre alphabétique</option>
+                    <option value="croissant">Nombre de <?php echo $phase == 1 ? "souhaits" : "rencontres" ?> croissant</option>
+                    <option value="decroissant">Nombre de <?php echo $phase == 1 ? "souhaits" : "rencontres" ?> décroissant</option>
+                </select>
+            </form>
+        </div>
         <!-- Accordéon Bootstrap -->
         <div class="accordion" id="listeEntreprise">
         <?php
@@ -136,6 +162,7 @@
                         <div class="pd detailEtudiant">
                             <h2 class="title"><?php echo $ligne["username"]?></h2>
                             <?php echo $ligne["filiere"]?></br>
+                            <span class="<?php echo $ligne["nbSouhait"] < 1 ? "erreur" : ""?>"> <?php echo $ligne["nbSouhait"]?> rencontres </span>
                         </div>
                     </div>
                 </button>
@@ -146,8 +173,8 @@
                         <div class="container">
                             <?php
                             try {
-                            $planning = planningPerUser($pdo, $ligne['user_id']);
-                            $unlistedCompany = unlistedCompanyPerUser($pdo, $ligne['user_id']);
+                                $planning = planningPerUser($pdo, $ligne['user_id']);
+                                $unlistedCompany = unlistedCompanyPerUser($pdo, $ligne['user_id']);
                             } catch (Exception $e) {
                                 redirect("../../maintenance.php");
                             }
