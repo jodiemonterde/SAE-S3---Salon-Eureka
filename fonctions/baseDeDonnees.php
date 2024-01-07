@@ -45,7 +45,7 @@ function getEntreprises($pdo, $field_ids, $recherche) {
     }
 
     // Requête SQL de base
-    $sql = "SELECT c.company_id, c.name, c.description, c.address, c.sector, GROUP_CONCAT(DISTINCT CONCAT(s.name, ',', COALESCE(s.role, ''), ',', af.fields) SEPARATOR ';') AS intervenants_roles
+    $sql = "SELECT c.company_id, c.name, c.description, c.address, c.sector, c.logo_file_name as logo, GROUP_CONCAT(DISTINCT CONCAT(s.name, ',', COALESCE(s.role, ''), ',', af.fields) SEPARATOR ';') AS intervenants_roles
             FROM Company c
             JOIN Speaker s ON c.company_id = s.company_id
             JOIN (SELECT a.speaker_id, GROUP_CONCAT(DISTINCT f.name SEPARATOR '/') AS fields
@@ -170,11 +170,10 @@ function modifierEntreprise($pdo, $company_id, $nom_entreprise, $secteur_activit
 }
 
 function addCompany($pdo, $nom, $description, $adresse, $codePostal, $ville, $secteur, $logo, $intervenants) {
-    if ($logo != null) {
+    var_dump($logo);
+    if (!empty($logo['name'])) {
         $targetDirectory = "../../../../ressources/logosentreprises/";
-        var_dump(pathinfo($logo["name"]));
         $imageFileType = strtolower(pathinfo($logo["name"], PATHINFO_EXTENSION));
-        var_dump($imageFileType);
 
         // Générer un nom de fichier unique basé sur le nom de l'entreprise
         // Supression des caractères non autorisés
@@ -199,13 +198,7 @@ function addCompany($pdo, $nom, $description, $adresse, $codePostal, $ville, $se
             echo "Désolé, le fichier existe déjà.";
             $uploadOk = 0;
         }
-    
-        // Vérifier la taille du fichier
-        if ($logo["size"] > 500000) {
-            echo "Désolé, votre fichier est trop volumineux.";
-            $uploadOk = 0;
-        }
-    
+
         // Autoriser certains formats de fichiers
         $allowedFormats = array("jpg", "jpeg", "png", "gif");
         if (!in_array($imageFileType, $allowedFormats)) {
@@ -233,7 +226,7 @@ function addCompany($pdo, $nom, $description, $adresse, $codePostal, $ville, $se
             }
         }
     } else {
-        $targetFile = "../../../../ressources/logosentreprises/no-photo.png";
+        $newFileName = "no-photo.png";
     }
 
     $nom = htmlspecialchars($nom);
@@ -247,7 +240,7 @@ function addCompany($pdo, $nom, $description, $adresse, $codePostal, $ville, $se
     $stmt->bindParam(':description', $description);
     $stmt->bindParam(':adresse', $adresse);
     $stmt->bindParam(':secteur', $secteur);
-    $stmt->bindParam(':logo', $pathToLogo);
+    $stmt->bindParam(':logo', $newFileName);
     $stmt->execute(); 
 
     $companyId = $pdo->lastInsertId();
