@@ -1,54 +1,58 @@
-<?php 
-    session_start(); 
-    require("../fonctions/baseDedonnees.php");
-    $pdo = connecteBD();
-    $tentative = false;
-    $_SESSION['connexion'] = false;
-    $phase = getPhase($pdo);
-    if(isset($_SESSION['idUtilisateur']) && $_SESSION['idUtilisateur']!= null){
-        if($_SESSION['type_utilisateur'] == 'E'){
-            if ($phase == 1) {
-                header('Location: etudiant/phase1/listeEntreprises.php');
-            } else {
-                header('Location: etudiant/phase2/emploiDuTemps.php');
+<?php
+    try {
+        session_start(); 
+        require("../fonctions/baseDedonnees.php");
+        $pdo = connecteBD();
+        $tentative = false;
+        $_SESSION['connexion'] = false;
+        $phase = getPhase($pdo);
+        if(isset($_SESSION['idUtilisateur']) && $_SESSION['idUtilisateur']!= null){
+            if($_SESSION['type_utilisateur'] == 'E'){
+                if ($phase == 1) {
+                    header('Location: etudiant/phase1/listeEntreprises.php');
+                } else {
+                    header('Location: etudiant/phase2/emploiDuTemps.php');
+                }
+            }elseif($_SESSION['type_utilisateur'] == 'G'){
+                if ($phase == 1) {
+                    header('Location: gestionnaire/phase1/listeEntreprise.php');
+                } else {
+                    header('Location: gestionnaire/phase2/listeEntreprise.php');
+                }
+            }else{
+                header('Location: administrateur/entreprises/modifierEntreprise.php');
             }
-        }elseif($_SESSION['type_utilisateur'] == 'G'){
-            if ($phase == 1) {
-                header('Location: gestionnaire/phase1/listeEntreprise.php');
-            } else {
-                header('Location: gestionnaire/phase2/listeEntreprise.php');
-            }
-        }else{
-            header('Location: administrateur/entreprises/modifierEntreprise.php');
+            exit();
         }
+
+        if(isset($_POST["motDePasse"]) && isset($_POST["identifiant"])){
+            $_SESSION['connexion'] = verifUtilisateur($pdo, htmlspecialchars($_POST["motDePasse"]), htmlspecialchars($_POST["identifiant"]));
+            if($_SESSION['connexion'] == false){
+                $tentative = true;
+            }
+        }
+
+        if($_SESSION['connexion']==true){
+            $info = infoUtilisateur($pdo, htmlspecialchars($_POST["motDePasse"]), htmlspecialchars($_POST["identifiant"]));
+            $ligne = $info->fetch();
+            $_SESSION['idUtilisateur'] = $ligne['user_id'];
+            $_SESSION['type_utilisateur'] = $ligne['responsibility'];	
+            $_SESSION['nom_utilisateur'] = $ligne['username'];
+        }
+
+        if($_SESSION['connexion']==true){
+            if($_SESSION['type_utilisateur'] == 'E'){
+                header('Location: etudiant/phase1/listeEntreprises.php');
+            }elseif($_SESSION['type_utilisateur'] == 'G'){
+                header('Location: gestionnaire/phase1/listeEntreprise.php');
+            }else{
+                header('Location: administrateur/entreprises/detailEntreprise.php');
+            }
+        }
+    } catch (Exception $e) {
+        header('Location: maintenance.php');
         exit();
     }
-
-    if(isset($_POST["motDePasse"]) && isset($_POST["identifiant"])){
-        $_SESSION['connexion'] = verifUtilisateur($pdo, htmlspecialchars($_POST["motDePasse"]), htmlspecialchars($_POST["identifiant"]));
-        if($_SESSION['connexion'] == false){
-            $tentative = true;
-        }
-    }
-
-    if($_SESSION['connexion']==true){
-        $info = infoUtilisateur($pdo, htmlspecialchars($_POST["motDePasse"]), htmlspecialchars($_POST["identifiant"]));
-        $ligne = $info->fetch();
-        $_SESSION['idUtilisateur'] = $ligne['user_id'];
-        $_SESSION['type_utilisateur'] = $ligne['responsibility'];	
-        $_SESSION['nom_utilisateur'] = $ligne['username'];
-    }
-
-    if($_SESSION['connexion']==true){
-        if($_SESSION['type_utilisateur'] == 'E'){
-            header('Location: etudiant/phase1/listeEntreprises.php');
-        }elseif($_SESSION['type_utilisateur'] == 'G'){
-            header('Location: gestionnaire/phase1/listeEntreprise.php');
-        }else{
-            header('Location: administrateur/entreprises/detailEntreprise.php');
-        }
-    }
-    
 ?>
 <!DOCTYPE html>
 <html lang="en">

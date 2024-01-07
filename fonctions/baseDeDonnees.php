@@ -5,16 +5,12 @@
         $dbName = 'sae-nmms_eureka';
         $username = 'sae-nmms';
         $password = 'NicolMonterdeMiquelSchardt';
-    
-        try {
-            // Create a new PDO instance
-            $pdo = new PDO("mysql:host=$host;dbname=$dbName", $username, $password);
-            
-            // Set PDO error mode to exception
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            echo "Connection failed: " . $e->getMessage();
-        }
+        // Create a new PDO instance
+        $pdo = new PDO("mysql:host=$host;dbname=$dbName", $username, $password);
+        
+        // Set PDO error mode to exception
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
         return $pdo;
     }
     function verifUtilisateur($pdo, $motDepasse, $identifiant){
