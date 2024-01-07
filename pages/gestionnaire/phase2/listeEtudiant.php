@@ -58,7 +58,6 @@
     <script src="../../../../outils/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <link rel="stylesheet" href="../../../css/all.css">
-    <link rel="stylesheet" href="../../../css/emploiDuTemps.css">
     <link rel="stylesheet" href="../../../css/listeEtudiantGestionnaire2.css">
     <link rel="stylesheet" href="../../../css/navbars.css">
     <link rel="stylesheet" href="../../../css/filtre.css">
@@ -158,8 +157,8 @@
         <div class="accordion-item my-3">
             <h2 class="accordion-header" id="heading<?php echo $ligne['user_id']?>">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $ligne['user_id']?>" aria-expanded="false" aria-controls="collapse<?php echo $ligne['user_id']?>">
-                    <div class="profil-det-img d-flex text-start">
-                        <div class="pd detailEtudiant">
+                    <div class="d-flex text-start">
+                        <div class="detailEtudiant">
                             <h2 class="title"><?php echo $ligne["username"]?></h2>
                             <?php echo $ligne["filiere"]?></br>
                             <span class="<?php echo $ligne["nbSouhait"] < 1 ? "erreur" : ""?>"> <?php echo $ligne["nbSouhait"]?> rencontres </span>
