@@ -63,7 +63,7 @@
         <link rel="stylesheet" href="../../outils/fontawesome-free-6.5.1-web/css/all.css">
         <link rel="stylesheet" href="../css/all.css">
         <link rel="stylesheet" href="../css/connexionDeconnexion.css">
-        <title>pas dev</title>
+        <title>Connexion</title>
     </head> 
 
     <body>
