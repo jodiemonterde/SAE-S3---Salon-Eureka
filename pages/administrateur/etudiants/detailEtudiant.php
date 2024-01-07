@@ -48,7 +48,7 @@
     <link rel="stylesheet" href="../../../lib/fontawesome-free-6.5.1-web/css/all.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <link rel="stylesheet" href="../../../css/listeEtudiant.css">
+    <link rel="stylesheet" href="../../../css/listeEtudiantAdministrateur.css">
     <link rel="stylesheet" href="../../../css/navbars.css">
     <link rel="stylesheet" href="../../../css/filtre.css">
     <title>Eureka - Liste des entreprises</title>
@@ -181,7 +181,7 @@
         <!-- Accordéon Bootstrap -->
         <div class="accordion" id="listeEntreprise">
         <?php
-            $stmt = getInfoStudents($pdo, $_SESSION['recherche'], $_SESSION['filtre'], $_POST['triPar']);
+            $stmt = getInfoStudentsSort($pdo, $_SESSION['recherche'], $_SESSION['filtre'], $_POST['triPar']);
             if (empty($_SESSION['filtre'])) {
                 echo '<p>Aucune filière sélectionnée. Veuillez choisir au moins une filière.</p>';
             } elseif ($stmt->rowCount() === 0) {
