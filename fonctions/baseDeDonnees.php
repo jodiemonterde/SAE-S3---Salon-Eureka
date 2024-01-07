@@ -397,4 +397,22 @@
         }
         $pdo->commit();
     }
+
+    function getCompanyNotExcluded($pdo){
+        $maRequete = $pdo->prepare("SELECT company_id,name FROM Company WHERE excluded = 0");
+        $maRequete->execute();
+        return $maRequete;
+    }
+
+    function getCompanyExcluded($pdo){
+        $maRequete = $pdo->prepare("SELECT company_id,name FROM Company WHERE excluded = 1");
+        $maRequete->execute();
+        return $maRequete;
+    }
+
+    function getStudent($pdo){
+        $maRequete = $pdo->prepare("SELECT user_id,username FROM User");
+        $maRequete->execute();
+        return $maRequete;
+    }
 ?>

@@ -1,6 +1,7 @@
 <?php 
     session_start();
     require("../../../fonctions/baseDeDonnees.php");
+    require("../../../fonctions/exporter.php");
     require("../../../fonctions/fonctionsImportationExportation.php");
     $pdo = connecteBD();
     if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
@@ -22,6 +23,9 @@
     if (isset($_SESSION["reponse import"])) {
         $reponse = $_SESSION["reponse import"];
         unset($_SESSION["reponse import"]);
+    }
+    if(isset($_POST["listeEntreprise"]) && $_POST["listeEntreprise"] != 0 ){
+        exportEntreprise($_POST["listeEntreprise"],$pdo);
     }
 ?>
 <!DOCTYPE html>
@@ -151,7 +155,29 @@
                     <div id="collapsePlanningEntreprise" class="accordion-collapse collapse" aria-labelledby="headingPlanningEntreprise" data-bs-parent="#exporterPlanningEntreprise">
                         <div class="accordion-body">
                             <div class="row">
-                                xxxxxxxxxxx
+                                <div class="col-12">
+                                    <form action="importExport.php" method="post">
+                                        Entreprise :
+                                        <select name="listeEntreprise">
+                                            <option value="0">Veuillez selectionner une entreprise</option>
+                                            <?php
+                                                $ListeEntrepriseNonExclue = getCompanyNotExcluded($pdo);
+                                                while($row = $ListeEntrepriseNonExclue->fetch()){
+                                            ?>
+                                                    <option value=<?php echo $row["company_id"];?> 
+                                                <?php
+                                                    if(isset($_POST["listeEntreprise"]) && $_POST["listeEntreprise"] == $row["company_id"]){
+                                                        echo ' selected';
+                                                    }
+                                                ?>
+                                                    > <?php echo $row["name"];?> </option>
+                                            <?php
+                                                }
+                                            ?>
+                                        </select>
+                                        <input class="bouton" type="submit" value="exporter" name="exporter">
+                                    </form> 
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -169,7 +195,29 @@
                     <div id="collapseEtatEntreprises" class="accordion-collapse collapse" aria-labelledby="headingEtatEntreprises" data-bs-parent="#exporterEtatEntreprises">
                         <div class="accordion-body">
                             <div class="row">
-                                xxxxxxxxxxx
+                                <div class="col-12">
+                                    <form action="importExport.php" method="post">
+                                        Entreprise exclue :
+                                        <select name="listeEntrepriseExclue">
+                                            <option value="0">Veuillez selectionner une entreprise</option>
+                                            <?php
+                                                $ListeEntrepriseExclue = getCompanyExcluded($pdo);
+                                                while($row = $ListeEntrepriseExclue->fetch()){
+                                            ?>
+                                                    <option value=<?php echo $row["company_id"];?> 
+                                                <?php
+                                                    if(isset($_POST["listeEntreprise"]) && $_POST["listeEntreprise"] == $row["company_id"]){
+                                                        echo ' selected';
+                                                    }
+                                                ?>
+                                                    > <?php echo $row["name"];?> </option>
+                                            <?php
+                                                }
+                                            ?>
+                                        </select>
+                                        <input class="bouton" type="submit" value="exporter" name="exporter">
+                                    </form> 
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -187,7 +235,29 @@
                     <div id="collapseExportEtudiant" class="accordion-collapse collapse" aria-labelledby="headingExportEtudiant" data-bs-parent="#exportEtudiant">
                         <div class="accordion-body">
                             <div class="row">
-                                xxxxxxxxxxx
+                                <div class="col-12">
+                                    <form action="importExport.php" method="post">
+                                        Etudiant :
+                                        <select name="listeEtudiant">
+                                            <option value="0">Veuillez selectionner un etudiant</option>
+                                            <?php
+                                                $listeEtudiant = getStudent($pdo);
+                                                while($row = $listeEtudiant->fetch()){
+                                            ?>
+                                                    <option value=<?php echo $row["user_id"];?> 
+                                                <?php
+                                                    if(isset($_POST["listeEtudiant"]) && $_POST["listeEtudiant"] == $row["user_id"]){
+                                                        echo ' selected';
+                                                    }
+                                                ?>
+                                                    > <?php echo $row["username"];?> </option>
+                                            <?php
+                                                }
+                                            ?>
+                                        </select>
+                                        <input class="bouton" type="submit" value="exporter" name="exporter">
+                                    </form> 
+                                </div>
                             </div>
                         </div>
                     </div>
