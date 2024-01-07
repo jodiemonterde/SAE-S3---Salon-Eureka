@@ -116,9 +116,107 @@
             $stmt->bindValue(':recherche', '%' . $recherche . '%');
         }
         $stmt->bindParam(':user_id', $user_id);
-        
+
         $stmt->execute();
+
         return $stmt;
+    }
+
+    function addNewStudent($pdo, $prenom, $nom, $email, $mdp, $filiere) {
+        $nom = htmlspecialchars($nom);
+        $prenom = htmlspecialchars($prenom);
+        $email = htmlspecialchars($email);
+        $mdp = htmlspecialchars($mdp);
+        $filiere = htmlspecialchars($filiere);
+
+        $username = $prenom.' '.$nom;
+        $stmt = $pdo->prepare("INSERT INTO User (username, password, responsibility, email)
+                            VALUES (:username, :password, 'E', :email)");
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':password', $mdp);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute(); 
+
+        // Récupérer l'ID généré automatiquement
+        $user_id = $pdo->lastInsertId();
+
+        $stmt = $pdo->prepare("INSERT INTO AssignmentUser (field_id, user_id)
+                            VALUES (:field_id, :user_id)");
+        $stmt->bindParam(':field_id', $filiere);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+    }
+
+    function addNewSupervisor($pdo, $prenom, $nom, $email, $mdp, $filiere) {
+        $nom = htmlspecialchars($nom);
+        $prenom = htmlspecialchars($prenom);
+        $email = htmlspecialchars($email);
+        $mdp = htmlspecialchars($mdp);
+
+        $username = $prenom.' '.$nom;
+        $stmt = $pdo->prepare("INSERT INTO User (username, password, responsibility, email)
+                            VALUES (:username, :password, 'G', :email)");
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':password', $mdp);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute(); 
+
+        // Récupérer l'ID généré automatiquement
+        $user_id = $pdo->lastInsertId();
+
+        foreach($filiere as $value) {
+        $stmt = $pdo->prepare("INSERT INTO AssignmentUser (field_id, user_id)
+                            VALUES (:field_id, :user_id)");
+        $stmt->bindParam(':field_id', $value);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        }
+        
+    }
+
+    function deleteStudent($pdo, $user_id) {
+        $user_id = htmlspecialchars($user_id);
+
+        
+        $stmt = $pdo->prepare("DELETE 
+                            FROM WishList
+                            WHERE WishList.user_id = :user_id;");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        
+        $stmt = $pdo->prepare("DELETE 
+                            FROM Appointment
+                            WHERE Appointment.user_id = :user_id;");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+
+        $stmt = $pdo->prepare("DELETE 
+                            FROM AssignmentUser
+                            WHERE AssignmentUser.user_id = :user_id;");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute(); 
+
+        $stmt = $pdo->prepare("DELETE 
+                            FROM User
+                            WHERE User.user_id = :user_id;");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+    }
+
+    function deleteSupervisor($pdo, $user_id) {
+        $user_id = htmlspecialchars($user_id);
+
+        $stmt = $pdo->prepare("DELETE 
+                            FROM AssignmentUser
+                            WHERE AssignmentUser.user_id = :user_id;");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute(); 
+
+        $stmt = $pdo->prepare("DELETE 
+                            FROM User
+                            WHERE User.user_id = :user_id;");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
     }
 
     function getEntreprisesPerStudent($pdo, $user_id) {
@@ -222,6 +320,98 @@
         return $requete;
     }
 
+    function getInfoStudentsSort($pdo, $recherche, $field_ids, $sort) {
+        $field_ids_str = implode(', ', $field_ids);
+
+        $sort = htmlspecialchars($sort);
+
+        if ($field_ids_str == null) {
+            return null;
+        }
+
+        $sql = "SELECT u.username, f.name AS filiere, COUNT(w.company_id) AS nbSouhait, u.user_id
+                FROM User u
+                JOIN AssignmentUser au
+                ON u.user_id = au.user_id
+                JOIN Field f
+                ON au.field_id = f.field_id
+                LEFT JOIN WishList w
+                ON u.user_id = w.user_id
+                WHERE u.responsibility = 'E'
+                AND f.field_id IN ($field_ids_str)
+                GROUP BY u.username, filiere";
+
+        if ($recherche != null) {
+            $sql .= " HAVING u.username LIKE :recherche";
+        }
+
+        if ($sort == "default" || $sort == "alpha") { 
+            $sql .= " ORDER BY u.username";
+        } else if ($sort == "croissant") {
+            $sql .= " ORDER BY nbSouhait";
+        } else if ($sort == "decroissant") {
+            $sql .= " ORDER BY nbSouhait DESC";
+        }
+        
+
+        $stmt = $pdo->prepare($sql);
+
+        if ($recherche != null) {
+            $stmt->bindValue(':recherche', '%' . $recherche . '%', PDO::PARAM_STR);
+        }
+
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function getInfosSupervisors($pdo, $recherche, $field_ids) {
+
+        $parameters = $field_ids;
+
+        if (!is_array($parameters)) {
+            $parameters = [$field_ids];
+        }
+
+        if ($field_ids == null || count($field_ids) == 0) {
+            return null;
+        }
+
+        $parametersAsQuestionMarks = implode(',', array_fill(0, count($parameters), '?'));
+        
+        $sql = "SELECT u.username, GROUP_CONCAT(f.name ORDER BY f.name) AS filieres, u.user_id
+                FROM User u
+                JOIN AssignmentUser au 
+                ON u.user_id = au.user_id
+                JOIN Field f 
+                ON au.field_id = f.field_id
+                JOIN (
+                    SELECT DISTINCT u.user_id
+                    FROM User u
+                    JOIN AssignmentUser au 
+                    ON u.user_id = au.user_id
+                    JOIN Field f 
+                    ON au.field_id = f.field_id
+                    WHERE u.responsibility = 'G'
+                    AND f.field_id IN ($parametersAsQuestionMarks)
+                ) AS filtered_users 
+                ON u.user_id = filtered_users.user_id
+                GROUP BY u.username, u.user_id";
+
+        if ($recherche != null) {
+            $sql .= " HAVING u.username LIKE :recherche";
+        }
+
+        $sql .= " ORDER BY u.username";
+
+        $stmt = $pdo->prepare($sql);
+
+        if ($recherche != null) {
+            $stmt->bindValue(':recherche', '%' . $recherche . '%', PDO::PARAM_STR);
+        }
+        $stmt->execute($parameters);
+        return $stmt;
+    }
+
     function deleteWishStudent($pdo, $user_id, $company_id) {
         $stmt = $pdo->prepare("DELETE IGNORE FROM WishList
                                WHERE user_id = :user_id 
@@ -298,8 +488,6 @@
         $stmt->execute();
         return $stmt;
     }
-
-
 
     function getStudentsPerCompanyWishList($pdo, $company_id) {
         $stmt = $pdo->prepare("SELECT Field.name, User.username
@@ -404,5 +592,18 @@
                             ORDER BY Company.name");
         $stmt->execute();
         return $stmt;
+    }
+
+    function modifyPassword($pdo, $user_id, $new_password) {
+        $new_password = htmlspecialchars($new_password);
+    
+        $stmt = $pdo->prepare("UPDATE User
+                               SET password = :new_password
+                               WHERE User.user_id = :user_id");
+    
+        $stmt->bindParam(':new_password', $new_password);
+        $stmt->bindParam(':user_id', $user_id);
+        
+        $stmt->execute();
     }
 ?>

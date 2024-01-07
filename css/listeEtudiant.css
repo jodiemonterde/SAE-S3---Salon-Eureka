@@ -17,6 +17,10 @@
     width: 100%;
 }
 
+.zoneText select { 
+    color: #bfbfbf; 
+}
+
 input ::placeholder {
     color: #bfbfbf !important;
 }
@@ -120,10 +124,21 @@ h2 {
     width: 100%;
 }
 
-addStudent {
+.boutonNegatif {
+    height: 40px;
     background-color: white;
-    border: solid 1px #D9D9D9;
+    text-transform: uppercase;
+    border: solid 1px #FFA800;
     color: #FFA800;
+    border-radius: 40px 20px 40px 20px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    width: 100%;
+}
+
+button {
+    background-color: white;
 }
 
 hr {
@@ -138,6 +153,22 @@ p {
 .student {
     color: #FFA800;
     margin-bottom: 0;
+}
+
+.modalLabel {
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.addStudent {
+    background-color: white;
+    border: solid 1px #FFA800;
+    color: #FFA800;
+    border-radius: 4px;
+}
+
+.addStudent:hover {
+    background-color: #eee;
 }
 
 .description {
@@ -164,6 +195,10 @@ p {
     border-radius: 4px;
 }
 
+.accordion-header {
+    padding: 1px;
+}
+
 .accordion-item:not(:first-of-type) {
     border: 1px solid #D9D9D9 !important;
 }
@@ -177,9 +212,7 @@ p {
     border-color: #FFA800 !important;
 }
 
-.accordion-item button {
-    border-radius: 4px;
-}
+
 
 .title {
     color: #FFA800;
@@ -193,3 +226,73 @@ p {
 .erreur {
     color: red;
 }
+
+.blanc{
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.blanc:hover{
+    background-color: #eee;
+}
+
+.buttonToCheck {
+    cursor: pointer;
+    display: flex;
+  }
+  
+  .buttonToCheck input[type="checkbox"] {
+    display: none;
+  }
+  
+  .buttonToCheck .icon-box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 0.5s;
+    user-select: none;
+
+    background-color: #FFFFFF;
+    color: #FFA800;  
+    border-radius: 50px;
+    min-width: 122px;
+    font-weight: 400;
+    font-size: 12px;
+    border: #FFA800 solid 1px;
+    margin-bottom: 4px;
+  }
+
+
+  .buttonToCheck .icon-box:hover {
+    background-color: #dfdfdf;
+}
+  
+  .buttonToCheck input[type="checkbox"]:checked ~ .icon-box {
+    background-color: #FFA800;
+    color: black;
+  }
+  .buttonToCheck input[type="checkbox"]:checked ~ .icon-box:hover {
+    background-color: #da9100;
+    border-color: #da9100;
+  }
+  
+  .buttonToCheck .icon-box span {
+    font-size: 12px;
+  }
+  
+  .rowForChecks {
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }
+
+  .sort {
+    font-size: 13px;
+    color: #FFA800;
+    background-color: white;
+    border: none;
+    
+  }
