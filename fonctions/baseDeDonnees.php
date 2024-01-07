@@ -169,7 +169,7 @@ function modifierEntreprise($pdo, $company_id, $nom_entreprise, $secteur_activit
     return $stmt->execute();
 }
 
-function addCompany($pdo, $nom, $description, $adresse, $codePostal, $ville, $secteur, $logo) {
+function addCompany($pdo, $nom, $description, $adresse, $codePostal, $ville, $secteur, $logo, $intervenants) {
     if ($logo != null) {
         $targetDirectory = "../../../../ressources/logosentreprises/";
         var_dump(pathinfo($logo["name"]));
@@ -241,14 +241,36 @@ function addCompany($pdo, $nom, $description, $adresse, $codePostal, $ville, $se
     $adresse = htmlspecialchars($adresse . ', ' . $codePostal . ' ' . $ville);
     $secteur = htmlspecialchars($secteur);
 
-    $stmt = $pdo->prepare("INSERT INTO Company (name, logo_file_name, description, address, sector, excluded)
-                           VALUES (:nom, :logo, :description, :adresse, :secteur, 0)");
+    $stmt = $pdo->prepare("INSERT INTO Company (name, logo_file_name, description, address, sector, excluded, useSecondary)
+                           VALUES (:nom, :logo, :description, :adresse, :secteur, 0, 0)");
     $stmt->bindParam(':nom', $nom);
     $stmt->bindParam(':description', $description);
     $stmt->bindParam(':adresse', $adresse);
     $stmt->bindParam(':secteur', $secteur);
     $stmt->bindParam(':logo', $pathToLogo);
     $stmt->execute(); 
+
+    $companyId = $pdo->lastInsertId();
+
+    // Ajoutez les Intervenants (Speakers) dans la table Speaker
+    $stmtAddSpeaker = $pdo->prepare("INSERT INTO Speaker (name, role, company_id) VALUES (:nom, NULL, :companyId)");
+    foreach ($intervenants as $intervenant) {
+        $stmtAddSpeaker->bindParam(':nom', $intervenant['nom']);
+        $stmtAddSpeaker->bindParam(':companyId', $companyId);
+        $stmtAddSpeaker->execute();
+
+        // Obtenez l'id du dernier Intervenant ajouté
+        $speakerId = $pdo->lastInsertId();
+
+        // Ajoutez les assignations dans la table AssignmentSpeaker
+        foreach ($intervenant['filieres'] as $filiereId) {
+            $stmtAddAssignment = $pdo->prepare("INSERT INTO AssignmentSpeaker (speaker_id, field_id) VALUES (:speakerId, :filiereId)");
+            $stmtAddAssignment->bindParam(':speakerId', $speakerId);
+            $stmtAddAssignment->bindParam(':filiereId', $filiereId);
+            $stmtAddAssignment->execute();
+        }
+    }
+
 }
 
 ?>

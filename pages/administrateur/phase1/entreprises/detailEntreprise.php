@@ -32,11 +32,35 @@
         modifierEntreprise($pdo, $_POST["modification_entreprise_id"], $_POST["nom_entreprise"], $_POST["secteur_activite"], $_POST["lieu"], $_POST["description"]);
     }
 
-    if (isset($_POST["nomEntreprise"]) && isset($_FILES["logoEntreprise"])) {
-        addCompany($pdo, $_POST["nomEntreprise"], $_POST["descriptionEntreprise"], $_POST["adresseEntreprise"], $_POST["codePostalEntreprise"], $_POST["villeEntreprise"], $_POST["secteurEntreprise"], $_FILES["logoEntreprise"]);
-        header("Location: detailEntreprise.php");
-        exit();
-    }
+    if (isset($_POST["nomEntreprise"])) {
+        $intervenants_array = array();
+    
+        // Le premier intervenant est toujours présent
+        $intervenant_1 = array(
+            'nom' => $_POST['nomIntervenant'],
+            'filieres' => $_POST['filieresIntervenant']
+        );
+        
+        $intervenants_array[] = $intervenant_1;
+
+        if (isset($_POST['nomIntervenant_2'])) {
+            // Commencer à partir de l'indice 2
+            $cpt = 2;
+            
+            while (isset($_POST['nomIntervenant_' . $cpt])) {
+                $intervenant = array(
+                    'nom' => $_POST['nomIntervenant_' . $cpt],
+                    'filieres' => $_POST['filieresIntervenant_' . $cpt]
+                );
+            
+                $intervenants_array[] = $intervenant;
+                $cpt++;
+            }
+    
+        }
+        var_dump($_FILES["logoEntreprise"]);
+        addCompany($pdo, $_POST["nomEntreprise"], $_POST["descriptionEntreprise"], $_POST["adresseEntreprise"], $_POST["codePostalEntreprise"], $_POST["villeEntreprise"], $_POST["secteurEntreprise"], $_FILES["logoEntreprise"], $intervenants_array);
+    } 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -174,7 +198,7 @@
                                                 $fields = getFields($pdo); 
                                                 while ($ligne = $fields->fetch()) { ?>
                                                     <label class="buttonToCheck me-2">
-                                                        <input type="checkbox" name="filieresGestionnaire[]" value="<?php echo $ligne['field_id'];?>" />
+                                                        <input type="checkbox" name="filieresIntervenant[]" value="<?php echo $ligne['field_id'];?>" />
                                                         <div class="icon-box">
                                                             <span><?php echo $ligne['name'];?></span>
                                                         </div>
@@ -182,7 +206,7 @@
                                             <?php } ?>
                                         </div>
                                         <hr>
-                                                </div>
+                                    </div>
                                 </div>
                             </div>
                                 
