@@ -1,19 +1,12 @@
 <?php 
-    try {
-        session_start();
-        require("../../../fonctions/baseDeDonnees.php");
-        $pdo = connecteBD();
-        if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
-            header('Location: ../../connexion.php');
-            exit();
-        }
-        if(isset($_POST['dateForum']) && isset($_POST['heureDebut']) && isset($_POST['heureFin']) && isset($_POST['duree']) && isset($_POST['secDuree']) && isset($_POST['dateLim'])){
-            updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['heureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
-        }
-        $infoForum = infoForum($pdo);
-    } catch (Exception $e) {
-        header('Location: ../../maintenance.php');
-        exit();
+    session_start();
+    require("../../../fonctions/baseDeDonnees.php");
+    $pdo = connecteBD();
+    if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
+        header('Location: ../../connexion.php');
+    }
+    if(isset($_POST['dateForum']) && isset($_POST['heureDebut']) && isset($_POST['heureFin']) && isset($_POST['duree']) && isset($_POST['secDuree']) && isset($_POST['dateLim'])){
+        updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['heureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
     }
 ?>
 <!DOCTYPE html>
@@ -25,9 +18,9 @@
         <link rel="stylesheet" href="../../../../outils/fontawesome-free-6.5.1-web/css/all.css">
         <link rel="stylesheet" href="../../../css/all.css">
         <link rel="stylesheet" href="../../../css/navbars.css">
-        <script src="../../../../outils/bootstrap-5.3.2-dist/js/bootstrap.js"></script>
-        <script src="../../../../outils/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
-        <link rel="stylesheet" href="forum.css">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <link rel="stylesheet" href="../../../css/generationPlanning.css">
         <title>informations eureka</title>
     </head>
     <body>
@@ -74,60 +67,93 @@
         </nav>
         <div class="container">
             <div class="row mx-1">
-                <div class="col-md-4"></div>
-                <div class="col-md-4 col-12 text-center formulaire">
-                    <form action="menu.php" method="POST">
-                        <?php $ligne = $infoForum->fetch();?>
-                        <div class="row p-0">
-                            <div class="col-12">
-                                <label for="dateForum">Date du forum :</label><br/>
-                                <input type="date" value=<?php echo $ligne['date'];?>   name="dateForum">
-                            </div>
-                            <div class="col-12">
-                                <label for="heureDebut">Heure de début du forum :</label><br/>
-                                <input type="time" value=<?php echo $ligne['start'];?> name="heureDebut">
-                            </div>
-                            <div class="col-12">
-                                <label for="heureFin">Heure de fin du forum :</label><br/>
-                                <input type="time" value=<?php echo $ligne['end'];?> name="heureFin">
-                            </div>
-                            <div class="col-12">
-                                <label for="duree">durée par défaut d'un rendez-vous :</label><br/>
-                                <input type="time" value=<?php echo $ligne['primary_appointment_duration'];?> name="duree">
-                            </div>
-                            <div class="col-12">
-                                <label for="secDuree">durée secondaire d'un rendez-vous :</label><br/>
-                                <input type="time" value=<?php echo $ligne['secondary_appointment_duration'];?> name="secDuree">
-                            </div>
-                            <div class="col-12">
-                                <label for="dateLim">Date limite avant la création du planning :</label><br/>
-                                <input type="date" value=<?php echo $ligne['wish_period_end'];?> name="dateLim" >
-                            </div>
-                            <div class="row text-center p-0 m-0 ">
-                                <div class="col-6">
-                                    <button class="bouton">Annuler</button>
-                                </div>
-                                <div class="col-6">
-                                    <button type="submit" class="bouton">Valider</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-md-4"></div>
-                <div class="col-md-4"></div>
-                <div class="col-md-4 col-12 text-center">
-                    <a href="generationPlanning.php">
-                        <button class="bouton boutonBas">Génerer le planning </button>
+                <div class="col-1">
+                    <a href="menu.php">
+                        <button type="button" class="blanc mt-2"><i class="fa-solid fa-arrow-left fa-3x"></i></button>
                     </a>
                 </div>
-                <div class="col-md-4"></div>
-                <div class="col-md-4"></div>
-                <div class="col-md-4 col-12 text-center">
-                <button class="bouton boutonBas" type="button" data-bs-toggle="modal" data-bs-target="#réinitialisation">Réinitialiser les données</button>
+                <div class="col-11">
+                    <h1 class="text-center">Génération du planning</h1>
                 </div>
-                <div class="col-md-4"></div>
             </div>
+            <div class="row p-2">
+                <div class="col-12 mt-1 ligne">
+                    <p class="text-center text-jaune titreLigne ">Génération de l'emploi du temps</p>
+                </div>
+                <div class="col-12 col-md-6 mt-3 ligneGauche">
+                    <p class="text-center text-jaune titreLigne"> Temps de réunion réduite</p>
+                    <div class="col-12 sous-ligne">
+                        <p class="text-center text-jaune titreLigne"> Ajouter une entreprise à la liste</p>
+                        <form action="generationPlanning.php" method="post" class="col-12">
+                            <input type="hidden" name="action" value="ajouterEntrepriseExclusion">
+                            <div class="row">
+                                <div class="col-8">
+                                    <select name="entreprise" id="entreprise" class="form-control">
+                                        <option value="0" selected disabled>Selectionnez une entreprise</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <button type="submit" class="bouton">Ajouter</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-12 sous-ligne">
+                        <p class="text-center text-jaune titreLigne"> Retirer une entreprise à la liste</p>
+                        <form action="generationPlanning.php" method="post" class="col-12">
+                            <input type="hidden" name="action" value="ajouterEntrepriseExclusion">
+                            <div class="row">
+                                <div class="col-8">
+                                    <select name="entreprise" id="entreprise" class="form-control">
+                                        <option value="0" selected disabled>Selectionnez une entreprise</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <button type="submit" class="bouton">Ajouter</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <p class="text-center text-jaune titreLigne"> Liste des entreprise concernées : </p>
+                    <textarea name="listeEntreprise" id="listeEntreprise" class="liste" readonly>hoi&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou</textarea>
+                </div>
+                <div class="col-12 col-md-6 mt-3 ligneDroite">
+                    <p class="text-center text-jaune titreLigne">Exclus du planning</p>
+                    <div class="col-12 sous-ligne">
+                        <p class="text-center text-jaune titreLigne"> Ajouter une entreprise à la liste</p>
+                        <form action="generationPlanning.php" method="post" class="col-12">
+                            <input type="hidden" name="action" value="ajouterEntrepriseExclusion">
+                            <div class="row">
+                                <div class="col-8">
+                                    <select name="entreprise" id="entreprise" class="form-control">
+                                        <option value="0" selected disabled>Selectionnez une entreprise</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <button type="submit" class="bouton">Ajouter</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-12 sous-ligne">
+                        <p class="text-center text-jaune titreLigne"> Retirer une entreprise à la liste</p>
+                        <form action="generationPlanning.php" method="post" class="col-12">
+                            <input type="hidden" name="action" value="ajouterEntrepriseExclusion">
+                            <div class="row">
+                                <div class="col-8">
+                                    <select name="entreprise" id="entreprise" class="form-control">
+                                        <option value="0" selected disabled>Selectionnez une entreprise</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <button type="submit" class="bouton">Ajouter</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <p class="text-center text-jaune titreLigne"> Liste des entreprise concernées : </p>
+                    <textarea name="listeEntreprise" id="listeEntreprise" class="liste" readonly>hoi&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou</textarea>
+                </div>
         </div>
         <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
             <div class="container-fluid">
@@ -177,37 +203,6 @@
                 </ul>
             </div>
         </nav>
-        <div class="modal fade " id="réinitialisation" tabindex="-1" aria-labelledby="réinitialiser" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-                <div class="modal-content">
-                    <div class="modal-header ">
-                        <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body  ">
-                        <div class="container">
-                            <div class = "row">
-                                <div class="col-12">
-                                    <h1 class="text-center" id="réinitialiser">Réinitialiser les données</h1>
-                                </div>
-                            </div>
-                            <div class = "row">
-                                <div class="col-12">
-                                    <P class="text-center">Êtes-vous sûr(e) de vouloir réinitialiser les données ?</P>
-                                </div>
-                            </div>
-                            <div class = "row">
-                                <div class="col-6 d-flex justify-content-evenly">
-                                    <button type="button" data-bs-dismiss="modal">Retour</button>
-                                </div>
-                                <div class="col-6 d-flex justify-content-evenly">
-                                    <button type="button" data-bs-toggle="modal" data-bs-target="#donnéeSupprimer" >Réinitialiser</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content">
