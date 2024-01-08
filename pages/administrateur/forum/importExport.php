@@ -24,11 +24,23 @@
         $reponse = $_SESSION["reponse import"];
         unset($_SESSION["reponse import"]);
     }
-    if(isset($_POST["listeEntreprise"]) && $_POST["listeEntreprise"] != 0 ){
+    if(isset($_POST["listeEntreprise"]) && $_POST["listeEntreprise"] != 0 && $_POST["listeEntreprise"] != "T" ){
         exportEntreprise($_POST["listeEntreprise"],$pdo);
     }
-    if(isset($_POST["listeEtudiant"]) && $_POST["listeEtudiant"] != 0){
-        exportEtudiant($pdo,$_POST["listeEtudiant"]);
+    if(isset($_POST["listeEtudiant"]) && $_POST["listeEtudiant"] != 0 && $_POST["listeEtudiant"] != "T"){
+        exportEtudiant($_POST["listeEtudiant"],$pdo);
+    }
+    if(isset($_POST["listeEntrepriseExclue"]) && $_POST["listeEntrepriseExclue"] != 0 && $_POST["listeEntrepriseExclue"] != "T"){
+        exportEntrepriseExclu($_POST["listeEntrepriseExclue"],$pdo);
+    }
+    if(isset($_POST["listeEntreprise"]) && $_POST["listeEntreprise"] == "T" ){
+        exportAllEntreprise($pdo);
+    }
+    if(isset($_POST["listeEtudiant"]) && $_POST["listeEtudiant"] == "T"){
+        exportAllEtudiant($pdo);
+    }
+    if(isset($_POST["listeEntrepriseExclue"]) && $_POST["listeEntrepriseExclue"] == "T" ){
+        exportAllEntrepriseExclu($pdo);
     }
 ?>
 <!DOCTYPE html>
@@ -163,6 +175,7 @@
                                         Entreprise :
                                         <select name="listeEntreprise">
                                             <option value="0">Veuillez selectionner une entreprise</option>
+                                            <option value="T">toutes</option>
                                             <?php
                                                 $ListeEntrepriseNonExclue = getCompanyNotExcluded($pdo);
                                                 while($row = $ListeEntrepriseNonExclue->fetch()){
@@ -203,13 +216,14 @@
                                         Entreprise exclue :
                                         <select name="listeEntrepriseExclue">
                                             <option value="0">Veuillez selectionner une entreprise</option>
+                                            <option value="T">toutes</option>
                                             <?php
                                                 $ListeEntrepriseExclue = getCompanyExcluded($pdo);
                                                 while($row = $ListeEntrepriseExclue->fetch()){
                                             ?>
                                                     <option value=<?php echo $row["company_id"];?> 
                                                 <?php
-                                                    if(isset($_POST["listeEntreprise"]) && $_POST["listeEntreprise"] == $row["company_id"]){
+                                                    if(isset($_POST["listeEntrepriseExclue"]) && $_POST["listeEntrepriseExclue"] == $row["company_id"]){
                                                         echo ' selected';
                                                     }
                                                 ?>
@@ -243,6 +257,7 @@
                                         Etudiant :
                                         <select name="listeEtudiant">
                                             <option value="0">Veuillez selectionner un etudiant</option>
+                                            <option value="T">tous</option>
                                             <?php
                                                 $listeEtudiant = getStudent($pdo);
                                                 while($row = $listeEtudiant->fetch()){

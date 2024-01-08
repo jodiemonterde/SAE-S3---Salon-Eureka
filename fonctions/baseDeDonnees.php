@@ -437,6 +437,17 @@
         return $res;
     }
 
+    function getStudentName($pdo, $user_id){
+        $maRequete = $pdo->prepare("SELECT username FROM User WHERE user_id = :user_id");
+        $maRequete->bindParam(':user_id', $user_id);
+        $maRequete->execute();
+        $res;
+        while($row = $maRequete->fetch()){
+            $res = $row["username"];
+        }
+        return $res;
+    }
+
     function getCompanyExcluded($pdo){
         $maRequete = $pdo->prepare("SELECT company_id,name FROM Company WHERE excluded = 1");
         $maRequete->execute();
@@ -447,5 +458,15 @@
         $maRequete = $pdo->prepare("SELECT user_id,username FROM User WHERE responsibility = 'E'");
         $maRequete->execute();
         return $maRequete;
+    }
+
+    function studentByUnlistedCompany($pdo, $company_id) {
+        $requete = $pdo-> prepare("SELECT u.username 
+                                FROM User u
+                                JOIN WishList w on u.user_id = w.user_id
+                                WHERE  w.company_id = :company_id");
+        $requete->bindParam(':company_id', $company_id);
+        $requete->execute();
+        return $requete;
     }
 ?>
