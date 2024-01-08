@@ -398,10 +398,43 @@
         $pdo->commit();
     }
 
+    function getSpeakersPerCompany($pdo, $company_id) {
+        $stmt = $pdo->prepare("SELECT speaker_id, name, role FROM Speaker WHERE company_id = :company_id");
+        $stmt->bindParam(':company_id', $company_id);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function getAppointmentPerSpeaker($pdo, $speaker_id) {
+        $stmt = $pdo->prepare("SELECT TIME_FORMAT(app.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(app.start, app.duration), '%H:%i') as end, us.username, fie.name
+                                FROM Appointment app
+                                JOIN User us
+                                ON app.user_id = us.user_id
+                                JOIN AssignmentUser ass
+                                ON ass.user_id = us.user_id
+                                JOIN Field fie
+                                ON ass.field_id = fie.field_id
+                                WHERE app.speaker_id = :speaker_id;");
+        $stmt->bindParam(':speaker_id', $speaker_id);
+        $stmt->execute();
+        return $stmt;
+    }
+
     function getCompanyNotExcluded($pdo){
         $maRequete = $pdo->prepare("SELECT company_id,name FROM Company WHERE excluded = 0");
         $maRequete->execute();
         return $maRequete;
+    }
+
+    function getCompanyName($pdo, $company_id){
+        $maRequete = $pdo->prepare("SELECT name FROM Company WHERE company_id = :company_id");
+        $maRequete->bindParam(':company_id', $company_id);
+        $maRequete->execute();
+        $res;
+        while($row = $maRequete->fetch()){
+            $res = $row["name"];
+        }
+        return $res;
     }
 
     function getCompanyExcluded($pdo){
@@ -411,7 +444,7 @@
     }
 
     function getStudent($pdo){
-        $maRequete = $pdo->prepare("SELECT user_id,username FROM User");
+        $maRequete = $pdo->prepare("SELECT user_id,username FROM User WHERE responsibility = 'E'");
         $maRequete->execute();
         return $maRequete;
     }

@@ -27,6 +27,9 @@
     if(isset($_POST["listeEntreprise"]) && $_POST["listeEntreprise"] != 0 ){
         exportEntreprise($_POST["listeEntreprise"],$pdo);
     }
+    if(isset($_POST["listeEtudiant"]) && $_POST["listeEtudiant"] != 0){
+        exportEtudiant($pdo,$_POST["listeEtudiant"]);
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
