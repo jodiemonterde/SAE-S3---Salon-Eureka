@@ -33,6 +33,7 @@
 
     try {
         require("../../../fonctions/baseDeDonnees.php");
+        require("../../../fonctions/fonctions.php");
         $pdo = connecteBD();
         $phase = getPhase($pdo);
         $fields = getFieldsPerUsers($pdo, $_SESSION['idUtilisateur']);

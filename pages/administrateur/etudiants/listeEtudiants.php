@@ -1,57 +1,75 @@
 <?php
-    session_start();
-    $user = 1;
+    try {
+        session_start();
 
-    // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
-    $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
+        // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
+        $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
 
-    include("../../../fonctions/baseDeDonnees.php");
-    $pdo = connecteBD();
+        require("../../../fonctions/baseDeDonnees.php");
+        require("../../../fonctions/fonctions.php");
+        $pdo = connecteBD();
 
-    // $_SESSION['filtre'] est un tableau qui contient les id des filtres selectionnes
-    if (!isset($_SESSION['filtre']) || $_SESSION['filtre'] == null) {
-        $_SESSION['filtre'] = array();
-    }
-    if (isset($_POST['nouveauFiltre'])) {
-        if (in_array($_POST['nouveauFiltre'], $_SESSION['filtre'])) {
-            $index = array_search($_POST['nouveauFiltre'], $_SESSION['filtre']);
-            unset($_SESSION['filtre'][$index]);
-        } else {
-            array_push($_SESSION['filtre'], $_POST['nouveauFiltre']);
+        // $_SESSION['filtre'] est un tableau qui contient les id des filtres selectionnes
+        if (!isset($_SESSION['filtre']) || $_SESSION['filtre'] == null) {
+            $_SESSION['filtre'] = array();
+        }
+        if (isset($_POST['nouveauFiltre'])) {
+            if (in_array($_POST['nouveauFiltre'], $_SESSION['filtre'])) {
+                $index = array_search($_POST['nouveauFiltre'], $_SESSION['filtre']);
+                unset($_SESSION['filtre'][$index]);
+            } else {
+                array_push($_SESSION['filtre'], $_POST['nouveauFiltre']);
+            }
+            
+            header("Location: listeEtudiants.php");
+            exit();
         }
         
-        header("Location: listeEtudiants.php");
-        exit();
-    }
-    
-    if (isset($_POST['nomEtudiant'])) {
-        addNewStudent($pdo, $_POST['prenomEtudiant'], $_POST['nomEtudiant'], $_POST['emailEtudiant'], $_POST['motDePasseEtudiant'], $_POST['filiereEtudiant']);
-        header("Location: listeEtudiants.php");
-        exit();
-    }
+        if (isset($_POST['nomEtudiant'])) {
+            addNewStudent($pdo, $_POST['prenomEtudiant'], $_POST['nomEtudiant'], $_POST['emailEtudiant'], $_POST['motDePasseEtudiant'], $_POST['filiereEtudiant']);
+            header("Location: listeEtudiants.php");
+            exit();
+        }
 
-    if (isset($_POST['supprimer'])) {
-        deleteStudent($pdo, $_POST['supprimer']);
-        header("Location: listeEtudiants.php");
-        exit();
-    }
+        if (isset($_POST['supprimer'])) {
+            deleteStudent($pdo, $_POST['supprimer']);
+            header("Location: listeEtudiants.php");
+            exit();
+        }
 
-    if (isset($_POST['modifyPassword'])) {
-        modifyPassword($pdo, $_POST['modifyPassword'], $_POST['newPassword']);
-        header("Location: listeEtudiants.php");
-        exit();
-    }
-    $phase = getPhase($pdo);
-    if (!isset($_SESSION['triPar'])) {
-        $_SESSION['triPar'] = "alpha";
-    }
+        if (isset($_POST['modifyPassword'])) {
+            modifyPassword($pdo, $_POST['modifyPassword'], $_POST['newPassword']);
+            header("Location: listeEtudiants.php");
+            exit();
+        }
 
-    if (isset($_POST['triPar'])) {
-        $_SESSION['triPar'] = $_POST['triPar'];
-        header("Location: listeEtudiants.php");
+        $phase = getPhase($pdo);
+        if (!isset($_SESSION['triPar'])) {
+            $_SESSION['triPar'] = "alpha";
+        }
+
+        if (isset($_POST['triPar'])) {
+            $_SESSION['triPar'] = $_POST['triPar'];
+            header("Location: listeEtudiants.php");
+            exit();
+        }
+
+        if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
+            header('Location: ../../connexion.php');
+            exit();
+        }
+
+        $fields = getFields($pdo);
+        $tmp = [];
+        while ($ligne = $fields->fetch()) {
+            $tmp[$ligne['field_id']] = $ligne['name'];
+        }
+        $fields = $tmp;
+        $stmt = getInfoStudentsSort($pdo, $_SESSION['recherche'], $_SESSION['filtre'], $_SESSION['triPar']);
+    } catch (Exception $e) {
+        header("Location: ../../maintenance.php");
         exit();
     }
-    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,6 +128,54 @@
                 </div>
             </div>
         </nav>
+        <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
+            <div class="container-fluid">
+                <ul class="navbar-nav w-100 justify-content-evenly">
+                    <!-- Si sur la liste des entreprises, mettre le texte en actif -->
+                    <li class="nav-item d-flex flex-column text-center inactif_bas">
+                        <!-- Si sur la liste des entreprises, mettre l'icone en actif et lien_inactif -->
+                        <a class="d-flex justify-content-center" href="../entreprises/listeEntreprises.php">
+                            <!-- Si sur la liste des entreprises, mettre l'icône blanche, sinon mettre l'icône en noir -->
+                            <img src="../../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone">
+                        </a>
+                        <a class="d-flex justify-content-center lien_barre_basse" href="../entreprises/listeEntreprises.php">
+                            Entreprises
+                        </a>
+                    </li>
+                    <!-- Si sur la liste des étudiants, mettre le texte en actif -->
+                    <li class="nav-item d-flex flex-column text-center actif_bas_texte">
+                        <!-- Si sur la liste des étudiants, mettre l'icône en actif et lien_inactif -->
+                        <a class="d-flex justify-content-center actif_bas_icone"  >
+                            <!-- Si sur la liste des étudiants, mettre l'icône blanche, sinon mettre l'icône en noir -->
+                            <img src="../../../ressources/icone_etudiant_white.svg" alt="Liste des étudiants" class="icone">
+                        </a>
+                        Etudiants
+                    </li>
+                    <!-- Si sur la liste des gestionnaires, mettre le texte en actif -->
+                    <li class="nav-item d-flex flex-column text-center inactif_bas">
+                        <!-- Si sur la liste des gestionnaires, mettre l'icône en actif et lien_inactif -->
+                        <a class="d-flex justify-content-center" href="../gestionnaire/listeGestionnaires.php">
+                            <!-- Si sur la liste des gestionnaires, mettre l'icône blanche, sinon mettre l'icône en noir -->
+                            <img src="../../../ressources/icone_gestionnaire_black.svg" alt="Liste des gestionnaires" class="icone">
+                        </a>
+                        <a class="d-flex justify-content-center lien_barre_basse" href="../gestionnaire/listeGestionnaires.php">
+                        Gestionnaires
+                        </a>
+                    </li>
+                    <!-- Si sur les paramètres du forum, mettre le texte en actif -->
+                    <li class="nav-item d-flex flex-column text-center inactif_bas">
+                        <!-- Si sur les paramètres du forum, mettre l'icône en actif et lien_inactif -->
+                        <a class="d-flex justify-content-center" href="../forum/menu.php">
+                            <!-- Si sur les paramètres du forum, mettre l'icône blanche, sinon mettre l'icône en noir -->
+                            <img src="../../../ressources/icone_forum_black.svg" alt="Paramètres du forum" class="icone">
+                        </a>
+                        <a class="d-flex justify-content-center lien_barre_basse" href="../forum/menu.php">
+                        Forum
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
     <div class="container mt-2">
         <div class="row d-flex align-items-center h-100">
@@ -133,12 +199,11 @@
                 <div class="col-12">
                     <h2>Filières</h2>
                     <?php
-                        $fields = getFields($pdo);
-                        while ($ligne = $fields->fetch()) {
+                        foreach ($fields as $key => $field) {
                     ?>
                     <form action="listeEtudiants.php" method="post">
-                        <input type="hidden" name="nouveauFiltre" value="<?php echo $ligne['field_id']; ?>">
-                        <button class="bouton-filtre <?php echo in_array($ligne['field_id'], $_SESSION['filtre']) ? "bouton-filtre-selectionner" : "bouton-filtre-deselectionner"?>"><?php echo $ligne['name']; ?></button>
+                        <input type="hidden" name="nouveauFiltre" value="<?php echo $key; ?>">
+                        <button class="bouton-filtre <?php echo in_array($key, $_SESSION['filtre']) ? "bouton-filtre-selectionner" : "bouton-filtre-deselectionner"?>"><?php echo $field; ?></button>
                     </form>
                     <?php } ?>
                 </div>
@@ -183,9 +248,8 @@
                         <select id="FieldValues" name="filiereEtudiant" class="zoneText" required/>
                             <option value="" disabled selected>Sélectionner la filière de l’étudiant</option>
                             <?php 
-                            $fields = getFields($pdo);
-                            while ($ligne = $fields->fetch()) { ?>
-                                <option value="<?php echo $ligne['field_id'];?>"><?php echo $ligne['name'];?></option>
+                            foreach ($fields as $key => $field) { ?>
+                                <option value="<?php echo $key;?>"><?php echo $field;?></option>
 
                             <?php } ?>
                         </select>
@@ -207,7 +271,6 @@
         <!-- Accordéon Bootstrap -->
         <div class="accordion" id="listeEntreprise">
         <?php
-            $stmt = getInfoStudentsSort($pdo, $_SESSION['recherche'], $_SESSION['filtre'], $_SESSION['triPar']);
             if (empty($_SESSION['filtre'])) {
                 echo '<p>Aucune filière sélectionnée. Veuillez choisir au moins une filière.</p>';
             } elseif ($stmt->rowCount() === 0) {
@@ -297,7 +360,11 @@
                                 echo "<p class='erreur text-center'>Cet(te) étudiant(e) n'a pris aucun rendez-vous pour l'instant !</p>";
                             }
                             if ($phase == 1) {
+                            try {
                             $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
+                            } catch (Exception $e) {
+                                redirect("../../maintenance.php");
+                            }
                             $rowNumber = 0;
                             while ($ligne2 = $stmt2->fetch()) {
                                 $rowNumber++;

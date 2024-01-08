@@ -378,7 +378,7 @@
 
         $parametersAsQuestionMarks = implode(',', array_fill(0, count($parameters), '?'));
         
-        $sql = "SELECT u.username, GROUP_CONCAT(f.name ORDER BY f.name) AS filieres, u.user_id
+        $sql = "SELECT u.username, GROUP_CONCAT(f.name ORDER BY f.name SEPARATOR ', ') AS filieres, u.user_id
                 FROM User u
                 JOIN AssignmentUser au 
                 ON u.user_id = au.user_id
@@ -398,7 +398,7 @@
                 GROUP BY u.username, u.user_id";
 
         if ($recherche != null) {
-            $sql .= " HAVING u.username LIKE :recherche";
+            $sql .= " HAVING u.username LIKE ?";
         }
 
         $sql .= " ORDER BY u.username";
@@ -406,7 +406,7 @@
         $stmt = $pdo->prepare($sql);
 
         if ($recherche != null) {
-            $stmt->bindValue(':recherche', '%' . $recherche . '%', PDO::PARAM_STR);
+            array_push($parameters,'%' . $recherche . '%');
         }
         $stmt->execute($parameters);
         return $stmt;

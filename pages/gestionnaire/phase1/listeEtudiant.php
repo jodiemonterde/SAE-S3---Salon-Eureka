@@ -33,6 +33,7 @@
 
     try {
         require("../../../fonctions/baseDeDonnees.php");
+        require("../../../fonctions/fonctions.php");
         $pdo = connecteBD();
         $stmt = getInfoStudentsSort($pdo, $_SESSION['recherche'], $_SESSION['filtre'], $_SESSION['triPar']);
         $fields = getFieldsPerUsers($pdo, $_SESSION['idUtilisateur']);

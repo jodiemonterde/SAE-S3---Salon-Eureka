@@ -22,6 +22,7 @@
     }
     try {
         require("../../../fonctions/baseDeDonnees.php");
+        require("../../../fonctions/fonctions.php");
         $pdo = connecteBD();
         $fields = getFieldsPerUsers($pdo, $_SESSION['idUtilisateur']);
         $stmt = getEntreprisesPhase2($pdo, $_SESSION['filtre'], $_SESSION['recherche']);

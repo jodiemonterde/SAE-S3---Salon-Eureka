@@ -1,14 +1,20 @@
 <?php 
-    session_start();
-    require("../../../fonctions/baseDeDonnees.php");
-    $pdo = connecteBD();
-    if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
-        header('Location: ../../connexion.php');
+    try {
+        session_start();
+        require("../../../fonctions/baseDeDonnees.php");
+        $pdo = connecteBD();
+        if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
+            header('Location: ../../connexion.php');
+            exit();
+        }
+        if(isset($_POST['dateForum']) && isset($_POST['heureDebut']) && isset($_POST['heureFin']) && isset($_POST['duree']) && isset($_POST['secDuree']) && isset($_POST['dateLim'])){
+            updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['heureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
+        }
+        $infoForum = infoForum($pdo);
+    } catch (Exception $e) {
+        header('Location: ../../maintenance.php');
+        exit();
     }
-    if(isset($_POST['dateForum']) && isset($_POST['heureDebut']) && isset($_POST['heureFin']) && isset($_POST['duree']) && isset($_POST['secDuree']) && isset($_POST['dateLim'])){
-        updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['heureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
-    }
-    $infoForum = infoForum($pdo); 
 ?>
 <!DOCTYPE html>
 <html lang="en">
