@@ -9,26 +9,30 @@
     border: 2px solid lightgray;
     border-right: 1px solid lightgray;
     border-radius: 5px 0px 0px 5px;
-    height: 60vh;
 }
 
 .ligneDroite {
     border: 2px solid lightgray;
     border-left: 1px solid lightgray;
     border-radius: 0px 5px 5px 0px;
-    height: 60vh;
 }
 
 .titreLigne {
     font-weight: bold;
     font-size : 1.2em;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .sous-ligne {
     border: 2px solid lightgray;
     border-radius: 5px;
-    height: 10vh;
     margin-top: 5px;
+    padding: 5px;
+}
+
+.listeInfos {
+    margin-bottom: -15px;
 }
 
 .liste {
@@ -39,6 +43,16 @@
     height: 29vh;
     resize: none;
     margin-top: 5px;
+}
+
+.listeConsole {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    resize: none;
+    margin-top: 5px;
+    text-align: center;
 }
 
 @media (max-width: 768px) {

@@ -11,6 +11,7 @@
             updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['heureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
         }
         $infoForum = infoForum($pdo);
+        $phase = getPhase($pdo);
     } catch (Exception $e) {
         header('Location: ../../maintenance.php');
         exit();
@@ -118,7 +119,7 @@
                 <div class="col-md-4"></div>
                 <div class="col-md-4 col-12 text-center">
                     <a href="generationPlanning.php">
-                        <button class="bouton boutonBas">Génerer le planning </button>
+                        <button class="bouton boutonBas" <?php echo $phase === 2 ? "disabled" : ""; ?>> Génerer le planning </button>
                     </a>
                 </div>
                 <div class="col-md-4"></div>

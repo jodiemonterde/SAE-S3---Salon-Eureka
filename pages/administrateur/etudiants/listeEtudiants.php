@@ -43,7 +43,7 @@
             exit();
         }
 
-        $phase = getPhase($pdo);
+        $generated = isPlanningGenerated($pdo);
         if (!isset($_SESSION['triPar'])) {
             $_SESSION['triPar'] = "alpha";
         }
@@ -215,12 +215,12 @@
                 <select id="triPar" name="triPar" class="form-control sort text-end" onchange="this.form.submit()">
                     <option value="default" disabled selected>&#x21C5; TRIER PAR</option>
                     <option value="alpha">Ordre alphabétique</option>
-                    <option value="croissant">Nombre de <?php echo $phase == 1 ? "souhaits" : "rencontres" ?> croissant</option>
-                    <option value="decroissant">Nombre de <?php echo $phase == 1 ? "souhaits" : "rencontres" ?> décroissant</option>
+                    <option value="croissant">Nombre de <?php echo !$generated ? "souhaits" : "rencontres" ?> croissant</option>
+                    <option value="decroissant">Nombre de <?php echo !$generated ? "souhaits" : "rencontres" ?> décroissant</option>
                 </select>
             </form>
         </div>
-        <?php if ($phase == 1) { ?>
+        <?php if (!$generated) { ?>
         <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalAddStudent">
             <i class="fa-solid fa-plus text-left justify-content-center"></i>
             <h2 class="text-center m-2">Ajouter un(e) étudiant(e)</h2>
@@ -285,7 +285,7 @@
                         <div class="pd detailEtudiant">
                             <h2 class="title"><?php echo $ligne["username"]?></h2>
                             <?php echo $ligne["filiere"]?></br>
-                            <span class="<?php echo $ligne["nbSouhait"] < 1 ? "erreur" : ""?>"> <?php echo $ligne["nbSouhait"]?> <?php echo $phase == 1 ? "souhaits" : "rencontres" ?> </span>
+                            <span class="<?php echo $ligne["nbSouhait"] < 1 ? "erreur" : ""?>"> <?php echo $ligne["nbSouhait"]?> <?php echo !$generated ? "souhaits" : "rencontres" ?> </span>
                         </div>
                     </div>
                 </button>
@@ -356,10 +356,10 @@
                                 </div>
                             </div>
 
-                            <?php if ($ligne["nbSouhait"] < 1 && $phase == 1) {
+                            <?php if ($ligne["nbSouhait"] < 1 && !$generated) {
                                 echo "<p class='erreur text-center'>Cet(te) étudiant(e) n'a pris aucun rendez-vous pour l'instant !</p>";
                             }
-                            if ($phase == 1) {
+                            if (!$generated) {
                             try {
                             $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
                             } catch (Exception $e) {

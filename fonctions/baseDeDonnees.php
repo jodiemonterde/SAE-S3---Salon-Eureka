@@ -122,6 +122,37 @@
         return $stmt;
     }
 
+    function isPlanningGenerated($pdo) {
+        $stmt = $pdo->prepare("SELECT generated FROM Meeting WHERE meeting_id = 1");
+        $stmt->execute();
+        $ligne = $stmt->fetch();
+        return $ligne['generated'] === 1;
+    }
+
+    function genererPlanning($pdo) {
+        $stmt = $pdo->prepare("SELECT generatePlanning()");
+        $stmt->execute();
+        return $stmt->fetch()[0];
+    }
+
+    function launchPhase2($pdo) {
+        $stmt = $pdo->prepare("UPDATE Meeting SET phase = 2 WHERE meeting_id = 1");
+        $stmt->execute();
+    }
+
+    function cancelPlanning($pdo) {
+        $stmt = $pdo->prepare("DELETE FROM Appointment;");
+        $stmt->execute();
+        $stmt = $pdo->prepare("UPDATE Meeting SET generated = 0 WHERE meeting_id = 1;");
+        $stmt->execute();
+    }
+
+    function setPlanningGenerated($pdo, $value) {
+        $stmt = $pdo->prepare("UPDATE Meeting SET generated = :value WHERE meeting_id = 1");
+        $stmt->bindParam(':value', $value);
+        $stmt->execute();
+    }
+
     function addNewStudent($pdo, $prenom, $nom, $email, $mdp, $filiere) {
         $nom = htmlspecialchars($nom);
         $prenom = htmlspecialchars($prenom);
@@ -275,6 +306,45 @@
             $stmt->bindValue(':recherche', '%' . $recherche . '%', PDO::PARAM_STR);
         }
     
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function setSpecificationCompany($pdo, $action, $comp_id) {
+        switch ($action) {
+            case 'ajouterEntrepriseReduite' :
+                $sql = "UPDATE Company SET useSecondary = 1 WHERE company_id = :comp_id;";
+                break;
+            case 'retirerEntrepriseReduite' :
+                $sql = "UPDATE Company SET useSecondary = 0 WHERE company_id = :comp_id;";
+                break;
+            case 'ajouterEntrepriseExclusion' :
+                $sql = "UPDATE Company SET excluded = 1 WHERE company_id = :comp_id;";
+                break;
+            case 'retirerEntrepriseExclusion' :
+                $sql = "UPDATE Company SET excluded = 0 WHERE company_id = :comp_id;";
+                break;
+            default :
+                return null;
+        }
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':comp_id', $comp_id);
+        $stmt->execute();
+    }
+
+    function getSpecificationCompany($pdo, $specification, $value) {
+        switch ($specification) {
+            case 'entrepriseReduite' :
+                $sql = "SELECT company_id, name FROM Company WHERE useSecondary = :value;";
+                break;
+            case 'entrepriseExclusion' :
+                $sql = "SELECT company_id, name FROM Company WHERE excluded = :value;";
+                break;
+            default :
+                return null;
+        }
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':value', $value);
         $stmt->execute();
         return $stmt;
     }

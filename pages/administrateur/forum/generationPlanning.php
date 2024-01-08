@@ -2,12 +2,60 @@
     session_start();
     require("../../../fonctions/baseDeDonnees.php");
     $pdo = connecteBD();
-    if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
+    if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A' || getPhase($pdo) == 2){
         header('Location: ../../connexion.php');
+        exit();
     }
     if(isset($_POST['dateForum']) && isset($_POST['heureDebut']) && isset($_POST['heureFin']) && isset($_POST['duree']) && isset($_POST['secDuree']) && isset($_POST['dateLim'])){
         updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['heureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
     }
+
+    if (isset($_POST['action']) && isset($_POST['entreprise'])) {
+        setSpecificationCompany($pdo,$_POST['action'],$_POST['entreprise']);
+        HEADER('Location: generationPlanning.php');
+        exit();
+    }
+
+    if (isset($_POST['action2'])) {
+        switch ($_POST['action2']) {
+            case 'genererPlanning':
+                $resultatGeneration = genererPlanning($pdo);
+                if ($resultatGeneration === "Génération réussite !") {
+                    setPlanningGenerated($pdo, 1);
+                } else {
+                    $resultatGeneration = "Impossible de générer le planning, l'entreprise ".$resultatGeneration." ne peut pas accepter autant de rendez-vous !";
+                }
+                $_SESSION['resultatGeneration'] = $resultatGeneration;
+                break;
+            case 'acceptPlanning':
+                launchPhase2($pdo);
+                HEADER('Location: menu.php');
+                exit();
+                break;
+            case 'refusePlanning':
+                cancelPlanning($pdo);
+                break;
+        }
+        HEADER('Location: generationPlanning.php');
+            exit();
+    }
+
+    $isGenerated = isPlanningGenerated($pdo);
+    $tmp = [];
+    $entreprisesReduites = getSpecificationCompany($pdo,'entrepriseReduite', 1);
+    while ($entreprise = $entreprisesReduites->fetch()) {
+        $tmp[$entreprise['company_id']] = $entreprise['name'];
+    }
+    $entreprisesReduites = $tmp;
+    $entreprisesExclues = getSpecificationCompany($pdo,'entrepriseExclusion', 1);
+    $tmp = [];
+    while ($entreprise = $entreprisesExclues->fetch()) {
+        $tmp[$entreprise['company_id']] = $entreprise['name'];
+    }
+    $entreprisesExclues = $tmp;
+
+    $entreprisesPasExclues = getSpecificationCompany($pdo,'entrepriseExclusion', 0);
+    $entreprisesPasReduites = getSpecificationCompany($pdo,'entrepriseReduite', 0);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,17 +127,49 @@
             <div class="row p-2">
                 <div class="col-12 mt-1 ligne">
                     <p class="text-center text-jaune titreLigne ">Génération de l'emploi du temps</p>
+                    <p> Etapes de la génération d'un emploi du temps : </p>
+                    <ol>
+                        <li class="listeInfos"> <p> Cliquer sur "généré le planning" </p> </li>
+                        <li class="listeInfos"> <p> Verifier si dans la boite de dialog la génération c'est bien passé </p> </li>
+                        <li class="listeInfos"> <p> Si la génération c'est bien passé, vous pouvez aller le consulter dans les autres pages </p> </li>
+                        <li class="listeInfos"> <p> Si la génération ne c'est pas bien passé, vous pouvez prendre des actions adéquates dans la section inferieur de la page </p> </li>
+                        <li class="listeInfos"> <p> Une fois les actions prises, vous pouvez relancer la génération </p> </li>
+                        <li class="listeInfos"> <p> Une fois satisfait du planning généré cliquer sur validé, ou refuser le planning sinon </p> </li>
+                    </ol>
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center">
+                            <form action="generationPlanning.php" method="post">
+                                <input type="hidden" name="action2" value="genererPlanning">
+                                <button type="submit" class="bouton" <?php echo $isGenerated ? "disabled" : "" ?>>généré le planning</button>
+                            </form>
+                        </div>
+                        <div class="col-12 d-flex justify-content-center">
+                            <textarea name="listeEntreprise" id="listeEntreprise" class="listeConsole mb-2" rows="2" readonly><?php echo "Statut : &#13;&#10;".(isset($_SESSION['resultatGeneration']) ? $_SESSION['resultatGeneration'].($_SESSION['resultatGeneration'] === "Génération réussite !" ? " Veuillez annuler ou valider le planning générée" : "") : ($isGenerated ? "Veuillez annuler ou valider le planning générée" :"Aucune génération n'a encore été lancée !")); unset($_SESSION['resultatGeneration']) ?></textarea>
+                        </div>
+                        <div class="col-6 d-flex justify-content-center">
+                            <form action="generationPlanning.php" method="post">
+                                <input type="hidden" name="action2" value="refusePlanning">
+                                <button type="submit" class="boutonNegatif" <?php echo !$isGenerated ? "disabled" : "" ?>>Refuser le planning</button>
+                            </form>
+                        </div>
+                        <div class="col-6 d-flex justify-content-center">
+                            <button type="button" class="bouton" <?php echo !$isGenerated ? "disabled" : "" ?> data-bs-toggle="modal" data-bs-target="#modal">Valider le planning</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-12 col-md-6 mt-3 ligneGauche">
                     <p class="text-center text-jaune titreLigne"> Temps de réunion réduite</p>
                     <div class="col-12 sous-ligne">
                         <p class="text-center text-jaune titreLigne"> Ajouter une entreprise à la liste</p>
                         <form action="generationPlanning.php" method="post" class="col-12">
-                            <input type="hidden" name="action" value="ajouterEntrepriseExclusion">
+                            <input type="hidden" name="action" value="ajouterEntrepriseReduite">
                             <div class="row">
                                 <div class="col-8">
                                     <select name="entreprise" id="entreprise" class="form-control">
                                         <option value="0" selected disabled>Selectionnez une entreprise</option>
+                                        <?php while ($ligne = $entreprisesPasReduites->fetch()) { ?>
+                                            <option value="<?php echo $ligne['company_id'] ?>"><?php echo $ligne['name'] ?></option>
+                                        <?php } ?>
                                     </select>
                                 </div>
                                 <div class="col-4">
@@ -101,21 +181,24 @@
                     <div class="col-12 sous-ligne">
                         <p class="text-center text-jaune titreLigne"> Retirer une entreprise à la liste</p>
                         <form action="generationPlanning.php" method="post" class="col-12">
-                            <input type="hidden" name="action" value="ajouterEntrepriseExclusion">
+                            <input type="hidden" name="action" value="retirerEntrepriseReduite">
                             <div class="row">
                                 <div class="col-8">
                                     <select name="entreprise" id="entreprise" class="form-control">
                                         <option value="0" selected disabled>Selectionnez une entreprise</option>
+                                        <?php foreach ($entreprisesReduites as $key => $value) { ?>
+                                            <option value="<?php echo $key ?>"><?php echo $value ?></option>
+                                        <?php } ?>
                                     </select>
                                 </div>
                                 <div class="col-4">
-                                    <button type="submit" class="bouton">Ajouter</button>
+                                    <button type="submit" class="bouton">Retirer</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <p class="text-center text-jaune titreLigne"> Liste des entreprise concernées : </p>
-                    <textarea name="listeEntreprise" id="listeEntreprise" class="liste" readonly>hoi&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou</textarea>
+                    <textarea name="listeEntreprise" id="listeEntreprise" class="liste" readonly><?php foreach ($entreprisesReduites as $value) { echo $value."&#13;&#10;"; } ?></textarea>
                 </div>
                 <div class="col-12 col-md-6 mt-3 ligneDroite">
                     <p class="text-center text-jaune titreLigne">Exclus du planning</p>
@@ -127,6 +210,9 @@
                                 <div class="col-8">
                                     <select name="entreprise" id="entreprise" class="form-control">
                                         <option value="0" selected disabled>Selectionnez une entreprise</option>
+                                        <?php while ($ligne = $entreprisesPasExclues->fetch()) { ?>
+                                            <option value="<?php echo $ligne['company_id'] ?>"><?php echo $ligne['name'] ?></option>
+                                        <?php } ?>
                                     </select>
                                 </div>
                                 <div class="col-4">
@@ -138,21 +224,24 @@
                     <div class="col-12 sous-ligne">
                         <p class="text-center text-jaune titreLigne"> Retirer une entreprise à la liste</p>
                         <form action="generationPlanning.php" method="post" class="col-12">
-                            <input type="hidden" name="action" value="ajouterEntrepriseExclusion">
+                            <input type="hidden" name="action" value="retirerEntrepriseExclusion">
                             <div class="row">
                                 <div class="col-8">
                                     <select name="entreprise" id="entreprise" class="form-control">
                                         <option value="0" selected disabled>Selectionnez une entreprise</option>
+                                        <?php foreach ($entreprisesExclues as $key => $value) { ?>
+                                            <option value="<?php echo $key ?>"><?php echo $value ?></option>
+                                        <?php } ?>
                                     </select>
                                 </div>
                                 <div class="col-4">
-                                    <button type="submit" class="bouton">Ajouter</button>
+                                    <button type="submit" class="bouton">Retirer</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <p class="text-center text-jaune titreLigne"> Liste des entreprise concernées : </p>
-                    <textarea name="listeEntreprise" id="listeEntreprise" class="liste" readonly>hoi&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou&#13;&#10;cou</textarea>
+                    <textarea name="listeEntreprise" id="listeEntreprise" class="liste" readonly><?php foreach ($entreprisesExclues as $value) { echo $value."&#13;&#10;"; } ?></textarea>
                 </div>
         </div>
         <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
@@ -203,6 +292,26 @@
                 </ul>
             </div>
         </nav>
+        <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Est vous sûr de vouloir valider l'emploi du temps ? <br><span class="erreur">ATTENTION : CETTE ACTION EST IRREVERSIBLE</span>
+                    </div>
+                    <div class="modal-footer">
+                        <form action="generationPlanning.php" method="post">
+                            <input type="hidden" name="action2" value="acceptPlanning"/>
+                            <input type="submit" class="bouton confirmation" value="Oui"/>
+                            <input type="button" class="boutonNegatif confirmation" data-bs-dismiss="modal" value="Non"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content">

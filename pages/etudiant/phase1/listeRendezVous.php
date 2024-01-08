@@ -74,7 +74,6 @@
                     <p>Pour le moment, au terme de la phase de prise de rendez-vous, Eureka vous proposera un planning avec les entreprises suivantes. Vous pouvez tout à fait changer d’avis !</P>
                 </div>
             </div>
-            <!-- Button trigger modal -->
             <?php
             $vide = true;
             while ($ligne = $stmt->fetch()) { 

@@ -27,6 +27,10 @@ body {
     background-color: #dd9300;
 }
 
+.bouton:disabled {
+    background-color: lightgray;
+}
+
 .boutonNegatif {
     color: #FFA800;
     background-color: white;
@@ -40,8 +44,13 @@ body {
     font-weight: 500;
 }
 
-.boutonNegatif:hover {
+.boutonNegatif:hover:enabled {
     background-color: #eee;
+}
+
+.boutonNegatif:disabled {
+    color: lightgray;
+    border-color: lightgray;
 }
 
 .erreur{
