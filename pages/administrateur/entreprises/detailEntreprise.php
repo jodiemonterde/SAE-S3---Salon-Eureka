@@ -20,7 +20,7 @@
         header("Location: detailEntreprise.php");
         exit();
     }
-    include("../../../../fonctions/baseDeDonnees.php");
+    include("../../../fonctions/baseDeDonnees.php");
     $pdo = connecteBD();
 
     if (isset($_POST["suppression_entreprise_id"])) {
@@ -93,13 +93,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="../../../../lib/bootstrap-5.3.2-dist/css/bootstrap.css">
-    <link rel="stylesheet" href="../../../../lib/fontawesome-free-6.5.1-web/css/all.css">
-    <script src="../../../../lib/bootstrap-5.3.2-dist/js/bootstrap.js"></script>
-    <script src="../../../../lib/jquery/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" href="../../../lib/bootstrap-5.3.2-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../../../lib/fontawesome-free-6.5.1-web/css/all.css">
+    <script src="../../../lib/bootstrap-5.3.2-dist/js/bootstrap.js"></script>
+    <script src="../../../lib/jquery/jquery-3.3.1.js"></script>
     <script src="js.js"></script>
     <link rel="stylesheet" href="./listeEntreprise.css">
-    <link rel="stylesheet" href="../../../../css/navbars.css">
+    <link rel="stylesheet" href="../../../css/navbars.css">
     <link rel="stylesheet" href="./filtre.css">
     <title>Eureka - Liste des entreprises</title>
 </head>
@@ -108,7 +108,7 @@
         <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
             <div class="container-fluid h-100">
                 <div class="navbar-brand d-flex align-items-center h-100">
-                    <img src="../../../../ressources/logo_black.svg" alt="Logo Eureka" class="logo me-2">
+                    <img src="../../../ressources/logo_black.svg" alt="Logo Eureka" class="logo me-2">
                     Eureka
                 </div>
                 <div class="navbar-right h-100">
@@ -139,7 +139,7 @@
                         </li>
                         <li class="nav-item d-md-none d-flex justify-content-end">
                             <a href="#">
-                                <img src="../../../../ressources/icone_deconnexion.svg" alt="Se déconnecter" class="logo">
+                                <img src="../../../ressources/icone_deconnexion.svg" alt="Se déconnecter" class="logo">
                             </a>
                         </li>
                     </ul>
@@ -272,7 +272,7 @@
                 <h2 class="accordion-header" id="heading<?php echo $ligne['company_id']?>">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $ligne['company_id']?>" aria-expanded="false" aria-controls="collapse<?php echo $ligne['company_id']?>">
                         <div class="profil-det-img d-flex text-start">
-                            <div class="dp"><img src="../../../../ressources/logosentreprises/<?php echo $ligne['logo'] ?? 'no-photo.png'; ?>" alt=""></div>
+                            <div class="dp"><img src="../../../ressources/logosentreprises/<?php echo $ligne['logo'] ?? 'no-photo.png'; ?>" alt=""></div>
                             <div class="pd">
                                 <h2 class="title"><?php echo $ligne["name"]?></h2>
                                 <ul class="text-left">
@@ -524,7 +524,7 @@
                         <!-- Si sur la liste des entreprises, mettre l'icone en actif et lien_inactif -->
                         <a class="d-flex justify-content-center actif_bas_icone" href="#">
                             <!-- Si sur la liste des entreprises, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="../../../../ressources/icone_entreprise_white.svg" alt="Liste des entreprises" class="icone">
+                            <img src="../../../ressources/icone_entreprise_white.svg" alt="Liste des entreprises" class="icone">
                         </a>
                         Entreprises
                     </li>
@@ -533,7 +533,7 @@
                         <!-- Si sur la liste des étudiants, mettre l'icône en actif et lien_inactif -->
                         <a class="d-flex justify-content-center" href="#">
                             <!-- Si sur la liste des étudiants, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="../../../../ressources/icone_etudiant_black.svg" alt="Liste des étudiants" class="icone">
+                            <img src="../../../ressources/icone_etudiant_black.svg" alt="Liste des étudiants" class="icone">
                         </a>
                         Etudiants
                     </li>
@@ -542,7 +542,7 @@
                         <!-- Si sur la liste des gestionnaires, mettre l'icône en actif et lien_inactif -->
                         <a class="d-flex justify-content-center" href="#">
                             <!-- Si sur la liste des gestionnaires, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="../../../../ressources/icone_gestionnaire_black.svg" alt="Liste des gestionnaires" class="icone">
+                            <img src="../../../ressources/icone_gestionnaire_black.svg" alt="Liste des gestionnaires" class="icone">
                         </a>
                         Gestionnaires
                     </li>
@@ -551,7 +551,7 @@
                         <!-- Si sur les paramètres du forum, mettre l'icône en actif et lien_inactif -->
                         <a class="d-flex justify-content-center" href="#">
                             <!-- Si sur les paramètres du forum, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="../../../../ressources/icone_forum_black.svg" alt="Paramètres du forum" class="icone">
+                            <img src="../../../ressources/icone_forum_black.svg" alt="Paramètres du forum" class="icone">
                         </a>
                         Forum
                     </li>
