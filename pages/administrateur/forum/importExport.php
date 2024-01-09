@@ -269,7 +269,7 @@
                                             <option value="0">Veuillez selectionner un etudiant</option>
                                             <option value="T">tous</option>
                                             <?php
-                                                $listeEtudiant = getStudent($pdo);
+                                                $listeEtudiant = getStudentsWithMeeting($pdo);
                                                 while($row = $listeEtudiant->fetch()){
                                             ?>
                                                     <option value=<?php echo $row["user_id"];?> 

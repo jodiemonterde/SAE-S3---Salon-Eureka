@@ -465,7 +465,12 @@
         $maRequete->execute();
         return $maRequete;
     }
-
+    
+    function getStudentsWithMeeting($pdo){
+        $maRequete = $pdo->prepare("SELECT DISTINCT User.user_id, User.username FROM User JOIN WishList ON WishList.user_id = User.user_id WHERE responsibility = 'E'");
+        $maRequete->execute();
+        return $maRequete;
+    }
     function studentByUnlistedCompany($pdo, $company_id) {
         $requete = $pdo-> prepare("SELECT u.username , f.name
                                    FROM Field f
