@@ -24,15 +24,22 @@
     $pdo = connecteBD();
 
     if (isset($_POST["suppression_entreprise_id"])) {
-        supprimerEntreprise($pdo, $_POST["suppression_entreprise_id"]);
+        supprimerEntreprise($pdo, $_POST["company_id"]);
     }
 
-    //TODO réussir à récupérer toutes les informations des différents intervenants pour la fonction
-    if (isset($_POST["modification_entreprise_id"])) {
-        modifierEntreprise($pdo, $_POST["modification_entreprise_id"], $_POST["nom_entreprise"], $_POST["secteur_activite"], $_POST["lieu"], $_POST["description"]);
+    if (isset($_POST["modifyCompany"])) {
+        modifyCompany($pdo, $_POST["companyID"], $_POST["nomEntreprise"], $_POST["descriptionEntreprise"], $_POST["secteurEntreprise"],$_POST["adresseEntreprise"], $_POST["codePostalEntreprise"], $_POST["villeEntreprise"], $_FILES["logoEntreprise"]);
+        header("Location: detailEntreprise.php");
+        exit();
     }
 
-    if (isset($_POST["nomEntreprise"])) {
+    if (isset($_POST["deleteCompany"])) {
+        deleteCompany($pdo, $_POST["companyID"]);
+        header("Location: detailEntreprise.php");
+        exit();
+    }
+
+    if (isset($_POST["addCompany"])) {
         $intervenants_array = array();
     
         // Le premier intervenant est toujours présent
@@ -58,11 +65,28 @@
             }
     
         }
-        var_dump($_FILES["logoEntreprise"]);
         addCompany($pdo, $_POST["nomEntreprise"], $_POST["descriptionEntreprise"], $_POST["adresseEntreprise"], $_POST["codePostalEntreprise"], $_POST["villeEntreprise"], $_POST["secteurEntreprise"], $_FILES["logoEntreprise"], $intervenants_array);
         header("Location: detailEntreprise.php");
         exit();
     } 
+
+    if (isset($_POST['modifySpeaker'])) {
+        modifySpeaker($pdo, $_POST['nomIntervenantEdit'], $_POST['roleIntervenantEdit'], $_POST['filieresIntervenant'], $_POST['intervenantID']);
+        header("Location: detailEntreprise.php");
+        exit();
+    }
+
+    if (isset($_POST['deleteSpeaker'])) {
+        deleteSpeaker($pdo, $_POST['intervenantID']);
+        header("Location: detailEntreprise.php");
+        exit();
+    }
+
+    if (isset($_POST['addSpeaker'])) {
+        addSpeaker($pdo, $_POST['companyID'], $_POST['nomIntervenantAdd'], $_POST['roleIntervenantAdd'], $_POST['filieresIntervenant']);
+        header("Location: detailEntreprise.php");
+        exit();
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -224,7 +248,7 @@
                                     <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
                                 </div>
                                 <div class="col-6">
-                                    <button type="submit" class="bouton confirmation col-6" value="Valider">Valider</button>
+                                    <button type="submit" name="addCompany" class="bouton confirmation col-6" value="Valider">Valider</button>
                                 </div>
                             </div>
                         </form>
@@ -269,17 +293,144 @@
                             <hr>
                             <?php foreach ($intervenants as $intervenant) { ?>
                                 <div class="my-1">
-                            <span class="speakerName m-0"><?php echo $intervenant["nom"]?></span>
+                                    
+                            <span class="speakerName m-0"><?php echo $intervenant["nom"];?></span>
                             <?php if ($intervenant["fonction"] != null) { ?>
-                                <span class="speakerRole m-0"> <?php echo '- '.$intervenant["fonction"]?> </span>
+                                <span class="speakerRole m-0"> <?php echo '- '.$intervenant["fonction"];?> </span>
                             <?php } ?>
                             <div class="d-flex">
+                            <div class="d-flex flex-wrap w-100">
                                 <?php foreach ($intervenant["fields"] as $field) {
-                                    echo '<div class="tag text-center">'.$field.'</div>';
-                                }
-                                echo '</div></div>'; 
-                            } ?>
+                                    echo '<div class="tag text-center mb-2">'.$field.'</div>';
+                                } ?>
+                                </div>
+                                <div class="d-flex">
+                                    <button class="border-0 icon-title" data-bs-toggle="modal" data-bs-target="#edit<?php echo $intervenant['id']; ?>"><i class="fa-solid fa-pen icon m-0"></i></button>
+                                    <button class="border-0 icon-title" data-bs-toggle="modal" data-bs-target="#delete<?php echo $intervenant['id']; ?>"><i class="fa-solid fa-trash icon m-0"></i></button>
+                                </div>
+                                </div>
+                                <div class="modal fade" id="edit<?php echo $intervenant['id'];?>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                                        <div class="modal-content  px-4 pb-4">
+                                            <div class="modal-header deco justify-content-start px-0">
+                                                <button type="button" class="blanc border-0" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
+                                                <h2 class="modal-title" id="editModalLabel"><?php echo $intervenant["nom"]; ?></h2>
+                                            </div>
+                                            <form action="detailEntreprise.php" method="post" enctype="multipart/form-data">
+                                                <label for="nomIntervenantEdit" class="modalLabel mb-0 mt-2">Nom</label>
+                                                <input class="zoneText" type="text" name="nomIntervenantEdit" id="nomIntervenantEdit" value="<?php echo $intervenant["nom"]; ?>"/>
+                                                <label for="roleIntervenantEdit" class="modalLabel mb-0 mt-2">Role</label>
+                                                <input class="zoneText" type="textarea" name="roleIntervenantEdit" id="roleIntervenantEdit" value="<?php if (empty($intervenant["fonction"])) { echo '" placeholder="Saisir un rôle"'; } else { echo $intervenant["fonction"];} ?>"/>
+                                                <div class="rowForChecks d-flex flex-wrap">
+                                                    <?php
+                                                        $fields = getFields($pdo); 
+                                                        while ($ligne2 = $fields->fetch()) { ?>
+                                                            <label class="buttonToCheck me-2">
+                                                                <input type="checkbox" name="filieresIntervenant[]" value="<?php echo $ligne2['field_id'].'"';
+                                                                foreach ($intervenant["fields"] as $field) {
+                                                                    if ($field == $ligne2['name']) {
+                                                                        echo 'checked';
+                                                                    }
+                                                                }
+                                                                
+                                                                ?> />
+                                                                <div class="icon-box">
+                                                                    <span><?php echo $ligne2['name'];?></span>
+                                                                </div>
+                                                            </label>
+                                                    <?php } ?>
+                                                </div>
+                                                <input type="hidden" name="intervenantID" value="<?php echo $intervenant['id'];?>">
+
+                                                <hr>                         
+
+                                                <div class="row mt-3">
+                                                    <div class="col-6">
+                                                        <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <button type="submit" name="modifySpeaker" class="bouton confirmation col-6" value="Valider">Valider</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="modal fade" id="delete<?php echo $intervenant['id'];?>" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                                        <div class="modal-content  px-4 pb-4">
+                                            <div class="modal-header deco justify-content-start px-0">
+                                                <button type="button" class="blanc border-0" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
+                                                <h2 class="modal-title" id="editModalLabel"><?php echo $intervenant["nom"]; ?></h2>
+                                            </div>
+                                            <p>Êtes-vous sûr(e) de vouloir supprimer cet intervenant ?</p>
+                                            <form action="detailEntreprise.php" method="post" enctype="multipart/form-data"> 
+                                                <input type="hidden" name="intervenantID" value="<?php echo $intervenant['id'];?>">         
+                                                <div class="row mt-3">
+                                                    <div class="col-6">
+                                                        <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <button type="submit" name="deleteSpeaker" class="bouton confirmation col-6" value="Valider">Valider</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <hr>
+                            </div>
+                            <?php } ?>
                             
+                            <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalAddSpeaker<?php echo $ligne['company_id']?>">
+                                <i class="fa-solid fa-plus text-left justify-content-center"></i>
+                                <h2 class="text-center m-2">Ajouter un(e) intervenant(e)</h2>
+                            </button>
+                            <div class="modal fade" id="modalAddSpeaker<?php echo $ligne['company_id'];?>" tabindex="-1" aria-labelledby="addSpeakerModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                                        <div class="modal-content  px-4 pb-4">
+                                            <div class="modal-header deco justify-content-start px-0">
+                                                <button type="button" class="blanc border-0" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
+                                                <h2 class="modal-title" id="addSpeakerModalLabel">Nouvel intervenant</h2>
+                                            </div>
+                                            <form action="detailEntreprise.php" method="post" enctype="multipart/form-data">
+                                                <input type="hidden" name="companyID" value="<?php echo $ligne['company_id']?>">
+                                                <label for="nomIntervenantAdd" class="modalLabel mb-0 mt-2">Nom</label>
+                                                <input class="zoneText" type="text" name="nomIntervenantAdd" id="nomIntervenantAdd" placeholder="Saisissez le nom de l'intervenant" required/>
+                                                <label for="roleIntervenantAdd" class="modalLabel mb-0 mt-2">Role</label>
+                                                <input class="zoneText" type="textarea" name="roleIntervenantAdd" id="roleIntervenantAdd" placeholder="Saisir un rôle pour cet intervenant (facultatif)"/>
+                                                <div class="rowForChecks d-flex flex-wrap">
+                                                    <?php
+                                                        $fields = getFields($pdo); 
+                                                        while ($ligne2 = $fields->fetch()) { ?>
+                                                            <label class="buttonToCheck me-2">
+                                                                <input type="checkbox" name="filieresIntervenant[]" value="<?php echo $ligne2['field_id'];?>" />
+                                                                <div class="icon-box">
+                                                                    <span><?php echo $ligne2['name'];?></span>
+                                                                </div>
+                                                            </label>
+                                                    <?php } ?>
+                                                </div>
+
+                                                <hr>                         
+
+                                                <div class="row mt-3">
+                                                    <div class="col-6">
+                                                        <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <button type="submit" name="addSpeaker" class="bouton confirmation col-6" value="Valider">Valider</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
                         </div>
                         <hr>
                         <div class="row d-flex justify-content-evenly">
@@ -293,93 +444,66 @@
                        
 
                         <div class="modal fade" id="modification<?php echo $ligne['company_id'];?>" tabindex="-1" aria-labelledby="modificationModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-                    <div class="modal-content  px-4 pb-4">
-                        <div class="modal-header deco justify-content-start px-0">
-                            <button type="button" class="blanc border-0" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
-                            <h2 class="modal-title" id="modificationModalLabel"><?php echo $ligne['name']; ?></h2>
-                        </div>
-                        <form action="detailEntreprise.php" method="post" enctype="multipart/form-data">
-                            <label for="nomEntreprise" class="modalLabel mb-0 mt-2">Nom</label>
-                            <input class="zoneText" type="text" name="nomEntreprise" id="nomEntreprise" placeholder="<?php echo $ligne["name"]; ?>" required/>
-                            <label for="descriptionEntreprise" class="modalLabel mb-0 mt-2">Description</label>
-                            <input class="zoneText" type="textarea" name="descriptionEntreprise" id="descriptionEntreprise" placeholder="<?php if (empty($ligne["description"])) { echo 'Saisir une description'; } else { echo $ligne["description"];} ?>"/>
-                            <label for="adresseEntreprise" class="modalLabel mb-0 mt-2">Adresse</label>
-                            <input class="zoneText" type="text" name="adresseEntreprise" id="adresseEntreprise" placeholder="<?php echo $ligne["address"]; ?>" required/>
-                            <label for="codePostalEntreprise" class="modalLabel mb-0 mt-2">Code Postal</label>
-                            <input class="zoneText" type="text" name="codePostalEntreprise" id="codePostalEntreprise" placeholder="<?php echo $ligne["address"]; ?>" required/>
-                            <label for="villeEntreprise" class="modalLabel mb-0 mt-2">Ville</label>
-                            <input class="zoneText" type="text" name="villeEntreprise" id="villeEntreprise" placeholder="<?php echo $ligne["address"]; ?>" required/>
-                            <label for="secteurEntreprise" class="modalLabel mb-0 mt-2">Secteur d'activité</label>
-                            <input class="zoneText" type="text" name="secteurEntreprise" id="secteurEntreprise" placeholder="<?php echo $ligne["sector"]; ?>" required/>
-                            <label for="logo" class="modalLabel mb-0 mt-2 w-100">Logo de l'entreprise</label>
-                            <input type="file" name="logoEntreprise" id="logo" accept="image/*">
-                            <hr>
-
-                            <div id="intervenantsContainer">
-                            <?php
-                                $intervenants = getSpeakersPerCompany($ligne["intervenants_roles"]);
-                                ?>
-                                <hr>
-                                <?php foreach ($intervenants as $intervenant) { ?>
-                                    <div class="my-1">
-                                <span class="speakerName m-0"><?php echo $intervenant["nom"]?></span>
-                                <?php if ($intervenant["fonction"] != null) { ?>
-                                    <span class="speakerRole m-0"> <?php echo '- '.$intervenant["fonction"]?> </span>
-                                <?php } ?>
-                                <div class="d-flex">
-                                    <?php foreach ($intervenant["fields"] as $field) {
-                                        echo '<div class="tag text-center">'.$field.'</div>';
-                                    }
-                                    echo '</div></div>'; 
-                                } 
-                            ?>
-                                <div id="intervenantTemplate" style="display: block;">
-                                    <div class="intervenantContainer">
-                                       <div class="d-flex flex-wrap">
-                                            <h2>Intervenant &nbsp;<h2 id="numeroIntervenant">1</h2></h2>
-                                            <button type ="button" class="border-0 icon-title"><i class="fa-solid fa-trash icon"></i></button>
-                                        </div>
-                                        <label for="nomIntervenant" class="modalLabel mb-0 mt-2">Nom</label>
-                                        <input class="zoneText" type="text" name="nomIntervenant" id="nomIntervenant" placeholder="Saisir le nom de l’intervenant" required/>
-                                        <div class="rowForChecks d-flex flex-wrap">
-                                            <?php
-                                                $fields = getFields($pdo); 
-                                                while ($ligne = $fields->fetch()) { ?>
-                                                    <label class="buttonToCheck me-2">
-                                                        <input type="checkbox" name="filieresIntervenant[]" value="<?php echo $ligne['field_id'];?>" />
-                                                        <div class="icon-box">
-                                                            <span><?php echo $ligne['name'];?></span>
-                                                        </div>
-                                                    </label>
-                                            <?php } ?>
-                                        </div>
-                                        <hr>
+                            <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                                <div class="modal-content  px-4 pb-4">
+                                     <div class="modal-header deco justify-content-start px-0">
+                                        <button type="button" class="blanc border-0" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
+                                        <h2 class="modal-title" id="modificationModalLabel"><?php echo $ligne['name']; ?></h2>
                                     </div>
+                                    <form action="detailEntreprise.php" method="post" enctype="multipart/form-data">
+                                        <label for="nomEntreprise" class="modalLabel mb-0 mt-2">Nom</label>
+                                        <input class="zoneText" type="text" name="nomEntreprise" id="nomEntreprise" placeholder="<?php echo $ligne["name"]; ?>"/>
+                                        <label for="descriptionEntreprise" class="modalLabel mb-0 mt-2">Description</label>
+                                        <input class="zoneText" type="textarea" name="descriptionEntreprise" id="descriptionEntreprise" placeholder="<?php if (empty($ligne["description"])) { echo 'Saisir une description'; } else { echo $ligne["description"];} ?>"/>
+                                        <label for="adresseEntreprise" class="modalLabel mb-0 mt-2">Adresse</label>
+                                        <input class="zoneText" type="text" name="adresseEntreprise" id="adresseEntreprise" placeholder="<?php echo $ligne["address"]; ?>"/>
+                                        <label for="codePostalEntreprise" class="modalLabel mb-0 mt-2">Code Postal</label>
+                                        <input class="zoneText" type="text" name="codePostalEntreprise" id="codePostalEntreprise" placeholder="<?php echo $ligne["address"]; ?>"/>
+                                        <label for="villeEntreprise" class="modalLabel mb-0 mt-2">Ville</label>
+                                        <input class="zoneText" type="text" name="villeEntreprise" id="villeEntreprise" placeholder="<?php echo $ligne["address"]; ?>"/>
+                                        <label for="secteurEntreprise" class="modalLabel mb-0 mt-2">Secteur d'activité</label>
+                                        <input class="zoneText" type="text" name="secteurEntreprise" id="secteurEntreprise" placeholder="<?php echo $ligne["sector"]; ?>"/>
+                                        <label for="logo" class="modalLabel mb-0 mt-2 w-100">Logo de l'entreprise</label>
+                                        <input type="file" name="logoEntreprise" id="logo" accept="image/*">
+                                        <hr>                         
+                                        
+                                        <input type="hidden" name="companyID" value="<?php echo $ligne['company_id'];?>">
+                                        <div class="row mt-3">
+                                            <div class="col-6">
+                                                <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                            </div>
+                                            <div class="col-6">
+                                                <button type="submit" name="modifyCompany" class="bouton confirmation col-6" value="Valider">Valider</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                                
-                            <button type="button" class="addStudent d-flex w-100 text-center align-items-center justify-content-center" onclick="ajouterIntervenant(event)">
-                                <i class="fa-solid fa-plus text-left justify-content-center"></i>
-                                <h2 class="text-center m-2">Ajouter un intervenant</h2>
-                            </button>
-                            
+                        </div>
 
 
-                            <div class="row mt-3">
-                                <div class="col-6">
-                                    <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
-                                </div>
-                                <div class="col-6">
-                                    <button type="submit" class="bouton confirmation col-6" value="Valider">Valider</button>
+                        <div class="modal fade" id="suppression<?php echo $ligne['company_id'];?>" tabindex="-1" aria-labelledby="suppressionModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                                <div class="modal-content  px-4 pb-4">
+                                     <div class="modal-header deco justify-content-start px-0">
+                                        <button type="button" class="blanc border-0" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
+                                        <h2 class="modal-title" id="suppressionModalLabel"><?php echo $ligne['name']; ?></h2>
+                                    </div>
+                                    <p>Êtes-vous sûr(e) de vouloir supprimer cette entreprise ?</p>
+                                    <form action="detailEntreprise.php" method="post" enctype="multipart/form-data">                  
+                                        <input type="hidden" name="companyID" value="<?php echo $ligne['company_id'];?>">
+                                        <div class="row mt-3">
+                                            <div class="col-6">
+                                                <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                            </div>
+                                            <div class="col-6">
+                                                <button type="submit" name="deleteCompany" class="bouton confirmation col-6" value="Valider">Valider</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-
+                        </div>
                     </div>
                 </div>
             </div>

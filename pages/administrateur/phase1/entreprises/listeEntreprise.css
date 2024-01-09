@@ -182,6 +182,7 @@ p {
     border: #39E2F8 solid 1px;
     background-color: #39E2F8;
     width: auto;
+    height: fit-content;
 }
 
 .speakerName {
