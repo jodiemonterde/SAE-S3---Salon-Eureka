@@ -2,7 +2,8 @@
 .ligne {
     border: 2px solid lightgray;
     border-radius: 5px;
-    height: 35vh;
+    height: fit-content;
+    padding: 5px;
 }
 
 .ligneGauche {

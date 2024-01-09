@@ -119,7 +119,7 @@
                 <div class="col-md-4"></div>
                 <div class="col-md-4 col-12 text-center">
                     <a href="generationPlanning.php">
-                        <button class="bouton boutonBas" <?php echo $phase === 2 ? "disabled" : ""; ?>> Génerer le planning </button>
+                        <button class="bouton boutonBas" <?php echo $phase != 1.5 ? "disabled" : ""; ?>> Génerer le planning </button>
                     </a>
                 </div>
                 <div class="col-md-4"></div>
