@@ -10,11 +10,15 @@
         if(isset($_POST['dateForum']) && isset($_POST['heureDebut']) && isset($_POST['heureFin']) && isset($_POST['duree']) && isset($_POST['secDuree']) && isset($_POST['dateLim'])){
             updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['heureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
         }
+        if(isset($_POST['confirmation']) && $_POST['confirmation'] == "Je reinitialise les données du site"){
+            reinitialiserDonnees($pdo);
+        }
         $infoForum = infoForum($pdo);
         $phase = getPhase($pdo);
     } catch (Exception $e) {
-        header('Location: ../../maintenance.php');
-        exit();
+        //header('Location: ../../maintenance.php');
+        //exit();
+        echo $e->getMessage();
     }
 ?>
 <!DOCTYPE html>
@@ -195,22 +199,28 @@
                         <div class="container">
                             <div class = "row">
                                 <div class="col-12">
-                                    <h1 class="text-center" id="réinitialiser">Réinitialiser les données</h1>
+                                    <h1 class="text-center text-jaune" id="réinitialiser">Réinitialiser les données</h1>
                                 </div>
                             </div>
                             <div class = "row">
                                 <div class="col-12">
-                                    <P class="text-center">Êtes-vous sûr(e) de vouloir réinitialiser les données ?</P>
+                                    <P class="text-center">Êtes-vous sûr(e) de vouloir réinitialiser les données ? <span class="erreur">Cela supprimera TOUS les données du site SAUF les administrateurs</span></P>
+                                    <P class="text-center">Taper "Je reinitialise les données du site" pour confirmer</P>
                                 </div>
                             </div>
-                            <div class = "row">
-                                <div class="col-6 d-flex justify-content-evenly">
-                                    <button type="button" data-bs-dismiss="modal">Retour</button>
+                            <form action="menu.php" method="POST">
+                                <div class = "row">
+                                    <div class="col-12 p-2">
+                                        <input type="text" name="confirmation" placeholder="Taper 'Je reinitialise les données du site'" class="form-control">
+                                    </div>
+                                    <div class="col-6 d-flex justify-content-evenly">
+                                        <button type="button" class="boutonNegatif" data-bs-dismiss="modal">Retour</button>
+                                    </div>
+                                    <div class="col-6 d-flex justify-content-evenly">
+                                        <button type="submit" class="bouton">Réinitialiser</button>
+                                    </div>
                                 </div>
-                                <div class="col-6 d-flex justify-content-evenly">
-                                    <button type="button" data-bs-toggle="modal" data-bs-target="#donnéeSupprimer" >Réinitialiser</button>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

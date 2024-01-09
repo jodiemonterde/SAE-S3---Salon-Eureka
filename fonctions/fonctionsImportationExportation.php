@@ -135,6 +135,19 @@
                     $pdfEtudiant->Ln();
                 }
             }
+            $unlisted = unlistedCompanyPerUser($pdo, $ligne["user_id"]);
+            if ($unlisted->rowCount() > 0) {
+                $pdfEtudiant->SetFont('Arial','B',20);
+                $pdfEtudiant->Cell(0, 10, conversion("Entreprises hors planning à aller voir"),0, 1, 'C');
+                $pdfEtudiant->SetFont('Arial','',11);
+                $pdfEtudiant->SetTextColor(255 , 168, 0);
+                $pdfEtudiant->Ln();
+
+                while($row = $unlisted->fetch()){
+                    $pdfEtudiant->Cell(0, 10,conversion($row["name"]) , 'LTBR', 1, 'C');
+                    $pdfEtudiant->Ln();
+                }
+            }
         }
         $pdfEtudiant->Output($nom,'D');
     }

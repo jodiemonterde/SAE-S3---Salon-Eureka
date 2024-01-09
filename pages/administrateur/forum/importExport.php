@@ -9,6 +9,7 @@
     if(isset($_POST['dateForum']) && isset($_POST['heureDebut']) && isset($_POST['heureFin']) && isset($_POST['duree']) && isset($_POST['secDuree']) && isset($_POST['dateLim'])){
         updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['heureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
     }
+    $phase = getPhase($pdo);
     $filieres = array();
     $stmt = getFields($pdo);
     while ($ligne = $stmt->fetch())  {
@@ -67,15 +68,15 @@
                     <ul class="navbar-nav d-flex h-100 align-items-center">
                         <li class="nav-item nav-link p-0 d-none d-md-block h-100">
                             <!-- Si sur la liste des entreprises, mettre en actif et lien_inactif-->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../entreprises/listeEntreprises.php"> Liste des entreprises </a>
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../listeEntreprises.php"> Liste des entreprises </a>
                         </li>
                         <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
                             <!-- Si sur la liste des étudiants, mettre en actif et lien_inactif -->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../etudiants/listeEtudiants.php"> Liste des étudiants </a>
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../listeEtudiants.php"> Liste des étudiants </a>
                         </li>
                         <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
                             <!-- Si sur la liste des gestionnaires, mettre en actif et lien_inactif -->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../gestionnaire/listeGestionnaires.php"> Liste des gestionnaires </a>
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../listeGestionnaires.php"> Liste des gestionnaires </a>
                         </li>
                         <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
                             <!-- Si sur les paramètres du forum, mettre en actif et lien_inactif -->
@@ -98,6 +99,54 @@
                 </div>
             </div>
         </nav>
+        <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
+            <div class="container-fluid">
+                <ul class="navbar-nav w-100 justify-content-evenly">
+                    <!-- Si sur la liste des entreprises, mettre le texte en actif -->
+                    <li class="nav-item d-flex flex-column text-center inactif_bas">
+                        <!-- Si sur la liste des entreprises, mettre l'icone en actif et lien_inactif -->
+                        <a class="d-flex justify-content-center" href="../listeEntreprises.php">
+                            <!-- Si sur la liste des entreprises, mettre l'icône blanche, sinon mettre l'icône en noir -->
+                            <img src="../../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone">
+                        </a>
+                        <a class="d-flex justify-content-center lien_barre_basse" href="../listeEntreprises.php">
+                        Entreprises
+                        </a>
+                    </li>
+                    <!-- Si sur la liste des étudiants, mettre le texte en actif -->
+                    <li class="nav-item d-flex flex-column text-center inactif_bas">
+                        <!-- Si sur la liste des étudiants, mettre l'icône en actif et lien_inactif -->
+                        <a class="d-flex justify-content-center" href="../listeEtudiants.php">
+                            <!-- Si sur la liste des étudiants, mettre l'icône blanche, sinon mettre l'icône en noir -->
+                            <img src="../../../ressources/icone_etudiant_black.svg" alt="Liste des étudiants" class="icone">
+                        </a>
+                        <a class="d-flex justify-content-center lien_barre_basse" href="../listeEtudiants.php">
+                        Etudiants
+                        </a>
+                    </li>
+                    <!-- Si sur la liste des gestionnaires, mettre le texte en actif -->
+                    <li class="nav-item d-flex flex-column text-center inactif_bas">
+                        <!-- Si sur la liste des gestionnaires, mettre l'icône en actif et lien_inactif -->
+                        <a class="d-flex justify-content-center" href="../listeGestionnaires.php">
+                            <!-- Si sur la liste des gestionnaires, mettre l'icône blanche, sinon mettre l'icône en noir -->
+                            <img src="../../../ressources/icone_gestionnaire_black.svg" alt="Liste des gestionnaires" class="icone">
+                        </a>
+                        <a class="d-flex justify-content-center lien_barre_basse" href="../listeGestionnaires.php">
+                        Gestionnaires
+                        </a>
+                    </li>
+                    <!-- Si sur les paramètres du forum, mettre le texte en actif -->
+                    <li class="nav-item d-flex flex-column text-center actif_bas_texte">
+                        <!-- Si sur les paramètres du forum, mettre l'icône en actif et lien_inactif -->
+                        <a class="d-flex justify-content-center actif_bas_icone">
+                            <!-- Si sur les paramètres du forum, mettre l'icône blanche, sinon mettre l'icône en noir -->
+                            <img src="../../../ressources/icone_forum_white.svg" alt="Paramètres du forum" class="icone">
+                        </a>
+                        Forum
+                    </li>
+                </ul>
+            </div>
+        </nav>
         <div class="container">
             <div class="row mx-1">
                 <div class="col-1">
@@ -117,6 +166,7 @@
                     </div>
                 </div>
             <?php } ?>
+            <?php if ($phase == 1) { ?>
             <div class="accordion" id="importEtudiants">
                 <div class="accordion-item my-3">
                     <h2 class="accordion-header" id="headingImportEtudiants">
@@ -157,8 +207,14 @@
                     </div>
                 </div>
             </div>
-
-            <?php if (getPhase($pdo) == 2) { ?>
+            <?php } else { ?>
+                <div class="row">
+                    <div class="col-12 text-center erreur">
+                        <h4>Les options d'importations sont désormé indispoinbles une fois le planning généré !</h4>
+                    </div>
+                </div>
+            <?php } 
+            if ($phase == 2) { ?>
             <div class="accordion" id="exporterPlanningEntreprise">
                 <div class="accordion-item my-3">
                     <h2 class="accordion-header" id="headingPlanningEntreprise">
@@ -198,8 +254,6 @@
                     </div>
                 </div>
             </div>
-
-
             <div class="accordion" id="exporterEtatEntreprises">
                 <div class="accordion-item my-3">
                     <h2 class="accordion-header" id="headingEtatEntreprises">
@@ -299,54 +353,6 @@
                 </div>
             </div>
         <?php } ?>
-        <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
-            <div class="container-fluid">
-                <ul class="navbar-nav w-100 justify-content-evenly">
-                    <!-- Si sur la liste des entreprises, mettre le texte en actif -->
-                    <li class="nav-item d-flex flex-column text-center inactif_bas">
-                        <!-- Si sur la liste des entreprises, mettre l'icone en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center" href="../entreprises/listeEntreprises.php">
-                            <!-- Si sur la liste des entreprises, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="../../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone">
-                        </a>
-                        <a class="d-flex justify-content-center lien_barre_basse" href="../entreprises/listeEntreprises.php">
-                        Entreprises
-                        </a>
-                    </li>
-                    <!-- Si sur la liste des étudiants, mettre le texte en actif -->
-                    <li class="nav-item d-flex flex-column text-center inactif_bas">
-                        <!-- Si sur la liste des étudiants, mettre l'icône en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center" href="../etudiants/listeEtudiants.php">
-                            <!-- Si sur la liste des étudiants, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="../../../ressources/icone_etudiant_black.svg" alt="Liste des étudiants" class="icone">
-                        </a>
-                        <a class="d-flex justify-content-center lien_barre_basse" href="../etudiants/listeEtudiants.php">
-                        Etudiants
-                        </a>
-                    </li>
-                    <!-- Si sur la liste des gestionnaires, mettre le texte en actif -->
-                    <li class="nav-item d-flex flex-column text-center inactif_bas">
-                        <!-- Si sur la liste des gestionnaires, mettre l'icône en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center" href="../gestionnaire/listeGestionnaires.php">
-                            <!-- Si sur la liste des gestionnaires, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="../../../ressources/icone_gestionnaire_black.svg" alt="Liste des gestionnaires" class="icone">
-                        </a>
-                        <a class="d-flex justify-content-center lien_barre_basse" href="../gestionnaire/listeGestionnaires.php">
-                        Gestionnaires
-                        </a>
-                    </li>
-                    <!-- Si sur les paramètres du forum, mettre le texte en actif -->
-                    <li class="nav-item d-flex flex-column text-center actif_bas_texte">
-                        <!-- Si sur les paramètres du forum, mettre l'icône en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center actif_bas_icone">
-                            <!-- Si sur les paramètres du forum, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="../../../ressources/icone_forum_white.svg" alt="Paramètres du forum" class="icone">
-                        </a>
-                        Forum
-                    </li>
-                </ul>
-            </div>
-        </nav>
         <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content">

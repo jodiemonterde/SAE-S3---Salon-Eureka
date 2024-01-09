@@ -1041,28 +1041,6 @@
         $pdo->commit();
     }
 
-    function getSpeakersPerCompany($pdo, $company_id) {
-        $stmt = $pdo->prepare("SELECT speaker_id, name, role FROM Speaker WHERE company_id = :company_id");
-        $stmt->bindParam(':company_id', $company_id);
-        $stmt->execute();
-        return $stmt;
-    }
-
-    function getAppointmentPerSpeaker($pdo, $speaker_id) {
-        $stmt = $pdo->prepare("SELECT TIME_FORMAT(app.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(app.start, app.duration), '%H:%i') as end, us.username, fie.name
-                                FROM Appointment app
-                                JOIN User us
-                                ON app.user_id = us.user_id
-                                JOIN AssignmentUser ass
-                                ON ass.user_id = us.user_id
-                                JOIN Field fie
-                                ON ass.field_id = fie.field_id
-                                WHERE app.speaker_id = :speaker_id;");
-        $stmt->bindParam(':speaker_id', $speaker_id);
-        $stmt->execute();
-        return $stmt;
-    }
-
     function getCompanyNotExcluded($pdo){
         $maRequete = $pdo->prepare("SELECT company_id,name 
                                     FROM Company c1
@@ -1124,5 +1102,26 @@
         $requete->bindParam(':company_id', $company_id);
         $requete->execute();
         return $requete;
+    }
+
+    function reinitialiserDonnees($pdo) {
+        $pdo->beginTransaction();
+        $stmt = $pdo->prepare("DELETE FROM Appointment");
+        $stmt->execute();
+        $stmt = $pdo->prepare("DELETE FROM WishList");
+        $stmt->execute();
+        $stmt = $pdo->prepare("DELETE FROM AssignmentSpeaker");
+        $stmt->execute();
+        $stmt = $pdo->prepare("DELETE FROM AssignmentUser");
+        $stmt->execute();
+        $stmt = $pdo->prepare("DELETE FROM Speaker");
+        $stmt->execute();
+        $stmt = $pdo->prepare("DELETE FROM Company");
+        $stmt->execute();
+        $stmt = $pdo->prepare("DELETE FROM User WHERE responsibility = 'E' OR responsibility = 'G'");
+        $stmt->execute();
+        $stmt = $pdo->prepare('UPDATE Meeting SET date = "9999-12-31", start = "00:00:00", end = "23:59:59", primary_appointment_duration = "00:15:00", secondary_appointment_duration = "00:10:00", wish_period_end = "9999-12-31", phase = 1, generated = 0 WHERE meeting_id = 1');
+        $stmt->execute();
+        $pdo->commit();
     }
 ?>
