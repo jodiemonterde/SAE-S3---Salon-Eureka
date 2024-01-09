@@ -461,10 +461,12 @@
     }
 
     function studentByUnlistedCompany($pdo, $company_id) {
-        $requete = $pdo-> prepare("SELECT u.username 
-                                FROM User u
-                                JOIN WishList w on u.user_id = w.user_id
-                                WHERE  w.company_id = :company_id");
+        $requete = $pdo-> prepare("SELECT u.username , f.name
+                                   FROM Field f
+                                   JOIN AssignmentUser a on f.field_id = a.field_id
+                                   JOIN User u on a.user_id = u.user_id
+                                   JOIN WishList w on u.user_id = w.user_id
+                                   WHERE  w.company_id = :company_id");
         $requete->bindParam(':company_id', $company_id);
         $requete->execute();
         return $requete;
