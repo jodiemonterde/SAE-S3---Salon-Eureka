@@ -7,7 +7,8 @@ function ajouterIntervenant(event) {
 
     // Cloner la div du premier intervenant
     var intervenantDiv = document.getElementById('intervenantTemplate').cloneNode(true);
-
+    let trash = intervenantDiv.firstElementChild.firstElementChild.querySelector('.trash');
+    trash.removeAttribute('hidden');
     // Mettre à jour les IDs et les noms des champs dans le nouveau div
     mettreAJourIDs(intervenantDiv);
 
@@ -39,10 +40,6 @@ function ajouterIntervenant(event) {
     // Incrémenter le numéro d'intervenant pour le prochain ajout
     numeroIntervenant++;
 }
-
-
-
-
 
 function mettreAJourIDs(div) {
     // Parcourir tous les champs du div et mettre à jour les IDs et les noms
@@ -124,6 +121,19 @@ function supprimerIntervenant(intervenantDiv) {
         console.error("Erreur: Impossible de trouver l'élément 'numeroIntervenant' à supprimer.");
     }
 }
+
+document.getElementById('myForm').addEventListener('submit', function(e) {
+    var intervenantContainers = document.querySelectorAll('.intervenantContainer');
+    for (var i = 0; i < intervenantContainers.length; i++) {
+        var checkboxes = intervenantContainers[i].querySelectorAll('input[type="checkbox"]');
+        var checkedOne = Array.prototype.slice.call(checkboxes).some(x => x.checked);
+        if (!checkedOne) {
+            alert("Veuillez sélectionner au moins une filière pour chaque intervenant.");
+            e.preventDefault();
+            return;
+        }
+    }
+});
 
 
 

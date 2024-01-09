@@ -5,8 +5,8 @@
         // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
         $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
 
-        require("../../../fonctions/baseDeDonnees.php");
-        require("../../../fonctions/fonctions.php");
+        require("../../fonctions/baseDeDonnees.php");
+        require("../../fonctions/fonctions.php");
         $pdo = connecteBD();
 
         // $_SESSION['filtre'] est un tableau qui contient les id des filtres selectionnes
@@ -55,7 +55,7 @@
         }
 
         if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
-            header('Location: ../../connexion.php');
+            header('Location: ../cnnexion.php');
             exit();
         }
 
@@ -67,7 +67,7 @@
         $fields = $tmp;
         $stmt = getInfoStudentsSort($pdo, $_SESSION['recherche'], $_SESSION['filtre'], $_SESSION['triPar']);
     } catch (Exception $e) {
-        header("Location: ../../maintenance.php");
+        header("Location: ../cintenance.php");
         exit();
     }
 ?>
@@ -80,36 +80,36 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <link rel="stylesheet" href="../../../css/listeEtudiantAdministrateur.css">
-        <link rel="stylesheet" href="../../../css/all.css">
-        <link rel="stylesheet" href="../../../css/navbars.css">
-        <link rel="stylesheet" href="../../../css/filtre.css">
+        <link rel="stylesheet" href="../../css/listeEtudiantAdministrateur.css">
+        <link rel="stylesheet" href="../../css/all.css">
+        <link rel="stylesheet" href="../../css/navbars.css">
+        <link rel="stylesheet" href="../../css/filtre.css">
         <title>Eureka - Liste des entreprises</title>
     </head>
     <body>
         <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
             <div class="container-fluid h-100">
                 <div class="navbar-brand d-flex align-items-center h-100">
-                    <img src="../../../ressources/logo_black.svg" alt="Logo Eureka" class="logo me-2">
+                    <img src="../../ressources/logo_black.svg" alt="Logo Eureka" class="logo me-2">
                     Eureka
                 </div>
                 <div class="navbar-right h-100">
                     <ul class="navbar-nav d-flex h-100 align-items-center">
                         <li class="nav-item nav-link p-0 d-none d-md-block h-100">
                             <!-- Si sur la liste des entreprises, mettre en actif et lien_inactif-->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../etntreprises/listeEntreprises.php"> Liste des entreprises </a>
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeEntreprises.php"> Entreprises </a>
                         </li>
                         <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
                             <!-- Si sur la liste des étudiants, mettre en actif et lien_inactif -->
-                            <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"> Liste des étudiants </a>
+                            <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"> Étudiants </a>
                         </li>
                         <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
                             <!-- Si sur la liste des gestionnaires, mettre en actif et lien_inactif -->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../gestionnaire/listeGestionnaires.php"> Liste des gestionnaires </a>
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeGestionnaires.php"> Gestionnaires </a>
                         </li>
                         <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
                             <!-- Si sur les paramètres du forum, mettre en actif et lien_inactif -->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../forum/menu.php"> Paramètres du forum </a>
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="forum/menu.php"> Forum </a>
                         </li>
                         <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -121,7 +121,7 @@
                         </li>
                         <li class="nav-item d-md-none d-flex justify-content-end">
                             <a data-bs-toggle="modal" data-bs-target="#deconnexion">
-                                <img src="../../../ressources/icone_deconnexion.svg" alt="Se déconnecter" class="logo">
+                                <img src="../../ressources/icone_deconnexion.svg" alt="Se déconnecter" class="logo">
                             </a>
                         </li>
                     </ul>
@@ -134,49 +134,48 @@
                     <!-- Si sur la liste des entreprises, mettre le texte en actif -->
                     <li class="nav-item d-flex flex-column text-center inactif_bas">
                         <!-- Si sur la liste des entreprises, mettre l'icone en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center" href="../entreprises/listeEntreprises.php">
+                        <a class="d-flex justify-content-center" href="listeEntreprises.php">
                             <!-- Si sur la liste des entreprises, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="../../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone">
+                            <img src="../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone">
                         </a>
-                        <a class="d-flex justify-content-center lien_barre_basse" href="../entreprises/listeEntreprises.php">
+                        <a class="d-flex justify-content-center lien_barre_basse" href="listeEntreprises.php">
                             Entreprises
                         </a>
                     </li>
                     <!-- Si sur la liste des étudiants, mettre le texte en actif -->
                     <li class="nav-item d-flex flex-column text-center actif_bas_texte">
                         <!-- Si sur la liste des étudiants, mettre l'icône en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center actif_bas_icone"  >
+                        <a class="d-flex justify-content-center actif_bas_icone">
                             <!-- Si sur la liste des étudiants, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="../../../ressources/icone_etudiant_white.svg" alt="Liste des étudiants" class="icone">
+                            <img src="../../ressources/icone_etudiant_white.svg" alt="Liste des étudiants" class="icone">
                         </a>
                         Etudiants
                     </li>
                     <!-- Si sur la liste des gestionnaires, mettre le texte en actif -->
                     <li class="nav-item d-flex flex-column text-center inactif_bas">
                         <!-- Si sur la liste des gestionnaires, mettre l'icône en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center" href="../gestionnaire/listeGestionnaires.php">
+                        <a class="d-flex justify-content-center" href="listeGestionnaires.php">
                             <!-- Si sur la liste des gestionnaires, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="../../../ressources/icone_gestionnaire_black.svg" alt="Liste des gestionnaires" class="icone">
+                            <img src="../../ressources/icone_gestionnaire_black.svg" alt="Liste des gestionnaires" class="icone">
                         </a>
-                        <a class="d-flex justify-content-center lien_barre_basse" href="../gestionnaire/listeGestionnaires.php">
+                        <a class="d-flex justify-content-center lien_barre_basse" href="listeGestionnaires.php">
                         Gestionnaires
                         </a>
                     </li>
                     <!-- Si sur les paramètres du forum, mettre le texte en actif -->
                     <li class="nav-item d-flex flex-column text-center inactif_bas">
                         <!-- Si sur les paramètres du forum, mettre l'icône en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center" href="../forum/menu.php">
+                        <a class="d-flex justify-content-center" href="forum/menu.php">
                             <!-- Si sur les paramètres du forum, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="../../../ressources/icone_forum_black.svg" alt="Paramètres du forum" class="icone">
+                            <img src="../../ressources/icone_forum_black.svg" alt="Paramètres du forum" class="icone">
                         </a>
-                        <a class="d-flex justify-content-center lien_barre_basse" href="../forum/menu.php">
+                        <a class="d-flex justify-content-center lien_barre_basse" href="forum/menu.php">
                         Forum
                         </a>
                     </li>
                 </ul>
             </div>
         </nav>
-
     <div class="container mt-2">
         <div class="row d-flex align-items-center h-100">
             <div class="col-12 col-md-6">
@@ -220,14 +219,10 @@
                 </select>
             </form>
         </div>
-        <?php if (!$generated) { ?>
-        <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalAddStudent">
+        <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalAddStudent" <?php echo $generated ? "disabled" : ""; ?>>
             <i class="fa-solid fa-plus text-left justify-content-center"></i>
             <h2 class="text-center m-2">Ajouter un(e) étudiant(e)</h2>
         </button>
-        <?php } else { ?>
-            <p class="text-center">Vous ne pouvez pas ajouter de nouveaux étudiant(e) en phase 2 !</p>
-        <?php } ?>
 
         <div class="modal fade" id="modalAddStudent" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
@@ -361,9 +356,9 @@
                             }
                             if (!$generated) {
                             try {
-                            $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
+                                $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
                             } catch (Exception $e) {
-                                redirect("../../maintenance.php");
+                                redirect("../cintenance.php");
                             }
                             $rowNumber = 0;
                             while ($ligne2 = $stmt2->fetch()) {
@@ -372,7 +367,7 @@
                                 ?> 
                                 <div>
                                     <div class="profil-det-img d-flex text-start">
-                                        <div class="dp"><img src="../../.../../../ressources/<?php echo $ligne2["logo_file_name"] != "" ? $ligne2["logo_file_name"] : "no-photo.png"?>" alt="Logo de l'entreprise"></div>
+                                        <div class="dp"><img src="../../ressources/logosentreprises/<?php echo $ligne2["logo_file_name"] != "" ? $ligne2["logo_file_name"] : "no-photo.png"?>" alt="Logo de l'entreprise"></div>
                                         <div class="pd">
                                             <h2 class="title"><?php echo $ligne2["name"]?></h2>
                                             <ul class="text-left">
@@ -388,7 +383,7 @@
                                     $planning = planningPerUser($pdo, $ligne['user_id']);
                                     $unlistedCompany = unlistedCompanyPerUser($pdo, $ligne['user_id']);
                                 } catch (Exception $e) {
-                                    redirect("../../maintenance.php");
+                                    redirect("../cintenance.php");
                                 }
                                 if(Count($planning) > 0 || $unlistedCompany->rowCount() > 0){
                                     foreach ($planning as $rdv) {?>
@@ -439,54 +434,6 @@
         <?php   } 
             } ?>
     </div>
-    <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
-            <div class="container-fluid">
-                <ul class="navbar-nav w-100 justify-content-evenly">
-                    <!-- Si sur la liste des entreprises, mettre le texte en actif -->
-                    <li class="nav-item d-flex flex-column text-center inactif_bas">
-                        <!-- Si sur la liste des entreprises, mettre l'icone en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center" href="../entreprises/listeEntreprises.php">
-                            <!-- Si sur la liste des entreprises, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="../../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone">
-                        </a>
-                        <a class="d-flex justify-content-center lien_barre_basse" href="../entreprises/listeEntreprises.php">
-                            Entreprises
-                        </a>
-                    </li>
-                    <!-- Si sur la liste des étudiants, mettre le texte en actif -->
-                    <li class="nav-item d-flex flex-column text-center actif_bas_texte">
-                        <!-- Si sur la liste des étudiants, mettre l'icône en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center actif_bas_icone"  >
-                            <!-- Si sur la liste des étudiants, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="../../../ressources/icone_etudiant_white.svg" alt="Liste des étudiants" class="icone">
-                        </a>
-                        Etudiants
-                    </li>
-                    <!-- Si sur la liste des gestionnaires, mettre le texte en actif -->
-                    <li class="nav-item d-flex flex-column text-center inactif_bas">
-                        <!-- Si sur la liste des gestionnaires, mettre l'icône en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center" href="../gestionnaire/listeGestionnaires.php">
-                            <!-- Si sur la liste des gestionnaires, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="../../../ressources/icone_gestionnaire_black.svg" alt="Liste des gestionnaires" class="icone">
-                        </a>
-                        <a class="d-flex justify-content-center lien_barre_basse" href="../gestionnaire/listeGestionnaires.php">
-                        Gestionnaires
-                        </a>
-                    </li>
-                    <!-- Si sur les paramètres du forum, mettre le texte en actif -->
-                    <li class="nav-item d-flex flex-column text-center inactif_bas">
-                        <!-- Si sur les paramètres du forum, mettre l'icône en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center" href="../forum/menu.php">
-                            <!-- Si sur les paramètres du forum, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                            <img src="../../../ressources/icone_forum_black.svg" alt="Paramètres du forum" class="icone">
-                        </a>
-                        <a class="d-flex justify-content-center lien_barre_basse" href="../forum/menu.php">
-                        Forum
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
         <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content">
@@ -510,7 +457,7 @@
                                     <button type="button" data-bs-dismiss="modal" class="bouton boutonDeconnexion">Retour</button>
                                 </div>
                                 <div class="col-6 d-flex justify-content-evenly">
-                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton boutonDeconnexion">Se déconnecter </button>
+                                    <a href="../../fonctions/deconnecter.php"><button type="button" class="bouton boutonDeconnexion">Se déconnecter </button>
                                 </div>
                             </div>
                         </div>

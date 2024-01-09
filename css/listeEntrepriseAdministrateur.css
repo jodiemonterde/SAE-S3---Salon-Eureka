@@ -1,42 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 * {
-    font-family: 'Montserrat', sans-serif;
     list-style: none;
-    font-size: 12px;
-}
-
-.zoneText {
-    font-family: 'Montserrat', FontAwesome;
-    height: 40px;
-    border-bottom: 2px solid #bfbfbf;
-    border-top: 0;
-    border-left: 0;
-    border-right: 0;
-    border-radius: 0;
-    width: 100%;
-}
-
-input ::placeholder {
-    color: #bfbfbf !important;
-}
-
-.rounded-circle {
-    width: 75px;
-    height: 75px;
-    border-radius: 50%;
-    border-style: solid;
-    border-color: #D9D9D9;
-}
-
-.company {
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 4px;
-    border-color: #D9D9D9;
-    padding: 16px 8px 8px 8px;
-    margin-top: 16px;
-    cursor: pointer;
 }
 
 .profil-det-img .dp {
@@ -60,6 +25,7 @@ input ::placeholder {
     font-size: 14px; 
     margin-bottom: 0px;}
 
+
 li, ul {
     padding: 0;
     margin: 0;
@@ -76,29 +42,8 @@ h2 {
     max-width: 1000px;
 }
 
-.form-outline {
-    /*margin-top: 4em;*/
-    height: 40px;
-}
-
-.form-control {
-    height: 40px;
-}
-
 .bouton {
-    height: 40px;
-    background-color: #FFA800;
-    text-transform: uppercase;
-    border-style: none;
-    border-radius: 40px 20px 40px 20px;
-    padding: 10px 16px;
-    font-size: 13px;
-    font-weight: 500;
     width: 100%;
-}
-
-button {
-    background-color: white;
 }
 
 hr {
@@ -117,18 +62,6 @@ p {
 
 .description {
     margin-bottom: 8px;
-}
-
-.btn-link {
-    text-decoration: none;
-}
-
-.btn-link h2 {
-    color: #FFA800;
-}
-
-.btn-link li {
-    color: black;
 }
 
 .accordion {
@@ -168,8 +101,14 @@ p {
     border-radius: 4px;
 }
 
-.addStudent:hover {
+.addStudent:hover:enabled {
     background-color: #eee;
+}
+
+.addStudent:disabled {
+    background-color:;
+    border-color: lightgray;
+    color: lightgray;
 }
 
 .tag {
@@ -196,15 +135,6 @@ p {
 }
 
 .boutonNegatif {
-    height: 40px;
-    background-color: white;
-    text-transform: uppercase;
-    border: solid 1px #FFA800;
-    color: #FFA800;
-    border-radius: 40px 20px 40px 20px;
-    padding: 10px 16px;
-    font-size: 13px;
-    font-weight: 500;
     width: 100%;
 }
 
@@ -213,13 +143,13 @@ p {
     cursor: pointer;
     display: flex;
     margin-top: 12px;
-  }
+}
   
-  .buttonToCheck input[type="checkbox"] {
+.buttonToCheck input[type="checkbox"] {
     display: none;
-  }
+}
   
-  .buttonToCheck .icon-box {
+.buttonToCheck .icon-box {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -235,39 +165,32 @@ p {
     font-size: 12px;
     border: #FFA800 solid 1px;
     margin-bottom: 4px;
-  }
+}
 
 
-  .buttonToCheck .icon-box:hover {
+.buttonToCheck .icon-box:hover {
     background-color: #dfdfdf;
 }
   
-  .buttonToCheck input[type="checkbox"]:checked ~ .icon-box {
+.buttonToCheck input[type="checkbox"]:checked ~ .icon-box {
     background-color: #FFA800;
     color: black;
-  }
-  .buttonToCheck input[type="checkbox"]:checked ~ .icon-box:hover {
+}
+.buttonToCheck input[type="checkbox"]:checked ~ .icon-box:hover {
     background-color: #da9100;
     border-color: #da9100;
-  }
+}
   
-  .buttonToCheck .icon-box span {
+.buttonToCheck .icon-box span {
     font-size: 12px;
-  }
+}
 
-  .sort {
-    font-size: 13px;
-    color: #FFA800;
-    background-color: white;
-    border: none;
-    
-  }
-
-  .icon {
+.icon {
     color: #FFA800;
     font-size: 1.5em;
-  }
+}
 
-  .icon-title {
+.icon-title {
     margin-bottom: 0.5em;
-  }
+    background-color: white;
+}

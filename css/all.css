@@ -92,6 +92,12 @@ body {
 }
 
 .boutonDeconnexion{
-    width: 180px;
-    text-align: center;
+    width: 180px !important;
+    text-align: center !important;
+}
+
+.logoEntrerise {
+    width: 80px;
+    border: 2px solid lightgray;
+    border-radius: 100%;
 }

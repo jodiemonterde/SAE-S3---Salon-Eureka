@@ -43,11 +43,11 @@
                     <ul class="navbar-nav d-flex h-100 align-items-center">
                         <li class="nav-item nav-link p-0 d-none d-md-block h-100">
                             <!-- Si sur la liste des entreprises, mettre en actif et lien_inactif-->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeEntreprises.php"> Liste des entreprises </a>
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeEntreprises.php"> Entreprises </a>
                         </li>
                         <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
                             <!-- Si sur la liste des rendez-vous, mettre en actif et lien_inactif -->
-                            <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"> Mes rendez-vous </a>
+                            <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"> Souhaits </a>
                         </li>
                         <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -66,6 +66,26 @@
                 </div>
             </div>
         </nav>
+        <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
+            <div class="container-fluid">
+                <ul class="navbar-nav w-100 justify-content-evenly">
+                    <li class="nav-item d-flex flex-column text-center inactif_bas_texte">
+                        <a class="d-flex justify-content-center" href="listeEntreprises.php">
+                            <img src="../../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone">
+                        </a>
+                        <a class="d-flex justify-content-center lien_barre_basse" href="listeEntreprises.php">
+                            Entreprises
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex flex-column text-center actif_bas">
+                        <a class="d-flex justify-content-center actif_bas_icone">
+                            <img src="../../../ressources/icone_rdv_white.svg" alt="Mes rendez-vous" class="icone">
+                        </a>
+                        Rendez-vous
+                    </li>
+                </ul>
+            </div>
+        </nav>
         <!-- Contenu principal -->
         <div class="container">
             <div class="row mx-1">
@@ -80,7 +100,7 @@
             $vide = false;?>
             <div class="row entreprise align-items-center ">
                 <div class="col-2 col-md-1">
-                    <img src="../../../ressources/<?php echo htmlspecialchars($ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "no-photo.png")?>" alt="logo" class="logoEntreprise" width="75px" height="75px"/>
+                    <img src="../../../ressources/logosentreprises/<?php echo htmlspecialchars($ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "no-photo.png")?>" alt="logo" class="logoEntreprise" width="75px" height="75px"/>
                 </div>
                 <div class="col-8 col-md-6 col-lg-8 colEntreprise">
                     <span class="text-jaune"><?php echo htmlspecialchars($ligne["name"])?></span></br>
@@ -123,27 +143,6 @@
                 </div>
             <?php } ?>
         </div>
-        <!-- Barre de navigation du bas -->
-        <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
-            <div class="container-fluid">
-                <ul class="navbar-nav w-100 justify-content-evenly">
-                    <li class="nav-item d-flex flex-column text-center inactif_bas_texte">
-                        <a class="d-flex justify-content-center" href="listeEntreprises.php">
-                            <img src="../../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone">
-                        </a>
-                        <a class="d-flex justify-content-center lien_barre_basse" href="listeEntreprises.php">
-                            Entreprises
-                        </a>
-                    </li>
-                    <li class="nav-item d-flex flex-column text-center actif_bas lien_inactif">
-                        <a class="d-flex justify-content-center actif_bas_icone">
-                            <img src="../../../ressources/icone_rdv_white.svg" alt="Mes rendez-vous" class="icone">
-                        </a>
-                        Rendez-vous
-                    </li>
-                </ul>
-            </div>
-        </nav>
         <!-- Modal pour la deconnexion-->
         <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">

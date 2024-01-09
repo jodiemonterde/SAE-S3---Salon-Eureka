@@ -20,7 +20,7 @@
                     header('Location: gestionnaire/phase2/listeEntreprise.php');
                 }
             }else{
-                header('Location: administrateur/entreprises/modifierEntreprise.php');
+                header('Location: administrateur/listeEntreprises.php');
             }
             exit();
         }
@@ -46,7 +46,7 @@
             }elseif($_SESSION['type_utilisateur'] == 'G'){
                 header('Location: gestionnaire/phase1/listeEntreprise.php');
             }else{
-                header('Location: administrateur/entreprises/detailEntreprise.php');
+                header('Location: administrateur/listeEntreprises.php');
             }
         }
     } catch (Exception $e) {

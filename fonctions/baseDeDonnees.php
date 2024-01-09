@@ -512,7 +512,6 @@
     }
 
     function getInfosSupervisors($pdo, $recherche, $field_ids) {
-
         $parameters = $field_ids;
 
         if (!is_array($parameters)) {
@@ -522,7 +521,7 @@
         if ($field_ids == null || count($field_ids) == 0) {
             return null;
         }
-
+        
         $parametersAsQuestionMarks = implode(',', array_fill(0, count($parameters), '?'));
         
         $sql = "SELECT u.username, GROUP_CONCAT(f.name ORDER BY f.name SEPARATOR ', ') AS filieres, u.user_id
@@ -543,19 +542,20 @@
                 ) AS filtered_users 
                 ON u.user_id = filtered_users.user_id
                 GROUP BY u.username, u.user_id";
-
+        
+        
         if ($recherche != null) {
             $sql .= " HAVING u.username LIKE ?";
         }
 
         $sql .= " ORDER BY u.username";
-
         $stmt = $pdo->prepare($sql);
 
         if ($recherche != null) {
             array_push($parameters,'%' . $recherche . '%');
         }
-        $stmt->execute($parameters);
+        
+        $stmt->execute(array_values($parameters));
         return $stmt;
     }
 
@@ -623,7 +623,7 @@
 
     function getSpeakersPerCompanyAdministrateur($tableau_intervenants) {
         // Séparer la chaîne principale en utilisant ';' comme délimiteur pour obtenir les intervenants
-        $intervenants_array = explode(';', $tableau_intervenants);
+        $intervenants_array = explode('&#30;', $tableau_intervenants);
             
         // Initialiser un tableau pour stocker les données finales
         $final_array = array();
@@ -631,7 +631,7 @@
         // Parcourir chaque intervenant
         foreach ($intervenants_array as $intervenant) {
             // Exploser les différents éléments de l'intervenant en utilisant ',' comme délimiteur
-            $intervenant_elements = explode(',', $intervenant);
+            $intervenant_elements = explode('&#31;', $intervenant);
     
             // Vérifier si les éléments attendus existent avant d'y accéder
             $nom = isset($intervenant_elements[0]) ? $intervenant_elements[0] : '';
@@ -667,7 +667,11 @@
         $stmt->bindParam(':id', $company_id);
         $stmt->execute();
     
-    
+        $stmt = $pdo->prepare("DELETE FROM WishList
+                               WHERE company_id = :id");
+        $stmt->bindParam(':id', $company_id);
+        $stmt->execute();
+        
         $stmt = $pdo->prepare("DELETE FROM Company
                                WHERE company_id = :id");
         $stmt->bindParam(':id', $company_id);
@@ -696,7 +700,7 @@
 
     function addCompany($pdo, $nom, $description, $adresse, $codePostal, $ville, $secteur, $logo, $intervenants) {
         if (!empty($logo['name'])) {
-            $targetDirectory = "../../../../ressources/logosentreprises/";
+            $targetDirectory = "../../../ressources/logosentreprises/";
             $imageFileType = strtolower(pathinfo($logo["name"], PATHINFO_EXTENSION));
     
             // Générer un nom de fichier unique basé sur le nom de l'entreprise
@@ -770,9 +774,10 @@
         $companyId = $pdo->lastInsertId();
     
         // Ajoutez les Intervenants (Speakers) dans la table Speaker
-        $stmtAddSpeaker = $pdo->prepare("INSERT INTO Speaker (name, role, company_id) VALUES (:nom, NULL, :companyId)");
+        $stmtAddSpeaker = $pdo->prepare("INSERT INTO Speaker (name, role, company_id) VALUES (:nom, :role, :companyId)");
         foreach ($intervenants as $intervenant) {
             $stmtAddSpeaker->bindParam(':nom', $intervenant['nom']);
+            $stmtAddSpeaker->bindParam(':role', $intervenant['role']);
             $stmtAddSpeaker->bindParam(':companyId', $companyId);
             $stmtAddSpeaker->execute();
     
@@ -790,10 +795,24 @@
     
     }
 
-    function deleteSpeaker($pdo, $id) {
+    function deleteSpeaker($pdo, $id, $comp_id) {
         $stmt = $pdo->prepare("DELETE FROM AssignmentSpeaker
                                WHERE AssignmentSpeaker.Speaker_id = :id");
         $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+        $stmt = $pdo->prepare("DELETE w
+                               FROM WishList w
+                               JOIN AssignmentUser
+                               ON AssignmentUser.user_id = w.user_id
+                               WHERE w.company_id = :comp_id1
+                               AND AssignmentUser.field_id NOT IN (SELECT AssignmentSpeaker.field_id
+                                                                   FROM AssignmentSpeaker
+                                                                   JOIN Speaker
+                                                                   ON AssignmentSpeaker.speaker_id = Speaker.speaker_id
+                                                                   WHERE Speaker.company_id = :comp_id2);");
+        $stmt->bindParam(':comp_id1', $comp_id);
+        $stmt->bindParam(':comp_id2', $comp_id);
         $stmt->execute();
     
         $stmt = $pdo->prepare("DELETE FROM Speaker
@@ -939,7 +958,7 @@
         }
     
         // Requête SQL de base
-        $sql = "SELECT c.company_id, c.name, c.description, c.address, c.sector, c.logo_file_name as logo, GROUP_CONCAT(DISTINCT CONCAT(s.name, ',', COALESCE(s.role, ''), ',', af.fields, ',', s.speaker_id) SEPARATOR ';') AS intervenants_roles
+        $sql = "SELECT c.company_id, c.name, c.description, c.excluded, c.address, c.sector, c.logo_file_name as logo, GROUP_CONCAT(DISTINCT CONCAT(s.name, '&#31;', COALESCE(s.role, ''), '&#31;', af.fields, '&#31;', s.speaker_id) SEPARATOR '&#30;') AS intervenants_roles
                 FROM Company c
                 JOIN Speaker s ON c.company_id = s.company_id
                 JOIN (SELECT a.speaker_id, GROUP_CONCAT(DISTINCT f.name SEPARATOR '/') AS fields

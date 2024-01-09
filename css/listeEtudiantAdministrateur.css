@@ -167,8 +167,14 @@ p {
     border-radius: 4px;
 }
 
-.addStudent:hover {
+.addStudent:hover:enabled {
     background-color: #eee;
+}
+
+.addStudent:disabled {
+    background-color:;
+    border-color: lightgray;
+    color: lightgray;
 }
 
 .description {
