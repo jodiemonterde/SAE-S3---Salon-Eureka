@@ -66,7 +66,7 @@
                         </li>
                         <li class="nav-item d-md-none d-flex justify-content-end">
                             <a data-bs-toggle="modal" data-bs-target="#deconnexion">
-                                <img src="../../../ressources/icone_deconnexion.png" alt="Se déconnecter">
+                                <img src="../../../ressources/icone_deconnexion.svg" alt="Se déconnecter" class="logo">
                             </a>
                         </li>
                     </ul>
