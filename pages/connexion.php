@@ -1,7 +1,7 @@
 <?php
     try {
         session_start(); 
-        require("./../fonctions/baseDedonnees.php");
+        require("../fonctions/baseDeDonnees.php");
         $pdo = connecteBD();
         $tentative = false;
         $_SESSION['connexion'] = false;
@@ -109,7 +109,7 @@
                         </div>
                         <div class="row">
                             <div class="col-6 text-center">
-                                <a href="../index.php"><button class="bouton"> Retour </button></a>
+                                <a href="../index.php"><button type="button" class="bouton"> Retour </button></a>
                             </div>
                             <div class="col-6 text-center">
                                 <button type="submit" class="bouton"> Se connecter </button>
