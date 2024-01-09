@@ -421,7 +421,13 @@
     }
 
     function getCompanyNotExcluded($pdo){
-        $maRequete = $pdo->prepare("SELECT company_id,name FROM Company WHERE excluded = 0");
+        $maRequete = $pdo->prepare("SELECT company_id,name 
+                                    FROM Company c1
+                                    WHERE excluded = 0 AND (SELECT count(*)
+                                                            FROM Appointment ap
+                                                            JOIN Speaker s on ap.speaker_id = s.speaker_id
+                                                            JOIN Company c on s.company_id = c.company_id
+                                                            WHERE c.company_id = c1.company_id) > 0;");
         $maRequete->execute();
         return $maRequete;
     }

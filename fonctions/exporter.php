@@ -77,10 +77,10 @@
         $pdfEntreprise = new FPDF();
         $pdfEntreprise->SetDrawColor(217,217,217);
         while($ligne = $ListeEntrepriseNonExclue->fetch()){
+            $listeSpeaker = getSpeakersPerCompany($pdo, $ligne["company_id"]);
             $pdfEntreprise->AddPage();
             $pdfEntreprise->SetFont('Arial','B',20);
             $pdfEntreprise->Cell(0, 10, $ligne["name"], 0, 1, 'C');
-            $listeSpeaker = getSpeakersPerCompany($pdo, $ligne["company_id"]);
             while($row1 = $listeSpeaker->fetch()){
                 $rendezVous = getAppointmentPerSpeaker($pdo,$row1["speaker_id"]);
                 $pdfEntreprise->SetFont('Arial','B',11);
@@ -105,18 +105,20 @@
         $pdfEtudiant->SetDrawColor(217,217,217);
         $nom = 'planningAllEtudiant.pdf';
         while($ligne = $listeEtudiant->fetch()){ 
-            $pdfEtudiant->AddPage();
-            $pdfEtudiant->SetFont('Arial','B',20);
-            $pdfEtudiant->Cell(0, 10,$ligne["username"],0, 1, 'C');
             $planning = planningPerUser($pdo,$ligne["user_id"]);
-            foreach ($planning as $rdv) {
-                $pdfEtudiant->SetFont('Arial','B',11);
-                $pdfEtudiant->Cell(0, 10, $rdv['start'].'-'.$rdv['end'], 'LTR', 1, 'C');
-                $pdfEtudiant->SetFont('Arial','',11);
-                $pdfEtudiant->SetTextColor(255 , 168, 0);
-                $pdfEtudiant->Cell(0, 10,$rdv['company_name'] , 'LBR', 1, 'C');
-                $pdfEtudiant->SetTextColor(0 , 0, 0);
-                $pdfEtudiant->Ln();
+            if(count($planning)){
+                $pdfEtudiant->AddPage();
+                $pdfEtudiant->SetFont('Arial','B',20);
+                $pdfEtudiant->Cell(0, 10,$ligne["username"],0, 1, 'C');
+                foreach ($planning as $rdv) {
+                    $pdfEtudiant->SetFont('Arial','B',11);
+                    $pdfEtudiant->Cell(0, 10, $rdv['start'].'-'.$rdv['end'], 'LTR', 1, 'C');
+                    $pdfEtudiant->SetFont('Arial','',11);
+                    $pdfEtudiant->SetTextColor(255 , 168, 0);
+                    $pdfEtudiant->Cell(0, 10,$rdv['company_name'] , 'LBR', 1, 'C');
+                    $pdfEtudiant->SetTextColor(0 , 0, 0);
+                    $pdfEtudiant->Ln();
+                }
             }
         }
         $pdfEtudiant->Output($nom,'D');
@@ -124,7 +126,7 @@
 
     function exportAllEntrepriseExclu($pdo){
         $ListeEntrepriseExclue = getCompanyExcluded($pdo);
-        if(count($listeEntreprise) != 0){
+        if($listeEntrepriseExclue->rowCount() > 0){
             $nom = 'planningAllEntrepriseExclu.pdf';
             $pdfExclu = new FPDF();
             $pdfExclu->SetDrawColor(217,217,217);

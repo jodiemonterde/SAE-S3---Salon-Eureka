@@ -212,13 +212,16 @@
                         <div class="accordion-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <form action="importExport.php" method="post">
+                                    <?php 
+                                        $ListeEntrepriseExclue = getCompanyExcluded($pdo);
+                                        if($ListeEntrepriseExclue->rowCount() > 0){
+                                    ?>
+                                        <form action="importExport.php" method="post">
                                         Entreprise exclue :
                                         <select name="listeEntrepriseExclue">
                                             <option value="0">Veuillez selectionner une entreprise</option>
                                             <option value="T">toutes</option>
                                             <?php
-                                                $ListeEntrepriseExclue = getCompanyExcluded($pdo);
                                                 while($row = $ListeEntrepriseExclue->fetch()){
                                             ?>
                                                     <option value=<?php echo $row["company_id"];?> 
@@ -234,6 +237,13 @@
                                         </select>
                                         <input class="bouton" type="submit" value="exporter" name="exporter">
                                     </form> 
+                                    <?php
+                                        } else {
+                                    ?>
+                                        <p class="erreur"> aucune entreprise exclue du planning </p>
+                                    <?php
+                                        }
+                                    ?>
                                 </div>
                             </div>
                         </div>
