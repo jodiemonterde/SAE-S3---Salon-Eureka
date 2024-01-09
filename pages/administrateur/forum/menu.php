@@ -26,8 +26,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="../../../css/all.css">
         <link rel="stylesheet" href="../../../css/navbars.css">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        <link rel="stylesheet" href="forum.css">
+        <script src="../../../../outils/bootstrap-5.3.2-dist/js/bootstrap.js"></script>
+        <script src="../../../../outils/bootstrap-5.3.2-dist/js/bootstrap.bundle.js"></script>
+        <link rel="stylesheet" href="../../../css/forum.css">
         <title>informations eureka</title>
     </head>
     <body>
@@ -173,6 +174,13 @@
                 <div class="col-md-4"></div>
                 <div class="col-md-4 col-12 text-center">
                 <button class="bouton boutonBas" type="button" data-bs-toggle="modal" data-bs-target="#réinitialisation">Réinitialiser les données</button>
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4 col-12 text-center">
+                    <a href="importExport.php">
+                        <button class="bouton boutonBas">Importation / Exportation</button>
+                    </a>
                 </div>
                 <div class="col-md-4"></div>
             </div>

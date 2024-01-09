@@ -1021,4 +1021,108 @@
         
         $stmt->execute();
     }
+
+    function inserer_etudiants($pdo, $etudiants, $filieres) {
+        $pdo->beginTransaction();
+        $stmt = $pdo->prepare("INSERT INTO User (username, email, password, responsibility)
+                            VALUES (:username, :email, :password, 'E')");
+        $stmt2 = $pdo->prepare("INSERT INTO AssignmentUser (user_id, field_id)
+                            VALUES (:user_id, :field_id)");
+        foreach ($etudiants as $etudiant) {
+            $stmt->bindParam(':username', $etudiant[0]);
+            $stmt->bindParam(':email', $etudiant[1]);
+            $stmt->bindParam(':password', $etudiant[2]);
+            $stmt->execute();
+            $user_id = $pdo->lastInsertId();
+            $stmt2->bindParam(':user_id', $user_id);
+            $stmt2->bindParam(':field_id', $filieres[$etudiant[3]]);
+            $stmt2->execute();
+        }
+        $pdo->commit();
+    }
+
+    function getSpeakersPerCompany($pdo, $company_id) {
+        $stmt = $pdo->prepare("SELECT speaker_id, name, role FROM Speaker WHERE company_id = :company_id");
+        $stmt->bindParam(':company_id', $company_id);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function getAppointmentPerSpeaker($pdo, $speaker_id) {
+        $stmt = $pdo->prepare("SELECT TIME_FORMAT(app.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(app.start, app.duration), '%H:%i') as end, us.username, fie.name
+                                FROM Appointment app
+                                JOIN User us
+                                ON app.user_id = us.user_id
+                                JOIN AssignmentUser ass
+                                ON ass.user_id = us.user_id
+                                JOIN Field fie
+                                ON ass.field_id = fie.field_id
+                                WHERE app.speaker_id = :speaker_id;");
+        $stmt->bindParam(':speaker_id', $speaker_id);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function getCompanyNotExcluded($pdo){
+        $maRequete = $pdo->prepare("SELECT company_id,name 
+                                    FROM Company c1
+                                    WHERE excluded = 0 AND (SELECT count(*)
+                                                            FROM Appointment ap
+                                                            JOIN Speaker s on ap.speaker_id = s.speaker_id
+                                                            JOIN Company c on s.company_id = c.company_id
+                                                            WHERE c.company_id = c1.company_id) > 0;");
+        $maRequete->execute();
+        return $maRequete;
+    }
+
+    function getCompanyName($pdo, $company_id){
+        $maRequete = $pdo->prepare("SELECT name FROM Company WHERE company_id = :company_id");
+        $maRequete->bindParam(':company_id', $company_id);
+        $maRequete->execute();
+        $res;
+        while($row = $maRequete->fetch()){
+            $res = $row["name"];
+        }
+        return $res;
+    }
+
+    function getStudentName($pdo, $user_id){
+        $maRequete = $pdo->prepare("SELECT username FROM User WHERE user_id = :user_id");
+        $maRequete->bindParam(':user_id', $user_id);
+        $maRequete->execute();
+        $res;
+        while($row = $maRequete->fetch()){
+            $res = $row["username"];
+        }
+        return $res;
+    }
+
+    function getCompanyExcluded($pdo){
+        $maRequete = $pdo->prepare("SELECT company_id,name FROM Company WHERE excluded = 1");
+        $maRequete->execute();
+        return $maRequete;
+    }
+
+    function getStudent($pdo){
+        $maRequete = $pdo->prepare("SELECT user_id,username FROM User WHERE responsibility = 'E'");
+        $maRequete->execute();
+        return $maRequete;
+    }
+    
+    function getStudentsWithMeeting($pdo){
+        $maRequete = $pdo->prepare("SELECT DISTINCT User.user_id, User.username FROM User JOIN WishList ON WishList.user_id = User.user_id WHERE responsibility = 'E'");
+        $maRequete->execute();
+        return $maRequete;
+    }
+    function studentByUnlistedCompany($pdo, $company_id) {
+        $requete = $pdo-> prepare("SELECT u.username , f.name
+                                   FROM Field f
+                                   JOIN AssignmentUser a on f.field_id = a.field_id
+                                   JOIN User u on a.user_id = u.user_id
+                                   JOIN WishList w on u.user_id = w.user_id
+                                   WHERE  w.company_id = :company_id");
+        $requete->bindParam(':company_id', $company_id);
+        $requete->execute();
+        return $requete;
+    }
 ?>
