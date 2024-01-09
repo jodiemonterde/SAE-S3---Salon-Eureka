@@ -159,7 +159,7 @@
                 </div>
             </div>
 
-            <?php if (true) {//getPhase($pdo) == 2) { ?>
+            <?php if (getPhase($pdo) == 2) { ?>
             <div class="accordion" id="exporterPlanningEntreprise">
                 <div class="accordion-item my-3">
                     <h2 class="accordion-header" id="headingPlanningEntreprise">
@@ -240,7 +240,7 @@
                                     <?php
                                         } else {
                                     ?>
-                                        <p class="erreur"> aucune entreprise exclue du planning </p>
+                                        <p class="erreur"> aucune entreprise n'est exclue du planning </p>
                                     <?php
                                         }
                                     ?>
