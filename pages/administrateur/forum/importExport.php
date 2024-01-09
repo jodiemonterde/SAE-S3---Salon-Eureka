@@ -1,7 +1,6 @@
 <?php 
     session_start();
     require("../../../fonctions/baseDeDonnees.php");
-    require("../../../fonctions/exporter.php");
     require("../../../fonctions/fonctionsImportationExportation.php");
     $pdo = connecteBD();
     if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
