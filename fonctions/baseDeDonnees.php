@@ -960,7 +960,7 @@
         // Requête SQL de base
         $sql = "SELECT c.company_id, c.name, c.description, c.excluded, c.address, c.sector, c.logo_file_name as logo, GROUP_CONCAT(DISTINCT CONCAT(s.name, '&#31;', COALESCE(s.role, ''), '&#31;', af.fields, '&#31;', s.speaker_id) SEPARATOR '&#30;') AS intervenants_roles
                 FROM Company c
-                JOIN Speaker s ON c.company_id = s.company_id
+                RIGHT JOIN Speaker s ON c.company_id = s.company_id
                 JOIN (SELECT a.speaker_id, GROUP_CONCAT(DISTINCT f.name SEPARATOR '/') AS fields
                 FROM AssignmentSpeaker a
                 JOIN Field f ON a.field_id = f.field_id
@@ -1118,7 +1118,7 @@
         $stmt->execute();
         $stmt = $pdo->prepare("DELETE FROM Company");
         $stmt->execute();
-        $stmt = $pdo->prepare("DELETE FROM User WHERE responsibility = 'E' OR responsibility = 'G'");
+        $stmt = $pdo->prepare("DELETE FROM User WHERE responsibility = 'E'");
         $stmt->execute();
         $stmt = $pdo->prepare('UPDATE Meeting SET date = "9999-12-31", start = "00:00:00", end = "23:59:59", primary_appointment_duration = "00:15:00", secondary_appointment_duration = "00:10:00", wish_period_end = "9999-12-31", phase = 1, generated = 0 WHERE meeting_id = 1');
         $stmt->execute();
