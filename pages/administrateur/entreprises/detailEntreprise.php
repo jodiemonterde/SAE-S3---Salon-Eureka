@@ -23,10 +23,6 @@
     include("../../../fonctions/baseDeDonnees.php");
     $pdo = connecteBD();
 
-    if (isset($_POST["suppression_entreprise_id"])) {
-        supprimerEntreprise($pdo, $_POST["company_id"]);
-    }
-
     if (isset($_POST["modifyCompany"])) {
         modifyCompany($pdo, $_POST["companyID"], $_POST["nomEntreprise"], $_POST["descriptionEntreprise"], $_POST["secteurEntreprise"],$_POST["adresseEntreprise"], $_POST["codePostalEntreprise"], $_POST["villeEntreprise"], $_FILES["logoEntreprise"]);
         header("Location: detailEntreprise.php");
@@ -259,7 +255,7 @@
             <!-- Accordéon Bootstrap -->
             <div class="accordion" id="listeEntreprise">
             <?php
-                $stmt = getEntreprises($pdo, $_SESSION['filtre'], $_SESSION['recherche']);
+                $stmt = getEntreprisesAdministrateur($pdo, $_SESSION['filtre'], $_SESSION['recherche']);
 
                 if (empty($_SESSION['filtre'])) {
                     echo '<p>Aucune filière sélectionnée. Veuillez choisir au moins une filière.</p>';
@@ -288,7 +284,7 @@
                         <div class="row">
                             <div class="description"><?php echo $ligne["description"]?></div>
                             <?php
-                            $intervenants = getSpeakersPerCompany($ligne["intervenants_roles"]);
+                            $intervenants = getSpeakersPerCompanyAdministrateur($ligne["intervenants_roles"]);
                             ?>
                             <hr>
                             <?php foreach ($intervenants as $intervenant) { ?>
@@ -318,9 +314,9 @@
                                             </div>
                                             <form action="detailEntreprise.php" method="post" enctype="multipart/form-data">
                                                 <label for="nomIntervenantEdit" class="modalLabel mb-0 mt-2">Nom</label>
-                                                <input class="zoneText" type="text" name="nomIntervenantEdit" id="nomIntervenantEdit" value="<?php echo $intervenant["nom"]; ?>"/>
+                                                <input class="zoneText" type="text" name="nomIntervenantEdit" id="nomIntervenantEdit" value="<?php echo $intervenant["nom"]; ?>" maxlength="100"/>
                                                 <label for="roleIntervenantEdit" class="modalLabel mb-0 mt-2">Role</label>
-                                                <input class="zoneText" type="textarea" name="roleIntervenantEdit" id="roleIntervenantEdit" value="<?php if (empty($intervenant["fonction"])) { echo '" placeholder="Saisir un rôle"'; } else { echo $intervenant["fonction"];} ?>"/>
+                                                <input class="zoneText" type="textarea" name="roleIntervenantEdit" id="roleIntervenantEdit" value="<?php if (empty($intervenant["fonction"])) { echo '" placeholder="Saisir un rôle"'; } else { echo $intervenant["fonction"];} ?>" maxlength="100" />
                                                 <div class="rowForChecks d-flex flex-wrap">
                                                     <?php
                                                         $fields = getFields($pdo); 
@@ -356,8 +352,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                                 <div class="modal fade" id="delete<?php echo $intervenant['id'];?>" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                                         <div class="modal-content  px-4 pb-4">
@@ -400,9 +394,9 @@
                                             <form action="detailEntreprise.php" method="post" enctype="multipart/form-data">
                                                 <input type="hidden" name="companyID" value="<?php echo $ligne['company_id']?>">
                                                 <label for="nomIntervenantAdd" class="modalLabel mb-0 mt-2">Nom</label>
-                                                <input class="zoneText" type="text" name="nomIntervenantAdd" id="nomIntervenantAdd" placeholder="Saisissez le nom de l'intervenant" required/>
+                                                <input class="zoneText" type="text" name="nomIntervenantAdd" id="nomIntervenantAdd" placeholder="Saisissez le nom de l'intervenant" maxlength="50" required/>
                                                 <label for="roleIntervenantAdd" class="modalLabel mb-0 mt-2">Role</label>
-                                                <input class="zoneText" type="textarea" name="roleIntervenantAdd" id="roleIntervenantAdd" placeholder="Saisir un rôle pour cet intervenant (facultatif)"/>
+                                                <input class="zoneText" type="textarea" name="roleIntervenantAdd" id="roleIntervenantAdd" placeholder="Saisir un rôle pour cet intervenant (facultatif)"  maxlength="80" />
                                                 <div class="rowForChecks d-flex flex-wrap">
                                                     <?php
                                                         $fields = getFields($pdo); 
