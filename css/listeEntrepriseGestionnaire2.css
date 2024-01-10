@@ -88,7 +88,7 @@ p {
 }
 
 .student {
-    color: #FFA800;
+    color: #8B2D2D;
     margin-bottom: 0;
 }
 
@@ -101,7 +101,7 @@ p {
 }
 
 .btn-link h2 {
-    color: #FFA800;
+    color: #8B2D2D;
 }
 
 .btn-link li {
@@ -126,7 +126,7 @@ p {
 
 }
 .accordion-button:focus {
-    border-color: #FFA800 !important;
+    border-color: #8B2D2D !important;
 }
 
 .accordion-item button {
@@ -134,7 +134,7 @@ p {
 }
 
 .title {
-    color: #FFA800;
+    color: #8B2D2D;
 }
 
 .accordion-button::after {

@@ -58,7 +58,7 @@ p {
 }
 
 .student {
-    color: #FFA800;
+    color: #8B2D2D;
     margin-bottom: 0;
 }
 
@@ -84,11 +84,11 @@ p {
 
 }
 .accordion-button:focus {
-    border-color: #FFA800 !important;
+    border-color: #8B2D2D !important;
 }
 
 .title {
-    color: #FFA800;
+    color: #8B2D2D;
 }
 
 .accordion-button::after {
@@ -98,8 +98,8 @@ p {
 
 .addStudent {
     background-color: white;
-    border: solid 1px #FFA800;
-    color: #FFA800;
+    border: solid 1px #8B2D2D;
+    color: #8B2D2D;
     border-radius: 4px;
 }
 
@@ -160,12 +160,12 @@ p {
     user-select: none;
 
     background-color: #FFFFFF;
-    color: #FFA800;  
+    color: #8B2D2D;  
     border-radius: 50px;
     min-width: 122px;
     font-weight: 400;
     font-size: 12px;
-    border: #FFA800 solid 1px;
+    border: #8B2D2D solid 1px;
     margin-bottom: 4px;
 }
 
@@ -175,12 +175,12 @@ p {
 }
   
 .buttonToCheck input[type="checkbox"]:checked ~ .icon-box {
-    background-color: #FFA800;
+    background-color: #8B2D2D;
     color: black;
 }
 .buttonToCheck input[type="checkbox"]:checked ~ .icon-box:hover {
-    background-color: #da9100;
-    border-color: #da9100;
+    background-color: #A03939;
+    border-color: #A03939;
 }
   
 .buttonToCheck .icon-box span {
@@ -188,7 +188,7 @@ p {
 }
 
 .icon {
-    color: #FFA800;
+    color: #8B2D2D;
     font-size: 1.5em;
 }
 

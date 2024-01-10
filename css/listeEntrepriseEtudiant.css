@@ -5,7 +5,7 @@
 }
 
 .title {
-    color: #FFA800;
+    color: #8B2D2D;
 }
 
 .logoEntreprise {
@@ -14,12 +14,12 @@
 }
 
 .inWishList {
-    border-color: #FFA800;
+    border-color: #8B2D2D;
     border-width: 3px;
 }
 
 .textInWishList {
-    color: #FFA800;
+    color: #8B2D2D;
     text-align: center;
     font-size: 12px;
     padding: 0;

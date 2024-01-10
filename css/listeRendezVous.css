@@ -29,10 +29,6 @@
     font-size: 13px;
 }
 
-.bouton:hover {
-    background-color: #e09602;
-}
-
 .confirmation {
     width: 75px;
 }

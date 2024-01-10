@@ -3,22 +3,23 @@
     min-width: 122px;
     font-weight: 400;
     font-size: 12px;
-    border: #FFA800 solid 1px;
+    border: #8B2D2D solid 1px;
     margin-bottom: 8px;
+    color: white;
 }
 
 .bouton-filtre-selectionner {
-    background-color: #FFA800;
+    background-color: #8B2D2D;
 }
 
 .bouton-filtre-selectionner:hover {
-    background-color: #da9100;
-    border-color: #da9100;
+    background-color: #A03939;
+    border-color: #A03939;
 }
 
 .bouton-filtre-deselectionner {
     background-color: #FFFFFF;
-    color: #FFA800;  
+    color: #8B2D2D;  
 }
 
 .bouton-filtre-deselectionner:hover {

@@ -116,7 +116,7 @@ h2 {
 
 .bouton {
     height: 40px;
-    background-color: #FFA800;
+    background-color: #8B2D2D;
     text-transform: uppercase;
     border-style: none;
     border-radius: 40px 20px 40px 20px;
@@ -130,8 +130,8 @@ h2 {
     height: 40px;
     background-color: white;
     text-transform: uppercase;
-    border: solid 1px #FFA800;
-    color: #FFA800;
+    border: solid 1px #8B2D2D;
+    color: #8B2D2D;
     border-radius: 40px 20px 40px 20px;
     padding: 10px 16px;
     font-size: 13px;
@@ -153,7 +153,7 @@ p {
 }
 
 .student {
-    color: #FFA800;
+    color: #8B2D2D;
     margin-bottom: 0;
 }
 
@@ -164,8 +164,8 @@ p {
 
 .addStudent {
     background-color: white;
-    border: solid 1px #FFA800;
-    color: #FFA800;
+    border: solid 1px #8B2D2D;
+    color: #8B2D2D;
     border-radius: 4px;
 }
 
@@ -182,7 +182,7 @@ p {
 }
 
 .btn-link h2 {
-    color: #FFA800;
+    color: #8B2D2D;
 }
 
 .btn-link li {
@@ -211,13 +211,13 @@ p {
 
 }
 .accordion-button:focus {
-    border-color: #FFA800 !important;
+    border-color: #8B2D2D !important;
 }
 
 
 
 .title {
-    color: #FFA800;
+    color: #8B2D2D;
 }
 
 .accordion-button::after {
@@ -259,12 +259,12 @@ p {
     user-select: none;
 
     background-color: #FFFFFF;
-    color: #FFA800;  
+    color: #8B2D2D;  
     border-radius: 50px;
     min-width: 122px;
     font-weight: 400;
     font-size: 12px;
-    border: #FFA800 solid 1px;
+    border: #8B2D2D solid 1px;
     margin-bottom: 4px;
   }
 
@@ -274,12 +274,12 @@ p {
 }
   
   .buttonToCheck input[type="checkbox"]:checked ~ .icon-box {
-    background-color: #FFA800;
+    background-color: #8B2D2D;
     color: black;
   }
   .buttonToCheck input[type="checkbox"]:checked ~ .icon-box:hover {
-    background-color: #da9100;
-    border-color: #da9100;
+    background-color: #A03939;
+    border-color: #A03939;
   }
   
   .buttonToCheck .icon-box span {
@@ -293,7 +293,7 @@ p {
 
   .sort {
     font-size: 13px;
-    color: #FFA800;
+    color: #8B2D2D;
     background-color: white;
     border: none;
     
