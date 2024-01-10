@@ -3,7 +3,7 @@
         session_start();
         require('../../../fonctions/baseDeDonnees.php');
         $pdo = connecteBD();
-        if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1 || $_SESSION['type_utilisateur'] != 'E'){
+        if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) === 2 || $_SESSION['type_utilisateur'] != 'E'){
             header('Location: ../../connexion.php');
             exit();
         }
@@ -11,6 +11,7 @@
             removeWishStudent($pdo, $_SESSION['idUtilisateur'], $_POST["entreprise_id"]);
         }
         $stmt = getEntreprisesPerStudent($pdo, $_SESSION['idUtilisateur']);
+        $phase = getPhase($pdo);
     }catch (Exception $e) {
         header('Location: ../../maintenance.php');
         exit();
@@ -41,14 +42,6 @@
                 </div>
                 <div class="navbar-right h-100">
                     <ul class="navbar-nav d-flex h-100 align-items-center">
-                        <li class="nav-item nav-link p-0 d-none d-md-block h-100">
-                            <!-- Si sur la liste des entreprises, mettre en actif et lien_inactif-->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeEntreprises.php"> Entreprises </a>
-                        </li>
-                        <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
-                            <!-- Si sur la liste des rendez-vous, mettre en actif et lien_inactif -->
-                            <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"> Souhaits </a>
-                        </li>
                         <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <?php echo htmlspecialchars($_SESSION['nom_utilisateur'])?>
@@ -66,39 +59,20 @@
                 </div>
             </div>
         </nav>
-        <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
-            <div class="container-fluid">
-                <ul class="navbar-nav w-100 justify-content-evenly">
-                    <li class="nav-item d-flex flex-column text-center inactif_bas_texte">
-                        <a class="d-flex justify-content-center" href="listeEntreprises.php">
-                            <img src="../../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone">
-                        </a>
-                        <a class="d-flex justify-content-center lien_barre_basse" href="listeEntreprises.php">
-                            Entreprises
-                        </a>
-                    </li>
-                    <li class="nav-item d-flex flex-column text-center actif_bas">
-                        <a class="d-flex justify-content-center actif_bas_icone">
-                            <img src="../../../ressources/icone_rdv_white.svg" alt="Mes rendez-vous" class="icone">
-                        </a>
-                        Rendez-vous
-                    </li>
-                </ul>
-            </div>
-        </nav>
+
         <!-- Contenu principal -->
         <div class="container">
             <div class="row mx-1">
                 <div class="col-12">
                     <p><h2>Vos demandes de rendez-vous</h2></p>
-                    <p>Pour le moment, au terme de la phase de prise de rendez-vous, Eureka vous proposera un planning avec les entreprises suivantes. Vous pouvez tout à fait changer d’avis !</P>
+                    <p><?php echo $phase === 1 ? "Pour le moment, au terme de la phase de prise de rendez-vous, Eureka vous proposera un planning avec les entreprises suivantes. Vous pouvez tout à fait changer d’avis ! " : "La période de prise de rendez-vous est désormais terminé, vous pouvez seulement consulter vos souhaits le temps que le planning soit générée"; ?></P>
                 </div>
             </div>
             <?php
             $vide = true;
             while ($ligne = $stmt->fetch()) { 
             $vide = false;?>
-            <div class="row entreprise align-items-center ">
+            <div class="row entreprise align-items-center">
                 <div class="col-2 col-md-1">
                     <img src="../../../ressources/logosentreprises/<?php echo htmlspecialchars($ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "no-photo.png")?>" alt="logo" class="logoEntreprise" width="75px" height="75px"/>
                 </div>
@@ -108,10 +82,10 @@
                     <i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo htmlspecialchars($ligne["address"])?>
                 </div>
                 <div class="col-2 d-none d-md-block">
-                    <input type="button" class="bouton" value="supprimer l'entreprise" data-bs-toggle="modal" data-bs-target="#modal"/>
+                    <?php if ($phase === 1) { ?><input type="button" class="bouton" value="supprimer l'entreprise" data-bs-toggle="modal" data-bs-target="#modal"/> <?php } ?>
                 </div>
                 <div class="col-1 d-block d-md-none">
-                    <input type="button" class="boutonSupprimerMd"data-bs-toggle="modal" data-bs-target="#modal"/>
+                    <?php if ($phase === 1) { ?><input type="button" class="boutonSupprimerMd"data-bs-toggle="modal" data-bs-target="#modal"/><?php } ?>
                 </div>
                 <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">

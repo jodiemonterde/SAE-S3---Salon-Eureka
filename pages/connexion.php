@@ -10,6 +10,8 @@
             if($_SESSION['type_utilisateur'] == 'E'){
                 if ($phase == 1) {
                     header('Location: etudiant/phase1/listeEntreprises.php');
+                } else if ($phase == 1.5) {
+                    header('Location: etudiant/phase1/listeRendezVous.php');
                 } else {
                     header('Location: etudiant/phase2/emploiDuTemps.php');
                 }
