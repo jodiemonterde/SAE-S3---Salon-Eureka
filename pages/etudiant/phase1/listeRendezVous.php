@@ -77,7 +77,7 @@
                     <img src="../../../ressources/logosentreprises/<?php echo htmlspecialchars($ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "no-photo.png")?>" alt="logo" class="logoEntreprise" width="75px" height="75px"/>
                 </div>
                 <div class="col-8 col-md-6 col-lg-8 colEntreprise">
-                    <span class="text-jaune"><?php echo htmlspecialchars($ligne["name"])?></span></br>
+                    <span class="text-accent"><?php echo htmlspecialchars($ligne["name"])?></span></br>
                     <i class="fa-solid fa-briefcase"></i>&nbsp;&nbsp;&nbsp;<?php echo htmlspecialchars($ligne["sector"])?><br/>
                     <i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo htmlspecialchars($ligne["address"])?>
                 </div>

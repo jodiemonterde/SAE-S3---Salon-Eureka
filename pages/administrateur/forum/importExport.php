@@ -161,7 +161,7 @@
             <?php if (isset($reponse)) { ?>
                 <div class="row mx-1">
                     <div class="col-12">
-                        <h2 class="text-center <?php echo $reponse == "Importation réussie" ? "text-jaune" : "erreur";?>">Résultat de l'importation</h2>
+                        <h2 class="text-center <?php echo $reponse == "Importation réussie" ? "text-accent" : "erreur";?>">Résultat de l'importation</h2>
                         <p class="text-center"><?php echo $reponse; ?></p>
                     </div>
                 </div>
@@ -170,7 +170,7 @@
             <div class="accordion" id="importEtudiants">
                 <div class="accordion-item my-3">
                     <h2 class="accordion-header" id="headingImportEtudiants">
-                        <button class="accordion-button collapsed text-jaune" type="button" data-bs-toggle="collapse" data-bs-target="#collapseImportEtudiants" aria-expanded="false" aria-controls="collapseImportEtudiants">
+                        <button class="accordion-button collapsed text-accent" type="button" data-bs-toggle="collapse" data-bs-target="#collapseImportEtudiants" aria-expanded="false" aria-controls="collapseImportEtudiants">
                             Importer des étudiants
                         </button>
                     </h2>
@@ -218,7 +218,7 @@
             <div class="accordion" id="exporterPlanningEntreprise">
                 <div class="accordion-item my-3">
                     <h2 class="accordion-header" id="headingPlanningEntreprise">
-                        <button class="accordion-button collapsed text-jaune" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePlanningEntreprise" aria-expanded="false" aria-controls="collapsePlanningEntreprise">
+                        <button class="accordion-button collapsed text-accent" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePlanningEntreprise" aria-expanded="false" aria-controls="collapsePlanningEntreprise">
                             Exporter le planning d'une / des entreprise(s)
                         </button>
                     </h2>
@@ -257,7 +257,7 @@
             <div class="accordion" id="exporterEtatEntreprises">
                 <div class="accordion-item my-3">
                     <h2 class="accordion-header" id="headingEtatEntreprises">
-                        <button class="accordion-button collapsed text-jaune" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEtatEntreprises" aria-expanded="false" aria-controls="collapseEtatEntreprises">
+                        <button class="accordion-button collapsed text-accent" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEtatEntreprises" aria-expanded="false" aria-controls="collapseEtatEntreprises">
                             Exporter un etat d'une / des entreprise(s) sans planning
                         </button>
                     </h2>
@@ -308,7 +308,7 @@
             <div class="accordion" id="exportEtudiant">
                 <div class="accordion-item my-3">
                     <h2 class="accordion-header" id="headingExportEtudiant">
-                        <button class="accordion-button collapsed text-jaune" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExportEtudiant" aria-expanded="false" aria-controls="collapseExportEtudiant">
+                        <button class="accordion-button collapsed text-accent" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExportEtudiant" aria-expanded="false" aria-controls="collapseExportEtudiant">
                             Exporter le planning d'un étudiant
                         </button>
                     </h2>

@@ -174,7 +174,7 @@
             </div>
             <div class="row p-2">
                 <div class="col-12 mt-1 ligne">
-                    <p class="text-center text-jaune titreLigne ">Génération de l'emploi du temps</p>
+                    <p class="text-center text-accent titreLigne ">Génération de l'emploi du temps</p>
                     <p> Etapes de la génération d'un emploi du temps : </p>
                     <ol>
                         <li class="listeInfos"> <p> Cliquer sur "généré le planning" </p> </li>
@@ -206,9 +206,9 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-6 mt-3 ligneGauche">
-                    <p class="text-center text-jaune titreLigne"> Temps de réunion réduite</p>
+                    <p class="text-center text-accent titreLigne"> Temps de réunion réduite</p>
                     <div class="col-12 sous-ligne">
-                        <p class="text-center text-jaune titreLigne"> Ajouter une entreprise à la liste</p>
+                        <p class="text-center text-accent titreLigne"> Ajouter une entreprise à la liste</p>
                         <form action="generationPlanning.php" method="post" class="col-12">
                             <input type="hidden" name="action" value="ajouterEntrepriseReduite">
                             <div class="row">
@@ -227,7 +227,7 @@
                         </form>
                     </div>
                     <div class="col-12 sous-ligne">
-                        <p class="text-center text-jaune titreLigne"> Retirer une entreprise à la liste</p>
+                        <p class="text-center text-accent titreLigne"> Retirer une entreprise à la liste</p>
                         <form action="generationPlanning.php" method="post" class="col-12">
                             <input type="hidden" name="action" value="retirerEntrepriseReduite">
                             <div class="row">
@@ -245,13 +245,13 @@
                             </div>
                         </form>
                     </div>
-                    <p class="text-center text-jaune titreLigne"> Liste des entreprise concernées : </p>
+                    <p class="text-center text-accent titreLigne"> Liste des entreprise concernées : </p>
                     <textarea name="listeEntreprise" id="listeEntreprise" class="liste" readonly><?php foreach ($entreprisesReduites as $value) { echo $value."&#13;&#10;"; } ?></textarea>
                 </div>
                 <div class="col-12 col-md-6 mt-3 ligneDroite">
-                    <p class="text-center text-jaune titreLigne">Exclus du planning</p>
+                    <p class="text-center text-accent titreLigne">Exclus du planning</p>
                     <div class="col-12 sous-ligne">
-                        <p class="text-center text-jaune titreLigne"> Ajouter une entreprise à la liste</p>
+                        <p class="text-center text-accent titreLigne"> Ajouter une entreprise à la liste</p>
                         <form action="generationPlanning.php" method="post" class="col-12">
                             <input type="hidden" name="action" value="ajouterEntrepriseExclusion">
                             <div class="row">
@@ -270,7 +270,7 @@
                         </form>
                     </div>
                     <div class="col-12 sous-ligne">
-                        <p class="text-center text-jaune titreLigne"> Retirer une entreprise à la liste</p>
+                        <p class="text-center text-accent titreLigne"> Retirer une entreprise à la liste</p>
                         <form action="generationPlanning.php" method="post" class="col-12">
                             <input type="hidden" name="action" value="retirerEntrepriseExclusion">
                             <div class="row">
@@ -288,7 +288,7 @@
                             </div>
                         </form>
                     </div>
-                    <p class="text-center text-jaune titreLigne"> Liste des entreprise concernées : </p>
+                    <p class="text-center text-accent titreLigne"> Liste des entreprise concernées : </p>
                     <textarea name="listeEntreprise" id="listeEntreprise" class="liste" readonly><?php foreach ($entreprisesExclues as $value) { echo $value."&#13;&#10;"; } ?></textarea>
                 </div>
         </div>

@@ -130,7 +130,7 @@
                                         <img class="logoEntrerise" src="../../../ressources/logosentreprises/<?php echo htmlspecialchars($ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "no-photo.png")?>" alt="">
                                         </div>
                                         <div class="pd">
-                                            <h2 class="text-jaune"><?php echo $ligne["name"]?></h2>
+                                            <h2 class="text-accent"><?php echo $ligne["name"]?></h2>
                                             <ul class="listeEntreprise">
                                                 <li><i class="fa-solid fa-briefcase"></i> <?php echo $ligne["sector"]?></li>
                                                 <li><i class="fa-solid fa-location-dot"></i>  <?php echo $ligne["address"]?></li>

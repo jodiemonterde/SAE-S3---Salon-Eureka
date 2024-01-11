@@ -72,7 +72,7 @@
                     <div class="row mx-1">
                         <div class="col-12 rendez-vous ">
                             <p class="text-center"><?php echo htmlspecialchars($rdv['start'])?> - <?php echo htmlspecialchars($rdv['end'])?></p>
-                            <p class="text-center text-jaune"><?php echo htmlspecialchars($rdv['company_name']); ?></p>
+                            <p class="text-center text-accent"><?php echo htmlspecialchars($rdv['company_name']); ?></p>
                         </div>
                     </div>
                 <?php }
@@ -87,7 +87,7 @@
                 while ($ligne = $unlistedCompany->fetch()) {?>
                     <div class="row mx-1">
                         <div class="col-12 rendez-vous">
-                            <p class="text-center text-jaune"><?php echo htmlspecialchars($ligne['name']); ?></p>
+                            <p class="text-center text-accent"><?php echo htmlspecialchars($ligne['name']); ?></p>
                         </div>
                     </div>
                 <?php } ?>
