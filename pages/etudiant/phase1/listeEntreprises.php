@@ -73,6 +73,8 @@
                 </div>
             </div>
         </nav>
+
+        <!-- Navbar du bas -->
         <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
             <div class="container-fluid">
                 <ul class="navbar-nav w-100 justify-content-evenly">

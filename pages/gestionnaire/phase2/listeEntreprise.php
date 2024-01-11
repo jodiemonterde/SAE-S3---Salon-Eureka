@@ -141,7 +141,7 @@
                             echo '<h2>Filières</h2>';
                         while ($ligne = $fields->fetch()) {
                     ?>
-                    <form action="listeEtudiant.php" method="post">
+                    <form action="listeEntreprise.php" method="post">
                         <input type="hidden" name="nouveauFiltre" value="<?php echo $ligne['field_id']; ?>">
                         <button class="bouton-filtre <?php echo in_array($ligne['field_id'], $_SESSION['filtre']) ? "bouton-filtre-selectionner" : "bouton-filtre-deselectionner"?>"><?php echo $ligne['name']; ?></button>
                     </form>
