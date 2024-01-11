@@ -82,19 +82,19 @@
                         <ul class="navbar-nav d-flex h-100 align-items-center">
                             <li class="nav-item nav-item-haut nav-link p-0 d-none d-md-block h-100">
                                 <!-- Si sur la liste des entreprises, mettre en actif et lien_inactif-->
-                                <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeEntreprises.php"> Entreprises </a>
+                                <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../listeEntreprises.php"> Entreprises </a>
                             </li>
                             <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block">
                                 <!-- Si sur la liste des étudiants, mettre en actif et lien_inactif -->
-                                <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeEtudiants.php"> Étudiants </a>
+                                <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../listeEtudiants.php"> Étudiants </a>
                             </li>
                             <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block">
                                 <!-- Si sur la liste des gestionnaires, mettre en actif et lien_inactif -->
-                                <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeAdministrateurs.php"> Administrateurs </a>
+                                <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../listeAdministrateurs.php"> Administrateurs </a>
                             </li>
                             <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block">
                                 <!-- Si sur la liste des gestionnaires, mettre en actif et lien_inactif -->
-                                <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"  href="listeGestionnaires.php"> Gestionnaires </a>
+                                <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"  href="../listeGestionnaires.php"> Gestionnaires </a>
                             </li>
                             <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block lien_inactif">
                                 <!-- Si sur les paramètres du forum, mettre en actif et lien_inactif -->
@@ -123,33 +123,33 @@
                     <!-- Si sur la liste des entreprises, mettre le texte en actif -->
                     <li class="nav-item nav-item-bas d-flex flex-column text-center inactif_bas">
                         <!-- Si sur la liste des entreprises, mettre l'icone en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center inactif_bas_icone" href="listeEntreprises.php">
+                        <a class="d-flex justify-content-center inactif_bas_icone" href="../listeEntreprises.php">
                             <!-- Si sur la liste des entreprises, mettre l'icône blanche, sinon mettre l'icône en noir -->
                             <img src="../../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone_admin">
                         </a>
-                        <a class="d-flex justify-content-center lien_barre_basse lien_barre_basse_admin" href="listeEntreprises.php">
+                        <a class="d-flex justify-content-center lien_barre_basse lien_barre_basse_admin" href="../listeEntreprises.php">
                             Entreprises
                         </a>
                     </li>
                     <!-- Si sur la liste des étudiants, mettre le texte en actif -->
                     <li class="nav-item nav-item-bas d-flex flex-column text-center inactif_bas">
                         <!-- Si sur la liste des étudiants, mettre l'icône en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center inactif_bas_icone" href="listeEtudiants.php">
+                        <a class="d-flex justify-content-center inactif_bas_icone" href="../listeEtudiants.php">
                             <!-- Si sur la liste des étudiants, mettre l'icône blanche, sinon mettre l'icône en noir -->
                             <img src="../../../ressources/icone_etudiant_black.svg" alt="Liste des étudiants" class="icone_admin">
                         </a>
-                        <a class="d-flex justify-content-center lien_barre_basse lien_barre_basse_admin" href="listeEtudiants.php">
+                        <a class="d-flex justify-content-center lien_barre_basse lien_barre_basse_admin" href="../listeEtudiants.php">
                             Etudiants
                         </a>
                     </li>
                     <!-- Si sur la liste des gestionnaires, mettre le texte en actif -->
                     <li class="nav-item nav-item-bas d-flex flex-column text-center inactif_bas">
                         <!-- Si sur la liste des gestionnaires, mettre l'icône en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center inactif_bas_icone lien_barre_basse lien_barre_basse_admin" href="listeAdministrateurs.php">
+                        <a class="d-flex justify-content-center inactif_bas_icone lien_barre_basse lien_barre_basse_admin" href="../listeAdministrateurs.php">
                             <!-- Si sur la liste des gestionnaires, mettre l'icône blanche, sinon mettre l'icône en noir -->
                             <img src="../../../ressources/icone_gestionnaire_black.svg" alt="Liste des gestionnaires" class="icone_admin">
                         </a>
-                        <a class="d-flex justify-content-center lien_barre_basse lien_barre_basse_admin" href="listeAdministrateurs.php">
+                        <a class="d-flex justify-content-center lien_barre_basse lien_barre_basse_admin" href="../listeAdministrateurs.php">
                             Admins
                         </a>
                     </li>
