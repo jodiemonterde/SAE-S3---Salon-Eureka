@@ -238,7 +238,7 @@
     function modifyCompany($pdo, $company_id, $nom, $description, $secteur, $adresse, $codePostal, $ville, $logo) {
 
         if (!empty($logo['name'])) {
-            $targetDirectory = "../../../../ressources/logosentreprises/";
+            $targetDirectory = "../../../ressources/logosentreprises/";
             $imageFileType = strtolower(pathinfo($logo["name"], PATHINFO_EXTENSION));
     
             // Générer un nom de fichier unique basé sur le nom de l'entreprise
@@ -703,7 +703,7 @@
 
     function addCompany($pdo, $nom, $description, $adresse, $codePostal, $ville, $secteur, $logo, $intervenants) {
         if (!empty($logo['name'])) {
-            $targetDirectory = "../../../ressources/logosentreprises/";
+            $targetDirectory = "../../ressources/logosentreprises/";
             $imageFileType = strtolower(pathinfo($logo["name"], PATHINFO_EXTENSION));
     
             // Générer un nom de fichier unique basé sur le nom de l'entreprise
@@ -760,9 +760,9 @@
             $newFileName = "no-photo.png";
         }
     
-        $nom = htmlspecialchars($nom);
+        $nom = htmlspecialchars(strtoupper($nom));
         $description = htmlspecialchars($description);
-        $adresse = htmlspecialchars($adresse . ', ' . $codePostal . ' ' . $ville);
+        $adresse = htmlspecialchars($adresse . ', ' . $codePostal . ' ' . strtoupper($ville));
         $secteur = htmlspecialchars($secteur);
     
         $stmt = $pdo->prepare("INSERT INTO Company (name, logo_file_name, description, address, sector, excluded, useSecondary)
