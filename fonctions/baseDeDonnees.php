@@ -106,7 +106,8 @@
                 LEFT JOIN WishList
                 ON Company.company_id = WishList.company_id
                 AND AssignmentUser.user_id = WishList.user_id
-                WHERE AssignmentUser.user_id = :user_id");
+                WHERE AssignmentUser.user_id = :user_id
+                ORDER BY name");
         if ($recherche != null) {
             $sql.= " AND Company.name LIKE :recherche";
         }
@@ -331,7 +332,8 @@
         $stmt = $pdo->prepare("SELECT Company.company_id,name,logo_file_name,address,sector
                             FROM Company
                             JOIN WishList ON Company.company_id = WishList.company_id
-                            WHERE user_id = :user_id");
+                            WHERE user_id = :user_id
+                            ORDER BY name");
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
         return $stmt;
