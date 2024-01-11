@@ -332,10 +332,10 @@
                             </div>
                             <div class = "row">
                                 <div class="col-6 d-flex justify-content-evenly">
-                                    <button type="button" data-bs-dismiss="modal" class="bouton">Retour</button>
+                                    <button type="button" data-bs-dismiss="modal" class="bouton boutonDeconnexion">Retour</button>
                                 </div>
                                 <div class="col-6 d-flex justify-content-evenly">
-                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton">Se déconnecter </button>
+                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton boutonDeconnexion">Se déconnecter </button>
                                 </div>
                             </div>
                         </div>
