@@ -642,7 +642,7 @@
                                     <button type="button" data-bs-dismiss="modal" class="bouton boutonDeconnexion">Retour</button>
                                 </div>
                                 <div class="col-6 d-flex justify-content-evenly">
-                                    <a href="../../../fonctions/deconnecter.php"><button type="button" class="bouton boutonDeconnexion">Se déconnecter </button>
+                                    <a href="../../fonctions/deconnecter.php"><button type="button" class="bouton boutonDeconnexion">Se déconnecter </button>
                                 </div>
                             </div>
                         </div>

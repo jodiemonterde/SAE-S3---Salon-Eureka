@@ -463,7 +463,8 @@
                                 FROM Company c
                                 JOIN WishList w on c.company_id = w.company_id
                                 WHERE c.excluded = 1
-                                AND w.user_id = :user_id");
+                                AND w.user_id = :user_id
+                                ORDER BY name");
         $requete->bindParam(':user_id', $user_id);
         $requete->execute();
         return $requete;
@@ -617,7 +618,7 @@
     }
 
     function getSpeakersPerCompany($pdo, $company_id) {
-        $stmt = $pdo->prepare("SELECT speaker_id, name, role FROM Speaker WHERE company_id = :company_id");
+        $stmt = $pdo->prepare("SELECT speaker_id, name, role FROM Speaker WHERE company_id = :company_id ORDER BY name");
         $stmt->bindParam(':company_id', $company_id);
         $stmt->execute();
         return $stmt;
