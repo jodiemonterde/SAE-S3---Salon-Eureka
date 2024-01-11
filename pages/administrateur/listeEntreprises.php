@@ -196,7 +196,7 @@
                     <!-- Si sur la liste des gestionnaires, mettre le texte en actif -->
                     <li class="nav-item nav-item-bas d-flex flex-column text-center inactif_bas_texte">
                         <!-- Si sur la liste des gestionnaires, mettre l'icône en actif et lien_inactif -->
-                        <a class="d-flex justify-content-center inactif_bas_icone" href="listeEtudiants.php">
+                        <a class="d-flex justify-content-center inactif_bas_icone" href="listeAdministrateurs.php">
                             <!-- Si sur la liste des gestionnaires, mettre l'icône blanche, sinon mettre l'icône en noir -->
                             <img src="../../ressources/icone_gestionnaire_black.svg" alt="Liste des administrateurs" class="icone_admin">
                         </a>
