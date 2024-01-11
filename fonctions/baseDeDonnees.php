@@ -1154,9 +1154,17 @@
     }
 
     function deleteField($pdo, $field_id) {
+
         $stmt = $pdo->prepare("DELETE FROM AssignmentUser WHERE field_id = :field_id");
         $stmt->bindParam(':field_id', $field_id);
         $stmt->execute();
+        $stmt = $pdo->prepare("SELECT User.user_id FROM User LEFT JOIN AssignmentUser ON User.user_id = AssignmentUser.user_id WHERE User.responsibility = 'G' GROUP BY (User.user_id) HAVING COUNT(AssignmentUser.field_id) = 0;");
+        $stmt->execute();
+        while ($row = $stmt->fetch()) {
+            $stmt2 = $pdo->prepare("DELETE FROM User WHERE user_id = :user_id");
+            $stmt2->bindParam(':user_id', $row['user_id']);
+            $stmt2->execute();
+        }
         $stmt = $pdo->prepare("DELETE FROM Field WHERE field_id = :field_id");
         $stmt->bindParam(':field_id', $field_id);
         $stmt->execute();
