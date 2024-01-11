@@ -1068,7 +1068,6 @@
         $maRequete = $pdo->prepare("SELECT username FROM User WHERE user_id = :user_id");
         $maRequete->bindParam(':user_id', $user_id);
         $maRequete->execute();
-        $res;
         while($row = $maRequete->fetch()){
             $res = $row["username"];
         }
@@ -1123,5 +1122,47 @@
         $stmt = $pdo->prepare('UPDATE Meeting SET date = "9999-12-31", start = "00:00:00", end = "23:59:59", primary_appointment_duration = "00:15:00", secondary_appointment_duration = "00:10:00", wish_period_end = "9999-12-31", phase = 1, generated = 0 WHERE meeting_id = 1');
         $stmt->execute();
         $pdo->commit();
+    }
+
+    function isFieldInUse($pdo, $field_id) {
+        $stmt = $pdo->prepare("SELECT (
+                       (SELECT COUNT(*)
+                        FROM Field 
+                        JOIN AssignmentUser
+                        ON Field.field_id = AssignmentUser.field_id
+                        JOIN User
+                        ON AssignmentUser.user_id = User.user_id
+                        WHERE  User.responsibility = 'E'
+                        AND Field.field_id = :field_id1)
+                       + 
+                       (SELECT COUNT(*) 
+                        FROM Field 
+                        JOIN AssignmentSpeaker
+                        ON Field.field_id = AssignmentSpeaker.field_id
+                        WHERE Field.field_id = :field_id2)) AS res;");
+        $stmt->bindParam(':field_id1', $field_id);
+        $stmt->bindParam(':field_id2', $field_id);
+        $stmt->execute();
+        $res = $stmt->fetch()[0];
+        return $res > 0;
+    }
+
+    function newField($pdo, $name) {
+        $stmt = $pdo->prepare("INSERT INTO Field (name) VALUES (:name)");
+        $stmt->bindParam(':name', $name);
+        $stmt->execute();
+    }
+
+    function deleteField($pdo, $field_id) {
+        $stmt = $pdo->prepare("DELETE FROM Field WHERE field_id = :field_id");
+        $stmt->bindParam(':field_id', $field_id);
+        $stmt->execute();
+    }
+
+    function modifyField($pdo, $field_id, $name) {
+        $stmt = $pdo->prepare("UPDATE Field SET name = :name WHERE field_id = :field_id");
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':field_id', $field_id);
+        $stmt->execute();
     }
 ?>

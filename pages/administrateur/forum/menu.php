@@ -187,6 +187,12 @@
                     </a>
                 </div>
                 <div class="col-md-4"></div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4 col-12 text-center">
+                    <a href="filieres.php">
+                        <button class="bouton boutonBas">Gérer les filières</button>
+                    </a>
+                </div>
             </div>
         </div>
         <div class="modal fade " id="réinitialisation" tabindex="-1" aria-labelledby="réinitialiser" aria-hidden="true">
