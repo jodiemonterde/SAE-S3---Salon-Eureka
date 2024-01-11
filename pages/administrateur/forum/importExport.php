@@ -210,7 +210,7 @@
             <?php } else { ?>
                 <div class="row">
                     <div class="col-12 text-center erreur">
-                        <h4>Les options d'importations sont désormé indispoinbles une fois le planning généré !</h4>
+                        <h4>Les options d'importations sont désormé indisponibles une fois le planning généré !</h4>
                     </div>
                 </div>
             <?php } 
