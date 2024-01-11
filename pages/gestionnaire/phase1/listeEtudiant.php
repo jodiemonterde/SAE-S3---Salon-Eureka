@@ -139,7 +139,7 @@
                     <div class="col-8">
                         <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher un etudiant" class="entreeUtilisateur"/>    
                     </div>
-                    <div class="col-4">
+                    <div class="col-4 d-md-none">
                         <input type="submit" class="bouton" value="Rechercher"/>
                     </div>
                 </div>
