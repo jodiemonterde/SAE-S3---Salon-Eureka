@@ -221,10 +221,10 @@
                 </div>
                 <form action="listeEntreprises.php" method="post" class="col-12 col-md-6 my-2">
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-8 col-lg-7">
                             <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="entreeUtilisateur"/>    
                         </div>
-                        <div class="col-4 d-none d-md-block">
+                        <div class="col-4 col-lg-5 d-none d-md-block">
                             <input type="submit" class="bouton" value="Rechercher"/>
                         </div>
                     </div>
