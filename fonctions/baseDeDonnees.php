@@ -1154,6 +1154,9 @@
     }
 
     function deleteField($pdo, $field_id) {
+        $stmt = $pdo->prepare("DELETE FROM AssignmentUser WHERE field_id = :field_id");
+        $stmt->bindParam(':field_id', $field_id);
+        $stmt->execute();
         $stmt = $pdo->prepare("DELETE FROM Field WHERE field_id = :field_id");
         $stmt->bindParam(':field_id', $field_id);
         $stmt->execute();
