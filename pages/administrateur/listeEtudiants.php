@@ -187,7 +187,7 @@
                     <div class="col-8">
                         <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher un etudiant" class="zoneText"/>    
                     </div>
-                    <div class="col-4 d-md-none">
+                    <div class="col-4 d-none d-md-block">
                         <input type="submit" class="bouton" value="Rechercher"/>
                     </div>
                 </div>
