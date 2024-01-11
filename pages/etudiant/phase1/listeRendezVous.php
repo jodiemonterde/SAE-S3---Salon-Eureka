@@ -95,7 +95,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                Est vous sûr de vouloir supprimer cette entreprise de votre liste de souhaits ?
+                                Êtes-vous sûr(e) de vouloir supprimer cette entreprise de votre liste de souhaits ?
                             </div>
                             <div class="modal-footer">
                                 <form action="listeRendezVous.php" method="post">

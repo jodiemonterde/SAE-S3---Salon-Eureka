@@ -106,7 +106,8 @@
                 LEFT JOIN WishList
                 ON Company.company_id = WishList.company_id
                 AND AssignmentUser.user_id = WishList.user_id
-                WHERE AssignmentUser.user_id = :user_id");
+                WHERE AssignmentUser.user_id = :user_id
+                ORDER BY name");
         if ($recherche != null) {
             $sql.= " AND Company.name LIKE :recherche";
         }
@@ -331,21 +332,22 @@
         $stmt = $pdo->prepare("SELECT Company.company_id,name,logo_file_name,address,sector
                             FROM Company
                             JOIN WishList ON Company.company_id = WishList.company_id
-                            WHERE user_id = :user_id");
+                            WHERE user_id = :user_id
+                            ORDER BY name");
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
         return $stmt;
     }
 
     function getFields($pdo) {
-        $sql = "SELECT * FROM `Field`";
+        $sql = "SELECT * FROM `Field` ORDER BY name";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         return $stmt;
     }
 
     function getFieldsPerUsers($pdo, $user_id) {
-        $sql = "SELECT * FROM `Field` WHERE field_id IN (SELECT field_id FROM AssignmentUser WHERE user_id = :user_id)";
+        $sql = "SELECT * FROM `Field` WHERE field_id IN (SELECT field_id FROM AssignmentUser WHERE user_id = :user_id) ORDER BY name";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
@@ -412,10 +414,10 @@
     function getSpecificationCompany($pdo, $specification, $value) {
         switch ($specification) {
             case 'entrepriseReduite' :
-                $sql = "SELECT company_id, name FROM Company WHERE useSecondary = :value;";
+                $sql = "SELECT company_id, name FROM Company WHERE useSecondary = :value ORDER BY name;";
                 break;
             case 'entrepriseExclusion' :
-                $sql = "SELECT company_id, name FROM Company WHERE excluded = :value;";
+                $sql = "SELECT company_id, name FROM Company WHERE excluded = :value ORDER BY name;";
                 break;
             default :
                 return null;
@@ -461,7 +463,8 @@
                                 FROM Company c
                                 JOIN WishList w on c.company_id = w.company_id
                                 WHERE c.excluded = 1
-                                AND w.user_id = :user_id");
+                                AND w.user_id = :user_id
+                                ORDER BY name");
         $requete->bindParam(':user_id', $user_id);
         $requete->execute();
         return $requete;
@@ -615,7 +618,7 @@
     }
 
     function getSpeakersPerCompany($pdo, $company_id) {
-        $stmt = $pdo->prepare("SELECT speaker_id, name, role FROM Speaker WHERE company_id = :company_id");
+        $stmt = $pdo->prepare("SELECT speaker_id, name, role FROM Speaker WHERE company_id = :company_id ORDER BY name");
         $stmt->bindParam(':company_id', $company_id);
         $stmt->execute();
         return $stmt;
@@ -1048,7 +1051,8 @@
                                                             FROM Appointment ap
                                                             JOIN Speaker s on ap.speaker_id = s.speaker_id
                                                             JOIN Company c on s.company_id = c.company_id
-                                                            WHERE c.company_id = c1.company_id) > 0;");
+                                                            WHERE c.company_id = c1.company_id) > 0
+                                    ORDER BY name;");
         $maRequete->execute();
         return $maRequete;
     }
@@ -1075,7 +1079,7 @@
     }
 
     function getCompanyExcluded($pdo){
-        $maRequete = $pdo->prepare("SELECT company_id,name FROM Company WHERE excluded = 1");
+        $maRequete = $pdo->prepare("SELECT company_id,name FROM Company WHERE excluded = 1 ORDER BY name;");
         $maRequete->execute();
         return $maRequete;
     }
@@ -1087,7 +1091,7 @@
     }
     
     function getStudentsWithMeeting($pdo){
-        $maRequete = $pdo->prepare("SELECT DISTINCT User.user_id, User.username FROM User JOIN WishList ON WishList.user_id = User.user_id WHERE responsibility = 'E'");
+        $maRequete = $pdo->prepare("SELECT DISTINCT User.user_id, User.username FROM User JOIN WishList ON WishList.user_id = User.user_id WHERE responsibility = 'E' ORDER BY username;");
         $maRequete->execute();
         return $maRequete;
     }
