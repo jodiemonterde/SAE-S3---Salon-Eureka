@@ -9,6 +9,8 @@ function ajouterIntervenant(event) {
     var intervenantDiv = document.getElementById('intervenantTemplate').cloneNode(true);
     let trash = intervenantDiv.firstElementChild.firstElementChild.querySelector('.trash');
     trash.removeAttribute('hidden');
+    var myModal = bootstrap.Modal.getInstance(document.getElementById("modalAddCompany")); 
+    myModal.handleUpdate();
     // Mettre à jour les IDs et les noms des champs dans le nouveau div
     mettreAJourIDs(intervenantDiv);
 
@@ -38,7 +40,7 @@ function ajouterIntervenant(event) {
     document.getElementById('intervenantsContainer').appendChild(intervenantDiv);
 
     // Incrémenter le numéro d'intervenant pour le prochain ajout
-    numeroIntervenant++;
+    numeroIntervenant++; 
 }
 
 function mettreAJourIDs(div) {
