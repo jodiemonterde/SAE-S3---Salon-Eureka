@@ -214,7 +214,7 @@
                     </div>
                 </div>
             <?php } 
-            if (true) { //$phase == 2) { ?>
+            if ($phase == 2) { ?>
             <div class="accordion" id="exporterPlanningEntreprise">
                 <div class="accordion-item my-3">
                     <h2 class="accordion-header" id="headingPlanningEntreprise">
