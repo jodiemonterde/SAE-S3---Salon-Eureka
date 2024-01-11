@@ -7,14 +7,14 @@
         $nom = 'planning-'.$nomEntreprise.'.pdf';
         $pdfEntreprise = new FPDF();
         $pdfEntreprise->AddPage();
-        $pdfEntreprise->SetFont('Arial','B',20);
-        $pdfEntreprise->Cell(0, 10, conversion($nomEntreprise), 0, 1, 'C');
         $pdfEntreprise->SetDrawColor(217,217,217);
         $listeSpeaker = getSpeakersPerCompany($pdo, $company_id);
         $i = 0; 
         while($row1 = $listeSpeaker->fetch()){
             $i = $i+ 1;
             $rendezVous = getAppointmentPerSpeaker($pdo,$row1["speaker_id"]);
+            $pdfEntreprise->SetFont('Arial','B',20);
+            $pdfEntreprise->Cell(0, 10, conversion($nomEntreprise), 0, 1, 'C');
             $pdfEntreprise->SetFont('Arial','B',11);
             $pdfEntreprise->Cell(0, 10, conversion($row1["name"]), 0, 1, 'C');
             while($row2 = $rendezVous->fetch()){
@@ -98,12 +98,12 @@
         while($ligne = $ListeEntrepriseNonExclue->fetch()){
             $listeSpeaker = getSpeakersPerCompany($pdo, $ligne["company_id"]);
             $pdfEntreprise->AddPage();
-            $pdfEntreprise->SetFont('Arial','B',20);
-            $pdfEntreprise->Cell(0, 10, conversion($ligne["name"]), 0, 1, 'C');
             $i = 0;
             while($row1 = $listeSpeaker->fetch()){
                 $i =$i+1;
                 $rendezVous = getAppointmentPerSpeaker($pdo,$row1["speaker_id"]);
+                $pdfEntreprise->SetFont('Arial','B',20);
+                $pdfEntreprise->Cell(0, 10, conversion($ligne["name"]), 0, 1, 'C');
                 $pdfEntreprise->SetFont('Arial','B',11);
                 $pdfEntreprise->Cell(0, 10, conversion($row1["name"]), 0, 1, 'C');
                 while($row2 = $rendezVous->fetch()){
