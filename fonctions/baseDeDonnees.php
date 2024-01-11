@@ -238,55 +238,12 @@
     function modifyCompany($pdo, $company_id, $nom, $description, $secteur, $adresse, $codePostal, $ville, $logo) {
 
         if (!empty($logo['name'])) {
-            $targetDirectory = "../../../ressources/logosentreprises/";
-            $imageFileType = strtolower(pathinfo($logo["name"], PATHINFO_EXTENSION));
-    
-            // Générer un nom de fichier unique basé sur le nom de l'entreprise
-            // Supression des caractères non autorisés
-            $cleanedFileName = preg_replace('/[^\w\d\-_.]/', '', $nom);
-        
-            // Limiter la longueur du nom de fichier si nécessaire
-            $cleanedFileName = substr($cleanedFileName, 0, 80);
-            $newFileName = $cleanedFileName . '_' . uniqid() . '.' . $imageFileType;
-            $targetFile = $targetDirectory . $newFileName;
-            var_dump($targetFile);
-            $uploadOk = 1;
-        
-            // Vérifier si le fichier est une image réelle
-            $check = getimagesize($logo["tmp_name"]);
-            if ($check === false) {
-                echo "Le fichier n'est pas une image.";
-                $uploadOk = 0;
-            }
-        
-            // Vérifier si le fichier existe déjà
-            if (file_exists($targetFile)) {
-                echo "Désolé, le fichier existe déjà.";
-                $uploadOk = 0;
-            }
-    
-            // Autoriser certains formats de fichiers
-            $allowedFormats = array("jpg", "jpeg", "png", "gif");
-            if (!in_array($imageFileType, $allowedFormats)) {
-                echo "Désolé, seuls les fichiers JPG, JPEG, PNG et GIF sont autorisés.";
-                $uploadOk = 0;
-            }
-        
-            // Vérifier si $uploadOk est défini à 0 par une erreur
-            if ($uploadOk == 0) {
-                echo "Désolé, votre fichier n'a pas été téléchargé.";
+            if (!empty($logo)) {
+                $nomPourChemin = $logo['name'];
             } else {
-                // Si tout est correct, essayez de télécharger le fichier
-                if (move_uploaded_file($_FILES["logoEntreprise"]["tmp_name"], $targetFile)) {
-                    echo "Le fichier " . htmlspecialchars(basename($_FILES["logoEntreprise"]["name"])) . " a été téléchargé.";
-        
-                    // Maintenant, vous pouvez utiliser $targetFile comme chemin à stocker dans la base de données
-                    $pathToLogo = $targetFile;
-        
-                } else {
-                    echo "Désolé, une erreur s'est produite lors du téléchargement de votre fichier.";
-                }
+                $nomPourChemin = $ancienNom;
             }
+            $newFileName = checkImage($logo, $nomPourChemin);
         } else {
             $newFileName = null;
         }
@@ -307,8 +264,7 @@
         $stmt->bindParam(':secteur', $secteur);
         $stmt->bindParam(':id', $company_id);
     
-        return $stmt->execute();
-    
+        return $stmt->execute(); 
       
     }
 
@@ -703,59 +659,7 @@
 
     function addCompany($pdo, $nom, $description, $adresse, $codePostal, $ville, $secteur, $logo, $intervenants) {
         if (!empty($logo['name'])) {
-            $targetDirectory = "../../ressources/logosentreprises/";
-            $imageFileType = strtolower(pathinfo($logo["name"], PATHINFO_EXTENSION));
-    
-            // Générer un nom de fichier unique basé sur le nom de l'entreprise
-            // Supression des caractères non autorisés
-            $cleanedFileName = preg_replace('/[^\w\d\-_.]/', '', $nom);
-        
-            // Limiter la longueur du nom de fichier si nécessaire
-            $cleanedFileName = substr($cleanedFileName, 0, 80);
-            $newFileName = $cleanedFileName . '_' . uniqid() . '.' . $imageFileType;
-            $targetFile = $targetDirectory . $newFileName;
-            var_dump($targetFile);
-            $uploadOk = 1;
-        
-            // Vérifier si le fichier est une image réelle
-            $check = getimagesize($logo["tmp_name"]);
-            if ($check === false) {
-                echo "Le fichier n'est pas une image.";
-                $uploadOk = 0;
-            }
-        
-            // Vérifier si le fichier existe déjà
-            if (file_exists($targetFile)) {
-                echo "Désolé, le fichier existe déjà.";
-                $uploadOk = 0;
-            }
-    
-            // Autoriser certains formats de fichiers
-            $allowedFormats = array("jpg", "jpeg", "png", "gif");
-            if (!in_array($imageFileType, $allowedFormats)) {
-                echo "Désolé, seuls les fichiers JPG, JPEG, PNG et GIF sont autorisés.";
-                $uploadOk = 0;
-            }
-        
-            // Vérifier si $uploadOk est défini à 0 par une erreur
-            if ($uploadOk == 0) {
-                echo "Désolé, votre fichier n'a pas été téléchargé.";
-            } else {
-                // Si tout est correct, essayez de télécharger le fichier
-                if (move_uploaded_file($_FILES["logoEntreprise"]["tmp_name"], $targetFile)) {
-                    echo "Le fichier " . htmlspecialchars(basename($_FILES["logoEntreprise"]["name"])) . " a été téléchargé.";
-        
-                    // Maintenant, vous pouvez utiliser $targetFile comme chemin à stocker dans la base de données
-                    $pathToLogo = $targetFile;
-        
-                    // Insérez le chemin dans la base de données
-                    $query = "INSERT INTO entreprises (nom, description, adresse, secteur, logo) VALUES ('$nom', '$description', '$adresse', '$secteur', '$pathToLogo')";
-                    // ... exécutez la requête ...
-        
-                } else {
-                    echo "Désolé, une erreur s'est produite lors du téléchargement de votre fichier.";
-                }
-            }
+            $newFileName = checkImage($logo, $nom);
         } else {
             $newFileName = "no-photo.png";
         }
@@ -1224,5 +1128,71 @@
                                WHERE User.user_id = :user_id;");
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
+    }
+
+    function checkImage($logo, $nom) {
+                    
+        $maxDim = 800;
+        $file_name = $logo['tmp_name'];
+        list($width, $height, $type, $attr) = getimagesize( $file_name );
+        if ( $width > $maxDim || $height > $maxDim ) {
+            $target_filename = $file_name;
+            $ratio = $width/$height;
+            if( $ratio > 1) {
+                $new_width = $maxDim;
+                $new_height = $maxDim/$ratio;
+            } else {
+                $new_width = (int) $maxDim*$ratio;
+                $new_height = (int) $maxDim;
+            }
+            $src = imagecreatefromstring( file_get_contents( $file_name ) );
+            $dst = imagecreatetruecolor( (int) $new_width, (int) $new_height );
+            imagecopyresampled( $dst, $src, 0, 0, 0, 0, (int) $new_width, (int) $new_height, $width, $height );
+            imagedestroy( $src );
+            imagepng( $dst, $target_filename ); // adjust format as needed
+            imagedestroy( $dst );
+        }
+        $targetDirectory = "../../ressources/logosentreprises/";
+        $imageFileType = strtolower(pathinfo($logo["name"], PATHINFO_EXTENSION));
+
+        // Générer un nom de fichier unique basé sur le nom de l'entreprise
+        // Supression des caractères non autorisés
+        $cleanedFileName = preg_replace('/[^\w\d\-_.]/', '', $nom);
+
+        // Limiter la longueur du nom de fichier si nécessaire
+        $cleanedFileName = substr($cleanedFileName, 0, 80);
+        $newFileName = $cleanedFileName . '_' . uniqid() . '.' . $imageFileType;
+        $targetFile = $targetDirectory . $newFileName;
+        var_dump($targetFile);
+        $uploadOk = 1;
+    
+        // Vérifier si le fichier existe déjà
+        if (file_exists($targetFile)) {
+            echo "Désolé, le fichier existe déjà.";
+            $uploadOk = 0;
+        }
+
+        // Autoriser certains formats de fichiers
+        $allowedFormats = array("jpg", "jpeg", "png", "gif");
+        if (!in_array($imageFileType, $allowedFormats)) {
+            echo "Désolé, seuls les fichiers JPG, JPEG, PNG et GIF sont autorisés.";
+            $uploadOk = 0;
+        }
+    
+        // Vérifier si $uploadOk est défini à 0 par une erreur
+        if ($uploadOk == 0) {
+            echo "Désolé, votre fichier n'a pas été téléchargé.";
+        } else {
+            // Si tout est correct, essayez de télécharger le fichier
+            if (move_uploaded_file($_FILES["logoEntreprise"]["tmp_name"], $targetFile)) {
+                echo "Le fichier " . htmlspecialchars(basename($_FILES["logoEntreprise"]["name"])) . " a été téléchargé.";
+    
+                // Maintenant, vous pouvez utiliser $targetFile comme chemin à stocker dans la base de données
+                return $targetFile;
+    
+            } else {
+                echo "Désolé, une erreur s'est produite lors du téléchargement de votre fichier.";
+            }
+        }
     }
 ?>

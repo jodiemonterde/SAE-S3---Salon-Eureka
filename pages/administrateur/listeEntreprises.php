@@ -24,7 +24,7 @@
         $pdo = connecteBD();
         $generated = isPlanningGenerated($pdo);
         if (isset($_POST["modifyCompany"])) {
-            modifyCompany($pdo, $_POST["companyID"], $_POST["nomEntreprise"], $_POST["descriptionEntreprise"], $_POST["secteurEntreprise"],$_POST["adresseEntreprise"], $_POST["codePostalEntreprise"], $_POST["villeEntreprise"], $_FILES["logoEntreprise"]);
+            modifyCompany($pdo, $_POST["companyID"], $_POST["nomEntreprise"], $_POST["descriptionEntreprise"], $_POST["secteurEntreprise"],$_POST["adresseEntreprise"], $_POST["codePostalEntreprise"], $_POST["villeEntreprise"], $_FILES["logoEntreprise"], $_POST['ancienNom']);
             header("Location: listeEntreprises.php");
             exit();
         }
@@ -597,6 +597,7 @@
                                         <hr>                         
                                         
                                         <input type="hidden" name="companyID" value="<?php echo $ligne['company_id'];?>">
+                                        <input type="hidden" name="ancienNom" value="<?php echo $ligne['name'];?>">
                                         <div class="row mt-3">
                                             <div class="col-6">
                                                 <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
