@@ -123,7 +123,7 @@
                     <i class="fa-solid fa-briefcase"></i>&nbsp;&nbsp;&nbsp;<?php echo htmlspecialchars($ligne["sector"])?><br/>
                     <i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo htmlspecialchars($ligne["address"])?>
                 </div>
-                <div class="col-2 d-none d-md-block">
+                <div class="col-2 d-none p-0 m-0 d-md-block">
                     <?php if ($phase === 1) { ?><input type="button" class="bouton" value="supprimer l'entreprise" data-bs-toggle="modal" data-bs-target="#modal"/> <?php } ?>
                 </div>
                 <div class="col-1 d-block d-md-none">
