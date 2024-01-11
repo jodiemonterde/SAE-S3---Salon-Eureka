@@ -139,10 +139,10 @@
             </div>
             <form action="listeEtudiant.php" method="post" class="col-12 col-md-6 my-2">
                 <div class="row">
-                    <div class="col-8">
+                    <div class="col-7 p-0">
                         <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher un etudiant" class="entreeUtilisateur"/>    
                     </div>
-                    <div class="col-4">
+                    <div class="col-5 d-none d-md-block">
                         <input type="submit" class="bouton" value="Rechercher"/>
                     </div>
                 </div>

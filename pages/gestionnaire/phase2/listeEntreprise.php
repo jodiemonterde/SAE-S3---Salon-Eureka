@@ -124,10 +124,10 @@
                 </div>
                 <form action="listeEntreprise.php" method="post" class="col-12 col-md-6 my-2">
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-7 p-0">
                             <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="entreeUtilisateur"/>    
                         </div>
-                        <div class="col-4">
+                        <div class="col-5 d-none d-md-block">
                             <input type="submit" class="bouton" value="Rechercher"/>
                         </div>
                     </div>
@@ -141,7 +141,7 @@
                             echo '<h2>Filières</h2>';
                         while ($ligne = $fields->fetch()) {
                     ?>
-                    <form action="listeEtudiant.php" method="post">
+                    <form action="listeEntreprise.php" method="post">
                         <input type="hidden" name="nouveauFiltre" value="<?php echo $ligne['field_id']; ?>">
                         <button class="bouton-filtre <?php echo in_array($ligne['field_id'], $_SESSION['filtre']) ? "bouton-filtre-selectionner" : "bouton-filtre-deselectionner"?>"><?php echo $ligne['name']; ?></button>
                     </form>
