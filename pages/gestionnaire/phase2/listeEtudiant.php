@@ -74,19 +74,19 @@
         <div class="container-fluid h-100">
             <div class="navbar-brand d-flex align-items-center h-100">
                 <img src="../../../ressources/logo_black.svg" alt="Logo Eureka" class="logo me-2">
-                Eureka
+                <span class="logo">Eureka</span>
             </div>
             <div class="navbar-right h-100">
                 <ul class="navbar-nav d-flex h-100 align-items-center">
-                    <li class="nav-item nav-link p-0 d-none d-md-block h-100">
+                    <li class="nav-item nav-item-haut nav-link p-0 d-none d-md-block h-100">
                         <!-- Si sur la liste des entreprises, mettre en actif et lien_inactif-->
                         <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeEntreprise.php"> Entreprises </a>
                     </li>
-                    <li class="nav-item nav-link p-0 h-100 d-none d-md-block">
+                    <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block">
                         <!-- Si sur la liste des étudiants, mettre en actif et lien_inactif -->
                         <a class="actif_haut inactiveLink d-flex align-items-center h-100 px-2 justify-content-center text-center"> Étudiants </a>
                     </li>
-                    <li class="nav-item dropdown p-0 h-100 d-none d-md-block">
+                    <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
                         <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <?php echo htmlspecialchars($_SESSION['nom_utilisateur'])?>
                         </a>

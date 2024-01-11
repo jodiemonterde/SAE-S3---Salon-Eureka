@@ -20,23 +20,22 @@
                 array_push($_SESSION['filtre'], $_POST['nouveauFiltre']);
             }
             
-            header("Location: listeGestionnaires.php");
+            header("Location: listeAdministrateurs.php");
             exit();
         }
         
-        if (isset($_POST['nomGestionnaire'])) {
-            $_POST['filieresGestionnaire'];
-            addNewSupervisor($pdo, $_POST['prenomGestionnaire'], $_POST['nomGestionnaire'], $_POST['emailGestionnaire'], $_POST['motDePasseGestionnaire'], $_POST['filieresGestionnaire']);
-            header("Location: listeGestionnaires.php");
+        if (isset($_POST['addAdmin'])) {
+            addAdmin($pdo, $_POST['prenom'], $_POST['nom'], $_POST['email'], $_POST['password']);
+            header("Location: listeAdministrateurs.php");
             exit();
         }
 
-        if (isset($_POST['supprimer'])) {
-            deleteSupervisor($pdo, $_POST['supprimer']);
+        if (isset($_POST['deleteAdmin'])) {
+            deleteAdmin($pdo, $_POST['id']);
         }
 
         if (isset($_POST['modifyPassword'])) {
-            modifyPassword($pdo, $_POST['modifyPassword'], $_POST['newPassword']);
+            modifyPassword($pdo, $_POST['id'], $_POST['newPassword']);
         }
         
         $fields = getFields($pdo);
@@ -45,7 +44,7 @@
             $tmp[$ligne['field_id']] = $ligne['name'];
         }
         $fields = $tmp;
-        $stmt = getInfosSupervisors($pdo, $_SESSION['recherche'], $_SESSION['filtre']);
+        $stmt = getInfosAdmins($pdo, $_SESSION['recherche']);
         if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
             header('Location: ../connexion.php');
             exit();
@@ -86,13 +85,13 @@
                             <!-- Si sur la liste des étudiants, mettre en actif et lien_inactif -->
                             <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeEtudiants.php"> Étudiants </a>
                         </li>
-                        <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block">
-                            <!-- Si sur la liste des gestionnaires, mettre en actif et lien_inactif -->
-                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeAdministrateurs.php"> Administrateurs </a>
-                        </li>
                         <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block lien_inactif">
                             <!-- Si sur la liste des gestionnaires, mettre en actif et lien_inactif -->
-                            <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"> Gestionnaires </a>
+                            <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"> Administrateurs </a>
+                        </li>
+                        <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block">
+                            <!-- Si sur la liste des gestionnaires, mettre en actif et lien_inactif -->
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeGestionnaires.php"> Gestionnaires </a>
                         </li>
                         <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block">
                             <!-- Si sur les paramètres du forum, mettre en actif et lien_inactif -->
@@ -137,28 +136,28 @@
                         <img src="../../ressources/icone_etudiant_black.svg" alt="Liste des étudiants" class="icone_admin">
                     </a>
                     <a class="d-flex justify-content-center lien_barre_basse lien_barre_basse_admin" href="listeEtudiants.php">
-                        Etudiants
-                    </a>
-                </li>
-                <!-- Si sur la liste des gestionnaires, mettre le texte en actif -->
-                <li class="nav-item nav-item-bas d-flex flex-column text-center inactif_bas">
-                    <!-- Si sur la liste des gestionnaires, mettre l'icône en actif et lien_inactif -->
-                    <a class="d-flex justify-content-center inactif_bas_icone lien_barre_basse lien_barre_basse_admin" href="listeAdministrateurs.php">
-                        <!-- Si sur la liste des gestionnaires, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                        <img src="../../ressources/icone_gestionnaire_black.svg" alt="Liste des gestionnaires" class="icone_admin">
-                    </a>
-                    <a class="d-flex justify-content-center lien_barre_basse lien_barre_basse_admin" href="listeAdministrateurs.php">
-                        Admins
+                    Etudiants
                     </a>
                 </li>
                 <!-- Si sur la liste des gestionnaires, mettre le texte en actif -->
                 <li class="nav-item nav-item-bas d-flex flex-column text-center actif_bas_texte actif_bas_texte_admin">
                     <!-- Si sur la liste des gestionnaires, mettre l'icône en actif et lien_inactif -->
-                    <a class="d-flex justify-content-center actif_bas_icone">
+                    <a class="d-flex justify-content-center actif_bas_icone lien_barre_basse lien_barre_basse_admin">
                         <!-- Si sur la liste des gestionnaires, mettre l'icône blanche, sinon mettre l'icône en noir -->
                         <img src="../../ressources/icone_gestionnaire_white.svg" alt="Liste des gestionnaires" class="icone_admin">
                     </a>
-                    Gestionnaires
+                    Admins
+                </li>
+                <!-- Si sur la liste des gestionnaires, mettre le texte en actif -->
+                <li class="nav-item nav-item-bas d-flex flex-column text-center inactif_bas_texte">
+                    <!-- Si sur la liste des gestionnaires, mettre l'icône en actif et lien_inactif -->
+                    <a class="d-flex justify-content-center inactif_bas_icone" href="listeGestionnaires.php">
+                        <!-- Si sur la liste des gestionnaires, mettre l'icône blanche, sinon mettre l'icône en noir -->
+                        <img src="../../ressources/icone_gestionnaire_black.svg" alt="Liste des gestionnaires" class="icone_admin">
+                    </a>
+                    <a class="d-flex justify-content-center lien_barre_basse lien_barre_basse_admin" href="listeGestionnaires.php">
+                        Gestionnaires
+                    </a>
                 </li>
                 <!-- Si sur les paramètres du forum, mettre le texte en actif -->
                 <li class="nav-item nav-item-bas d-flex flex-column text-center inactif_bas">
@@ -178,10 +177,10 @@
     <div class="container mt-2">
         <div class="row d-flex align-items-center h-100">
             <div class="col-12 col-md-6">
-                <h2>Liste des gestionnaires</h2>
-                <p>Voici tous les gestionnaires du forum Eureka de cette année. Cliquez sur l’un des gestionnaires pour pouvoir modifiers son mot de passe ou ses informations personnelles.</p>
+                <h2>Liste des administrateurs</h2>
+                <p>Voici tous les administrateurs du forum Eureka. Cliquez sur l’un des administrateurs pour pouvoir modifier son mot de passe, ou le supprimer.</p>
             </div>
-            <form action="listeGestionnaires.php" method="post" class="col-12 col-md-6 my-2">
+            <form action="listeAdministrateurs.php" method="post" class="col-12 col-md-6 my-2">
                 <div class="row">
                     <div class="col-8">
                         <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher un gestionnaire" class="zoneText"/>    
@@ -192,62 +191,35 @@
                 </div>
             </form>
         </div>
-        <div class="container p-0">
-            <div class="row">
-                <div class="col-12">
-                    <h2>Filières</h2>
-                    <?php
-                        foreach ($fields as $key => $field) {
-                    ?>
-                    <form action="listeGestionnaires.php" method="post">
-                        <input type="hidden" name="nouveauFiltre" value="<?php echo $key; ?>">
-                        <button class="bouton-filtre <?php echo in_array($key, $_SESSION['filtre']) ? "bouton-filtre-selectionner" : "bouton-filtre-deselectionner"?>"><?php echo $field; ?></button>
-                    </form>
-                    <?php } ?>
-                </div>
-            </div>
-        </div>
         <hr class="mb-4">
-        <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalAddStudent">
+        <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalAddAdmin">
             <i class="fa-solid fa-plus text-left justify-content-center"></i>
-            <h2 class="text-center m-2">Ajouter un(e) gestionnaire</h2>
+            <h2 class="text-center m-2">Ajouter un(e) administrateur</h2>
         </button>
 
-        <div class="modal fade" id="modalAddStudent" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modalAddAdmin" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content  px-4 pb-4">
                     <div class="modal-header deco justify-content-start px-0">
                         <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
-                        <h2 class="modal-title" id="addStudentModalLabel">Nouveau gestionnaire</h2>
+                        <h2 class="modal-title" id="addStudentModalLabel">Nouvel administrateur</h2>
                     </div>
-                    <h2>Informations sur le gestionnaire</h2>
-                    <form action="listeGestionnaires.php" method="post">
+                    <h2>Informations sur l'administrateur</h2>
+                    <form action="listeAdministrateurs.php" method="post">
                         <label for="email" class="modalLabel mb-0 mt-2">Adresse mail / Identifiant</label>
-                        <input class="zoneText" type="email" name="emailGestionnaire" placeholder="Saisir l'adresse mail du gestionnaire" required/>
+                        <input class="zoneText" type="email" name="email" placeholder="Saisir l'adresse mail du gestionnaire" required/>
                         <label for="prenomGestionnaire" class="modalLabel mb-0 mt-2">Prénom</label>
-                        <input class="zoneText" type="text" name="prenomGestionnaire" placeholder="Saisir le prénom du gestionnaire" required/>
-                        <label for="nomGestionnaire" class="modalLabel mb-0 mt-2">Nom</label>
-                        <input class="zoneText" type="text" name="nomGestionnaire" placeholder="Saisir le nom du gestionnaire" required/>
-                        <label for="filiereGestionnaire" class="modalLabel mb-0 mt-2">Filière</label>
-                        <div class="rowForChecks">
-                            <?php
-                            foreach ($fields as $key => $field) { ?>
-                                <label class="buttonToCheck">
-                                    <input type="checkbox" name="filieresGestionnaire[]" value="<?php echo $key;?>" />
-                                    <div class="icon-box">
-                                        <span><?php echo $field;?></span>
-                                    </div>
-                                </label>
-                            <?php } ?>
-                            </div>
-                        <p class="modalLabel mb-0 mt-2">Mot de passe (8 caractères minimum dont au moins un symbole - à transmettre au gestionnaire !)</p>
-                        <input class="zoneText mb-3" type="text" name="motDePasseGestionnaire" placeholder="Saisir le mot de passe" pattern="^(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$" required/>
+                        <input class="zoneText" type="text" name="prenom" placeholder="Saisir le prénom du gestionnaire" required/>
+                        <label for="nom" class="modalLabel mb-0 mt-2">Nom</label>
+                        <input class="zoneText" type="text" name="nom" placeholder="Saisir le nom du gestionnaire" required/>
+                        <p class="modalLabel mb-0 mt-2">Mot de passe (8 caractères minimum dont au moins un symbole et un chiffre - à transmettre à l'administrateur !)</p>
+                        <input class="zoneText mb-3" type="text" name="password" placeholder="Saisir le mot de passe" pattern="^(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$" required/>
                         <div class="row mt-3">
                             <div class="col-6">
                                 <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
                             </div>
                             <div class="col-6">
-                                <button type="submit" class="bouton confirmation col-6" value="Valider">Valider</button>
+                                <button type="submit" name="addAdmin" class="bouton confirmation col-6" value="Valider">Valider</button>
                             </div>
                         </div>
                     </form>
@@ -256,7 +228,7 @@
         </div>
 
         <!-- Accordéon Bootstrap -->
-        <div class="accordion" id="listeGestionnaires">
+        <div class="accordion" id="listeAdmins">
         <?php
             if (empty($_SESSION['filtre'])) {
                 echo '<p>Aucune filière sélectionnée. Veuillez choisir au moins une filière.</p>';
@@ -271,7 +243,6 @@
                     <div class="profil-det-img d-flex text-start">
                         <div class="pd detailEtudiant">
                             <h2 class="title"><?php echo $ligne["username"]?></h2>
-                            <?php echo $ligne["filieres"]?></br>
                         </div>
                     </div>
                 </button>
@@ -281,13 +252,13 @@
                     <div class="row m-0">
                         <div class="row my-3">
                             <div class="col-md-6 py-2">
-                                <button class="boutonNegatif" data-bs-toggle="modal" data-bs-target="#modalDeleteStudent<?php echo $ligne['user_id']; ?>">Supprimer</button>
+                                <button class="boutonNegatif" data-bs-toggle="modal" data-bs-target="#modalDeleteAdmin<?php echo $ligne['user_id']; ?>">Supprimer</button>
                             </div>
                             <div class="col-md-6 py-2">
                                 <button class="bouton col-md-6" data-bs-toggle="modal" data-bs-target="#modalModifyPassword<?php echo $ligne['user_id']; ?>">Modifier le mot de passe</button>
                             </div>
                         </div>
-                            <div class="modal fade" id="modalDeleteStudent<?php echo $ligne['user_id']; ?>" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="modalDeleteAdmin<?php echo $ligne['user_id']; ?>" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                                     <div class="modal-content px-4 pb-4">
                                         <div class="modal-header deco justify-content-start px-0">
@@ -295,15 +266,15 @@
                                             <h2 class="modal-title" id="deleteStudentModalLabel"><?php echo $ligne['username'];?></h2>
                                         </div>
                                         <div class="modal-body">
-                                            <h2>Êtes-vous sûr(e) de vouloir supprimer ce gestionnaire ?</h2>
-                                            <form action="listeGestionnaires.php" method="post">
-                                                <input type="hidden" name="supprimer" value="<?php echo $ligne['user_id'];?>">
+                                            <h2>Êtes-vous sûr(e) de vouloir supprimer cet administrateur ?</h2>
+                                            <form action="listeAdministrateurs.php" method="post">
+                                                <input type="hidden" name="id" value="<?php echo $ligne['user_id'];?>">
                                                 <div class="row mt-3">
                                                     <div class="col-6">
                                                         <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
                                                     </div>
                                                     <div class="col-6">
-                                                        <button type="submit" class="bouton confirmation col-6" value="Valider">Valider</button>
+                                                        <button type="submit" name="deleteAdmin" class="bouton confirmation col-6" value="Valider">Valider</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -320,16 +291,16 @@
                                             <h2 class="modal-title" id="modifyPassword"><?php echo $ligne['username'];?></h2>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="listeGestionnaires.php" method="post">
-                                                <label for="newPassword"  class="modalLabel mb-0 mt-2">Choisir un nouveau mot de passe (à transmettre au gestionnaire !) :</label>
+                                            <form action="listeAdministrateurs.php" method="post">
+                                                <label for="newPassword"  class="modalLabel mb-0 mt-2">Choisir un nouveau mot de passe (8 caractères dont au moins un symbole - à transmettre à l'administrateur !) :</label>
                                                 <input type="text" class="zoneText mb-3" name="newPassword" pattern="^(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$" placeholder="Saisir un mot de passe" required>
-                                                <input type="hidden" name="modifyPassword" value="<?php echo $ligne['user_id'];?>">
+                                                <input type="hidden" name="id" value="<?php echo $ligne['user_id'];?>">
                                                 <div class="row mt-3">
                                                     <div class="col-6">
                                                         <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
                                                     </div>
                                                     <div class="col-6">
-                                                        <button type="submit" class="bouton confirmation col-6" value="Valider">Valider</button>
+                                                        <button type="submit" name="modifyPassword" class="bouton confirmation col-6" value="Valider">Valider</button>
                                                     </div>
                                                 </div>
                                             </form>
