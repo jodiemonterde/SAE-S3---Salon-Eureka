@@ -30,7 +30,7 @@
         <link rel="stylesheet" href="../../../css/navbars.css">
         <link rel="stylesheet" href="../../../css/all.css">
         <link  rel="stylesheet" href="../../../css/listeRendezVous.css">
-        <title>Eureka - Liste des shouaits</title>
+        <title>Eureka - Liste des souhaits</title>
     </head>
     <body>
         <!-- barre de nvaigation du haut -->

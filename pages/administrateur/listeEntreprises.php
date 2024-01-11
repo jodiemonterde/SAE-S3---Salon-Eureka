@@ -491,7 +491,7 @@
                                         
                                             <?php $stmtEtudiant = getStudentsPerCompanyWishList($pdo, $ligne['company_id']);
                                             if ($stmtEtudiant->rowCount() === 0) { ?>
-                                                <h2 class="text-center erreur">Aucun étudiant ne shouaite rencontrée cette entreprise</h2>
+                                                <h2 class="text-center erreur">Aucun étudiant ne souhaite rencontrer cette entreprise</h2>
                                             <?php } else { ?>
                                                 <h2 class="text-center erreur">Le planning de l'entreprise <?php echo $ligne["name"]; ?> ne peut pas être généré : trop d’étudiants souhaitent la rencontrer ! Ci-dessous, la liste des étudiants intéressés par <?php echo $ligne["name"]; ?>.</h2>
                                             <?php }
@@ -531,7 +531,7 @@
                                     if ($stmtEtudiant->rowCount() === 0) {
                                         echo '<h2 class="text-center erreur">Aucun étudiant n\'a encore sélectionné cette entreprise</h2>';
                                     } else {
-                                        echo '<h2 class="student text-center">Voici la liste des étudiants shouaitant rencontrée cette entreprise :</h2>';
+                                        echo '<h2 class="student text-center">Voici la liste des étudiants souhaitant rencontrer cette entreprise :</h2>';
                                     }
                                     
                                     while ($ligneEtudiant = $stmtEtudiant->fetch()) {
