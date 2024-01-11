@@ -107,7 +107,7 @@
             <div class="row mx-1">
                 <div class="col-12">
                     <p><h2>Vos demandes de rendez-vous</h2></p>
-                    <p><?php echo $phase === 1 ? "Pour le moment, au terme de la phase de prise de rendez-vous, Eureka vous proposera un planning avec les entreprises suivantes. Vous pouvez tout à fait changer d’avis ! " : "La période de prise de rendez-vous est désormais terminé, vous pouvez seulement consulter vos souhaits le temps que le planning soit générée"; ?></P>
+                    <p><?php echo $phase === 1 ? "Au terme de la phase de prise de rendez-vous, Eureka vous proposera un planning avec les entreprises suivantes. Il est encore tout à fait temps de changer d’avis ! " : "La période de prise de rendez-vous est désormais terminé, vous pouvez seulement consulter vos souhaits le temps que le planning soit générée"; ?></P>
                 </div>
             </div>
             <?php
