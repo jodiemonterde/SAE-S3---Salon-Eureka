@@ -161,7 +161,7 @@
         $mdp = htmlspecialchars($mdp);
         $filiere = htmlspecialchars($filiere);
 
-        $username = $prenom.' '.$nom;
+        $username = $prenom.' '.strtoupper($nom);
         $stmt = $pdo->prepare("INSERT INTO User (username, password, responsibility, email)
                             VALUES (:username, :password, 'E', :email)");
         $stmt->bindParam(':username', $username);
@@ -185,7 +185,7 @@
         $email = htmlspecialchars($email);
         $mdp = htmlspecialchars($mdp);
 
-        $username = $prenom.' '.$nom;
+        $username = $prenom.' '.strtoupper($nom);
         $stmt = $pdo->prepare("INSERT INTO User (username, password, responsibility, email)
                             VALUES (:username, :password, 'G', :email)");
         $stmt->bindParam(':username', $username);
@@ -1178,6 +1178,51 @@
         $stmt = $pdo->prepare("UPDATE Field SET name = :name WHERE field_id = :field_id");
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':field_id', $field_id);
+        $stmt->execute();
+    }
+
+    function addAdmin($pdo, $prenom, $nom, $email, $mdp) {
+        $nom = htmlspecialchars($nom);
+        $prenom = htmlspecialchars($prenom);
+        $email = htmlspecialchars($email);
+        $mdp = htmlspecialchars($mdp);
+
+        $username = $prenom.' '.strtoupper($nom);
+        $stmt = $pdo->prepare("INSERT INTO User (username, password, responsibility, email)
+                            VALUES (:username, :mdp, 'A', :email)");
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':mdp', $mdp);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();         
+    }
+
+    function getInfosAdmins($pdo, $recherche) {      
+        $sql = "SELECT User.username, User.user_id
+                FROM User
+                WHERE User.responsibility = 'A'";
+        
+        
+        if ($recherche != null) {
+            $sql.= " AND Company.name LIKE :recherche";
+        }
+
+        $sql .= " ORDER BY User.username";
+
+        $stmt = $pdo->prepare($sql);
+        
+        if ($recherche != null) {
+            $stmt->bindValue(':recherche', '%' . $recherche . '%');
+        }
+
+        $stmt->execute();
+        return $stmt;
+    }
+
+    function deleteAdmin($pdo, $user_id) {
+        $stmt = $pdo->prepare("DELETE 
+                               FROM User
+                               WHERE User.user_id = :user_id;");
+        $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
     }
 ?>
