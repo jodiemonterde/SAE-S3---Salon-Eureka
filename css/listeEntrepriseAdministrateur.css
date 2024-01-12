@@ -176,7 +176,7 @@ p {
   
 .buttonToCheck input[type="checkbox"]:checked ~ .icon-box {
     background-color: #8B2D2D;
-    color: black;
+    color: white;
 }
 .buttonToCheck input[type="checkbox"]:checked ~ .icon-box:hover {
     background-color: #A03939;

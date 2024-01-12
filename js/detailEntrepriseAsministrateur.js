@@ -1,5 +1,13 @@
 // Déclarez une variable globale pour suivre le nombre d'intervenants
 var numeroIntervenant = 2;
+var btn = document.getElementById("ajout"); 
+
+btn.addEventListener("click", test()); 
+
+function test() { 
+    var myModal = bootstrap.Modal.getInstance(document.getElementById("modalAddCompany")); 
+    myModal.handleUpdate();
+}
 
 function ajouterIntervenant(event) {
     // Empêcher l'envoi automatique du formulaire
@@ -9,8 +17,7 @@ function ajouterIntervenant(event) {
     var intervenantDiv = document.getElementById('intervenantTemplate').cloneNode(true);
     let trash = intervenantDiv.firstElementChild.firstElementChild.querySelector('.trash');
     trash.removeAttribute('hidden');
-    var myModal = bootstrap.Modal.getInstance(document.getElementById("modalAddCompany")); 
-    myModal.handleUpdate();
+    
     // Mettre à jour les IDs et les noms des champs dans le nouveau div
     mettreAJourIDs(intervenantDiv);
 
