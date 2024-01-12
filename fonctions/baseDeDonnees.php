@@ -1225,4 +1225,11 @@
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
     }
-?>
+
+    function getDatePeriodEnd($pdo){
+        $reponse = $pdo->query("SET lc_time_names = 'fr_FR'");
+        $maRequete=$pdo->prepare('SELECT DATE_FORMAT(wish_period_end, "%e %M %Y") as dateFin FROM Meeting');
+        $maRequete->execute();
+        return $maRequete;
+    }
+?> 

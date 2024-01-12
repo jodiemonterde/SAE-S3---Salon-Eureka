@@ -98,8 +98,12 @@
         <div class="container mt-2">
             <div class="row d-flex align-items-center h-100">
                 <div class="col-12 col-md-6">
+                    <?php 
+                        $date = getDatePeriodEnd($pdo);
+                        $dateFinSouhait = $date->fetch();
+                    ?>
                     <h2>Prenez rendez-vous avec les entreprises qui vous correspondent.</h2>
-                    <p>Choisissez toutes les entreprises que vous souhaitez rencontrer au salon Eureka et prenez rendez-vous en un clic ! Dès le XX mois, vous pourrez venir consulter votre emploi du temps pour le salon créée à partir de vos demandes de rendez-vous. Si vous souhaitez annuler l'un de vos rendez-vous, il suffit de cliquer à nouveau.</p>
+                    <p>Choisissez toutes les entreprises que vous souhaitez rencontrer au salon Eureka et prenez rendez-vous en un clic ! Dès le <?php  echo $dateFinSouhait["dateFin"]; ?>, vous pourrez venir consulter votre emploi du temps pour le salon créée à partir de vos demandes de rendez-vous. Si vous souhaitez annuler l'un de vos rendez-vous, il suffit de cliquer à nouveau.</p>
                 </div>
                 <form action="listeEntreprises.php" method="post" class="col-12 col-md-6 my-2">
                     <div class="row">
