@@ -936,13 +936,14 @@
         $stmt2 = $pdo->prepare("INSERT INTO AssignmentUser (user_id, field_id)
                             VALUES (:user_id, :field_id)");
         foreach ($etudiants as $etudiant) {
-            $stmt->bindParam(':username', $etudiant[0]);
-            $stmt->bindParam(':email', $etudiant[1]);
-            $stmt->bindParam(':password', $etudiant[2]);
+            $username = $etudiant[1] . ' ' . strtoupper($etudiant[0]);
+            $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':email', $etudiant[2]);
+            $stmt->bindParam(':password', $etudiant[3]);
             $stmt->execute();
             $user_id = $pdo->lastInsertId();
             $stmt2->bindParam(':user_id', $user_id);
-            $stmt2->bindParam(':field_id', $filieres[$etudiant[3]]);
+            $stmt2->bindParam(':field_id', $filieres[$etudiant[4]]);
             $stmt2->execute();
         }
         $pdo->commit();

@@ -14,6 +14,7 @@
     $stmt = getFields($pdo);
     while ($ligne = $stmt->fetch())  {
         $filieres[$ligne["name"]] = $ligne["field_id"];
+        
     }
     if(isset($_FILES['file'])) {
         $_SESSION["reponse import"] = importerEtudiants($_FILES['file']['tmp_name'], $filieres, $pdo);
