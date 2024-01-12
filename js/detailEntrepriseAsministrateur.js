@@ -1,13 +1,5 @@
 // Déclarez une variable globale pour suivre le nombre d'intervenants
 var numeroIntervenant = 2;
-var btn = document.getElementById("ajout"); 
-
-btn.addEventListener("click", test()); 
-
-function test() { 
-    var myModal = bootstrap.Modal.getInstance(document.getElementById("modalAddCompany")); 
-    myModal.handleUpdate();
-}
 
 function ajouterIntervenant(event) {
     // Empêcher l'envoi automatique du formulaire

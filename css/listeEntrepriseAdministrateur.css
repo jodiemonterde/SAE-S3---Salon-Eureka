@@ -192,6 +192,14 @@ p {
     font-size: 1.5em;
 }
 
+.navigue {
+    overflow-y: scroll; /* Add the ability to scroll */
+}
+  
+.navigue::-webkit-scrollbar {
+    display: none;
+}
+
 .icon-title {
     margin-bottom: 0.5em;
     background-color: white;
