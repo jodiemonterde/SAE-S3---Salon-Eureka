@@ -86,7 +86,7 @@
                             <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeEtudiants.php"> Étudiants </a>
                         </li>
                         <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block lien_inactif">
-                            <!-- Si sur la liste des gestionnaires, mettre en actif et lien_inactif -->
+                            <!-- Si sur la liste des administrateurs, mettre en actif et lien_inactif -->
                             <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"> Administrateurs </a>
                         </li>
                         <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block">
@@ -139,12 +139,12 @@
                     Etudiants
                     </a>
                 </li>
-                <!-- Si sur la liste des gestionnaires, mettre le texte en actif -->
+                <!-- Si sur la liste des administrateurs, mettre le texte en actif -->
                 <li class="nav-item nav-item-bas d-flex flex-column text-center actif_bas_texte actif_bas_texte_admin">
-                    <!-- Si sur la liste des gestionnaires, mettre l'icône en actif et lien_inactif -->
+                    <!-- Si sur la liste des administrateurs, mettre l'icône en actif et lien_inactif -->
                     <a class="d-flex justify-content-center actif_bas_icone lien_barre_basse lien_barre_basse_admin">
-                        <!-- Si sur la liste des gestionnaires, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                        <img src="../../ressources/icone_gestionnaire_white.svg" alt="Liste des gestionnaires" class="icone_admin">
+                        <!-- Si sur la liste des administrateurs, mettre l'icône blanche, sinon mettre l'icône en noir -->
+                        <img src="../../ressources/icone_gestionnaire_white.svg" alt="Liste des administrateurs" class="icone_admin">
                     </a>
                     Admins
                 </li>
@@ -178,12 +178,12 @@
         <div class="row d-flex align-items-center h-100">
             <div class="col-12 col-md-6">
                 <h2>Liste des administrateurs</h2>
-                <p>Voici tous les administrateurs du forum Eureka. Cliquez sur l’un des administrateurs pour pouvoir modifier son mot de passe, ou le supprimer.</p>
+                <p>Voici tous les administrateurs du forum Eureka. Cliquez sur l’un des administrateurs pour pouvoir modifier son mot de passe, ou le supprimer. Vous ne pouvez pas vous supprimer vous-même ! De plus, s'il ne reste qu'un seul administrateur, il est impossible de le supprimer. En effet, il est primordial qu'il reste à minima un administrateur pour gérer le site. Sans cela, la partie administrateur sera bloquée.</p>
             </div>
             <form action="listeAdministrateurs.php" method="post" class="col-12 col-md-6 my-2">
                 <div class="row">
                     <div class="col-8">
-                        <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher un gestionnaire" class="zoneText"/>    
+                        <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher un administrateur" class="zoneText"/>    
                     </div>
                     <div class="col-4">
                         <input type="submit" class="bouton" value="Rechercher"/>
@@ -207,11 +207,11 @@
                     <h2>Informations sur l'administrateur</h2>
                     <form action="listeAdministrateurs.php" method="post">
                         <label for="email" class="modalLabel mb-0 mt-2">Adresse mail / Identifiant</label>
-                        <input class="zoneText" type="email" name="email" placeholder="Saisir l'adresse mail du gestionnaire" required/>
-                        <label for="prenomGestionnaire" class="modalLabel mb-0 mt-2">Prénom</label>
-                        <input class="zoneText" type="text" name="prenom" placeholder="Saisir le prénom du gestionnaire" required/>
+                        <input class="zoneText" type="email" name="email" placeholder="Saisir l'adresse mail de l'administrateur" required/>
+                        <label for="prenom" class="modalLabel mb-0 mt-2">Prénom</label>
+                        <input class="zoneText" type="text" name="prenom" placeholder="Saisir le prénom de l'administrateur" required/>
                         <label for="nom" class="modalLabel mb-0 mt-2">Nom</label>
-                        <input class="zoneText" type="text" name="nom" placeholder="Saisir le nom du gestionnaire" required/>
+                        <input class="zoneText" type="text" name="nom" placeholder="Saisir le nom de l'administrateur" required/>
                         <p class="modalLabel mb-0 mt-2">Mot de passe (8 caractères minimum dont au moins un symbole et un chiffre - à transmettre à l'administrateur !)</p>
                         <input class="zoneText mb-3" type="text" name="password" placeholder="Saisir le mot de passe" pattern="^(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$" required/>
                         <div class="row mt-3">
@@ -228,15 +228,7 @@
         </div>
 
         <!-- Accordéon Bootstrap -->
-        <div class="accordion" id="listeAdmins">
-        <?php
-            if (empty($_SESSION['filtre'])) {
-                echo '<p>Aucune filière sélectionnée. Veuillez choisir au moins une filière.</p>';
-            } elseif ($stmt->rowCount() === 0) {
-                echo '<p>Aucun résultat trouvé.</p>';
-            } else {
-                while ($ligne = $stmt->fetch()) { 
-        ?>
+        <?php while ($ligne = $stmt->fetch()) { ?>
         <div class="accordion-item my-3">
             <h2 class="accordion-header" id="heading<?php echo $ligne['user_id']?>">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $ligne['user_id']?>" aria-expanded="false" aria-controls="collapse<?php echo $ligne['user_id']?>">
@@ -251,10 +243,14 @@
                 <div class="accordion-body pb-1 pt-0">
                     <div class="row m-0">
                         <div class="row my-3">
-                            <div class="col-md-6 py-2">
-                                <button class="boutonNegatif" data-bs-toggle="modal" data-bs-target="#modalDeleteAdmin<?php echo $ligne['user_id']; ?>">Supprimer</button>
-                            </div>
-                            <div class="col-md-6 py-2">
+                            <?php $taille_colonne = '';
+                            if ($ligne['user_id'] != $_SESSION['idUtilisateur']) { ?> 
+                                <div class="col-md-6 py-2">
+                                    <button class="boutonNegatif" data-bs-toggle="modal" data-bs-target="#modalDeleteAdmin<?php echo $ligne['user_id']; ?>">Supprimer</button>
+                                </div>
+                                <?php $taille_colonne = 'col-md-6';
+                            } ?>
+                            <div class="<?php echo $taille_colonne ?> py-2">
                                 <button class="bouton col-md-6" data-bs-toggle="modal" data-bs-target="#modalModifyPassword<?php echo $ligne['user_id']; ?>">Modifier le mot de passe</button>
                             </div>
                         </div>
@@ -312,8 +308,7 @@
                 </div>
             </div>
         </div>
-        <?php   } 
-            } ?>
+        <?php } ?>
     </div>
     <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">

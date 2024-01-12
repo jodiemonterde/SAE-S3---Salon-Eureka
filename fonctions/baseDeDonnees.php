@@ -1123,11 +1123,19 @@
     }
 
     function deleteAdmin($pdo, $user_id) {
-        $stmt = $pdo->prepare("DELETE 
+        $pdo->beginTransaction();
+        $stmt = $pdo->prepare("SELECT * 
                                FROM User
-                               WHERE User.user_id = :user_id;");
-        $stmt->bindParam(':user_id', $user_id);
-        $stmt->execute();
+                               WHERE User.responsibility = 'A';");
+        $stmt->execute();                       
+        if ($stmt->rowCount() > 1) {
+            $stmt = $pdo->prepare("DELETE 
+                                FROM User
+                                WHERE User.user_id = :user_id;");
+            $stmt->bindParam(':user_id', $user_id);
+            $stmt->execute();
+        }
+        $pdo->commit();
     }
 
     function checkImage($logo, $nom) {
