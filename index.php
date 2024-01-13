@@ -44,13 +44,13 @@
             <div class="row">
                 <div class="col-12 p-2">
                     <h2> Eureka, c'est quoi ? </h2>
-                    <p> Eurêka est un salon organisé par l’IUT de Rodez afin de faciliter les échanges entre les étudiants des différentes filières de l'IUT et les entreprises. Ce salon regroupe différentes entreprises de l'Aveyron et des départements limitrophes qui sont à la recherche d'alternants. Le salon Eurêka permet aux étudiants de l'IUT en recherche d'une alternance de rencontrer et d'échanger avec des entreprises qui sont à la recherche d'alternants dans des domaines qui touchent leurs filières. </p>
+                    <p class="fs-5"> Eurêka est un salon organisé par l’IUT de Rodez afin de faciliter les échanges entre les étudiants des différentes filières de l'IUT et les entreprises. Ce salon regroupe différentes entreprises de l'Aveyron et des départements limitrophes qui sont à la recherche d'alternants. Le salon Eurêka permet aux étudiants de l'IUT en recherche d'une alternance de rencontrer et d'échanger avec des entreprises qui sont à la recherche d'alternants dans des domaines qui touchent leurs filières. </p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 p-2">
                     <h2> Participer au salon </h2>
-                    <p> Vous êtes une entreprise de l'Aveyron ou des départements limitrophes ? <br> Vous êtes à la recherche de votre futur alternant en informatique, gestion, droit, qualité, logistique, communication ou maintenance de l'industrie ? Alors le salon Eurêka est fait pour vous ! <br> Si vous souhaitez participer à ce salon, merci de bien vouloir contacter l’IUT de Rodez par téléphone (05 65 77 10 80) ou via le site de l’IUT.</p>
+                    <p class="fs-5"> Vous êtes une entreprise de l'Aveyron ou des départements limitrophes ? <br> Vous êtes à la recherche de votre futur alternant en informatique, gestion, droit, qualité, logistique, communication ou maintenance de l'industrie ? Alors le salon Eurêka est fait pour vous ! <br> Si vous souhaitez participer à ce salon, merci de bien vouloir contacter l’IUT de Rodez par téléphone (05 65 77 10 80) ou via le site de l’IUT.</p>
                 </div>
             </div>
         </div>

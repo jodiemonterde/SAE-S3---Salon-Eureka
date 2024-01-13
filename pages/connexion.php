@@ -38,8 +38,9 @@
             $info = infoUtilisateur($pdo, htmlspecialchars($_POST["motDePasse"]), htmlspecialchars($_POST["identifiant"]));
             $ligne = $info->fetch();
             $_SESSION['idUtilisateur'] = $ligne['user_id'];
-            $_SESSION['type_utilisateur'] = $ligne['responsibility'];	
-            $_SESSION['nom_utilisateur'] = $ligne['username'];
+            $_SESSION['type_utilisateur'] = $ligne['responsibility'];
+            $_SESSION['prenom_utilisateur'] = $ligne['username'];	
+            $_SESSION['nom_utilisateur'] = $ligne['nom'];
         }
 
         if($_SESSION['connexion']==true){

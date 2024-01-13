@@ -58,7 +58,7 @@
                         </li>
                         <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <?php echo htmlspecialchars($_SESSION['nom_utilisateur'])?>
+                                <?php echo $_SESSION['prenom_utilisateur'] . ' ' .$_SESSION['nom_utilisateur']; ?>
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li> <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deconnexion"> Se déconnecter </a> </li>

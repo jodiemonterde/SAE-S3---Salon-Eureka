@@ -16,7 +16,7 @@
     function verifUtilisateur($pdo, $motDepasse, $identifiant){
         try{ 
 			$connecte=false;
-			$maRequete = $pdo->prepare("SELECT user_id, username, password from User where email = :leLogin and password = :lePWD");
+			$maRequete = $pdo->prepare("SELECT user_id, username, nom, password from User where email = :leLogin and password = :lePWD");
 			$maRequete->bindParam(':leLogin', $identifiant);
 			$maRequete->bindParam(':lePWD', $motDepasse);
 			if ($maRequete->execute()) {
@@ -34,7 +34,7 @@
 
     function infoUtilisateur($pdo, $motDepasse, $identifiant){
         try{ 
-			$maRequete = $pdo->prepare("SELECT user_id, responsibility, username from User where email = :leLogin and password = :lePWD");
+			$maRequete = $pdo->prepare("SELECT user_id, responsibility, username, nom FROM User WHERE email = :leLogin AND password = :lePWD");
 			$maRequete->bindParam(':leLogin', $identifiant);
 			$maRequete->bindParam(':lePWD', $motDepasse);
 			$maRequete->execute();
@@ -106,11 +106,12 @@
                 LEFT JOIN WishList
                 ON Company.company_id = WishList.company_id
                 AND AssignmentUser.user_id = WishList.user_id
-                WHERE AssignmentUser.user_id = :user_id
-                ORDER BY name");
+                WHERE AssignmentUser.user_id = :user_id ");
         if ($recherche != null) {
-            $sql.= " AND Company.name LIKE :recherche";
+            $sql.= " AND Company.name LIKE :recherche ";
         }
+
+        $sql .= "ORDER BY Company.name";
         $stmt = $pdo->prepare($sql);
         
         if ($recherche != null) {
@@ -155,16 +156,16 @@
     }
 
     function addNewStudent($pdo, $prenom, $nom, $email, $mdp, $filiere) {
-        $nom = htmlspecialchars($nom);
+        $nom = htmlspecialchars(strtoupper($nom));
         $prenom = htmlspecialchars($prenom);
         $email = htmlspecialchars($email);
         $mdp = htmlspecialchars($mdp);
         $filiere = htmlspecialchars($filiere);
 
-        $username = $prenom.' '.strtoupper($nom);
-        $stmt = $pdo->prepare("INSERT INTO User (username, password, responsibility, email)
-                            VALUES (:username, :password, 'E', :email)");
-        $stmt->bindParam(':username', $username);
+        $stmt = $pdo->prepare("INSERT INTO User (username, nom, password, responsibility, email)
+                            VALUES (:prenom, :nom, :password, 'E', :email)");
+        $stmt->bindParam(':prenom', $prenom);
+        $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':password', $mdp);
         $stmt->bindParam(':email', $email);
         $stmt->execute(); 
@@ -180,15 +181,15 @@
     }
 
     function addNewSupervisor($pdo, $prenom, $nom, $email, $mdp, $filiere) {
-        $nom = htmlspecialchars($nom);
+        $nom = htmlspecialchars(strtoupper($nom));
         $prenom = htmlspecialchars($prenom);
         $email = htmlspecialchars($email);
         $mdp = htmlspecialchars($mdp);
 
-        $username = $prenom.' '.strtoupper($nom);
-        $stmt = $pdo->prepare("INSERT INTO User (username, password, responsibility, email)
-                            VALUES (:username, :password, 'G', :email)");
-        $stmt->bindParam(':username', $username);
+        $stmt = $pdo->prepare("INSERT INTO User (username, nom, password, responsibility, email)
+                            VALUES (:prenom, :nom, :password, 'G', :email)");
+        $stmt->bindParam(':prenom', $prenom);
+        $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':password', $mdp);
         $stmt->bindParam(':email', $email);
         $stmt->execute(); 
@@ -317,7 +318,7 @@
             return null;
         }
     
-        $sql = "SELECT u.username, f.name AS filiere, COUNT(w.company_id) AS nbSouhait, u.user_id
+        $sql = "SELECT u.username, u.nom, f.name AS filiere, COUNT(w.company_id) AS nbSouhait, u.user_id
                 FROM User u
                 JOIN AssignmentUser au
                 ON u.user_id = au.user_id
@@ -327,13 +328,14 @@
                 ON u.user_id = w.user_id
                 WHERE u.responsibility = 'E'
                 AND f.field_id IN (:fields)
-                GROUP BY u.username, filiere";
+                GROUP BY u.nom, u.username, filiere";
     
         if ($recherche != null) {
-            $sql .= " HAVING u.username LIKE :recherche";
+            $sql .= " HAVING u.username LIKE :recherche
+                      OR u.nom LIKE :recherche";
         }
     
-        $sql .= " ORDER BY u.username";
+        $sql .= " ORDER BY u.nom";
     
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':fields', $field_ids_str);
@@ -435,7 +437,7 @@
             return null;
         }
 
-        $sql = "SELECT u.username, f.name AS filiere, COUNT(w.company_id) AS nbSouhait, u.user_id
+        $sql = "SELECT u.username, u.nom, f.name AS filiere, COUNT(w.company_id) AS nbSouhait, u.user_id
                 FROM User u
                 JOIN AssignmentUser au
                 ON u.user_id = au.user_id
@@ -445,14 +447,15 @@
                 ON u.user_id = w.user_id
                 WHERE u.responsibility = 'E'
                 AND f.field_id IN ($field_ids_str)
-                GROUP BY u.username, filiere";
+                GROUP BY u.nom, u.username, filiere";
 
         if ($recherche != null) {
-            $sql .= " HAVING u.username LIKE :recherche";
+            $sql .= " HAVING u.nom LIKE :recherche
+                      OR u.username LIKE :recherche";
         }
 
         if ($sort == "default" || $sort == "alpha") { 
-            $sql .= " ORDER BY u.username";
+            $sql .= " ORDER BY u.nom";
         } else if ($sort == "croissant") {
             $sql .= " ORDER BY nbSouhait";
         } else if ($sort == "decroissant") {
@@ -483,7 +486,7 @@
         
         $parametersAsQuestionMarks = implode(',', array_fill(0, count($parameters), '?'));
         
-        $sql = "SELECT u.username, GROUP_CONCAT(f.name ORDER BY f.name SEPARATOR ', ') AS filieres, u.user_id
+        $sql = "SELECT u.username, u.nom, GROUP_CONCAT(f.name ORDER BY f.name SEPARATOR ', ') AS filieres, u.user_id
                 FROM User u
                 JOIN AssignmentUser au 
                 ON u.user_id = au.user_id
@@ -500,17 +503,19 @@
                     AND f.field_id IN ($parametersAsQuestionMarks)
                 ) AS filtered_users 
                 ON u.user_id = filtered_users.user_id
-                GROUP BY u.username, u.user_id";
+                GROUP BY u.nom, u.username, u.user_id";
         
         
         if ($recherche != null) {
-            $sql .= " HAVING u.username LIKE ?";
+            $sql .= " HAVING u.nom LIKE ?
+                      OR u.username LIKE ?";
         }
 
-        $sql .= " ORDER BY u.username";
+        $sql .= " ORDER BY u.nom";
         $stmt = $pdo->prepare($sql);
 
         if ($recherche != null) {
+            array_push($parameters,'%' . $recherche . '%');
             array_push($parameters,'%' . $recherche . '%');
         }
         
@@ -764,7 +769,7 @@
     }
 
     function getAppointmentPerSpeaker($pdo, $speaker_id) {
-        $stmt = $pdo->prepare("SELECT TIME_FORMAT(app.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(app.start, app.duration), '%H:%i') as end, us.username, fie.name
+        $stmt = $pdo->prepare("SELECT TIME_FORMAT(app.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(app.start, app.duration), '%H:%i') as end, us.username, us.nom, fie.name
                                 FROM Appointment app
                                 JOIN User us
                                 ON app.user_id = us.user_id
@@ -779,7 +784,7 @@
     }
 
     function getStudentsPerCompanyWishList($pdo, $company_id) {
-        $stmt = $pdo->prepare("SELECT Field.name, User.username
+        $stmt = $pdo->prepare("SELECT Field.name, User.nom, User.username
                             FROM Company
                             JOIN WishList
                             ON Company.company_id = WishList.company_id
@@ -799,7 +804,7 @@
         if ($isExcluded == 1) {
             return getStudentsPerCompanyWishList($pdo, $company_id);
         } else {
-            $stmt = $pdo->prepare("SELECT Field.name, User.username, TIME_FORMAT(Appointment.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(Appointment.start, Appointment.duration), '%H:%i') as duration
+            $stmt = $pdo->prepare("SELECT Field.name, User.username, User.nom, TIME_FORMAT(Appointment.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(Appointment.start, Appointment.duration), '%H:%i') as duration
                                 FROM Company
                                 JOIN Speaker 
                                 ON Company.company_id = Speaker.company_id
@@ -900,7 +905,7 @@
     }
 
     function getStudentsPerCompany($pdo, $company_id) {
-        $stmt = $pdo->prepare("SELECT Field.name, User.username
+        $stmt = $pdo->prepare("SELECT Field.name, User.username, User.nom
                                FROM Company
                                JOIN WishList
                                ON WishList.company_id = Company.company_id
@@ -931,13 +936,15 @@
 
     function inserer_etudiants($pdo, $etudiants, $filieres) {
         $pdo->beginTransaction();
-        $stmt = $pdo->prepare("INSERT INTO User (username, email, password, responsibility)
-                            VALUES (:username, :email, :password, 'E')");
+        $stmt = $pdo->prepare("INSERT INTO User (username, nom,  email, password, responsibility)
+                            VALUES (:prenom, :nom, :email, :password, 'E')");
         $stmt2 = $pdo->prepare("INSERT INTO AssignmentUser (user_id, field_id)
                             VALUES (:user_id, :field_id)");
         foreach ($etudiants as $etudiant) {
-            $username = $etudiant[1] . ' ' . strtoupper($etudiant[0]);
-            $stmt->bindParam(':username', $username);
+            $etudiant[0] = strtoupper($etudiant[0]);
+
+            $stmt->bindParam(':prenom', $etudiant[1]);
+            $stmt->bindParam(':nom', $etudiant[0]);
             $stmt->bindParam(':email', $etudiant[2]);
             $stmt->bindParam(':password', $etudiant[3]);
             $stmt->execute();
@@ -974,11 +981,11 @@
     }
 
     function getStudentName($pdo, $user_id){
-        $maRequete = $pdo->prepare("SELECT username FROM User WHERE user_id = :user_id");
+        $maRequete = $pdo->prepare("SELECT username, nom FROM User WHERE user_id = :user_id");
         $maRequete->bindParam(':user_id', $user_id);
         $maRequete->execute();
         while($row = $maRequete->fetch()){
-            $res = $row["username"];
+            $res = $row["prenom"] . ' ' . $row['nom'];
         }
         return $res;
     }
@@ -990,18 +997,18 @@
     }
 
     function getStudent($pdo){
-        $maRequete = $pdo->prepare("SELECT user_id,username FROM User WHERE responsibility = 'E'");
+        $maRequete = $pdo->prepare("SELECT user_id, username, nom FROM User WHERE responsibility = 'E'");
         $maRequete->execute();
         return $maRequete;
     }
     
     function getStudentsWithMeeting($pdo){
-        $maRequete = $pdo->prepare("SELECT DISTINCT User.user_id, User.username FROM User JOIN WishList ON WishList.user_id = User.user_id WHERE responsibility = 'E' ORDER BY username;");
+        $maRequete = $pdo->prepare("SELECT DISTINCT User.user_id, User.username, User.nom FROM User JOIN WishList ON WishList.user_id = User.user_id WHERE responsibility = 'E' ORDER BY nom;");
         $maRequete->execute();
         return $maRequete;
     }
     function studentByUnlistedCompany($pdo, $company_id) {
-        $requete = $pdo-> prepare("SELECT u.username , f.name
+        $requete = $pdo-> prepare("SELECT u.username, u.nom , f.name
                                    FROM Field f
                                    JOIN AssignmentUser a on f.field_id = a.field_id
                                    JOIN User u on a.user_id = u.user_id
@@ -1087,31 +1094,32 @@
     }
 
     function addAdmin($pdo, $prenom, $nom, $email, $mdp) {
-        $nom = htmlspecialchars($nom);
+        $nom = htmlspecialchars(strtoupper($nom));
         $prenom = htmlspecialchars($prenom);
         $email = htmlspecialchars($email);
         $mdp = htmlspecialchars($mdp);
 
-        $username = $prenom.' '.strtoupper($nom);
-        $stmt = $pdo->prepare("INSERT INTO User (username, password, responsibility, email)
-                            VALUES (:username, :mdp, 'A', :email)");
-        $stmt->bindParam(':username', $username);
+        $stmt = $pdo->prepare("INSERT INTO User (username, nom, password, responsibility, email)
+                            VALUES (:prenom, :nom, :mdp, 'A', :email)");
+        $stmt->bindParam(':prenom', $prenom);
+        $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':mdp', $mdp);
         $stmt->bindParam(':email', $email);
         $stmt->execute();         
     }
 
     function getInfosAdmins($pdo, $recherche) {      
-        $sql = "SELECT User.username, User.user_id
+        $sql = "SELECT User.username, User.nom, User.user_id
                 FROM User
                 WHERE User.responsibility = 'A'";
         
         
         if ($recherche != null) {
-            $sql.= " AND Company.name LIKE :recherche";
+            $sql.= " AND User.username LIKE :recherche
+                     OR User.nom LIKE :recherche";
         }
 
-        $sql .= " ORDER BY User.username";
+        $sql .= " ORDER BY User.nom";
 
         $stmt = $pdo->prepare($sql);
         
@@ -1172,7 +1180,6 @@
         $cleanedFileName = substr($cleanedFileName, 0, 80);
         $newFileName = $cleanedFileName . '_' . uniqid() . '.' . $imageFileType;
         $targetFile = $targetDirectory . $newFileName;
-        var_dump($targetFile);
         $uploadOk = 1;
     
         // Vérifier si le fichier existe déjà
