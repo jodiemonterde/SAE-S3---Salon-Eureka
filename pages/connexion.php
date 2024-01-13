@@ -39,7 +39,7 @@
             $ligne = $info->fetch();
             $_SESSION['idUtilisateur'] = $ligne['user_id'];
             $_SESSION['type_utilisateur'] = $ligne['responsibility'];
-            $_SESSION['prenom_utilisateur'] = $ligne['username'];	
+            $_SESSION['prenom_utilisateur'] = $ligne['firstname'];	
             $_SESSION['nom_utilisateur'] = $ligne['lastname'];
         }
 

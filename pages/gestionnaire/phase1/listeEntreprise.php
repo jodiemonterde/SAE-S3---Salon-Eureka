@@ -186,7 +186,7 @@
                             while ($ligneEtudiant = $stmtEtudiant->fetch()) {
                             ?>
                             <hr>
-                            <h2 class="student"><?php echo $ligneEtudiant["username"] . ' ' . $ligneEtudiant["lastname"]; ?></h2>
+                            <h2 class="student"><?php echo $ligneEtudiant["firstname"] . ' ' . $ligneEtudiant["lastname"]; ?></h2>
                             <p><?php echo $ligneEtudiant["name"]?></p>
                             <?php } ?>
                         </div>

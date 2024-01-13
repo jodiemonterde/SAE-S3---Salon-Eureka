@@ -518,7 +518,7 @@
                                             while ($ligneEtudiant = $stmtEtudiant->fetch()) { 
                                                 ?>
                                                 <hr>
-                                                <h2 class="student"><?php echo $ligneEtudiant["username"] . ' ' . $ligneEtudiant['lastname']?></h2>
+                                                <h2 class="student"><?php echo $ligneEtudiant["firstname"] . ' ' . $ligneEtudiant['lastname']?></h2>
                                                 <p><?php echo $ligneEtudiant["name"]?></p>
                                             <?php }
                                         } else { 
@@ -535,7 +535,7 @@
                                                 ?>
                                                 <hr>
                                                 <p class="text-center fw-bold fs-5"><?php echo $ligneEtudiant["start"].'-'.$ligneEtudiant["end"]?></p>
-                                                <h2 class="student"><?php echo $ligneEtudiant["username"]. ' ' . $ligneEtudiant['lastname']?></h2>
+                                                <h2 class="student"><?php echo $ligneEtudiant["firstname"]. ' ' . $ligneEtudiant['lastname']?></h2>
                                                 <p><?php echo $ligneEtudiant["name"]?></p>
                                             <?php } }  
                                         }
@@ -557,7 +557,7 @@
                                     while ($ligneEtudiant = $stmtEtudiant->fetch()) {
                                     ?>
                                     <hr>
-                                    <h2 class="student"><?php echo $ligneEtudiant["username"]. ' ' . $ligneEtudiant['lastname']?></h2>
+                                    <h2 class="student"><?php echo $ligneEtudiant["firstname"]. ' ' . $ligneEtudiant['lastname']?></h2>
                                     <p><?php echo $ligneEtudiant["name"]?></p>
                                     <?php } ?>
                                 <?php } ?>

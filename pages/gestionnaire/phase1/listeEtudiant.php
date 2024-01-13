@@ -188,7 +188,7 @@
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $ligne['user_id']?>" aria-expanded="false" aria-controls="collapse<?php echo $ligne['user_id']?>">
                     <div class="profil-det-img d-flex text-start">
                         <div class="pd listeEtudiant">
-                            <h2 class="title"><?php echo $ligne["username"] . ' ' . $ligne['lastname'];?></h2>
+                            <h2 class="title"><?php echo $ligne["firstname"] . ' ' . $ligne['lastname'];?></h2>
                             <?php echo $ligne["filiere"]?></br>
                             <span class="<?php echo $ligne["nbSouhait"] < 1 ? "erreur" : ""?>"> <?php echo $ligne["nbSouhait"]?> souhaits </span>
                         </div>

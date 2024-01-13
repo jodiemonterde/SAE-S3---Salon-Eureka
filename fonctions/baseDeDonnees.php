@@ -16,7 +16,7 @@
     function verifUtilisateur($pdo, $motDepasse, $identifiant){
         try{ 
 			$connecte=false;
-			$maRequete = $pdo->prepare("SELECT user_id, username, lastname, password from User where email = :leLogin and password = :lePWD");
+			$maRequete = $pdo->prepare("SELECT user_id, firstname, lastname, password from User where email = :leLogin and password = :lePWD");
 			$maRequete->bindParam(':leLogin', $identifiant);
 			$maRequete->bindParam(':lePWD', $motDepasse);
 			if ($maRequete->execute()) {
@@ -34,7 +34,7 @@
 
     function infoUtilisateur($pdo, $motDepasse, $identifiant){
         try{ 
-			$maRequete = $pdo->prepare("SELECT user_id, responsibility, username, lastname FROM User WHERE email = :leLogin AND password = :lePWD");
+			$maRequete = $pdo->prepare("SELECT user_id, responsibility, firstname, lastname FROM User WHERE email = :leLogin AND password = :lePWD");
 			$maRequete->bindParam(':leLogin', $identifiant);
 			$maRequete->bindParam(':lePWD', $motDepasse);
 			$maRequete->execute();
@@ -162,7 +162,7 @@
         $mdp = htmlspecialchars($mdp);
         $filiere = htmlspecialchars($filiere);
 
-        $stmt = $pdo->prepare("INSERT INTO User (username, lastname, password, responsibility, email)
+        $stmt = $pdo->prepare("INSERT INTO User (firstname, lastname, password, responsibility, email)
                             VALUES (:prenom, :nom, :password, 'E', :email)");
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':nom', $nom);
@@ -186,7 +186,7 @@
         $email = htmlspecialchars($email);
         $mdp = htmlspecialchars($mdp);
 
-        $stmt = $pdo->prepare("INSERT INTO User (username, lastname, password, responsibility, email)
+        $stmt = $pdo->prepare("INSERT INTO User (firstname, lastname, password, responsibility, email)
                             VALUES (:prenom, :nom, :password, 'G', :email)");
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':nom', $nom);
@@ -318,7 +318,7 @@
             return null;
         }
     
-        $sql = "SELECT u.username, u.lastname, f.name AS filiere, COUNT(w.company_id) AS nbSouhait, u.user_id
+        $sql = "SELECT u.firstname, u.lastname, f.name AS filiere, COUNT(w.company_id) AS nbSouhait, u.user_id
                 FROM User u
                 JOIN AssignmentUser au
                 ON u.user_id = au.user_id
@@ -328,10 +328,10 @@
                 ON u.user_id = w.user_id
                 WHERE u.responsibility = 'E'
                 AND f.field_id IN (:fields)
-                GROUP BY u.lastname, u.username, filiere";
+                GROUP BY u.lastname, u.firstname, filiere";
     
         if ($recherche != null) {
-            $sql .= " HAVING u.username LIKE :recherche
+            $sql .= " HAVING u.firstname LIKE :recherche
                       OR u.lastname LIKE :recherche";
         }
     
@@ -437,7 +437,7 @@
             return null;
         }
 
-        $sql = "SELECT u.username, u.lastname, f.name AS filiere, COUNT(w.company_id) AS nbSouhait, u.user_id
+        $sql = "SELECT u.firstname, u.lastname, f.name AS filiere, COUNT(w.company_id) AS nbSouhait, u.user_id
                 FROM User u
                 JOIN AssignmentUser au
                 ON u.user_id = au.user_id
@@ -447,11 +447,11 @@
                 ON u.user_id = w.user_id
                 WHERE u.responsibility = 'E'
                 AND f.field_id IN ($field_ids_str)
-                GROUP BY u.lastname, u.username, filiere";
+                GROUP BY u.lastname, u.firstname, filiere";
 
         if ($recherche != null) {
             $sql .= " HAVING u.lastname LIKE :recherche
-                      OR u.username LIKE :recherche";
+                      OR u.firstname LIKE :recherche";
         }
 
         if ($sort == "default" || $sort == "alpha") { 
@@ -486,7 +486,7 @@
         
         $parametersAsQuestionMarks = implode(',', array_fill(0, count($parameters), '?'));
         
-        $sql = "SELECT u.username, u.lastname, GROUP_CONCAT(f.name ORDER BY f.name SEPARATOR ', ') AS filieres, u.user_id
+        $sql = "SELECT u.firstname, u.lastname, GROUP_CONCAT(f.name ORDER BY f.name SEPARATOR ', ') AS filieres, u.user_id
                 FROM User u
                 JOIN AssignmentUser au 
                 ON u.user_id = au.user_id
@@ -503,12 +503,12 @@
                     AND f.field_id IN ($parametersAsQuestionMarks)
                 ) AS filtered_users 
                 ON u.user_id = filtered_users.user_id
-                GROUP BY u.lastname, u.username, u.user_id";
+                GROUP BY u.lastname, u.firstname, u.user_id";
         
         
         if ($recherche != null) {
             $sql .= " HAVING u.lastname LIKE ?
-                      OR u.username LIKE ?";
+                      OR u.firstname LIKE ?";
         }
 
         $sql .= " ORDER BY u.lastname";
@@ -769,7 +769,7 @@
     }
 
     function getAppointmentPerSpeaker($pdo, $speaker_id) {
-        $stmt = $pdo->prepare("SELECT TIME_FORMAT(app.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(app.start, app.duration), '%H:%i') as end, us.username, us.lastname, fie.name
+        $stmt = $pdo->prepare("SELECT TIME_FORMAT(app.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(app.start, app.duration), '%H:%i') as end, us.firstname, us.lastname, fie.name
                                 FROM Appointment app
                                 JOIN User us
                                 ON app.user_id = us.user_id
@@ -784,7 +784,7 @@
     }
 
     function getStudentsPerCompanyWishList($pdo, $company_id) {
-        $stmt = $pdo->prepare("SELECT Field.name, User.lastname, User.username
+        $stmt = $pdo->prepare("SELECT Field.name, User.lastname, User.firstname
                             FROM Company
                             JOIN WishList
                             ON Company.company_id = WishList.company_id
@@ -804,7 +804,7 @@
         if ($isExcluded == 1) {
             return getStudentsPerCompanyWishList($pdo, $company_id);
         } else {
-            $stmt = $pdo->prepare("SELECT Field.name, User.username, User.lastname, TIME_FORMAT(Appointment.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(Appointment.start, Appointment.duration), '%H:%i') as duration
+            $stmt = $pdo->prepare("SELECT Field.name, User.firstname, User.lastname, TIME_FORMAT(Appointment.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(Appointment.start, Appointment.duration), '%H:%i') as duration
                                 FROM Company
                                 JOIN Speaker 
                                 ON Company.company_id = Speaker.company_id
@@ -905,7 +905,7 @@
     }
 
     function getStudentsPerCompany($pdo, $company_id) {
-        $stmt = $pdo->prepare("SELECT Field.name, User.username, User.lastname
+        $stmt = $pdo->prepare("SELECT Field.name, User.firstname, User.lastname
                                FROM Company
                                JOIN WishList
                                ON WishList.company_id = Company.company_id
@@ -936,7 +936,7 @@
 
     function inserer_etudiants($pdo, $etudiants, $filieres) {
         $pdo->beginTransaction();
-        $stmt = $pdo->prepare("INSERT INTO User (username, lastname,  email, password, responsibility)
+        $stmt = $pdo->prepare("INSERT INTO User (firstname, lastname,  email, password, responsibility)
                             VALUES (:prenom, :nom, :email, :password, 'E')");
         $stmt2 = $pdo->prepare("INSERT INTO AssignmentUser (user_id, field_id)
                             VALUES (:user_id, :field_id)");
@@ -981,7 +981,7 @@
     }
 
     function getStudentName($pdo, $user_id){
-        $maRequete = $pdo->prepare("SELECT username, lastname FROM User WHERE user_id = :user_id");
+        $maRequete = $pdo->prepare("SELECT firstname, lastname FROM User WHERE user_id = :user_id");
         $maRequete->bindParam(':user_id', $user_id);
         $maRequete->execute();
         while($row = $maRequete->fetch()){
@@ -997,18 +997,18 @@
     }
 
     function getStudent($pdo){
-        $maRequete = $pdo->prepare("SELECT user_id, username, lastname FROM User WHERE responsibility = 'E'");
+        $maRequete = $pdo->prepare("SELECT user_id, firstname, lastname FROM User WHERE responsibility = 'E'");
         $maRequete->execute();
         return $maRequete;
     }
     
     function getStudentsWithMeeting($pdo){
-        $maRequete = $pdo->prepare("SELECT DISTINCT User.user_id, User.username, User.lastname FROM User JOIN WishList ON WishList.user_id = User.user_id WHERE responsibility = 'E' ORDER BY lastname;");
+        $maRequete = $pdo->prepare("SELECT DISTINCT User.user_id, User.firstname, User.lastname FROM User JOIN WishList ON WishList.user_id = User.user_id WHERE responsibility = 'E' ORDER BY lastname;");
         $maRequete->execute();
         return $maRequete;
     }
     function studentByUnlistedCompany($pdo, $company_id) {
-        $requete = $pdo-> prepare("SELECT u.username, u.lastname , f.name
+        $requete = $pdo-> prepare("SELECT u.firstname, u.lastname , f.name
                                    FROM Field f
                                    JOIN AssignmentUser a on f.field_id = a.field_id
                                    JOIN User u on a.user_id = u.user_id
@@ -1099,7 +1099,7 @@
         $email = htmlspecialchars($email);
         $mdp = htmlspecialchars($mdp);
 
-        $stmt = $pdo->prepare("INSERT INTO User (username, lastname, password, responsibility, email)
+        $stmt = $pdo->prepare("INSERT INTO User (firstname, lastname, password, responsibility, email)
                             VALUES (:prenom, :nom, :mdp, 'A', :email)");
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':nom', $nom);
@@ -1109,13 +1109,13 @@
     }
 
     function getInfosAdmins($pdo, $recherche) {      
-        $sql = "SELECT User.username, User.lastname, User.user_id
+        $sql = "SELECT User.firstname, User.lastname, User.user_id
                 FROM User
                 WHERE User.responsibility = 'A'";
         
         
         if ($recherche != null) {
-            $sql.= " AND User.username LIKE :recherche
+            $sql.= " AND User.firstname LIKE :recherche
                      OR User.lastname LIKE :recherche";
         }
 

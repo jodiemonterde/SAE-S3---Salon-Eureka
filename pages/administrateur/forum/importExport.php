@@ -346,7 +346,7 @@
                                                         echo ' selected';
                                                     }
                                                 ?>
-                                                    > <?php echo $row["username"];?> </option>
+                                                    > <?php echo $row["firstname"] . ' ' . $row['lastname'];;?> </option>
                                             <?php
                                                 }
                                             ?>
