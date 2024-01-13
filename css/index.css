@@ -8,52 +8,56 @@ body {
     margin: 0px !important;
 }
 
-.bouton-pc {
-    height: 50px;
-    width: 300px;
+
+
+@media screen and (min-width: 768px) {
+    .eureka-entete {
+        color: #FFFFFF;
+        font-size: 32px;
+        font-weight: 600;
+    }
+    .texte-bleu {
+        color: #39E2F8;
+        font-size: 64px;
+        font-weight: 900;
+    }
     
+    .texte-blanc {
+        color: #FFFFFF;
+        font-size: 24px;
+        font-weight: 700;
+    }
+    
+    .bouton-connexion {
+        height: 50px;
+        width: 300px;
+        
+    }
 }
+@media screen and (max-width: 768px) {
+    .eureka-entete {
+        color: #FFFFFF;
+        font-size: 24px;
+        font-weight: 600;
+    }
 
-.bouton-tel {
-    height: 40px;
-    width: 200px;
-    font-size: 14px;
-}
+    .texte-bleu {
+        color: #39E2F8;
+        font-size: 32px;
+        font-weight: 900;
+    }
 
-.texte-bleu-pc {
-    color: #39E2F8;
-    font-size: 64px;
-    font-weight: 900;
-}
+    .texte-blanc {
+        color: #FFFFFF;
+        font-size: 14px;
+        font-weight: 700;
+    }
 
-.texte-blanc-pc {
-    color: #FFFFFF;
-    font-size: 24px;
-    font-weight: 700;
-}
-
-.eureka-pc {
-    color: #FFFFFF;
-    font-size: 32px;
-    font-weight: 600;
-}
-
-.texte-bleu-tel {
-    color: #39E2F8;
-    font-size: 32px;
-    font-weight: 900;
-}
-
-.texte-blanc-tel {
-    color: #FFFFFF;
-    font-size: 14px;
-    font-weight: 700;
-}
-
-.eureka-tel {
-    color: #FFFFFF;
-    font-size: 24px;
-    font-weight: 600;
+    .bouton-connexion {
+        height: 40px;
+        width: 200px;
+        font-size: 14px;
+    }
 }
 
 hr {

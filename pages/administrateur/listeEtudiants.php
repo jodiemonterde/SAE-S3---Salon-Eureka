@@ -1,18 +1,27 @@
 <?php
     try {
+        // Démarrage d'une session
         session_start();
 
         // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
         $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
 
+
+        /* 
+         * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
+         * connecter à la base de donnée et interagir avec celle-ci.
+         */
         require("../../fonctions/baseDeDonnees.php");
         require("../../fonctions/fonctions.php");
-        $pdo = connecteBD();
+
+        $pdo = connecteBD(); // accès à la Base de données
 
         // $_SESSION['filtre'] est un tableau qui contient les id des filtres selectionnes
         if (!isset($_SESSION['filtre']) || $_SESSION['filtre'] == null) {
             $_SESSION['filtre'] = array();
         }
+
+        // Gère l'affichage des étudiants en fonction des filtres
         if (isset($_POST['nouveauFiltre'])) {
             if (in_array($_POST['nouveauFiltre'], $_SESSION['filtre'])) {
                 $index = array_search($_POST['nouveauFiltre'], $_SESSION['filtre']);
@@ -25,55 +34,68 @@
             exit();
         }
         
+        // Ajout d'un nouvel étudiant si le formulaire en question a été correctement rempli
         if (isset($_POST['nomEtudiant'])) {
             addNewStudent($pdo, $_POST['prenomEtudiant'], $_POST['nomEtudiant'], $_POST['emailEtudiant'], $_POST['motDePasseEtudiant'], $_POST['filiereEtudiant']);
             header("Location: listeEtudiants.php");
             exit();
         }
 
+        // Suppression d'un étudiant si le formulaire de suppression a été enclenché
         if (isset($_POST['supprimer'])) {
             deleteStudent($pdo, $_POST['supprimer']);
             header("Location: listeEtudiants.php");
             exit();
         }
 
+        // Modification du mot de passe d'un étudiant selon les données entrées dans le formulaire en question
         if (isset($_POST['modifyPassword'])) {
             modifyPassword($pdo, $_POST['modifyPassword'], $_POST['newPassword']);
             header("Location: listeEtudiants.php");
             exit();
         }
 
+        // Vérification de si le planning est généré ou pas
         $generated = isPlanningGenerated($pdo);
+
+        // Attribue comme valeur par défaut l'ordre alphabétique comme tri
         if (!isset($_SESSION['triPar'])) {
             $_SESSION['triPar'] = "alpha";
         }
 
+        // Change l'ordre d'affichage des étudiants selon l'option de tri choisie par l'utilisateur
         if (isset($_POST['triPar'])) {
             $_SESSION['triPar'] = $_POST['triPar'];
             header("Location: listeEtudiants.php");
             exit();
         }
 
+        // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un administrateur correctement identifié.
         if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
             header('Location: ../cnnexion.php');
             exit();
         }
 
-        $fields = getFields($pdo);
+        $fields = getFields($pdo); // Obtention de toutes les filières de la base de données
+        
+        // Permet d'attribuer à $fields toutes les filières trouvées dans la BD
         $tmp = [];
         while ($ligne = $fields->fetch()) {
             $tmp[$ligne['field_id']] = $ligne['name'];
         }
         $fields = $tmp;
+
+        // Obtention des étudiants selon les filtres (filières et recherche)
         $stmt = getInfoStudentsSort($pdo, $_SESSION['recherche'], $_SESSION['filtre'], $_SESSION['triPar']);
-    } catch (Exception $e) {
-        header("Location: ../cintenance.php");
+    } catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
+        header("Location: ./../maintenance.php");
         exit();
     }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
+        <!-- Métadonnées et liens vers les feuilles de style -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -84,10 +106,12 @@
         <link rel="stylesheet" href="../../css/all.css">
         <link rel="stylesheet" href="../../css/navbars.css">
         <link rel="stylesheet" href="../../css/filtre.css">
-        <title>Eureka - Liste des entreprises</title>
+
+        <title>Eurêka - Liste des étudiants</title>
     </head>
     <body>
-    <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
+        <!-- Navbar du haut -->
+        <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
             <div class="container-fluid h-100">
                 <div class="navbar-brand d-flex align-items-center h-100">
                     <img src="../../ressources/logo_black.svg" alt="Logo Eureka" class="logoDisplay me-2">
@@ -116,6 +140,7 @@
                             <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="forum/menu.php"> Forum </a>
                         </li>
                         <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
+                            <!-- Affichage du nom de l'utilisateur -->
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <?php echo $_SESSION['prenom_utilisateur'] . ' ' . $_SESSION['nom_utilisateur']?>
                             </a>
@@ -132,6 +157,8 @@
                 </div>
             </div>
         </nav>
+
+        <!-- Navbar du bas -->
         <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
         <div class="container-fluid">
             <ul class="navbar-nav w-100 justify-content-evenly">
@@ -191,12 +218,16 @@
             </ul>
         </div>
     </nav>
+
+    <!-- Container principal de la page --> 
     <div class="container mt-2">
         <div class="row d-flex align-items-center h-100">
             <div class="col-12 col-md-6">
                 <h2>Liste des étudiants</h2>
                 <p>Voici tous les étudiants inscrits au forum Eureka de cette année. Cliquez sur l’un d’eux pour voir la liste des entreprises auprès desquels il souhaite obtenir un rendez-vous ! Vous pouvez également créer un nouvel étudiant, en supprimer un ou modifier le mot de passe d'un étudiant.</p>
             </div>
+
+            <!-- Formulaire permettant d'entrer une recherche personnalisé qui filtrera l'affichage selon celle-ci -->
             <form action="listeEtudiants.php" method="post" class="col-12 col-md-6 my-2">
                 <div class="row">
                     <div class="col-12 col-md-7 p-0">
@@ -208,6 +239,8 @@
                 </div>
             </form>
         </div>
+
+        <!-- Boutons permettant le filtre des entreprises selon les filières -->
         <div class="container p-0">
             <div class="row">
                 <div class="col-12">
@@ -224,6 +257,8 @@
             </div> 
         </div>
         <hr class="m-0">
+
+        <!-- Formulaire permettant de trier les étudiants : par ordre alphabétique, par ordre de souhait croissant, par ordre de souhait décroissant -->
         <div class="d-flex flex-row-reverse">
             <form action="listeEtudiants.php" method="post">
                 <select id="triPar" name="triPar" class="form-control sort text-end" onchange="this.form.submit()">
@@ -234,11 +269,14 @@
                 </select>
             </form>
         </div>
+
+        <!-- Bouton qui ouvre une modale afin d'ajouter un nouvel étudiant -->
         <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalAddStudent" <?php echo $generated ? "disabled" : ""; ?>>
             <i class="fa-solid fa-plus text-left justify-content-center"></i>
             <h2 class="text-center m-2">Ajouter un(e) étudiant(e)</h2>
         </button>
 
+        <!-- Modale d'ajout d'un étudiant -->
         <div class="modal fade" id="modalAddStudent" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content  px-4 pb-4">
@@ -280,6 +318,8 @@
 
         <!-- Accordéon Bootstrap -->
         <div class="accordion" id="listeEntreprise">
+
+        <!-- Gestion de l'affichage en fonction des filtres sélectionnée et de la recherche saisie -->
         <?php
             if (empty($_SESSION['filtre'])) {
                 echo '<p>Aucune filière sélectionnée. Veuillez choisir au moins une filière.</p>';
@@ -288,6 +328,8 @@
             } else {
                 while ($ligne = $stmt->fetch()) { 
         ?>
+
+        <!-- Element de l'accordéon dépendant de la boucle while permettant d'afficher tous les étudiants. -->
         <div class="accordion-item my-3">
             <h2 class="accordion-header" id="heading<?php echo $ligne['user_id']?>">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $ligne['user_id']?>" aria-expanded="false" aria-controls="collapse<?php echo $ligne['user_id']?>">
@@ -305,12 +347,15 @@
                     <div class="row m-0">
                         <div class="row my-3">
                             <div class="col-md-6 py-2">
+                                <!-- Bouton de déclenchement de la modale permettant de supprimer un étudiant -->
                                 <button class="boutonNegatif" data-bs-toggle="modal" data-bs-target="#modalDeleteStudent<?php echo $ligne['user_id']; ?>">Supprimer</button>
                             </div>
                             <div class="col-md-6 py-2">
+                                <!-- Bouton de déclenchement de la modale permettant de modifier le mot de passe d'un gestionnaire -->
                                 <button class="bouton col-md-6" data-bs-toggle="modal" data-bs-target="#modalModifyStudentPassword<?php echo $ligne['user_id']; ?>">Modifier le mot de passe</button>
                             </div>
                         </div>
+                            <!-- Contenu de la modale permettant de supprimer un étudiant -->
                             <div class="modal fade" id="modalDeleteStudent<?php echo $ligne['user_id']; ?>" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                                     <div class="modal-content px-4 pb-4">
@@ -340,6 +385,7 @@
                                 </div>
                             </div>
 
+                            <!-- Contenu de la modale permettant de modifier le mot de passe d'un étudiant -->
                             <div class="modal fade" id="modalModifyStudentPassword<?php echo $ligne['user_id']; ?>" tabindex="-1" aria-labelledby="modifyStudentPasswordLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                                     <div class="modal-content px-4 pb-4">
@@ -366,22 +412,25 @@
                                 </div>
                             </div>
 
+                            <!-- Affichage du contenu de chaque item de l'accordéon dépendant de la phase et du fait que l'étudiant ait émis des souhaits ou non -->
                             <?php if ($ligne["nbSouhait"] < 1 && !$generated) {
                                 echo "<p class='erreur text-center'>Cet(te) étudiant(e) n'a pris aucun rendez-vous pour l'instant !</p>";
                             }
                             if (!$generated) {
                             try {
-                                $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']);
+                                $stmt2 = getEntreprisesPerStudent($pdo, $ligne['user_id']); // Obtention de la liste des entreprises que souhaite rencontrer cet étudiant
                             } catch (Exception $e) {
-                                redirect("../cintenance.php");
+                                redirect("./../maintenance.php"); // En cas d'erreur de connection à la BD, redirection vers la page de site en maintenance
                             }
-                            $rowNumber = 0;
+                            $rowNumber = 0; // Stocke le nombre de souhaits de cet étudiant
+                            // Affichage de toutes les entreprises que souhaite rencontrer l'étudiant
                             while ($ligne2 = $stmt2->fetch()) {
                                 $rowNumber++;
                                 echo '<hr>';
                                 ?> 
                                 <div>
                                     <div class="profil-det-img d-flex text-start">
+                                        <!-- Affichage du logo de l'entreprise s'il y en a un stocké dans la base de donnée, d'une image par défaut sinon -->
                                         <div class="dp"><img src="../../ressources/logosentreprises/<?php echo $ligne2["logo_file_name"] != "" ? $ligne2["logo_file_name"] : "no-photo.png"?>" alt="Logo de l'entreprise"></div>
                                         <div class="pd">
                                             <h2 class="title"><?php echo $ligne2["name"]?></h2>
@@ -393,14 +442,16 @@
                                     </div>
                                 </div>
                             <?php }
-                            } else {              
+                            } else { // Si le planning a déjà été généré             
                                 try {
-                                    $planning = planningPerUser($pdo, $ligne['user_id']);
-                                    $unlistedCompany = unlistedCompanyPerUser($pdo, $ligne['user_id']);
+                                    $planning = planningPerUser($pdo, $ligne['user_id']); // Obtention du planning de l'utilisateur
+                                    $unlistedCompany = unlistedCompanyPerUser($pdo, $ligne['user_id']); // Obtention des entreprises qui n'entre pas dans l'emploi du temps de cet étudiant
                                 } catch (Exception $e) {
-                                    redirect("../cintenance.php");
+                                    redirect("./../maintenance.php"); // Redirection vers la page de maintenance s'il y a eu une erreur lors de l'échange avec la base de données
                                 }
-                                if(Count($planning) > 0 || $unlistedCompany->rowCount() > 0){
+                                // Vérification que l'étudiant souhaite doit rencontrer au moins une entreprise
+                                if (Count($planning) > 0 || $unlistedCompany->rowCount() > 0) {
+                                    // Affichage de toutes les entreprises qui rentre dans le planning
                                     foreach ($planning as $rdv) {?>
                                         <div class="row mx-1">
                                             <div class="col-12">
@@ -410,6 +461,7 @@
                                             </div>
                                         </div>
                                     <?php }
+                                    // Puis de celle qui ne rentrent pas dans le planning - s'il y en a uniquement
                                     if ($unlistedCompany->rowCount() > 0) {?>
                                         <div class="row mx-1">
                                             <div class="col-12">
@@ -430,11 +482,11 @@
                                     <div class="row mx-1 fixed-bottom barre-bas">
                                     </div>
                                 <?php
-                                } else {
+                                } else { // Affichage d'un message si l'étudiant n'a pris aucun rendez-vous.
                                 ?>
                                     <div class="row mx-1">
                                             <div class="col-12">
-                                                <h5 class="erreur">L'étudiant n'as pas de rendez-vous</h5>
+                                                <h5 class="erreur">L'étudiant n'a pas de rendez-vous</h5>
                                             </div>
                                     </div>
                                     <div class="row mx-1 fixed-bottom barre-bas">
@@ -442,13 +494,15 @@
                                 <?php
                                 }
                             } ?>
+                        </div>
                     </div>
                 </div>
             </div>
+            <?php   } 
+                } ?>
         </div>
-        <?php   } 
-            } ?>
-    </div>
+        
+        <!-- Contenu de la modale de deconnexion permettant de se déconnecter et de retourner à la page d'accueil. -->
         <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content">

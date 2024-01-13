@@ -1,25 +1,38 @@
 <?php
     try {
+        // Démarrage d'une session
         session_start();
+
+        /* 
+         * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
+         * connecter à la base de donnée et interagir avec celle-ci.
+         */
         require('../../../fonctions/baseDeDonnees.php');
-        $pdo = connecteBD();
+
+        $pdo = connecteBD(); // accès à la Base de données
+
+        // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un étudiant correctement identifié.
         if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) === 2 || $_SESSION['type_utilisateur'] != 'E'){
             header('Location: ../../connexion.php');
             exit();
         }
+
+        // Suppression de l'entreprise de la liste des souhaits de l'étudiant si le formulaire de cette entreprise spécifique a été cliqué
         if (isset($_POST["entreprise_id"])) {
             removeWishStudent($pdo, $_SESSION['idUtilisateur'], $_POST["entreprise_id"]);
         }
-        $stmt = getEntreprisesPerStudent($pdo, $_SESSION['idUtilisateur']);
-        $phase = getPhase($pdo);
-    }catch (Exception $e) {
+
+        $stmt = getEntreprisesPerStudent($pdo, $_SESSION['idUtilisateur']); // Obtention des entreprises avec lesquelles l'étudiant souhaite prendre rendez-vous
+        $phase = getPhase($pdo); // Obtention de la phase en cours
+    }catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
         header('Location: ../../maintenance.php');
         exit();
     }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
+        <!-- Métadonnées et liens vers les feuilles de style -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -30,7 +43,8 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="../../../js/downloadPage.js"></script>
-        <title>Eureka - Liste des souhaits</title>
+        
+        <title>Eurêka - Liste des souhaits</title>
     </head>
     <body>
         <!-- Navbar du haut -->
@@ -43,6 +57,7 @@
                 <div class="navbar-right h-100">
                     <ul class="navbar-nav d-flex h-100 align-items-center">
                         <li class="nav-item nav-item-haut nav-link p-0 d-none d-md-block h-100">
+                            <!-- Affichage des éléments de navigation de la navbar du haut uniquement si la phase est à 1. Permet d'empêcher la navigation et donc de se diriger vers la liste des entreprises si l'emploi du temps est en cours de création (phase 1.5). -->
                             <?php
                             if ($phase === 1) {
                             ?>
@@ -54,6 +69,7 @@
                             <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center inactiveLink"> Souhaits </a>
                         </li>
                         <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
+                            <!-- Affichage du nom de l'utilisateur -->
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <?php echo $_SESSION['prenom_utilisateur'] . ' ' .$_SESSION['nom_utilisateur']; ?>
                             </a>
@@ -71,6 +87,8 @@
                 </div>
             </div>
         </nav>
+
+        <!-- Affichage de la navbar du bas uniquement si la phase est à 1. Permet d'empêcher la navigation et donc de se diriger vers la liste des entreprises si l'emploi du temps est en cours de création. -->
         <?php
         if ($phase === 1) {
         ?>
@@ -99,16 +117,17 @@
         }
         ?>
 
-        <!-- Contenu principal -->
+        <!-- Container principal de la page -->
         <div class="container">
             <div class="row mx-1">
                 <div class="col-12">
                     <p><h2>Vos demandes de rendez-vous</h2></p>
+                    <!-- Affichage d'un message différent selon la phase -->
                     <p><?php echo $phase === 1 ? "Au terme de la phase de prise de rendez-vous, Eureka vous proposera un planning avec les entreprises suivantes. Il est encore tout à fait temps de changer d’avis ! " : "La période de prise de rendez-vous est désormais terminé, vous pouvez seulement consulter vos souhaits le temps que le planning soit générée"; ?></P>
                 </div>
             </div>
             <?php
-            $vide = true;
+            $vide = true; // Variable permettant de vérifier si l'étudiant a émis des souhaits et affichage d'un message en conséquence
             while ($ligne = $stmt->fetch()) { 
             $vide = false;?>
             <div class="row entreprise align-items-center">
@@ -126,6 +145,8 @@
                 <div class="col-1 d-block d-md-none">
                     <?php if ($phase === 1) { ?><input type="button" class="boutonSupprimerMd"data-bs-toggle="modal" data-bs-target="#modal"/><?php } ?>
                 </div>
+
+                <!-- Contenu de la modale de deconnexion permettant de suppression d'une entreprise -->
                 <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -148,6 +169,7 @@
                 </div>
             </div>
             <?php };
+            // Affichage d'un message à la place de la liste des entreprises s'il n'y a aucune entreprise
             if ($vide) { ?>
                 <div class="row">
                     <div class="col-12">
@@ -156,7 +178,8 @@
                 </div>
             <?php } ?>
         </div>
-        <!-- Modal pour la deconnexion-->
+
+        <!-- Contenu de la modale de deconnexion permettant de se déconnecter et de retourner à la page d'accueil. -->
         <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content">

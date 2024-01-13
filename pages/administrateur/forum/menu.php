@@ -1,12 +1,22 @@
 <?php 
     try {
+        // Démarrage d'une session
         session_start();
+
+        /* 
+         * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
+         * connecter à la base de donnée et interagir avec celle-ci.
+         */
         require("../../../fonctions/baseDeDonnees.php");
-        $pdo = connecteBD();
+
+        $pdo = connecteBD(); // accès à la Base de données
+
+        // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un administrateur correctement identifié.
         if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
             header('Location: ../../connexion.php');
             exit();
         }
+
         if(isset($_POST['dateForum']) && isset($_POST['heureDebut']) && isset($_POST['heureFin']) && isset($_POST['duree']) && isset($_POST['secDuree']) && isset($_POST['dateLim'])){
             updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['heureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
         }
@@ -15,15 +25,15 @@
         }
         $infoForum = infoForum($pdo);
         $phase = getPhase($pdo);
-    } catch (Exception $e) {
-        //header('Location: ../../maintenance.php');
-        //exit();
-        echo $e->getMessage();
+    } catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
+        header('Location: ../../maintenance.php');
+        exit();
     }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
+        <!-- Métadonnées et liens vers les feuilles de style -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -33,9 +43,10 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <link rel="stylesheet" href="../../../css/forum.css">
-        <title>informations eureka</title>
+        <title>Eurêka - paramétrage du forum</title>
     </head>
     <body>
+        <!-- Navbar du haut -->
         <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
             <div class="container-fluid h-100">
                 <div class="navbar-brand d-flex align-items-center h-100">
@@ -65,6 +76,7 @@
                             <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"> Forum </a>
                         </li>
                         <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
+                            <!-- Affichage du nom de l'utilisateur -->
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <?php echo $_SESSION['prenom_utilisateur'] . ' ' . $_SESSION['nom_utilisateur']?>
                             </a>
@@ -81,6 +93,8 @@
                 </div>
             </div>
         </nav>
+
+        <!-- Navbar du bas -->
         <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
         <div class="container-fluid">
             <ul class="navbar-nav w-100 justify-content-evenly">
@@ -139,6 +153,8 @@
                 </li>
             </ul>
         </nav>
+
+        <!-- Container principal de la page -->        
         <div class="container">
             <div class="row mx-1">
                 <div class="col-md-4"></div>

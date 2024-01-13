@@ -1,14 +1,26 @@
 <?php
     try {
+        // Démarrage d'une session
         session_start();
+
         // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
         $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
+        
+        /* 
+         * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
+         * connecter à la base de donnée et interagir avec celle-ci.
+         */
         require("../../../fonctions/baseDeDonnees.php");
-        $pdo = connecteBD();
+
+        $pdo = connecteBD(); // accès à la Base de données
+
+        // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un gestionnaire correctement identifié.
         if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 1 || $_SESSION['type_utilisateur'] != 'E'){
             header('Location: ../../connexion.php');
             exit();
         }
+
+        // Ajout ou suppression de l'entreprise de la liste des souhaits de l'étudiant lors du clic 
         if (isset($_POST["entreprise_id"]) && isset($_POST["mode"])) {
             if ($_POST["mode"] == 'add') {
                 addWishStudent($pdo, $_SESSION['idUtilisateur'], $_POST["entreprise_id"]);
@@ -19,14 +31,15 @@
             header("location: listeEntreprises.php");
             exit();
         }
-    } catch (Exception $e) {
+    } catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
         header('Location: ../../maintenance.php');
         exit();
     }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
+        <!-- Métadonnées et liens vers les feuilles de style -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -36,7 +49,7 @@
         <link rel="stylesheet" href="../../../css/navbars.css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         
-        <title> Eureka - Liste des entreprises </title>
+        <title> Eurêka - Liste des entreprises </title>
     </head>
     <body>
         <!-- Navbar du haut -->
@@ -57,6 +70,7 @@
                             <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="listeRendezVous.php"> Souhaits </a>
                         </li>
                         <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
+                            <!-- Affichage du nom de l'utilisateur -->
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <?php echo $_SESSION['prenom_utilisateur'] . ' ' .$_SESSION['nom_utilisateur']; ?>
                             </a>
@@ -73,6 +87,7 @@
                 </div>
             </div>
         </nav>
+
         <!-- Navbar du bas -->
         <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
             <div class="container-fluid">
@@ -95,16 +110,21 @@
             </div>
         </nav>
 
+        <!-- Container principal de la page -->
         <div class="container mt-2">
             <div class="row d-flex align-items-center h-100">
                 <div class="col-12 col-md-6">
+                    <!-- Obtention de la date de fin de la prise des rdv afin de la transmettre aux étudiants -->
                     <?php 
                         $date = getDatePeriodEnd($pdo);
                         $dateFinSouhait = $date->fetch();
                     ?>
+
                     <h2>Prenez rendez-vous avec les entreprises qui vous correspondent.</h2>
                     <p>Choisissez toutes les entreprises que vous souhaitez rencontrer au salon Eureka et prenez rendez-vous en un clic ! Dès le <?php  echo $dateFinSouhait["dateFin"]; ?>, vous pourrez venir consulter votre emploi du temps pour le salon créée à partir de vos demandes de rendez-vous. Si vous souhaitez annuler l'un de vos rendez-vous, il suffit de cliquer à nouveau.</p>
                 </div>
+
+                <!-- Formulaire permettant d'entrer une recherche personnalisé qui filtrera l'affichage selon celle-ci -->
                 <form action="listeEntreprises.php" method="post" class="col-12 col-md-6 my-2">
                     <div class="row">
                         <div class="col-12 col-md-7 p-0">
@@ -116,15 +136,20 @@
                     </div>
                 </form>
             </div>
+
+            <!-- Affichage de la liste des entreprises qui s'intéressent à la filière de cet étudiant -->
             <div class="row mx-1">
                 <?php 
-                $pdo = connecteBD();
-                $stmt = getEntreprisesForStudent($pdo, $_SESSION['idUtilisateur'], $_SESSION['recherche']);
-                if ($stmt->rowCount() === 0) {
+                $pdo = connecteBD(); // accès à la Base de données
+                $stmt = getEntreprisesForStudent($pdo, $_SESSION['idUtilisateur'], $_SESSION['recherche']); // Obtention des entreprises à afficher en fonction de la filière de l'étudiant, mais également de la recherche potentielle de l'utilisateur
+                
+                if ($stmt->rowCount() === 0) { // Vérification du nombre d'entreprises trouvées et gestion de l'affichage en fonction 
                     echo '<h2>Aucune entreprise trouvée avec cette recherche.</h2>';
                 } else {
                     while ($ligne = $stmt->fetch()) {
                 ?>
+
+                <!-- Formulaire permettant de cliquer sur une entreprise afin de l'ajouter ou de la supprimer de sa liste de souhaits -->
                 <form action="listeEntreprises.php" method="post">
                     <button type="submit" class="col-12 pb-0 company dl-search-result-title-container <?php echo $ligne['wish'] != null ? 'inWishList' : 'notInWishList';?>">
                         
@@ -159,6 +184,9 @@
                 <?php   }
                     }
                 ?>
+
+
+        <!-- Contenu de la modale de deconnexion permettant de se déconnecter et de retourner à la page d'accueil. -->
         <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content">

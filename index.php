@@ -1,47 +1,52 @@
 <?php 
+    // Démarrage d'une session
     session_start();
-    if(isset($_SESSION['idUtilisateur']) && $_SESSION['idUtilisateur']!= null){
+
+    // Redirection vers la page de connexion si l'utilisateur est déjà connecté
+    if(isset($_SESSION['idUtilisateur']) && $_SESSION['idUtilisateur'] != null){
         header('Location: pages/connexion.php');
-    } ?>
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <!-- Métadonnées et liens vers les feuilles de style -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="./css/all.css">
         <link rel="stylesheet" href="./css/index.css">
+
         <title> Eureka accueil </title>
     </head>
     <body>
+        <!-- Conteneur principal -->
         <div class="container-flex">
+            <!-- Entête de la page d'accueil avec une image en fond -->
             <div class="row" class="img-fluid" style="background-image: url('./ressources/homepage-background.png'); height: 800px; width:100%; background-size: cover;">
-                <div class="col-12 d-none d-md-block eureka-pc">
+                <!-- Logo et nom du site en haut à droite -->
+                <div class="col-12 eureka-entete">
                     <img src="./ressources/logo_white.png" alt="Logo Eureka" class="d-inline-block align-text-top">
                     Eureka
                 </div>
-                <div class="col-12 d-md-none eureka-tel">
-                    <img src="./ressources/logo_white.png" alt="Logo Eureka" class="d-inline-block align-text-top">
-                    Eureka
+
+                <div class="col-12">
+                    <p class="texte-bleu text-center"> L'alternance plus simple que jamais ! </p>
+                    <p class="texte-blanc text-center"> Etudiant ou professionnel, facilitez vos échanges grâce au forum Eureka </p>
                 </div>
-                <div class="col-12"></div>
-                <div class="col-12 d-none d-md-block">
-                    <p class="texte-bleu-pc text-center"> L'alternance plus simple que jamais ! </p>
-                    <p class="texte-blanc-pc text-center"> Etudiant ou professionnel, facilitez vos échanges grâce au forum Eureka </p>
-                </div>
-                <div class="col-12 d-md-none">
-                    <p class="texte-bleu-tel text-center"> L'alternance plus simple que jamais ! </p>
-                    <p class="texte-blanc-tel text-center"> Etudiant ou professionnel, facilitez vos échanges grâce au forum Eureka </p>
-                </div>
+
+                <!-- Formulaire de connexion au site (bouton de redirection vers la page de connexion) -->
                 <div class="col-12 d-flex justify-content-center">
                     <form action="./pages/connexion.php">
-                        <button type="submit" class="d-none d-sm-block bouton bouton-pc"> Se connecter </button>
-                        <button type="submit" class="d-sm-none bouton bouton-tel"> Se connecter </button>
+                        <button type="submit" class="bouton bouton-connexion"> Se connecter </button>
                     </form>
                 </div>
             </div>
+
+            <!-- Explication du forum sous forme de sous-parties -->
             <div class="row">
+                <!-- Explication générale -->
                 <div class="row px-2 py-4">
                     <div class="col-md-6 d-flex justify-content-center flex-column"> 
                         <h4 class="m-0">Le forum</h4>
@@ -50,10 +55,19 @@
                         <span class="subtitle">Venez découvrir un lieu d'échange entre professionnel et étudiant</span>
                     </div>
                     <p class="col-md-6 d-flex align-items-center paragraphe my-3"> 
-Vous êtes une entreprise de l'Aveyron ou des départements limitrophes ? Vous êtes à la recherche de votre futur alternant en informatique, gestion, droit, qualité, logistique, communication ou maintenance de l'industrie ? Alors le salon Eurêka est fait pour vous ! Il s'agit d'un salon organisé par l’IUT de Rodez afin de faciliter les échanges entre les étudiants des différentes filières de l'IUT et les entreprises. Ce salon regroupe différentes entreprises de l'Aveyron et des départements limitrophes qui sont à la recherche d'alternants. Le salon Eurêka permet aux étudiants de l'IUT en recherche d'une alternance de rencontrer et d'échanger avec des entreprises qui sont à la recherche d'alternants dans des domaines qui touchent leurs filières.</p>
+                        Vous êtes une entreprise de l'Aveyron ou des départements limitrophes ? 
+                        Vous êtes à la recherche de votre futur alternant en informatique, gestion, droit, qualité, logistique, 
+                        communication ou maintenance de l'industrie ? Alors le salon Eurêka est fait pour vous ! 
+                        Il s'agit d'un salon organisé par l’IUT de Rodez afin de faciliter les échanges entre les étudiants des différentes 
+                        filières de l'IUT et les entreprises. Ce salon regroupe différentes entreprises de l'Aveyron et des départements 
+                        limitrophes qui sont à la recherche d'alternants. Le salon Eurêka permet aux étudiants de l'IUT en recherche 
+                        d'une alternance de rencontrer et d'échanger avec des entreprises qui sont à la recherche d'alternants dans des 
+                        domaines qui touchent leurs filières.
+                    </p>    
                 </div>
             </div>
 
+            <!-- Explication de l'utilité -->
             <div class="row pt-4 background">
                 <div class="col-12 p-2">
                     <div class="text-center">
@@ -79,7 +93,7 @@ Vous êtes une entreprise de l'Aveyron ou des départements limitrophes ? Vous �
                 </div>
             </div>
 
-            <!-- Pourquoi participer : Se créer/étendre son réseau, trouver un stagiaire/alternant, trouver un stage/alternance -->
+            <!-- Explication de comment participer -->
             <div class="row">
                 <div class="col-12 p-2">
                     <div class="text-center">

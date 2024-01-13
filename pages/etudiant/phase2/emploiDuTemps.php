@@ -1,22 +1,33 @@
 <?php 
     try {
+        // Démarrage d'une session
         session_start(); 
+
+        /* 
+         * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
+         * connecter à la base de donnée et interagir avec celle-ci.
+         */
         require('../../../fonctions/baseDeDonnees.php');
-        $pdo = connecteBD();
+
+        $pdo = connecteBD(); // accès à la Base de données
+        
+        // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un étudiant correctement identifié.
         if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 2 || $_SESSION['type_utilisateur'] != 'E'){
             header('Location: ../../connexion.php');
             exit();
         }
-        $planning = planningPerUser($pdo, $_SESSION['idUtilisateur']);
-        $unlistedCompany = unlistedCompanyPerUser($pdo, $_SESSION['idUtilisateur']);
-    } catch (Exception $e) {
+
+        $planning = planningPerUser($pdo, $_SESSION['idUtilisateur']); // Obtention de l'emploi du temps de l'utilisateur connecté
+        $unlistedCompany = unlistedCompanyPerUser($pdo, $_SESSION['idUtilisateur']); // Obtention des entreprises ne rentrant pas dans l'emploi du temps
+    } catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
         header('Location: ../../maintenance.php');
         exit();
     }
     ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
+        <!-- Métadonnées et liens vers les feuilles de style -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -27,10 +38,11 @@
         <link rel="stylesheet" href="../../../css/all.css">
         <link rel="stylesheet" href="../../../css/emploiDuTemps.css">
         <link rel="stylesheet" href="../../../css/navbars.css">
-        <title>Eureka - emploi du temps</title>
+        
+        <title>Eurêka - emploi du temps</title>
     </head>
     <body>
-        <!-- Navbar du haut -->
+        <!-- Navbar du haut (pas de navbar du bas sur cette page !) -->
         <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
             <div class="container-fluid h-100">
                 <div class="navbar-brand d-flex align-items-center h-100">
@@ -40,6 +52,7 @@
                 <div class="navbar-right h-100">
                     <ul class="navbar-nav d-flex h-100 align-items-center">
                         <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
+                            <!-- Affichage du nom de l'utilisateur -->
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <?php echo $_SESSION['prenom_utilisateur'] . ' ' .$_SESSION['nom_utilisateur']; ?>
                             </a>
@@ -56,6 +69,7 @@
                 </div>
             </div>
         </nav>
+
         <!-- Contenu principal de la page -->
         <div class="container" id="toPrint">
             <div class="row mx-1">
@@ -63,10 +77,14 @@
                     <p><h2>Vous pouvez consulter votre planning de rendez-vous !</h2></p>
                     <p>Il est désormais trop tard pour demander de nouveaux rendez-vous. </P>
                 </div>
+
+                <!-- Permet de télecharger sous format pdf le planning d'un étudiant -->
                 <div class="col-4 d-md-block d-none my-auto text-center" id="element-to-hide" data-html2canvas-ignore="true">
                     <button class="bouton" id="downloadUp">Télécharger l'emploi du temps</button>
                 </div>
             </div>
+
+            <!-- Affichage de tous les rendez-vous qui rentrent dans l'emploi du temps  -->
             <?php
                 foreach ($planning as $rdv) {?>
                     <div class="row mx-1">
@@ -76,6 +94,8 @@
                         </div>
                     </div>
                 <?php }
+
+                // Affichage de tous les rendez-vous qui ne rentrent pas dans l'emploi du temps
                 if ($unlistedCompany->rowCount() > 0) {?>
                     <div class="row mx-1">
                         <div class="col-12">
@@ -91,13 +111,17 @@
                         </div>
                     </div>
                 <?php } ?>
+
+                <!-- Bouton de téléchargement de l'emploi du temps en pdf (en format téléphone) -->
             <div class="row mx-1 fixed-bottom barre-bas">
                 <div class="col-12 d-md-none d-block text-center" id="element-to-hide" data-html2canvas-ignore="true">
                     <button class="bouton boutonTelechargerBas" id="downloadDown">Télécharger l'emploi du temps</button>
                 </div>
             </div>
         </div>
-        <!-- modal de deconnexion -->
+
+
+        <!-- Contenu de la modale de deconnexion permettant de se déconnecter et de retourner à la page d'accueil. -->
         <div class="modal fade " id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content">

@@ -1,6 +1,6 @@
 <?php
+    // Démarrage d'une session
     session_start();
-    $user = 1;
 
     // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
     $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
@@ -9,6 +9,8 @@
     if (!isset($_SESSION['filtre']) || $_SESSION['filtre'] == null) {
         $_SESSION['filtre'] = array();
     }
+
+    // Gère l'affichage des entreprises en fonction des filtres
     if (isset($_POST['nouveauFiltre'])) {
         if (in_array($_POST['nouveauFiltre'], $_SESSION['filtre'])) {
             $index = array_search($_POST['nouveauFiltre'], $_SESSION['filtre']);
@@ -21,10 +23,12 @@
         exit();
     }
 
+    // Attribue comme valeur par défaut l'ordre alphabétique comme tri
     if (!isset($_SESSION['triPar'])) {
         $_SESSION['triPar'] = "alpha";
     }
 
+    // Change l'ordre d'affichage des étudiants selon l'option de tri choisie par l'utilisateur
     if (isset($_POST['triPar'])) {
         $_SESSION['triPar'] = $_POST['triPar'];
         header("Location: listeEtudiant.php");
@@ -32,21 +36,27 @@
     }
 
     try {
+        /* 
+         * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
+         * connecter à la base de donnée et interagir avec celle-ci.
+         */
         require("../../../fonctions/baseDeDonnees.php");
         require("../../../fonctions/fonctions.php");
-        $pdo = connecteBD();
-        $phase = getPhase($pdo);
-        $fields = getFieldsPerUsers($pdo, $_SESSION['idUtilisateur']);
-        if ($fields->rowCount() === 1) {
+
+        $pdo = connecteBD(); // accès à la Base de données
+        $phase = getPhase($pdo); // Obtention de la phase actuelle dans laquelle se trouve la base de donnée
+        $fields = getFieldsPerUsers($pdo, $_SESSION['idUtilisateur']); // Obtention des filières liées à l'utilisateur
+        if ($fields->rowCount() === 1) { // Vérifie si le gestionnaire n'a qu'une seule filière, puis attribue la valeur de cette filière si cela est le cas
             $_SESSION['filtre'] = [];
             array_push($_SESSION['filtre'], $fields->fetch()['field_id']);
         }
-        $stmt = getInfoStudentsSort($pdo, $_SESSION['recherche'], $_SESSION['filtre'], $_SESSION['triPar']);
+        $stmt = getInfoStudentsSort($pdo, $_SESSION['recherche'], $_SESSION['filtre'], $_SESSION['triPar']); // Obtention des étudiants à afficher en fonction des filières selectionnées mais également de la recherche potentielle de l'utilisateur et du tri
+        // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un gestionnaire correctement identifié.
         if(!isset($_SESSION['idUtilisateur']) || $phase != 2 || $_SESSION['type_utilisateur'] != 'G'){
             header('Location: ../../connexion.php');
             exit();
         }
-    } catch (Exception $e) {
+    } catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
         header('Location: ../../maintenance.php');
         exit();
     }
@@ -54,8 +64,9 @@
     
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
+    <!-- Métadonnées et liens vers les feuilles de style -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -66,7 +77,8 @@
     <link rel="stylesheet" href="../../../css/listeEtudiantGestionnaire2.css">
     <link rel="stylesheet" href="../../../css/navbars.css">
     <link rel="stylesheet" href="../../../css/filtre.css">
-    <title>Eureka - Liste des entreprises</title>
+
+    <title>Eurêka - Liste des étudiants</title>
 </head>
 <body>
    <!-- Navbar du haut -->
@@ -87,6 +99,7 @@
                         <a class="actif_haut inactiveLink d-flex align-items-center h-100 px-2 justify-content-center text-center"> Étudiants </a>
                     </li>
                     <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
+                        <!-- Affichage du nom de l'utilisateur -->
                         <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <?php echo $_SESSION['prenom_utilisateur'] . ' ' . $_SESSION['nom_utilisateur']?>
                         </a>
@@ -103,6 +116,8 @@
             </div>
         </div>
     </nav>
+
+    <!-- Navbar du bas -->
     <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
         <div class="container-fluid">
             <ul class="navbar-nav w-100 justify-content-evenly">
@@ -131,12 +146,14 @@
         </div>
     </nav>
 
+    <!-- Container principal de la page -->
     <div class="container mt-2">
         <div class="row d-flex align-items-center h-100">
             <div class="col-12 col-md-6">
                 <h2>Liste des étudiants</h2>
                 <p>Voici tous les étudiants inscrits au forum Eureka de cette année. Cliquez sur l’un d’eux pour voir leur planning de rendez-vous !</p>
             </div>
+            <!-- Formulaire permettant d'entrer une recherche personnalisé qui filtrera l'affichage selon celle-ci -->
             <form action="listeEtudiant.php" method="post" class="col-12 col-md-6 my-2">
                 <div class="row">
                     <div class="col-12 col-md-7 p-0">
@@ -148,9 +165,12 @@
                 </div>
             </form>
         </div>
+
+        <!-- Boutons permettant le filtre des entreprises selon les filières -->
         <div class="row">
             <div class="col-12">
                 <?php
+                    // Affichage des boutons de filtres uniquement s'il y en a plusieurs
                     if ($fields->rowCount() > 1) {
                         echo '<h2>Filières</h2>';
                     while ($ligne = $fields->fetch()) {
@@ -163,6 +183,8 @@
             </div>
         </div>
         <hr class="m-0">
+
+        <!-- Formulaire permettant de trier les étudiants : par ordre alphabétique, par ordre de souhait croissant, par ordre de souhait décroissant -->
         <div class="d-flex flex-row-reverse">
             <form action="listeEtudiant.php" method="post">
                 <select id="triPar" name="triPar" class="form-control sort text-end" onchange="this.form.submit()">
@@ -173,8 +195,11 @@
                 </select>
             </form>
         </div>
+
         <!-- Accordéon Bootstrap -->
         <div class="accordion" id="listeEntreprise">
+
+        <!-- Gestion de l'affichage en fonction des filtres sélectionnée et de la recherche saisie -->
         <?php
             if (empty($_SESSION['filtre'])) {
                 echo '<p>Aucune filière sélectionnée. Veuillez choisir au moins une filière.</p>';
@@ -183,6 +208,8 @@
             } else {
                 while ($ligne = $stmt->fetch()) { 
         ?>
+
+        <!-- Element de l'accordéon dépendant de la boucle while permettant d'afficher tous les étudiants. -->
         <div class="accordion-item my-3">
             <h2 class="accordion-header" id="heading<?php echo $ligne['user_id']?>">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $ligne['user_id']?>" aria-expanded="false" aria-controls="collapse<?php echo $ligne['user_id']?>">
@@ -257,6 +284,7 @@
             } ?>
     </div>
 
+    <!-- Contenu de la modale de deconnexion permettant de se déconnecter et de retourner à la page d'accueil. -->
     <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content">
@@ -288,5 +316,5 @@
                 </div>
             </div>
         </div>
-</body>
+    </body>
 </html>

@@ -1,11 +1,22 @@
 <?php 
+    // Démarrage d'une session
     session_start();
+
+    /* 
+    * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
+    * connecter à la base de donnée et interagir avec celle-ci.
+    */
     require("../../../fonctions/baseDeDonnees.php");
     require("../../../fonctions/fonctionsImportationExportation.php");
-    $pdo = connecteBD();
+    
+    $pdo = connecteBD(); // accès à la Base de données
+    
+    // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un administrateur correctement identifié.
     if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
         header('Location: ../../connexion.php');
     }
+
+
     if(isset($_POST['dateForum']) && isset($_POST['heureDebut']) && isset($_POST['heureFin']) && isset($_POST['duree']) && isset($_POST['secDuree']) && isset($_POST['dateLim'])){
         updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['heureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
     }
@@ -45,8 +56,9 @@
     }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
+        <!-- Métadonnées et liens vers les feuilles de style -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -56,9 +68,11 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <link rel="stylesheet" href="../../../css/importExport.css">
-        <title>informations eureka</title>
+        
+        <title>Eurêka - Importation/exportation</title>
     </head>
     <body>
+        <!-- Navbar du haut -->
         <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
             <div class="container-fluid h-100">
                 <div class="navbar-brand d-flex align-items-center h-100">
@@ -88,6 +102,7 @@
                             <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"> Forum </a>
                         </li>
                         <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
+                            <!-- Affichage du nom de l'utilisateur -->
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <?php echo $_SESSION['prenom_utilisateur'] . ' ' . $_SESSION['nom_utilisateur']; ?>
                             </a>
@@ -104,6 +119,8 @@
                 </div>
             </div>
         </nav>
+
+        <!-- Navbar du bas -->
         <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
         <div class="container-fluid">
             <ul class="navbar-nav w-100 justify-content-evenly">
@@ -162,6 +179,8 @@
                 </li>
             </ul>
         </nav>
+
+        <!-- Container principal de la page --> 
         <div class="container">
             <div class="row mx-1">
                 <div class="col-1">
@@ -225,7 +244,7 @@
             <?php } else { ?>
                 <div class="row">
                     <div class="col-12 text-center erreur">
-                        <h4>Les options d'importations sont désormé indisponibles une fois le planning généré !</h4>
+                        <h4>Les options d'importations sont désormais indisponibles : le planning a été généré. </h4>
                     </div>
                 </div>
             <?php } 
@@ -244,7 +263,7 @@
                                     <form action="importExport.php" method="post">
                                         Entreprise :
                                         <select name="listeEntreprise">
-                                            <option value="0">Veuillez selectionner une entreprise</option>
+                                            <option value="0">Veuillez sélectionner une entreprise</option>
                                             <option value="T">toutes</option>
                                             <?php
                                                 $ListeEntrepriseNonExclue = getCompanyNotExcluded($pdo);

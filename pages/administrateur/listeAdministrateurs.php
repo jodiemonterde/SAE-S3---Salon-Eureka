@@ -1,17 +1,25 @@
 <?php
     try {
+        // Démarrage d'une session
         session_start();
 
         // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
         $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
 
+        /* 
+         * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
+         * connecter à la base de donnée et interagir avec celle-ci.
+         */
         require("../../fonctions/baseDeDonnees.php");
-        $pdo = connecteBD();
+        
+        $pdo = connecteBD(); // accès à la Base de données
         
         // $_SESSION['filtre'] est un tableau qui contient les id des filtres selectionnes
         if (!isset($_SESSION['filtre']) || $_SESSION['filtre'] == null) {
             $_SESSION['filtre'] = array();
         }
+
+        // Gère l'affichage des administrateurs en fonction des filtres
         if (isset($_POST['nouveauFiltre'])) {
             if (in_array($_POST['nouveauFiltre'], $_SESSION['filtre'])) {
                 $index = array_search($_POST['nouveauFiltre'], $_SESSION['filtre']);
@@ -24,52 +32,64 @@
             exit();
         }
         
+        // Ajout d'un nouvel administrateur si le formulaire en question a été correctement rempli
         if (isset($_POST['addAdmin'])) {
             addAdmin($pdo, $_POST['prenom'], $_POST['nom'], $_POST['email'], $_POST['password']);
             header("Location: listeAdministrateurs.php");
             exit();
         }
 
+        // Suppression d'un administrateur si le formulaire de suppression a été enclenché
         if (isset($_POST['deleteAdmin'])) {
             deleteAdmin($pdo, $_POST['id']);
         }
 
+        // Modification du mot de passe d'un administrateur selon les données entrées dans le formulaire en question
         if (isset($_POST['modifyPassword'])) {
             modifyPassword($pdo, $_POST['id'], $_POST['newPassword']);
         }
         
-        $fields = getFields($pdo);
+        $fields = getFields($pdo);// Obtention de toutes les filières de la base de données
+        
+        // Permet d'attribuer à $fields toutes les filières trouvées dans la BD
         $tmp = [];
         while ($ligne = $fields->fetch()) {
             $tmp[$ligne['field_id']] = $ligne['name'];
         }
         $fields = $tmp;
+
+        // Obtention des administrateurs selon les filtres (recherche uniquement)
         $stmt = getInfosAdmins($pdo, $_SESSION['recherche']);
+        
+        // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un administrateur correctement identifié.
         if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
             header('Location: ../connexion.php');
             exit();
         }
-    } catch (Exception $e) {
+    } catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
         echo $e->getMessage();
     }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
+    <!-- Métadonnées et liens vers les feuilles de style -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <link rel="stylesheet" href="../../css/all.css">
     <link rel="stylesheet" href="../../css/listeGestionnairesAdministrateur.css">
     <link rel="stylesheet" href="../../css/navbars.css">
     <link rel="stylesheet" href="../../css/filtre.css">
-    <title>Eureka - Liste des entreprises</title>
+    
+    <title>Eurêka - Liste des administrateurs</title>
 </head>
 <body>
-<nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
+    <!-- Navbar du haut -->
+    <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
             <div class="container-fluid h-100">
                 <div class="navbar-brand d-flex align-items-center h-100">
                     <img src="../../ressources/logo_black.svg" alt="Logo Eureka" class="logoDisplay me-2">
@@ -98,6 +118,7 @@
                             <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="forum/menu.php"> Forum </a>
                         </li>
                         <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
+                            <!-- Affichage du nom de l'utilisateur -->
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <?php echo htmlspecialchars($_SESSION['prenom_utilisateur']. ' ' . $_SESSION['nom_utilisateur']);?>
                             </a>
@@ -114,6 +135,8 @@
                 </div>
             </div>
         </nav>
+
+        <!-- Navbar du bas -->
         <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
         <div class="container-fluid">
             <ul class="navbar-nav w-100 justify-content-evenly">
@@ -174,12 +197,15 @@
         </div>
     </nav>
 
+    <!-- Container principal de la page --> 
     <div class="container mt-2">
         <div class="row d-flex align-items-center h-100">
             <div class="col-12 col-md-6">
                 <h2>Liste des administrateurs</h2>
                 <p>Voici tous les administrateurs du forum Eureka. Cliquez sur l’un des administrateurs pour pouvoir modifier son mot de passe, ou le supprimer. Vous ne pouvez pas vous supprimer vous-même ! De plus, s'il ne reste qu'un seul administrateur, il est impossible de le supprimer. En effet, il est primordial qu'il reste à minima un administrateur pour gérer le site. Sans cela, la partie administrateur sera bloquée.</p>
             </div>
+
+            <!-- Formulaire permettant d'entrer une recherche personnalisé qui filtrera l'affichage selon celle-ci -->
             <form action="listeAdministrateurs.php" method="post" class="col-12 col-md-6 my-2">
                 <div class="row">
                     <div class="col-8">
@@ -192,11 +218,14 @@
             </form>
         </div>
         <hr class="mb-4">
+
+        <!-- Bouton qui ouvre une modale afin d'ajouter un nouvel administrateur -->
         <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalAddAdmin">
             <i class="fa-solid fa-plus text-left justify-content-center"></i>
             <h2 class="text-center m-2">Ajouter un(e) administrateur</h2>
         </button>
 
+        <!-- Modale d'ajout d'un administrateur -->
         <div class="modal fade" id="modalAddAdmin" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content  px-4 pb-4">
@@ -228,6 +257,9 @@
         </div>
 
         <!-- Accordéon Bootstrap -->
+        <div class="accordion" id="listeAdministrateurs">
+        
+        <!-- Element de l'accordéon dépendant de la boucle while permettant d'afficher tous les administrateurs. -->
         <?php while ($ligne = $stmt->fetch()) { ?>
         <div class="accordion-item my-3">
             <h2 class="accordion-header" id="heading<?php echo $ligne['user_id']?>">
@@ -245,15 +277,18 @@
                         <div class="row my-3">
                             <?php $taille_colonne = '';
                             if ($ligne['user_id'] != $_SESSION['idUtilisateur']) { ?> 
+                                <!-- Bouton qui ouvre une modale afin de supprimer un administrateur -->
                                 <div class="col-md-6 py-2">
                                     <button class="boutonNegatif" data-bs-toggle="modal" data-bs-target="#modalDeleteAdmin<?php echo $ligne['user_id']; ?>">Supprimer</button>
                                 </div>
                                 <?php $taille_colonne = 'col-md-6';
                             } ?>
+                            <!-- Bouton qui ouvre une modale afin de modifier le mot de passe d'un gestionnaire -->
                             <div class="<?php echo $taille_colonne ?> py-2">
                                 <button class="bouton col-md-6" data-bs-toggle="modal" data-bs-target="#modalModifyPassword<?php echo $ligne['user_id']; ?>">Modifier le mot de passe</button>
                             </div>
                         </div>
+                            <!-- Contenu de la modale permettant de supprimer un administrateur -->
                             <div class="modal fade" id="modalDeleteAdmin<?php echo $ligne['user_id']; ?>" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                                     <div class="modal-content px-4 pb-4">
@@ -279,6 +314,7 @@
                                 </div>
                             </div>
 
+                            <!-- Contenu de la modale permettant de modifier le mot de passe d'un administrateur -->
                             <div class="modal fade" id="modalModifyPassword<?php echo $ligne['user_id']; ?>" tabindex="-1" aria-labelledby="modifyPasswordLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                                     <div class="modal-content px-4 pb-4">
@@ -304,42 +340,44 @@
                                     </div>
                                 </div>
                             </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <?php } ?>
-    </div>
-    <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-            <div class="modal-content">
-                <div class="modal-header deco">
-                    <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left"></i></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class = "row">
-                            <div class="col-12">
-                                <h1 class="text-center" id="Sedeconnecter">DÉCONNEXION</h1>
-                            </div>
-                        </div>
-                        <div class = "row">
-                            <div class="col-12">
-                                <P class="text-center">Êtes-vous sûr(e) de vouloir vous déconnecter ?</P>
-                            </div>
-                        </div>
-                        <div class = "row">
-                            <div class="col-6 d-flex justify-content-evenly">
-                                <button type="button" data-bs-dismiss="modal" class="bouton boutonDeconnexion">Retour</button>
-                            </div>
-                            <div class="col-6 d-flex justify-content-evenly">
-                                <a href="../../fonctions/deconnecter.php"><button type="button" class="bouton boutonDeconnexion">Se déconnecter </button>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <?php } ?>
         </div>
-    </div>  
-</body>
+
+        <!-- Contenu de la modale de deconnexion permettant de se déconnecter et de retourner à la page d'accueil. -->
+        <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                <div class="modal-content">
+                    <div class="modal-header deco">
+                        <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class = "row">
+                                <div class="col-12">
+                                    <h1 class="text-center" id="Sedeconnecter">DÉCONNEXION</h1>
+                                </div>
+                            </div>
+                            <div class = "row">
+                                <div class="col-12">
+                                    <P class="text-center">Êtes-vous sûr(e) de vouloir vous déconnecter ?</P>
+                                </div>
+                            </div>
+                            <div class = "row">
+                                <div class="col-6 d-flex justify-content-evenly">
+                                    <button type="button" data-bs-dismiss="modal" class="bouton boutonDeconnexion">Retour</button>
+                                </div>
+                                <div class="col-6 d-flex justify-content-evenly">
+                                    <a href="../../fonctions/deconnecter.php"><button type="button" class="bouton boutonDeconnexion">Se déconnecter </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </body>
 </html>

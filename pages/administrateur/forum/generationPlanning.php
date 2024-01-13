@@ -1,14 +1,26 @@
 <?php 
+    // Démarrage d'une session
     session_start();
+
+    /* 
+    * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
+    * connecter à la base de donnée et interagir avec celle-ci.
+    */
     require("../../../fonctions/baseDeDonnees.php");
-    $pdo = connecteBD();
+
+    $pdo = connecteBD(); // accès à la Base de données
+    
+    // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un administrateur correctement identifié.
     if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A' || getPhase($pdo) == 2){
         header('Location: ../../connexion.php');
         exit();
     }
+
+    // Modification des données du forum Eureka si le formulaire en question a été correctement rempli
     if(isset($_POST['dateForum']) && isset($_POST['heureDebut']) && isset($_POST['heureFin']) && isset($_POST['duree']) && isset($_POST['secDuree']) && isset($_POST['dateLim'])){
         updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['heureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
     }
+
 
     if (isset($_POST['action']) && isset($_POST['entreprise'])) {
         setSpecificationCompany($pdo,$_POST['action'],$_POST['entreprise']);
@@ -58,7 +70,7 @@
     $entreprisesPasReduites = getSpecificationCompany($pdo,'entrepriseReduite', 0);
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -101,6 +113,7 @@
                                 <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"> Forum </a>
                             </li>
                             <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
+                                <!-- Affichage du nom de l'utilisateur -->
                                 <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <?php echo $_SESSION['prenom_utilisateur'] . ' ' . $_SESSION['nom_utilisateur']; ?>
                                 </a>
@@ -117,6 +130,8 @@
                     </div>
                 </div>
             </nav>
+
+            
             <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
             <div class="container-fluid">
                 <ul class="navbar-nav w-100 justify-content-evenly">

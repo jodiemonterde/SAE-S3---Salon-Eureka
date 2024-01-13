@@ -1,35 +1,47 @@
-<?php 
+<?php
+    // Démarrage d'une session
     session_start();
+
+    /* 
+    * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
+    * connecter à la base de donnée et interagir avec celle-ci.
+    */
     require("../../../fonctions/baseDeDonnees.php");
-    $pdo = connecteBD();
+
+    $pdo = connecteBD(); // accès à la Base de données
+
+    // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un administrateur correctement identifié.
     if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
         header('Location: ../../connexion.php');
         exit();
     }
 
+    // Ajout d'une nouvelle filière si le formulaire en question a été correctement rempli
     if (isset($_POST['nom'])) {
         newField($pdo, $_POST['nom']);
-        HEADER('Location: filieres.php');
+        header('Location: filieres.php');
         exit();
     }
 
+    // Suppression d'une filière si le formulaire en question a été correctement rempli
     if (isset($_POST['supprimer'])) {
         deleteField($pdo, $_POST['supprimer']);
-        HEADER('Location: filieres.php');
+        header('Location: filieres.php');
         exit();
     }
 
+    // Modification d'une filière si le formulaire en question a été correctement rempli
     if (isset($_POST['modify'])) {
         modifyField($pdo, $_POST['modify'], $_POST['newName']);
-        HEADER('Location: filieres.php');
+        header('Location: filieres.php');
         exit();
     }
 
-    $fields = getFields($pdo);
+    $fields = getFields($pdo); // Obtention de toutes les filières de la base de données
 ?>
 <!DOCTYPE html>
-<html lang="en">
-    <head>
+<html lang="fr">
+    <head><!-- Métadonnées et liens vers les feuilles de style -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -39,10 +51,12 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <link rel="stylesheet" href="../../../css/listeGestionnairesAdministrateur.css">
-        <title>informations eureka</title>
+        
+        <title>Eurêka - Gestion des filières</title>
     </head>
     <body>
-    <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
+        <!-- Navbar du haut -->
+        <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
             <div class="container-fluid h-100">
                 <div class="navbar-brand d-flex align-items-center h-100">
                     <img src="../../../ressources/logo_black.svg" alt="Logo Eureka" class="logoDisplay me-2">
@@ -71,6 +85,7 @@
                             <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"> Forum </a>
                         </li>
                         <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
+                            <!-- Affichage du nom de l'utilisateur -->
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <?php echo $_SESSION['prenom_utilisateur'] . ' ' . $_SESSION['nom_utilisateur']?>
                             </a>
@@ -87,6 +102,8 @@
                 </div>
             </div>
         </nav>
+
+        <!-- Navbar du bas -->
         <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
         <div class="container-fluid">
             <ul class="navbar-nav w-100 justify-content-evenly">
@@ -145,16 +162,22 @@
                 </li>
             </ul>
         </nav>
+
+        <!-- Container principal de la page --> 
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <h2>Liste des filières</h2>
                     <p>Voici toutes les filières. Vous pouvez ajouter de nouvelles filières, modifier et supprimer les filières existantes. Vous pouvez les supprimer uniquement si aucun étudiant et aucun intervenant n'ont cette filière.</p>
+                    
+                    <!-- Bouton qui ouvre une modale afin d'ajouter une nouvelle filière -->
                     <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modaladdField">
                         <i class="fa-solid fa-plus text-left justify-content-center"></i>
                         <h2 class="text-center m-2">Ajouter une filière</h2>
                     </button>
                 </div>
+
+                <!-- Contenu de la modale d'ajout d'une filière -->
                 <div class="modal fade" id="modaladdField" tabindex="-1" aria-labelledby="addFieldModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                         <div class="modal-content  px-4 pb-4">
@@ -178,14 +201,19 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-12">
+                    <!-- Accordéon Bootstrap -->
                     <div class="accordion" id="listeGestionnaires">
                         <?php
-                            if ($fields->rowCount() === 0) {
+                            // Affichage de toutes les filières stockées dans la BD
+                            if ($fields->rowCount() === 0) { // Vérifie si aucune filière n'est actuellement stocké et affiche un message en conséquence.
                                 echo '<p>Le site ne contient aucune filière.</p>';
                             } else {
                                 while ($ligne = $fields->fetch()) { 
                         ?>
+
+                        <!-- Element de l'accordéon dépendant de la boucle while permettant d'afficher toutes les filières. -->
                         <div class="accordion-item my-3">
                             <h2 class="accordion-header" id="heading<?php echo $ligne['field_id']?>">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $ligne['field_id']?>" aria-expanded="false" aria-controls="collapse<?php echo $ligne['field_id']?>">
@@ -200,15 +228,18 @@
                                 <div class="accordion-body pb-1 pt-0">
                                     <div class="row m-0">
                                         <div class="row my-3">
+                                            <!-- Bouton de déclenchement de la modale permettant de supprimer une filière -->
                                             <div class="col-md-6 py-2">
                                                 <button class="boutonNegatif" data-bs-toggle="modal" data-bs-target="#modalDeleteField<?php echo $ligne['field_id']; ?>" <?php echo isFieldInUse($pdo, $ligne['field_id']) ? "disabled" : ""; ?>>Supprimer</button>
                                             </div>
+                                            <!-- Bouton de déclenchement de la modale permettant de modifier une filière -->
                                             <div class="col-md-6 py-2">
                                                 <button class="bouton col-md-6" data-bs-toggle="modal" data-bs-target="#modalmodify<?php echo $ligne['field_id']; ?>">Modifier</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Contenu de la modale permettant de supprimer une filière -->
                                 <div class="modal fade" id="modalDeleteField<?php echo $ligne['field_id']; ?>" tabindex="-1" aria-labelledby="DeleteFieldModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                                         <div class="modal-content px-4 pb-4">
@@ -233,31 +264,33 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Contenu de la modale permettant de modifier une filière -->
                                 <div class="modal fade" id="modalmodify<?php echo $ligne['field_id']; ?>" tabindex="-1" aria-labelledby="modifyLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-                                    <div class="modal-content px-4 pb-4">
-                                        <div class="modal-header deco justify-content-start px-0">
-                                            <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
-                                            <h2 class="modal-title" id="modify"><?php echo $ligne['name'];?></h2>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="filieres.php" method="post">
-                                                <label for="newName"  class="modalLabel mb-0 mt-2">Choisir un nouveau nom pour la filière :</label>
-                                                <input type="text" class="zoneText mb-3" name="newName" maxlength="50" placeholder="Saisir le nom" required>
-                                                <input type="hidden" name="modify" value="<?php echo $ligne['field_id'];?>">
-                                                <div class="row mt-3">
-                                                    <div class="col-6">
-                                                        <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                                        <div class="modal-content px-4 pb-4">
+                                            <div class="modal-header deco justify-content-start px-0">
+                                                <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
+                                                <h2 class="modal-title" id="modify"><?php echo $ligne['name'];?></h2>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="filieres.php" method="post">
+                                                    <label for="newName"  class="modalLabel mb-0 mt-2">Choisir un nouveau nom pour la filière :</label>
+                                                    <input type="text" class="zoneText mb-3" name="newName" maxlength="50" placeholder="Saisir le nom" required>
+                                                    <input type="hidden" name="modify" value="<?php echo $ligne['field_id'];?>">
+                                                    <div class="row mt-3">
+                                                        <div class="col-6">
+                                                            <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <button type="submit" class="bouton confirmation col-6" value="Valider">Valider</button>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-6">
-                                                        <button type="submit" class="bouton confirmation col-6" value="Valider">Valider</button>
-                                                    </div>
-                                                </div>
-                                            </form>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             </div>
                         </div>
                         <?php   } 
@@ -266,6 +299,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- Contenu de la modale de deconnexion permettant de se déconnecter et de retourner à la page d'accueil. -->
         <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content">

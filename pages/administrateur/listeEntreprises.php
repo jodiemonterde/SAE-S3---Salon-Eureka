@@ -1,6 +1,8 @@
 <?php
     try {
+        // Démarrage d'une session
         session_start();
+
         // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
         $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
 
@@ -8,6 +10,8 @@
         if (!isset($_SESSION['filtre']) || $_SESSION['filtre'] == null) {
             $_SESSION['filtre'] = array();
         }
+
+        // Gère l'affichage des étudiants en fonction des filtres
         if (isset($_POST['nouveauFiltre'])) {
             if (in_array($_POST['nouveauFiltre'], $_SESSION['filtre'])) {
                 $index = array_search($_POST['nouveauFiltre'], $_SESSION['filtre']);
@@ -19,27 +23,39 @@
             header("Location: listeEntreprises.php");
             exit();
         }
+
+        /* 
+         * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
+         * connecter à la base de donnée et interagir avec celle-ci.
+         */
         require("../../fonctions/fonctions.php");
         require("../../fonctions/baseDeDonnees.php");
-        $pdo = connecteBD();
-        $generated = isPlanningGenerated($pdo);
+
+        $pdo = connecteBD(); // accès à la Base de données
+
+        $generated = isPlanningGenerated($pdo); // Vérification de si le planning a été généré
+        
+        // Modification d'une entreprise existante si le formulaire en question a été correctement rempli : seuls les champs non vide font un changement
         if (isset($_POST["modifyCompany"])) {
             modifyCompany($pdo, $_POST["companyID"], $_POST["nomEntreprise"], $_POST["descriptionEntreprise"], $_POST["secteurEntreprise"],$_POST["adresseEntreprise"], $_POST["codePostalEntreprise"], $_POST["villeEntreprise"], $_FILES["logoEntreprise"], $_POST['ancienNom']);
             header("Location: listeEntreprises.php");
             exit();
         }
 
+        // Suppression d'une entreprise si le formulaire de suppression a été enclenché
         if (isset($_POST["deleteCompany"])) {
             deleteCompany($pdo, $_POST["companyID"]);
             header("Location: listeEntreprises.php");
             exit();
         }
 
+        // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un administrateur correctement identifié.
         if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
             header('Location: ../connexion.php');
             exit();
         }
 
+        // Ajout d'une nouvelle entreprise si le formulaire en question a été correctement rempli
         if (isset($_POST["addCompany"])) {
             $intervenants_array = array();
         
@@ -52,7 +68,7 @@
             $intervenants_array[] = $intervenant_1;
 
             if (isset($_POST['nomIntervenant_2'])) {
-                // Commencer à partir de l'indice 2
+                // Commence à partir de l'indice 2
                 $cpt = 2;
                 
                 while (isset($_POST['nomIntervenant_' . $cpt])) {
@@ -72,44 +88,53 @@
             exit();
         } 
 
+        // Modification de l'intervenant d'une entreprise. Seuls les champs remplis sont modifiés
         if (isset($_POST['modifySpeaker'])) {
             modifySpeaker($pdo, $_POST['nomIntervenantEdit'], $_POST['roleIntervenantEdit'], $_POST['filieresIntervenant'], $_POST['intervenantID']);
             header("Location: listeEntreprises.php");
             exit();
         }
 
+        // Suppression de l'intervenant d'une entreprise
         if (isset($_POST['deleteSpeaker'])) {
             deleteSpeaker($pdo, $_POST['intervenantID']);
             header("Location: listeEntreprises.php");
             exit();
         }
 
+        // Ajout d'un nouvel intervenant lié à une entreprise
         if (isset($_POST['addSpeaker'])) {
             addSpeaker($pdo, $_POST['companyID'], $_POST['nomIntervenantAdd'], $_POST['roleIntervenantAdd'], $_POST['filieresIntervenant']);
             header("Location: listeEntreprises.php");
             exit();
         }
 
+
         if (isset($_SESSION['error'])) {
             echo "<script>alert('".$_SESSION['error']."');</script>";
             unset($_SESSION['error']);
         }
 
-        $fields = getFields($pdo);
+        $fields = getFields($pdo); // Obtention de toutes les filières de la base de données
+        
+        // Permet d'attribuer à $fields toutes les filières trouvées dans la BD
         $tmp = [];
         while ($ligne = $fields->fetch()) {
             $tmp[$ligne['field_id']] = $ligne['name'];
         }
         $fields = $tmp;
+
+         // Obtention des entreprises selon les filtres (filières et recherche)
         $stmt = getEntreprisesAdministrateur($pdo, $_SESSION['filtre'], $_SESSION['recherche']);
-    } catch (Exception $e) {
+    } catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
         header('Location: ../maintenance.php');
         exit();
     }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
+    <!-- Métadonnées et liens vers les feuilles de style -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -120,7 +145,8 @@
     <link rel="stylesheet" href="../../css/listeEntrepriseAdministrateur.css">
     <link rel="stylesheet" href="../../css/navbars.css">
     <link rel="stylesheet" href="../../css/filtre.css">
-    <title>Eureka - Liste des entreprises</title>
+
+    <title>Eurêka - Liste des entreprises</title>
 </head>
     <body>
         <!-- Navbar du haut -->
@@ -153,6 +179,7 @@
                             <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="forum/menu.php"> Forum </a>
                         </li>
                         <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
+                            <!-- Affichage du nom de l'utilisateur -->
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <?php echo $_SESSION['prenom_utilisateur'] . ' ' . $_SESSION['nom_utilisateur']?>
                             </a>
@@ -169,6 +196,7 @@
                 </div>
             </div>
         </nav>
+        
         <!-- Navbar du bas -->
         <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
             <div class="container-fluid">
@@ -230,13 +258,15 @@
             </div>
         </nav>
 
-
+        <!-- Container principal de la page --> 
         <div class="container mt-2">
             <div class="row d-flex align-items-center h-100">
                 <div class="col-12 col-md-6">
                     <h2>Liste des entreprises</h2>
                     <p>Voici toutes les entreprises présentes au salon Euréka cette année. Cliquez sur l’une d’elle pour voir tous les étudiants qui veulent un rendez-vous avec celle-ci ! Vous pouvez également filtrer quelles filières vous intéressent grâce à la liste de filtres ci-dessous.</p>
                 </div>
+
+                <!-- Formulaire permettant d'entrer une recherche personnalisé qui filtrera l'affichage selon celle-ci -->
                 <form action="listeEntreprises.php" method="post" class="col-12 col-md-6 my-2">
                     <div class="row">
                         <div class="col-12 col-md-7 p-0">
@@ -248,6 +278,8 @@
                     </div>
                 </form>
             </div>
+
+            <!-- Boutons permettant le filtre des entreprises selon les filières -->
             <div class="container p-0">
                 <div class="row">
                     <div class="col-12">
@@ -264,11 +296,14 @@
                 </div>
             </div>
             <hr class="mb-4">
+
+            <!-- Bouton qui ouvre une modale afin d'ajouter une nouvelle entreprise -->
             <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalAddCompany" <?php echo $generated ? "disabled" : ""; ?>>
                 <i class="fa-solid fa-plus text-left justify-content-center"></i>
                 <h2 class="text-center m-2">Ajouter une entreprise</h2>
             </button>
             
+            <!-- Modale d'ajout d'une entreprise -->
             <div class="modal fade" id="modalAddCompany" tabindex="-1" aria-labelledby="addCompanyModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                     <div class="modal-content  px-4 pb-4">
@@ -294,6 +329,7 @@
                                 <input type="file" name="logoEntreprise" id="logo" accept="image/*">
                                 <hr>
 
+                                <!-- Modèle de création d'intervenant qui se duplique lors du clic sur le bouton d'ajout d'un intervenant -->
                                 <div id="intervenantsContainer">
                                     <div id="intervenantTemplate" style="display: block;">
                                         <div class="intervenantContainer">
@@ -307,6 +343,7 @@
                                             <input class="entreeUtilisateur" type="textarea" name="roleIntervenant" id="roleIntervenant" placeholder="Saisir un rôle pour cet intervenant (facultatif)" maxlength="80" />
                                             <div class="rowForChecks d-flex flex-wrap">
                                                 <?php
+                                                    // Obtentions de toutes les filières disponibles sur la BD
                                                     foreach ($fields as $key => $field) {?>
                                                         <label class="buttonToCheck me-2">
                                                             <input type="checkbox" name="filieresIntervenant[]" value="<?php echo $key;?>" />
@@ -320,7 +357,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                    
+                                
+                                <!-- Bouton d'ajout d'un intervenant au sein de la modale : permet d'ajouter un nombre indéfini d'intervenants grâce à du javascript -->
                                 <button type="button" class="addStudent d-flex w-100 text-center align-items-center justify-content-center" onclick="ajouterIntervenant(event)">
                                     <i class="fa-solid fa-plus text-left justify-content-center"></i>
                                     <h2 class="text-center m-2">Ajouter un intervenant</h2>
@@ -341,8 +379,9 @@
 
             <!-- Accordéon Bootstrap -->
             <div class="accordion" id="listeEntreprise">
+            
+            <!-- Gestion de l'affichage en fonction des filtres sélectionnée et de la recherche saisie -->
             <?php
-
                 if (empty($_SESSION['filtre'])) {
                     echo '<p>Aucune filière sélectionnée. Veuillez choisir au moins une filière.</p>';
                 } elseif ($stmt->rowCount() === 0) {
@@ -350,6 +389,8 @@
                 } else {
                     while ($ligne = $stmt->fetch()) { 
             ?>
+
+            <!-- Element de l'accordéon dépendant de la boucle while permettant d'afficher toutes les entreprises. -->
             <div class="accordion-item my-3">
                 <h2 class="accordion-header" id="heading<?php echo $ligne['company_id']?>">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $ligne['company_id']?>" aria-expanded="false" aria-controls="collapse<?php echo $ligne['company_id']?>">
@@ -370,27 +411,33 @@
                         <div class="row">
                             <div class="description"><?php echo $ligne["description"]?></div>
                             <?php
-                            $intervenants = getSpeakersPerCompanyAdministrateur($ligne["intervenants_roles"]);
+                            $intervenants = getSpeakersPerCompanyAdministrateur($ligne["intervenants_roles"]); // Obtention des intervenants pour chaque entreprises
                             ?>
                             <hr>
+                            <!-- Affichage de tous les intervenants d'une entreprise avec les filières qui lui sont attribués -->
                             <?php foreach ($intervenants as $intervenant) { ?>
-                                <div class="my-1">
-                                    
+                            <div class="my-1">
+                            
                             <span class="speakerName m-0"><?php echo $intervenant["nom"];?></span>
                             <?php if ($intervenant["fonction"] != null) { ?>
                                 <span class="speakerRole m-0"> <?php echo '- '.$intervenant["fonction"];?> </span>
                             <?php } ?>
                             <div class="d-flex">
-                            <div class="d-flex flex-wrap w-100">
-                                <?php foreach ($intervenant["fields"] as $field) {
-                                    echo '<div class="tag text-center mb-2">'.$field.'</div>';
-                                } ?>
+                                <div class="d-flex flex-wrap w-100">
+                                    <!-- Affichage des filières -->
+                                    <?php foreach ($intervenant["fields"] as $field) {
+                                        echo '<div class="tag text-center mb-2">'.$field.'</div>';
+                                    } ?>
                                 </div>
                                 <div class="d-flex">
+                                    <!-- Bouton permettant d'accéder à la modale pour modifier les informations concernant un intervenant -->
                                     <button class="border-0 icon-title" data-bs-toggle="modal" data-bs-target="#edit<?php echo $intervenant['id']; ?>"><i class="fa-solid fa-pen icon m-0"></i></button>
+                                    <!-- Bouton permettant d'accéder à la modale pour supprimer un intervenant (seulement s'il y a plus d'un intervenant, il est impossible de supprimer le dernier intervenant) -->
                                     <button class="border-0 icon-title" data-bs-toggle="modal" data-bs-target="#delete<?php echo $intervenant['id']; ?>" <?php echo count($intervenants) === 1 ? "hidden" : ""; ?>><i class="fa-solid fa-trash icon m-0"></i></button>
                                 </div>
-                                </div>
+                            </div>
+
+                                <!-- Contenu de la modale permettant de modifier un intervenant -->
                                 <div class="modal fade" id="edit<?php echo $intervenant['id'];?>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                                         <div class="modal-content  px-4 pb-4">
@@ -405,6 +452,7 @@
                                                 <input class="entreeUtilisateur" type="textarea" name="roleIntervenantEdit" id="roleIntervenantEdit" value="<?php if (empty($intervenant["fonction"])) { echo '" placeholder="Saisir un rôle"'; } else { echo $intervenant["fonction"];} ?>" maxlength="80" />
                                                 <div class="rowForChecks d-flex flex-wrap">
                                                     <?php
+                                                        // Affichage de toutes les filières disponibles dans la BD. Celle qui étaient préalablement selectionnées pour cette intervenant sont pré-selectionnées.
                                                         foreach ($fields as $key => $field) {?>
                                                             <label class="buttonToCheck me-2">
                                                                 <input type="checkbox" name="filieresIntervenant[]" value="<?php echo $key.'"';
@@ -434,6 +482,8 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Contenu de la modale permettant de supprimer un intervenant -->
                                 <div class="modal fade" id="delete<?php echo $intervenant['id'];?>" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                                         <div class="modal-content  px-4 pb-4">
@@ -459,12 +509,15 @@
                                 <hr>
                             </div>
                             <?php } ?>
+                            <!-- Bouton permettant d'accéder à la modale pour ajouter un intervenant -->
                             <div class="col-12">
                                 <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalAddSpeaker<?php echo $ligne['company_id']?>" <?php echo $generated ? "disabled" : ""; ?>>
                                     <i class="fa-solid fa-plus text-left justify-content-center"></i>
                                     <h2 class="text-center m-2">Ajouter un(e) intervenant(e)</h2>
                                 </button>
                             </div>
+
+                            <!-- Contenu de la modale permettant d'ajouter un nouvel intervenant -->
                             <div class="modal fade" id="modalAddSpeaker<?php echo $ligne['company_id'];?>" tabindex="-1" aria-labelledby="addSpeakerModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                                     <div class="modal-content  px-4 pb-4">
@@ -480,6 +533,7 @@
                                             <input class="entreeUtilisateur" type="textarea" name="roleIntervenantAdd" id="roleIntervenantAdd" placeholder="Saisir un rôle pour cet intervenant (facultatif)"  maxlength="80" />
                                             <div class="rowForChecks d-flex flex-wrap">
                                                 <?php
+                                                    // Obtention de toutes les filières disponibles dans la BD
                                                     foreach ($fields as $key => $field) {?>
                                                         <label class="buttonToCheck me-2">
                                                             <input type="checkbox" name="filieresIntervenant[]" value="<?php echo $key;?>" />
@@ -503,18 +557,24 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Gestion de l'affichage des étudiants souhaitant rencontrer les entreprises selon la phase -->
                         <div class="row d-flex justify-content-evenly pt-4">
                             <div class="col-12">
+                                <!-- Si la phase est à 1.5 ou 2 (un planning est généré) -->
                                 <?php if ($generated) {
                                     try {
+                                        // Si l'entreprise est exclu (trop d'étudiants souhaitent la rencontrer)
                                         if ($ligne["excluded"] === 1) { ?>
                                         
-                                            <?php $stmtEtudiant = getStudentsPerCompanyWishList($pdo, $ligne['company_id']);
+                                            <?php $stmtEtudiant = getStudentsPerCompanyWishList($pdo, $ligne['company_id']); // Obtention des étudiants en se basant sur la table des souhaits uniquement
+                                            // Vérification du nombre de ligne : si la requête est vide, aucun étudiant ne souhaite rencontrer cette entreprise
                                             if ($stmtEtudiant->rowCount() === 0) { ?>
                                                 <h2 class="text-center erreur">Aucun étudiant ne souhaite rencontrer cette entreprise</h2>
                                             <?php } else { ?>
                                                 <h2 class="text-center erreur">Le planning de l'entreprise <?php echo $ligne["name"]; ?> ne peut pas être généré : trop d’étudiants souhaitent la rencontrer ! Ci-dessous, la liste des étudiants intéressés par <?php echo $ligne["name"]; ?>.</h2>
                                             <?php }
+                                            // Affichage de tous les étudiants qui souhaitent rencontrer cette entreprise
                                             while ($ligneEtudiant = $stmtEtudiant->fetch()) { 
                                                 ?>
                                                 <hr>
@@ -522,12 +582,13 @@
                                                 <p><?php echo $ligneEtudiant["name"]?></p>
                                             <?php }
                                         } else { 
-                                            $speakers = getSpeakersPerCompany($pdo, $ligne['company_id']);
+                                            $speakers = getSpeakersPerCompany($pdo, $ligne['company_id']); // Obtention des intervenants d'une entreprise
                                             ?> <h2 class="student text-center">Voici le planning de cette entreprise par intervenant :</h2><br> <?php
+                                            // Affichage des emplois du temps des étudiants en fonction de chaque intervenant
                                             while ($speaker = $speakers->fetch()) {
                                                 
                                                 echo '<h5 class="fw-bold text-center">Intervenant : '.$speaker['name'].' - '.$speaker['role'].'</h5>';
-                                                $stmtEtudiant = getAppointmentPerSpeaker($pdo, $speaker['speaker_id']);
+                                                $stmtEtudiant = getAppointmentPerSpeaker($pdo, $speaker['speaker_id']); // Obtention des rendez-vous en fonction des intervenants
                                                 if ($stmtEtudiant->rowCount() === 0) {
                                                     echo '<hr><p class="fw-bold text-danger">Aucun étudiant ne souhaite rencontrer cette entreprise avec cet intervenant.</p>';
                                                 }
@@ -539,21 +600,22 @@
                                                 <p><?php echo $ligneEtudiant["name"]?></p>
                                             <?php } }  
                                         }
-                                    } catch (Exception $e) {
+                                    } catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
                                         redirect("../maintenance.php");
                                     }?>
-                                <?php } else {
+                                <?php } else { // Le planning n'est pas généré
                                     try {
-                                        $stmtEtudiant = getStudentsPerCompany($pdo, $ligne["company_id"]);
-                                    } catch (Exception $e) {
+                                        $stmtEtudiant = getStudentsPerCompany($pdo, $ligne["company_id"]); // Obtention de tous les souhaits des étudiants par entreprise
+                                    } catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
                                         redirect("../maintenance.php");
                                     }
-                                    if ($stmtEtudiant->rowCount() === 0) {
+                                    if ($stmtEtudiant->rowCount() === 0) { // Si la requête est vide (aucun étudiant ne souhaite rencontrer cette entreprise)
                                         echo '<h2 class="text-center erreur">Aucun étudiant n\'a encore sélectionné cette entreprise</h2>';
                                     } else {
                                         echo '<h2 class="student text-center">Voici la liste des étudiants souhaitant rencontrer cette entreprise :</h2>';
                                     }
                                     
+                                    // Affichage des étudiants par entreprise
                                     while ($ligneEtudiant = $stmtEtudiant->fetch()) {
                                     ?>
                                     <hr>
@@ -567,13 +629,17 @@
                             <div class="col-12 mx-2">
                                 <hr>
                             </div>
+                            <!-- Bouton de déclenchement de la modale permettant de modifier une entreprise -->
                             <div class="col-4">
-                                <button class="bouton" type="button" data-bs-toggle="modal" data-bs-target="#modification<?php echo $ligne['company_id'];?>"> Modifier </button>
+                                <button class="bouton" type="button" data-bs-toggle="modal" data-bs-target="#modification<?php echo $ligne['company_id'];?>"> Modifier l'entreprise </button>
                             </div>
+                            <!-- Bouton de déclenchement de la modale permettant de supprimer une entreprise -->
                             <div class="col-4">
-                                <button class="bouton" type="button" data-bs-toggle="modal" data-bs-target="#suppression<?php echo $ligne['company_id'];?>"> Supprimer </button>
+                                <button class="bouton" type="button" data-bs-toggle="modal" data-bs-target="#suppression<?php echo $ligne['company_id'];?>"> Supprimer l'entreprise </button>
                             </div>
                         </div>
+
+                        <!-- Contenu de la modale permettant de modifier une entreprise -->
                         <div class="modal fade" id="modification<?php echo $ligne['company_id'];?>" tabindex="-1" aria-labelledby="modificationModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                                 <div class="modal-content  px-4 pb-4">
@@ -581,6 +647,7 @@
                                         <button type="button" class="blanc border-0" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
                                         <h2 class="modal-title" id="modificationModalLabel"><?php echo $ligne['name']; ?></h2>
                                     </div>
+                                    <!-- Formulaire de modification d'une entreprise -->
                                     <form action="listeEntreprises.php" method="post" enctype="multipart/form-data">
                                         <label for="nomEntreprise" class="modalLabel mb-0 mt-2">Nom</label>
                                         <input class="entreeUtilisateur" type="text" name="nomEntreprise" id="nomEntreprise" placeholder="<?php echo $ligne["name"]; ?>"/>
@@ -612,6 +679,8 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Contenu de la modale permettant de supprimer une entreprise -->
                         <div class="modal fade" id="suppression<?php echo $ligne['company_id'];?>" tabindex="-1" aria-labelledby="suppressionModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                                 <div class="modal-content  px-4 pb-4">
@@ -640,6 +709,8 @@
             <?php   } 
                 } ?>
         </div>
+        
+        <!-- Contenu de la modale de deconnexion permettant de se déconnecter et de retourner à la page d'accueil. -->
         <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content">
