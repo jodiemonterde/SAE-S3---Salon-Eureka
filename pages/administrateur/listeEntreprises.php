@@ -276,63 +276,65 @@
                             <button type="button" class="blanc border-0" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
                             <h2 class="modal-title" id="addCompanyModalLabel">Nouvelle entreprise</h2>
                         </div>
-                        <form action="listeEntreprises.php" method="post" enctype="multipart/form-data" id="myForm">
-                            <label for="nomEntreprise" class="modalLabel mb-0 mt-2">Nom</label>
-                            <input class="entreeUtilisateur" type="text" name="nomEntreprise" id="nomEntreprise" placeholder="Saisir le nom de l’entreprise" maxlength="50"required/>
-                            <label for="descriptionEntreprise" class="modalLabel mb-0 mt-2">Description</label>
-                            <input class="entreeUtilisateur" type="text" name="descriptionEntreprise" id="descriptionEntreprise" placeholder="Saisir un texte permettant de décrire en détail l'entreprise"/>
-                            <label for="adresseEntreprise" class="modalLabel mb-0 mt-2">Adresse</label>
-                            <input class="entreeUtilisateur" type="text" name="adresseEntreprise" id="adresseEntreprise" placeholder="Saisir l'adresse complète de l'entreprise" maxlength="150" required/>
-                            <label for="codePostalEntreprise" class="modalLabel mb-0 mt-2">Code Postal</label>
-                            <input class="entreeUtilisateur" type="text" name="codePostalEntreprise" id="codePostalEntreprise" placeholder="Saisir le code postal de l'entreprise" maxlength="5" required/>
-                            <label for="villeEntreprise" class="modalLabel mb-0 mt-2">Ville</label>
-                            <input class="entreeUtilisateur" type="text" name="villeEntreprise" id="villeEntreprise" placeholder="Saisir la ville où se situe l'entreprise" maxlength="45" required/>
-                            <label for="secteurEntreprise" class="modalLabel mb-0 mt-2">Secteur d'activité</label>
-                            <input class="entreeUtilisateur" type="text" name="secteurEntreprise" id="secteurEntreprise" placeholder="Saisir le secteur d'activité" maxlength="50" required/>
-                            <label for="logo" class="modalLabel mb-0 mt-2 w-100">Logo de l'entreprise</label>
-                            <input type="file" name="logoEntreprise" id="logo" accept="image/*">
-                            <hr>
+                        <div class="modal-body navigue">
+                            <form action="listeEntreprises.php" method="post" enctype="multipart/form-data" id="myForm">
+                                <label for="nomEntreprise" class="modalLabel mb-0 mt-2">Nom</label>
+                                <input class="entreeUtilisateur" type="text" name="nomEntreprise" id="nomEntreprise" placeholder="Saisir le nom de l’entreprise" maxlength="50"required/>
+                                <label for="descriptionEntreprise" class="modalLabel mb-0 mt-2">Description</label>
+                                <input class="entreeUtilisateur" type="text" name="descriptionEntreprise" id="descriptionEntreprise" placeholder="Saisir un texte permettant de décrire en détail l'entreprise"/>
+                                <label for="adresseEntreprise" class="modalLabel mb-0 mt-2">Adresse</label>
+                                <input class="entreeUtilisateur" type="text" name="adresseEntreprise" id="adresseEntreprise" placeholder="Saisir l'adresse complète de l'entreprise" maxlength="150" required/>
+                                <label for="codePostalEntreprise" class="modalLabel mb-0 mt-2">Code Postal</label>
+                                <input class="entreeUtilisateur" type="text" name="codePostalEntreprise" id="codePostalEntreprise" placeholder="Saisir le code postal de l'entreprise" maxlength="5" required/>
+                                <label for="villeEntreprise" class="modalLabel mb-0 mt-2">Ville</label>
+                                <input class="entreeUtilisateur" type="text" name="villeEntreprise" id="villeEntreprise" placeholder="Saisir la ville où se situe l'entreprise" maxlength="45" required/>
+                                <label for="secteurEntreprise" class="modalLabel mb-0 mt-2">Secteur d'activité</label>
+                                <input class="entreeUtilisateur" type="text" name="secteurEntreprise" id="secteurEntreprise" placeholder="Saisir le secteur d'activité" maxlength="50" required/>
+                                <label for="logo" class="modalLabel mb-0 mt-2 w-100">Logo de l'entreprise</label>
+                                <input type="file" name="logoEntreprise" id="logo" accept="image/*">
+                                <hr>
 
-                            <div id="intervenantsContainer">
-                                <div id="intervenantTemplate" style="display: block;">
-                                    <div class="intervenantContainer">
-                                       <div class="d-flex flex-wrap">
-                                            <h2>Intervenant &nbsp;<h2 id="numeroIntervenant">1</h2></h2>
-                                            <button type ="button" class="border-0 icon-title trash" hidden><i class="fa-solid fa-trash icon"></i></button>
+                                <div id="intervenantsContainer">
+                                    <div id="intervenantTemplate" style="display: block;">
+                                        <div class="intervenantContainer">
+                                            <div class="d-flex flex-wrap">
+                                                <h2>Intervenant &nbsp;<h2 id="numeroIntervenant">1</h2></h2>
+                                                <button type ="button" class="border-0 icon-title trash" hidden><i class="fa-solid fa-trash icon"></i></button>
+                                            </div>
+                                            <label for="nomIntervenant" class="modalLabel mb-0 mt-2">Nom</label>
+                                            <input class="entreeUtilisateur" type="text" name="nomIntervenant" id="nomIntervenant" placeholder="Saisir le nom de l’intervenant" maxlength="50" required/>
+                                            <label for="roleIntervenant" class="modalLabel mb-0 mt-2">Role</label>
+                                            <input class="entreeUtilisateur" type="textarea" name="roleIntervenant" id="roleIntervenant" placeholder="Saisir un rôle pour cet intervenant (facultatif)" maxlength="80" />
+                                            <div class="rowForChecks d-flex flex-wrap">
+                                                <?php
+                                                    foreach ($fields as $key => $field) {?>
+                                                        <label class="buttonToCheck me-2">
+                                                            <input type="checkbox" name="filieresIntervenant[]" value="<?php echo $key;?>" />
+                                                            <div class="icon-box">
+                                                                <span><?php echo $field;?></span>
+                                                            </div>
+                                                        </label>
+                                                <?php } ?>
+                                            </div>
+                                            <hr>
                                         </div>
-                                        <label for="nomIntervenant" class="modalLabel mb-0 mt-2">Nom</label>
-                                        <input class="entreeUtilisateur" type="text" name="nomIntervenant" id="nomIntervenant" placeholder="Saisir le nom de l’intervenant" maxlength="50" required/>
-                                        <label for="roleIntervenant" class="modalLabel mb-0 mt-2">Role</label>
-                                        <input class="entreeUtilisateur" type="textarea" name="roleIntervenant" id="roleIntervenant" placeholder="Saisir un rôle pour cet intervenant (facultatif)" maxlength="80" />
-                                        <div class="rowForChecks d-flex flex-wrap">
-                                            <?php
-                                                foreach ($fields as $key => $field) {?>
-                                                    <label class="buttonToCheck me-2">
-                                                        <input type="checkbox" name="filieresIntervenant[]" value="<?php echo $key;?>" />
-                                                        <div class="icon-box">
-                                                            <span><?php echo $field;?></span>
-                                                        </div>
-                                                    </label>
-                                            <?php } ?>
-                                        </div>
-                                        <hr>
                                     </div>
                                 </div>
-                            </div>
-                                
-                            <button type="button" class="addStudent d-flex w-100 text-center align-items-center justify-content-center" onclick="ajouterIntervenant(event)">
-                                <i class="fa-solid fa-plus text-left justify-content-center"></i>
-                                <h2 class="text-center m-2">Ajouter un intervenant</h2>
-                            </button>
-                            <div class="row pt-2">
-                                <div class="col-6">
-                                    <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                    
+                                <button type="button" class="addStudent d-flex w-100 text-center align-items-center justify-content-center" onclick="ajouterIntervenant(event)">
+                                    <i class="fa-solid fa-plus text-left justify-content-center"></i>
+                                    <h2 class="text-center m-2">Ajouter un intervenant</h2>
+                                </button>
+                                <div class="row pt-2">
+                                    <div class="col-6">
+                                        <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="submit" name="addCompany" class="bouton confirmation col-6" value="Valider">Valider</button>
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    <button type="submit" name="addCompany" class="bouton confirmation col-6" value="Valider">Valider</button>
-                                </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
