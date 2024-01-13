@@ -23,13 +23,13 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        <link rel="stylesheet" href="../../../css/all.css">
+        <link rel="stylesheet" href="../../../css/listeRendezVous.css">
+        <link rel="stylesheet" href="../../../css/navbars.css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="../../../js/downloadPage.js"></script>
-        <link rel="stylesheet" href="../../../css/navbars.css">
-        <link rel="stylesheet" href="../../../css/all.css">
-        <link  rel="stylesheet" href="../../../css/listeRendezVous.css">
         <title>Eureka - Liste des souhaits</title>
     </head>
     <body>
@@ -81,19 +81,19 @@
         <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
             <div class="container-fluid">
                 <ul class="navbar-nav w-100 justify-content-evenly">
-                    <li class="nav-item d-flex flex-column text-center actif_bas">
-                        <a class="d-flex justify-content-center actif_bas_icone">
-                            <img src="../../../ressources/icone_entreprise_white.svg" alt="Liste des entreprises" class="icone">
+                    <li class="nav-item d-flex flex-column text-center inactif_bas">
+                        <a class="d-flex justify-content-center" href="listeEntreprises.php">
+                            <img src="../../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone">
                         </a>
-                        Entreprises
+                        <a class="d-flex justify-content-center lien_barre_basse" href="listeEntreprises.php">
+                            Entreprises
+                        </a>
                     </li>
-                    <li class="nav-item d-flex flex-column text-center inactif_bas_texte">
-                        <a class="d-flex justify-content-center" href="listeRendezVous.php">
-                            <img src="../../../ressources/icone_rdv_black.svg" alt="Mes rendez-vous" class="icone">
+                    <li class="nav-item d-flex flex-column text-center actif_bas_texte">
+                        <a class="d-flex justify-content-center actif_bas_icone">
+                            <img src="../../../ressources/icone_rdv_white.svg" alt="Mes rendez-vous" class="icone">
                         </a>
-                        <a class="d-flex justify-content-center lien_barre_basse" href="listeRendezVous.php">
-                            Rendez-vous
-                        </a>
+                        Rendez-vous
                     </li>
                 </ul>
             </div>
