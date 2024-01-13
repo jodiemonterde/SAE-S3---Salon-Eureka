@@ -40,7 +40,7 @@
             $_SESSION['idUtilisateur'] = $ligne['user_id'];
             $_SESSION['type_utilisateur'] = $ligne['responsibility'];
             $_SESSION['prenom_utilisateur'] = $ligne['username'];	
-            $_SESSION['nom_utilisateur'] = $ligne['nom'];
+            $_SESSION['nom_utilisateur'] = $ligne['lastname'];
         }
 
         if($_SESSION['connexion']==true){

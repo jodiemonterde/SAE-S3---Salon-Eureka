@@ -234,7 +234,7 @@
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $ligne['user_id']?>" aria-expanded="false" aria-controls="collapse<?php echo $ligne['user_id']?>">
                     <div class="profil-det-img d-flex text-start">
                         <div class="pd detailEtudiant">
-                            <h2 class="title"><?php echo $ligne["username"] . ' ' . $ligne['nom']; ?></h2>
+                            <h2 class="title"><?php echo $ligne["username"] . ' ' . $ligne['lastname']; ?></h2>
                         </div>
                     </div>
                 </button>
@@ -259,7 +259,7 @@
                                     <div class="modal-content px-4 pb-4">
                                         <div class="modal-header deco justify-content-start px-0">
                                             <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
-                                            <h2 class="modal-title" id="deleteStudentModalLabel"><?php echo $ligne['username'] . ' ' . $ligne['nom'];?></h2>
+                                            <h2 class="modal-title" id="deleteStudentModalLabel"><?php echo $ligne['username'] . ' ' . $ligne['lastname'];?></h2>
                                         </div>
                                         <div class="modal-body">
                                             <h2>Êtes-vous sûr(e) de vouloir supprimer cet administrateur ?</h2>
@@ -284,7 +284,7 @@
                                     <div class="modal-content px-4 pb-4">
                                         <div class="modal-header deco justify-content-start px-0">
                                             <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
-                                            <h2 class="modal-title" id="modifyPassword"><?php echo $ligne['username'] . ' ' . $ligne['nom'];?></h2>
+                                            <h2 class="modal-title" id="modifyPassword"><?php echo $ligne['username'] . ' ' . $ligne['lastname'];?></h2>
                                         </div>
                                         <div class="modal-body">
                                             <form action="listeAdministrateurs.php" method="post">

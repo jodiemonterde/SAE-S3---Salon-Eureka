@@ -117,7 +117,7 @@
                         </li>
                         <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <?php echo htmlspecialchars($_SESSION['prenom_utilisateur'] . ' ' . $_SESSION['nom_utilisateur'])?>
+                                <?php echo $_SESSION['prenom_utilisateur'] . ' ' . $_SESSION['nom_utilisateur']?>
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li> <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deconnexion"> Se déconnecter </a> </li>
@@ -293,7 +293,7 @@
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $ligne['user_id']?>" aria-expanded="false" aria-controls="collapse<?php echo $ligne['user_id']?>">
                     <div class="profil-det-img d-flex text-start">
                         <div class="pd detailEtudiant">
-                            <h2 class="title"><?php echo $ligne["username"] . ' ' . $ligne["nom"];?></h2>
+                            <h2 class="title"><?php echo $ligne["username"] . ' ' . $ligne["lastname"];?></h2>
                             <?php echo $ligne["filiere"]?></br>
                             <span class="<?php echo $ligne["nbSouhait"] < 1 ? "erreur" : ""?>"> <?php echo $ligne["nbSouhait"]?> <?php echo !$generated ? "souhaits" : "rencontres" ?> </span>
                         </div>
@@ -316,7 +316,7 @@
                                     <div class="modal-content px-4 pb-4">
                                         <div class="modal-header deco justify-content-start px-0">
                                             <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
-                                            <h2 class="modal-title" id="deleteStudentModalLabel"><?php echo $ligne['username'];?></h2>
+                                            <h2 class="modal-title" id="deleteStudentModalLabel"><?php echo $ligne['username']. ' ' . $ligne['lastname'];?></h2>
                                         </div>
                                         <div class="modal-body">
                                             <h2>Êtes-vous sûr(e) de vouloir supprimer cet(te) étudiant(e) ?</h2>
@@ -345,7 +345,7 @@
                                     <div class="modal-content px-4 pb-4">
                                         <div class="modal-header deco justify-content-start px-0">
                                             <button type="button" class="blanc" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
-                                            <h2 class="modal-title" id="modifyStudentPassword"><?php echo $ligne['username'];?></h2>
+                                            <h2 class="modal-title" id="modifyStudentPassword"><?php echo $ligne['username']. ' ' . $ligne['lastname'];?></h2>
                                         </div>
                                         <div class="modal-body">
                                             <form action="listeEtudiants.php" method="post">
