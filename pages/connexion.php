@@ -55,7 +55,7 @@
                     header('Location: etudiant/phase2/emploiDuTemps.php');
                 }
             } elseif ($_SESSION['type_utilisateur'] == 'G') { // L'utilisateur est un gestionnaire
-                if ($phase == 1) {
+                if ($phase != 2) {
                     header('Location: gestionnaire/phase1/listeEntreprise.php');
                 } else {
                     header('Location: gestionnaire/phase2/listeEntreprise.php');

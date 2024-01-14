@@ -4,7 +4,7 @@
         session_start();
 
         // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
-        $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
+        $_SESSION['recherche'] = isset($_POST['recherche']) ? htmlspecialchars($_POST['recherche']) : ($_SESSION['recherche'] ?? null);
 
 
         /* 

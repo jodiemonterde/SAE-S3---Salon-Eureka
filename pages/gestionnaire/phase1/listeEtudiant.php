@@ -3,7 +3,7 @@
     session_start();
 
     // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
-    $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
+    $_SESSION['recherche'] = isset($_POST['recherche']) ? htmlspecialchars($_POST['recherche']) : ($_SESSION['recherche'] ?? null);
 
     // $_SESSION['filtre'] est un tableau qui contient les id des filtres selectionnes
     if (!isset($_SESSION['filtre']) || $_SESSION['filtre'] == null) {
@@ -12,11 +12,11 @@
 
     // Gère l'affichage des entreprises en fonction des filtres
     if (isset($_POST['nouveauFiltre'])) {
-        if (in_array($_POST['nouveauFiltre'], $_SESSION['filtre'])) {
-            $index = array_search($_POST['nouveauFiltre'], $_SESSION['filtre']);
+        if (in_array(htmlspecialchars($_POST['nouveauFiltre']), $_SESSION['filtre'])) {
+            $index = array_search(htmlspecialchars($_POST['nouveauFiltre']), $_SESSION['filtre']);
             unset($_SESSION['filtre'][$index]);
         } else {
-            array_push($_SESSION['filtre'], $_POST['nouveauFiltre']);
+            array_push($_SESSION['filtre'], htmlspecialchars($_POST['nouveauFiltre']));
         }
         
         header("Location: listeEtudiant.php");
@@ -30,7 +30,7 @@
 
     // Change l'ordre d'affichage des étudiants selon l'option de tri choisie par l'utilisateur
     if (isset($_POST['triPar'])) {
-        $_SESSION['triPar'] = $_POST['triPar'];
+        $_SESSION['triPar'] = htmlspecialchars($_POST['triPar']);
         header("Location: listeEtudiant.php");
         exit();
     }

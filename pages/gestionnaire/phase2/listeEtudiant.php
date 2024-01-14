@@ -3,7 +3,7 @@
     session_start();
 
     // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
-    $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
+    $_SESSION['recherche'] = isset($_POST['recherche']) ? htmlspecialchars($_POST['recherche']) : ($_SESSION['recherche'] ?? null);
 
     // $_SESSION['filtre'] est un tableau qui contient les id des filtres selectionnes
     if (!isset($_SESSION['filtre']) || $_SESSION['filtre'] == null) {
@@ -239,7 +239,7 @@
                                         <div class="col-12">
                                             <hr>
                                             <p class="text-center"><?php echo htmlspecialchars($rdv['start'])?> - <?php echo htmlspecialchars($rdv['end'])?></p>
-                                            <p class="text-center text-jaune"><?php echo htmlspecialchars($rdv['company_name']); ?></p>
+                                            <p class="text-center text-accent"><?php echo htmlspecialchars($rdv['company_name']); ?></p>
                                         </div>
                                     </div>
                                 <?php }
@@ -256,7 +256,7 @@
                                     <div class="row mx-1">
                                         <div class="col-12">
                                             <hr>
-                                            <p class="text-center text-jaune"><?php echo htmlspecialchars($ligne3['name']); ?></p>
+                                            <p class="text-center text-accent"><?php echo htmlspecialchars($ligne3['name']); ?></p>
                                         </div>
                                     </div>
                                 <?php } ?>
