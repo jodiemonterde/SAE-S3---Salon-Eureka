@@ -67,7 +67,8 @@
             exit();
         }
     } catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
-        echo $e->getMessage();
+        header('Location: ../maintenance.php');
+        exit();
     }
 ?>
 <!DOCTYPE html>

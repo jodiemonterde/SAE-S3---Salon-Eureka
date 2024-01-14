@@ -67,7 +67,7 @@
             exit();
         }
     } catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
-        header("Location: ./../maintenance.php");
+        header("Location: ../maintenance.php");
         exit();
     }
 ?>
