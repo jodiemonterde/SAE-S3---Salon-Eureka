@@ -22,36 +22,52 @@
             $rendezVous = getAppointmentPerSpeaker($pdo,$row1["speaker_id"]);
             //Initialise la famille de la police, sa taille et son style
             $pdfEntreprise->SetFont('Arial','B',20);
+            // ecrit le nom de l'entreprise en haut de la page 
             $pdfEntreprise->Cell(0, 10, conversion(htmlspecialchars_decode($nomEntreprise)), 0, 1, 'C');
             $pdfEntreprise->SetFont('Arial','B',11);
+            // ecrit le nom de l'intervenant 
             $pdfEntreprise->Cell(0, 10, conversion(htmlspecialchars_decode($row1["name"])), 0, 1, 'C');
+            // Remet les cadres en noir 
             $pdfEntreprise->SetDrawColor(0,0,0);   
+            // créer une cellule vide pour mettre une ligne noir en haut
             $pdfEntreprise->Cell(185, 0, "", 'T', 0, 'C');
+            // Remet les cadres à leur valeur précédente
             $pdfEntreprise->SetDrawColor(217,217,217);
             $pdfEntreprise->Ln();
             $j = 0;
             while($row2 = $rendezVous->fetch()){
                 if ($j == 12) {
                     $j = 0;
+                    //Rajoute une page 
                     $pdfEntreprise->AddPage();
+                    // Remet les cadres en noir 
                     $pdfEntreprise->SetDrawColor(0,0,0);
                     $pdfEntreprise->Cell(185, 0, "", 'T', 0, 'C');
+                    // Remet les cadres à leur valeur précédente
                     $pdfEntreprise->SetDrawColor(217,217,217);
                     $pdfEntreprise->Ln();
                 }
+                // Ecrit l'heure de début et de fin des rende-vous 
                 $pdfEntreprise->Cell(30, 20, $row2["start"].'-'.$row2["end"], 'LR', 0, 'C');
                 $pdfEntreprise->SetFont('Arial','',11);
                 $pdfEntreprise->SetTextColor(139, 45, 45);
+                //Ecrit le nom et le prénom de l'étudiant 
                 $pdfEntreprise->Cell(155, 10, conversion(htmlspecialchars_decode($row2["firstname"]." ".$row2["lastname"])) , 'LBR', 0, 'C');
+                //Saute une ligne 
                 $pdfEntreprise->Ln();
                 $pdfEntreprise->Cell(30, 10, "", '', 0, 'C');
+                //Met le texte en rouge 
                 $pdfEntreprise->SetTextColor(139, 45, 45);
+                //Ecrit l'adresse mail de l'étudiant
                 $pdfEntreprise->Cell(155, 10, conversion(htmlspecialchars_decode($row2['email'])) , 'LTR', 0, 'C');
+                //Remet le text en noir
                 $pdfEntreprise->SetTextColor(0 , 0, 0);
                 $pdfEntreprise->SetFont('Arial','B',11);
                 $pdfEntreprise->Ln();
+                //Met le texte en noir
                 $pdfEntreprise->SetDrawColor(0,0,0);
                 $pdfEntreprise->Cell(185, 0, "", 'T', 0, 'C');
+                // Remet les cadres à leur valeur précédente
                 $pdfEntreprise->SetDrawColor(217,217,217);
                 $pdfEntreprise->Ln();
                 $j = $j+1;
@@ -136,7 +152,9 @@
             $pdfExclu->SetFont('Arial','',11);
             //Change la couleur du texte 
             $pdfExclu->SetTextColor(139, 45, 45);
+            //Ecrit nom de l'étudiant et son prénom
             $pdfExclu->Cell(95, 10,conversion(htmlspecialchars_decode($row["firstname"]." ".$row["lastname"])) , 'LBTR', 0, 'C');
+            //Ecrit sa fillière 
             $pdfExclu->Cell(95, 10,conversion(htmlspecialchars_decode($row["name"])) , 'LTBR', 0, 'C');
             $pdfExclu->Ln();
         }
@@ -170,33 +188,47 @@
                 $pdfEntreprise->Cell(0, 10, conversion(htmlspecialchars_decode($ligne["name"])), 0, 1, 'C');
                 $pdfEntreprise->SetFont('Arial','B',11);
                 $pdfEntreprise->Cell(0, 10, conversion(htmlspecialchars_decode($row1["name"])), 0, 1, 'C');
+                //Met la couleur des cadre en noir
                 $pdfEntreprise->SetDrawColor(0,0,0);
                 $pdfEntreprise->Cell(185, 0, "", 'T', 0, 'C');
+                // Remet les cadres à leur valeur précédente
                 $pdfEntreprise->SetDrawColor(217,217,217);
                 $pdfEntreprise->Ln();
                 $j = 0;
                 while($row2 = $rendezVous->fetch()){
                     if ($j == 12) {
                         $j = 0;
+                        //Ajout d'une page
                         $pdfEntreprise->AddPage();
+                        //Met les cadres en noir
                         $pdfEntreprise->SetDrawColor(0,0,0);
                         $pdfEntreprise->Cell(185, 0, "", 'T', 0, 'C');
+                        // Remet les cadres à leur valeur précédente
                         $pdfEntreprise->SetDrawColor(217,217,217);
                         $pdfEntreprise->Ln();
                     }
+                    //Ecrit l'heure de début et de fin du rendez-vous
                     $pdfEntreprise->Cell(30, 20, $row2["start"].'-'.$row2["end"], 'LR', 0, 'C');
                     $pdfEntreprise->SetFont('Arial','',11);
+                    //Met le texte en rouge 
                     $pdfEntreprise->SetTextColor(139, 45, 45);
+                    //Ecrit le prénom et le nom de l'étudiant 
                     $pdfEntreprise->Cell(155, 10, conversion(htmlspecialchars_decode($row2["firstname"]." ".$row2["lastname"])) , 'LBR', 0, 'C');
+                    //Saut de page 
                     $pdfEntreprise->Ln();
                     $pdfEntreprise->Cell(30, 10, "", '', 0, 'C');
+                    //Met le texte en rouge 
                     $pdfEntreprise->SetTextColor(139, 45, 45);
+                    //Ecrit l'adresse mail de l'étudiant 
                     $pdfEntreprise->Cell(155, 10, conversion(htmlspecialchars_decode($row2['email'])) , 'LTR', 0, 'C');
+                    //Met le texte en noir
                     $pdfEntreprise->SetTextColor(0 , 0, 0);
                     $pdfEntreprise->SetFont('Arial','B',11);
                     $pdfEntreprise->Ln();
+                    //Met les cadres en noir
                     $pdfEntreprise->SetDrawColor(0,0,0);
                     $pdfEntreprise->Cell(185, 0, "", 'T', 0, 'C');
+                    // Remet les cadres à leur valeur précédente
                     $pdfEntreprise->SetDrawColor(217,217,217);
                     $pdfEntreprise->Ln();
                     $j = $j+1;
