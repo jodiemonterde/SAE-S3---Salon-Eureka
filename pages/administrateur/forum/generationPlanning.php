@@ -21,16 +21,18 @@
         updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['heureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
     }
 
-
+    // modification d'un des attributs d'une entreprise (exclu de la génération ou réduit)
     if (isset($_POST['action']) && isset($_POST['entreprise'])) {
         setSpecificationCompany($pdo,$_POST['action'],$_POST['entreprise']);
         HEADER('Location: generationPlanning.php');
         exit();
     }
 
+    // Gère la deuxième action de la page (générer le planning, valider le planning ou refuser le planning)
     if (isset($_POST['action2'])) {
         switch ($_POST['action2']) {
             case 'genererPlanning':
+                // Génération du planning
                 $resultatGeneration = genererPlanning($pdo);
                 if ($resultatGeneration === "Génération réussite !") {
                     setPlanningGenerated($pdo, 1);
@@ -40,19 +42,22 @@
                 $_SESSION['resultatGeneration'] = $resultatGeneration;
                 break;
             case 'acceptPlanning':
+                // Validation du planning
                 launchPhase2($pdo);
                 HEADER('Location: menu.php');
                 exit();
                 break;
             case 'refusePlanning':
+                // Annulation du planning
                 cancelPlanning($pdo);
                 break;
         }
         HEADER('Location: generationPlanning.php');
             exit();
     }
-
+    // Vérifie si le planning a déjà été généré
     $isGenerated = isPlanningGenerated($pdo);
+    // Récupère les entreprises exclues et réduites
     $tmp = [];
     $entreprisesReduites = getSpecificationCompany($pdo,'entrepriseReduite', 1);
     while ($entreprise = $entreprisesReduites->fetch()) {
@@ -65,7 +70,7 @@
         $tmp[$entreprise['company_id']] = $entreprise['name'];
     }
     $entreprisesExclues = $tmp;
-
+    // Récupère les entreprises non exclues et non réduites
     $entreprisesPasExclues = getSpecificationCompany($pdo,'entrepriseExclusion', 0);
     $entreprisesPasReduites = getSpecificationCompany($pdo,'entrepriseReduite', 0);
 ?>
@@ -84,55 +89,55 @@
         <title>informations eureka</title>
     </head>
     <body>
-    <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
-                <div class="container-fluid h-100">
-                    <div class="navbar-brand d-flex align-items-center h-100">
-                        <img src="../../../ressources/logo_black.svg" alt="Logo Eureka" class="logoDisplay me-2">
-                        <span class="logoDisplay">Eureka</span>
-                    </div>
-                    <div class="navbar-right h-100">
-                        <ul class="navbar-nav d-flex h-100 align-items-center">
-                            <li class="nav-item nav-item-haut nav-link p-0 d-none d-md-block h-100">
-                                <!-- Si sur la liste des entreprises, mettre en actif et lien_inactif-->
-                                <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../listeEntreprises.php"> Entreprises </a>
-                            </li>
-                            <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block">
-                                <!-- Si sur la liste des étudiants, mettre en actif et lien_inactif -->
-                                <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../listeEtudiants.php"> Étudiants </a>
-                            </li>
-                            <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block">
-                                <!-- Si sur la liste des gestionnaires, mettre en actif et lien_inactif -->
-                                <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../listeAdministrateurs.php"> Administrateurs </a>
-                            </li>
-                            <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block">
-                                <!-- Si sur la liste des gestionnaires, mettre en actif et lien_inactif -->
-                                <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"  href="../listeGestionnaires.php"> Gestionnaires </a>
-                            </li>
-                            <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block lien_inactif">
-                                <!-- Si sur les paramètres du forum, mettre en actif et lien_inactif -->
-                                <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"> Forum </a>
-                            </li>
-                            <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
-                                <!-- Affichage du nom de l'utilisateur -->
-                                <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <?php echo $_SESSION['prenom_utilisateur'] . ' ' . $_SESSION['nom_utilisateur']; ?>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li> <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deconnexion"> Se déconnecter </a> </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item nav-item-haut d-md-none d-flex justify-content-end">
-                                <a data-bs-toggle="modal" data-bs-target="#deconnexion">
-                                    <img src="../../../ressources/icone_deconnexion.svg" alt="Se déconnecter" class="logo">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+        <!-- Barre de navigation du haut -->
+        <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
+            <div class="container-fluid h-100">
+                <div class="navbar-brand d-flex align-items-center h-100">
+                    <img src="../../../ressources/logo_black.svg" alt="Logo Eureka" class="logoDisplay me-2">
+                    <span class="logoDisplay">Eureka</span>
                 </div>
-            </nav>
-
-            
-            <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
+                <div class="navbar-right h-100">
+                    <ul class="navbar-nav d-flex h-100 align-items-center">
+                        <li class="nav-item nav-item-haut nav-link p-0 d-none d-md-block h-100">
+                            <!-- Si sur la liste des entreprises, mettre en actif et lien_inactif-->
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../listeEntreprises.php"> Entreprises </a>
+                        </li>
+                        <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block">
+                            <!-- Si sur la liste des étudiants, mettre en actif et lien_inactif -->
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../listeEtudiants.php"> Étudiants </a>
+                        </li>
+                        <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block">
+                            <!-- Si sur la liste des gestionnaires, mettre en actif et lien_inactif -->
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" href="../listeAdministrateurs.php"> Administrateurs </a>
+                        </li>
+                        <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block">
+                            <!-- Si sur la liste des gestionnaires, mettre en actif et lien_inactif -->
+                            <a class="inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"  href="../listeGestionnaires.php"> Gestionnaires </a>
+                        </li>
+                        <li class="nav-item nav-item-haut nav-link p-0 h-100 d-none d-md-block lien_inactif">
+                            <!-- Si sur les paramètres du forum, mettre en actif et lien_inactif -->
+                            <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center"> Forum </a>
+                        </li>
+                        <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
+                            <!-- Affichage du nom de l'utilisateur -->
+                            <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <?php echo $_SESSION['prenom_utilisateur'] . ' ' . $_SESSION['nom_utilisateur']; ?>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li> <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deconnexion"> Se déconnecter </a> </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item nav-item-haut d-md-none d-flex justify-content-end">
+                            <a data-bs-toggle="modal" data-bs-target="#deconnexion">
+                                <img src="../../../ressources/icone_deconnexion.svg" alt="Se déconnecter" class="logo">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Barre de navigation du bas -->
+        <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
             <div class="container-fluid">
                 <ul class="navbar-nav w-100 justify-content-evenly">
                     <!-- Si sur la liste des entreprises, mettre le texte en actif -->
@@ -191,65 +196,8 @@
                 </ul>
             </div>
         </nav>
-        <nav class="navbar navbar-expand fixed-bottom d-md-none border bg-white">
-        <div class="container-fluid">
-            <ul class="navbar-nav w-100 justify-content-evenly">
-                <!-- Si sur la liste des entreprises, mettre le texte en actif -->
-                <li class="nav-item nav-item-bas d-flex flex-column text-center inactif_bas">
-                    <!-- Si sur la liste des entreprises, mettre l'icone en actif et lien_inactif -->
-                    <a class="d-flex justify-content-center inactif_bas_icone" href="../listeEntreprises.php">
-                        <!-- Si sur la liste des entreprises, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                        <img src="../../../ressources/icone_entreprise_black.svg" alt="Liste des entreprises" class="icone_admin">
-                    </a>
-                    <a class="d-flex justify-content-center lien_barre_basse lien_barre_basse_admin" href="../listeEntreprises.php">
-                        Entreprises
-                    </a>
-                </li>
-                <!-- Si sur la liste des étudiants, mettre le texte en actif -->
-                <li class="nav-item nav-item-bas d-flex flex-column text-center inactif_bas">
-                    <!-- Si sur la liste des étudiants, mettre l'icône en actif et lien_inactif -->
-                    <a class="d-flex justify-content-center inactif_bas_icone" href="../listeEtudiants.php">
-                        <!-- Si sur la liste des étudiants, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                        <img src="../../../ressources/icone_etudiant_black.svg" alt="Liste des étudiants" class="icone_admin">
-                    </a>
-                    <a class="d-flex justify-content-center lien_barre_basse lien_barre_basse_admin" href="../listeEtudiants.php">
-                        Etudiants
-                    </a>
-                </li>
-                <!-- Si sur la liste des gestionnaires, mettre le texte en actif -->
-                <li class="nav-item nav-item-bas d-flex flex-column text-center inactif_bas">
-                    <!-- Si sur la liste des gestionnaires, mettre l'icône en actif et lien_inactif -->
-                    <a class="d-flex justify-content-center inactif_bas_icone lien_barre_basse lien_barre_basse_admin" href="../listeAdministrateurs.php">
-                        <!-- Si sur la liste des gestionnaires, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                        <img src="../../../ressources/icone_gestionnaire_black.svg" alt="Liste des gestionnaires" class="icone_admin">
-                    </a>
-                    <a class="d-flex justify-content-center lien_barre_basse lien_barre_basse_admin" href="../listeAdministrateurs.php">
-                        Admins
-                    </a>
-                </li>
-                <!-- Si sur la liste des gestionnaires, mettre le texte en actif -->
-                <li class="nav-item nav-item-bas d-flex flex-column text-center inactif_bas">
-                    <!-- Si sur la liste des gestionnaires, mettre l'icône en actif et lien_inactif -->
-                    <a class="d-flex justify-content-center inactif_bas_icone lien_barre_basse lien_barre_basse_admin" href="../listeGestionnaires.php">
-                        <!-- Si sur la liste des gestionnaires, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                        <img src="../../../ressources/icone_gestionnaire_black.svg" alt="Liste des gestionnaires" class="icone_admin">
-                    </a>
-                    <a class="d-flex justify-content-center lien_barre_basse lien_barre_basse_admin" href="../listeGestionnaires.php">
-                        Gestionnaires
-                    </a>
-                </li>
-                <!-- Si sur les paramètres du forum, mettre le texte en actif -->
-                <li class="nav-item nav-item-bas d-flex flex-column text-center actif_bas_texte actif_bas_texte_admin">
-                    <!-- Si sur les paramètres du forum, mettre l'icône en actif et lien_inactif -->
-                    <a class="d-flex justify-content-center actif_bas_icone">
-                        <!-- Si sur les paramètres du forum, mettre l'icône blanche, sinon mettre l'icône en noir -->
-                        <img src="../../../ressources/icone_forum_white.svg" alt="Paramètres du forum" class="icone_admin">
-                    </a>
-                    Forum
-                </li>
-            </ul>
-        </nav>
         <div class="container">
+            <!-- Entête de la page -->
             <div class="row mx-1">
                 <div class="col-1">
                     <a href="menu.php">
@@ -261,6 +209,7 @@
                 </div>
             </div>
             <div class="row p-2">
+                <!-- Zone génération de la page -->
                 <div class="col-12 mt-1 ligne">
                     <p class="text-center text-accent titreLigne ">Génération de l'emploi du temps</p>
                     <p> Etapes de la génération d'un emploi du temps : </p>
@@ -293,8 +242,10 @@
                         </div>
                     </div>
                 </div>
+                <!-- Zone de séléction des entreprises réduites -->
                 <div class="col-12 col-md-6 mt-3 ligneGauche">
                     <p class="text-center text-accent titreLigne"> Temps de réunion réduite</p>
+                    <!-- Ajout d'une entreprise à la liste des entreprises réduites -->
                     <div class="col-12 sous-ligne">
                         <p class="text-center text-accent titreLigne"> Ajouter une entreprise à la liste</p>
                         <form action="generationPlanning.php" method="post" class="col-12">
@@ -315,6 +266,7 @@
                         </form>
                     </div>
                     <div class="col-12 sous-ligne">
+                        <!-- Retrait d'une entreprise à la liste des entreprises réduites -->
                         <p class="text-center text-accent titreLigne"> Retirer une entreprise à la liste</p>
                         <form action="generationPlanning.php" method="post" class="col-12">
                             <input type="hidden" name="action" value="retirerEntrepriseReduite">
@@ -333,11 +285,14 @@
                             </div>
                         </form>
                     </div>
+                    <!-- Affichage de la liste des entreprises réduites -->
                     <p class="text-center text-accent titreLigne"> Liste des entreprise concernées : </p>
                     <textarea name="listeEntreprise" id="listeEntreprise" class="liste" readonly><?php foreach ($entreprisesReduites as $value) { echo $value."&#13;&#10;"; } ?></textarea>
                 </div>
+                <!-- Zone de séléction des entreprises exclues -->
                 <div class="col-12 col-md-6 mt-3 ligneDroite">
                     <p class="text-center text-accent titreLigne">Exclus du planning</p>
+                    <!-- Ajout d'une entreprise à la liste des entreprises exclues -->
                     <div class="col-12 sous-ligne">
                         <p class="text-center text-accent titreLigne"> Ajouter une entreprise à la liste</p>
                         <form action="generationPlanning.php" method="post" class="col-12">
@@ -357,6 +312,7 @@
                             </div>
                         </form>
                     </div>
+                    <!-- Retrait d'une entreprise à la liste des entreprises exclues -->
                     <div class="col-12 sous-ligne">
                         <p class="text-center text-accent titreLigne"> Retirer une entreprise à la liste</p>
                         <form action="generationPlanning.php" method="post" class="col-12">
@@ -376,10 +332,13 @@
                             </div>
                         </form>
                     </div>
+                    <!-- Affichage de la liste des entreprises exclues -->
                     <p class="text-center text-accent titreLigne"> Liste des entreprise concernées : </p>
                     <textarea name="listeEntreprise" id="listeEntreprise" class="liste" readonly><?php foreach ($entreprisesExclues as $value) { echo $value."&#13;&#10;"; } ?></textarea>
                 </div>
+            </div>
         </div>
+        <!-- Modal de confirmation de validation du planning -->
         <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -400,6 +359,7 @@
                 </div>
             </div>
         </div>
+        <!-- Modal de déconnexion -->
         <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content">

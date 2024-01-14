@@ -182,6 +182,7 @@
 
         <!-- Container principal de la page --> 
         <div class="container">
+            <!-- Entête de ma page --> 
             <div class="row mx-1">
                 <div class="col-1">
                     <a href="menu.php">
@@ -192,6 +193,7 @@
                     <h1 class="text-center">Importation / Exportation</h1>
                 </div>
             </div>
+            <!-- Affichage du résultat de l'importation -->
             <?php if (isset($reponse)) { ?>
                 <div class="row mx-1">
                     <div class="col-12">
@@ -200,6 +202,7 @@
                     </div>
                 </div>
             <?php } ?>
+            <!-- Importation des étudiants -->
             <?php if ($phase == 1) { ?>
             <div class="accordion" id="importEtudiants">
                 <div class="accordion-item my-3">
@@ -249,6 +252,7 @@
                 </div>
             <?php } 
             if ($phase == 2) { ?>
+            <!-- Exportation du planning d'une / des entreprise(s) -->
             <div class="accordion" id="exporterPlanningEntreprise">
                 <div class="accordion-item my-3">
                     <h2 class="accordion-header" id="headingPlanningEntreprise">
@@ -288,6 +292,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Exportation de l'état d'une / des entreprise(s) -->
             <div class="accordion" id="exporterEtatEntreprises">
                 <div class="accordion-item my-3">
                     <h2 class="accordion-header" id="headingEtatEntreprises">
@@ -337,8 +342,7 @@
                     </div>
                 </div>
             </div>
-
-
+            <!-- Exportation du planning d'un / des étudiant(s) -->
             <div class="accordion" id="exportEtudiant">
                 <div class="accordion-item my-3">
                     <h2 class="accordion-header" id="headingExportEtudiant">
@@ -387,6 +391,7 @@
                 </div>
             </div>
         <?php } ?>
+        <!-- Modal de déconnexion -->
         <div class="modal fade" id="deconnexion" tabindex="-1" aria-labelledby="Sedeconnecter" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
                 <div class="modal-content">
