@@ -22,7 +22,7 @@
     // Sinon, cela renvoi un tableau vide.
     function verifUtilisateur($pdo, $motDepasse, $identifiant){
         $connecte = array();
-        $maRequete = $pdo->prepare("SELECT user_id, responsibility, firstname, lastname, password from User where email = :leLogin");
+        $maRequete = $pdo->prepare("SELECT User.user_id, User.responsibility, User.firstname, User.lastname, User.password from User where email = :leLogin");
         $maRequete->bindParam(':leLogin', $identifiant);
         if ($maRequete->execute()) {
             while ($ligne = $maRequete->fetch()) {	
@@ -46,7 +46,7 @@
     // Retourne cette ligne si la requête aboutie, faux s'il y a eu un problème.
     function infoUtilisateur($pdo, $motDepasse, $identifiant){
         try{ 
-			$maRequete = $pdo->prepare("SELECT user_id, responsibility, firstname, lastname FROM User WHERE email = :leLogin AND password = :lePWD");
+			$maRequete = $pdo->prepare("SELECT User.user_id, User.responsibility, User.firstname, User.lastname FROM User WHERE email = :leLogin AND password = :lePWD");
 			$maRequete->bindParam(':leLogin', $identifiant);
 			$maRequete->bindParam(':lePWD', $motDepasse);
 			$maRequete->execute();
@@ -61,7 +61,7 @@
 	// Récupère les informations concernant le forum Eurêka.
     function infoForum($pdo){
         try{
-            $maRequete=$pdo->prepare('SELECT date,start,end, primary_appointment_duration, secondary_appointment_duration, wish_period_end FROM Meeting');
+            $maRequete=$pdo->prepare('SELECT Meeting.date, Meeting.start, Meeting.end, Meeting.primary_appointment_duration, Meeting.secondary_appointment_duration, Meeting.wish_period_end FROM Meeting');
             $maRequete->execute();
             return $maRequete;
         }
@@ -103,7 +103,7 @@
     //    - phase 2 : le planning est généré et les étudiants y ont accès.
     function getPhase($pdo){
         try{ 
-            $maRequete = $pdo->prepare("SELECT phase, wish_period_end from Meeting");
+            $maRequete = $pdo->prepare("SELECT Meeting.phase, Meeting.wish_period_end from Meeting");
             $maRequete->execute();
             $ligne = $maRequete->fetch();
             $phase = $ligne['phase'];
@@ -149,7 +149,7 @@
 
     // Fonction permettant de vérifier si un planning est généré.
     function isPlanningGenerated($pdo) {
-        $stmt = $pdo->prepare("SELECT generated FROM Meeting WHERE meeting_id = 1");
+        $stmt = $pdo->prepare("SELECT Meeting.generated FROM Meeting WHERE meeting_id = 1");
         $stmt->execute();
         $ligne = $stmt->fetch();
         return $ligne['generated'] === 1;
@@ -336,7 +336,7 @@
     // Fonction permettant de récupérer les entreprises selon l'identifiant d'un étudiant passé en paramètres.
     // Il s'agit des entreprises que l'étudiant souhaite rencontrer.
     function getEntreprisesPerStudent($pdo, $user_id) {
-        $stmt = $pdo->prepare("SELECT Company.company_id,name,logo_file_name,address,sector
+        $stmt = $pdo->prepare("SELECT Company.company_id, Company.name, Company.logo_file_name, Company.address, Company.sector
                             FROM Company
                             JOIN WishList ON Company.company_id = WishList.company_id
                             WHERE user_id = :user_id
@@ -356,7 +356,7 @@
 
     // Fonction permettant d'obtenir toutes les filières attribuées à un utilisateur spécifié en paramètre. 
     function getFieldsPerUsers($pdo, $user_id) {
-        $sql = "SELECT * FROM `Field` WHERE field_id IN (SELECT field_id FROM AssignmentUser WHERE user_id = :user_id) ORDER BY name";
+        $sql = "SELECT * FROM `Field` WHERE field_id IN (SELECT AssignmentUser.field_id FROM AssignmentUser WHERE user_id = :user_id) ORDER BY name";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
@@ -433,10 +433,10 @@
     function getSpecificationCompany($pdo, $specification, $value) {
         switch ($specification) {
             case 'entrepriseReduite' :
-                $sql = "SELECT company_id, name FROM Company WHERE useSecondary = :value ORDER BY name;";
+                $sql = "SELECT Company.company_id, Company.name FROM Company WHERE useSecondary = :value ORDER BY name;";
                 break;
             case 'entrepriseExclusion' :
-                $sql = "SELECT company_id, name FROM Company WHERE excluded = :value ORDER BY name;";
+                $sql = "SELECT Company.company_id, Company.name FROM Company WHERE excluded = :value ORDER BY name;";
                 break;
             default :
                 return null;
@@ -655,7 +655,7 @@
 
     // Fonction permettant d'obtenir la liste des intervenants par entreprise. 
     function getSpeakersPerCompany($pdo, $company_id) {
-        $stmt = $pdo->prepare("SELECT speaker_id, name, role FROM Speaker WHERE company_id = :company_id ORDER BY name");
+        $stmt = $pdo->prepare("SELECT Speaker.speaker_id, Speaker.name, Speaker.role FROM Speaker WHERE company_id = :company_id ORDER BY name");
         $stmt->bindParam(':company_id', $company_id);
         $stmt->execute();
         return $stmt;
@@ -701,7 +701,7 @@
     function deleteCompany($pdo, $company_id) {
         $pdo->beginTransaction();
         $stmt = $pdo->prepare("DELETE FROM AssignmentSpeaker
-                               WHERE speaker_id IN (SELECT speaker_id
+                               WHERE speaker_id IN (SELECT Speaker.speaker_id
                                                     FROM Speaker
                                                     WHERE company_id = :id)");
         $stmt->bindParam(':id', $company_id);
@@ -1070,7 +1070,7 @@
 
     // Fonction permettant d'obtenir toutes les entreprises non exclues du planning qui ont des rendez-vous
     function getCompanyNotExcluded($pdo){
-        $maRequete = $pdo->prepare("SELECT company_id,name 
+        $maRequete = $pdo->prepare("SELECT Company.company_id,name 
                                     FROM Company c1
                                     WHERE excluded = 0 AND (SELECT count(*)
                                                             FROM Appointment ap
@@ -1084,7 +1084,7 @@
 
     // Fonction permettant d'obtenir le nom d'une entreprise à partir de son identifiant
     function getCompanyName($pdo, $company_id){
-        $maRequete = $pdo->prepare("SELECT name FROM Company WHERE company_id = :company_id");
+        $maRequete = $pdo->prepare("SELECT Company.name FROM Company WHERE company_id = :company_id");
         $maRequete->bindParam(':company_id', $company_id);
         $maRequete->execute();
         $res;
@@ -1096,7 +1096,7 @@
 
     // Fonction permettant d'obtenir le nom d'un étudiant à partir de son identifiant
     function getStudentName($pdo, $user_id){
-        $maRequete = $pdo->prepare("SELECT firstname, lastname FROM User WHERE user_id = :user_id");
+        $maRequete = $pdo->prepare("SELECT User.firstname, User.lastname FROM User WHERE user_id = :user_id");
         $maRequete->bindParam(':user_id', $user_id);
         $maRequete->execute();
         while($row = $maRequete->fetch()){
@@ -1107,14 +1107,14 @@
 
     // Fonction permettant d'obtenir toutes les entreprises exclues du planning
     function getCompanyExcluded($pdo){
-        $maRequete = $pdo->prepare("SELECT company_id,name FROM Company WHERE excluded = 1 ORDER BY name;");
+        $maRequete = $pdo->prepare("SELECT Company.company_id,name FROM Company WHERE excluded = 1 ORDER BY name;");
         $maRequete->execute();
         return $maRequete;
     }
 
     // Fonction permettant d'obtenir la liste de tous les étudiants
     function getStudent($pdo){
-        $maRequete = $pdo->prepare("SELECT user_id, firstname, lastname FROM User WHERE responsibility = 'E'");
+        $maRequete = $pdo->prepare("SELECT User.user_id, User.firstname, User.lastname FROM User WHERE responsibility = 'E'");
         $maRequete->execute();
         return $maRequete;
     }
@@ -1347,7 +1347,7 @@
     // Fonction permettant d'obtenir la date à laquelle la phase 1 se termine.
     function getDatePeriodEnd($pdo){
         $reponse = $pdo->query("SET lc_time_names = 'fr_FR'");
-        $maRequete=$pdo->prepare('SELECT DATE_FORMAT(wish_period_end, "%e %M %Y") as dateFin FROM Meeting');
+        $maRequete=$pdo->prepare('SELECT DATE_FORMAT(Meeting.wish_period_end, "%e %M %Y") as dateFin FROM Meeting');
         $maRequete->execute();
         return $maRequete;
     }

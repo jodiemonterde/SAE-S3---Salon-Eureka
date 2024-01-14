@@ -22,7 +22,7 @@
                         <h1 class="text-center">Eureka</h1>
                     </div>
                     <div class="col-12 d-flex justify-content-center mt-3">
-                        <h5 class="text-center">Le site est actuellement en cours de maintenance, veuillez revenir plus tard.</br> Si le problème persiste, veuillez contacter un administrateur.</h5>
+                        <h5 class="text-center">Le site est actuellement en cours de maintenance, veuillez revenir plus tard.</br> Si le problème persiste, veuillez contacter le service informatique à l'IUT</h5>
                     </div>
 
                     <!-- Bouton permmettant de retourner sur la page d'accueil du site - qui reste disponible même lorsque la base de données est indisponible. -->

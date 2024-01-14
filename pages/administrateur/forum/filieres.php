@@ -173,7 +173,7 @@
             <div class="row">
                 <div class="col-12">
                     <h2>Liste des filières</h2>
-                    <p>Voici toutes les filières. Vous pouvez ajouter de nouvelles filières, modifier et supprimer les filières existantes. Vous pouvez les supprimer uniquement si aucun étudiant et aucun intervenant n'ont cette filière.</p>
+                    <p>Voici toutes les filières. Vous pouvez ajouter de nouvelles filières, modifier et supprimer les filières existantes. Vous pouvez les supprimer uniquement si aucun étudiant et aucun intervenant n'ont cette filière. Vous ne pouvez pas supprimer la dernière filière</p>
                     
                     <!-- Bouton qui ouvre une modale afin d'ajouter une nouvelle filière -->
                     <button class="addStudent d-flex w-100 text-center align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modaladdField">
@@ -214,10 +214,9 @@
                             $derniere = false;
                             // Affichage de toutes les filières stockées dans la BD
                             if ($fields->rowCount() === 1) { // Vérifie si il ne reste qu'une filière stocker dans la BD
-                                echo '<p>Vous ne pouvez pas suprimer la dernière filière.</p>';
                                 $derniere = true;
-                            } else {
-                                while ($ligne = $fields->fetch()) { 
+                            }
+                            while ($ligne = $fields->fetch()) { 
                         ?>
 
                         <!-- Element de l'accordéon dépendant de la boucle while permettant d'afficher toutes les filières. -->
@@ -300,8 +299,7 @@
                                 </div>
                             </div>
                         </div>
-                        <?php   } 
-                            } ?>
+                        <?php   } ?>
                     </div>
                 </div>
             </div>
