@@ -72,7 +72,6 @@
     // Fonction permettant de modifier le forum afin d'attribuer de nouvelles valeurs à celui-ci
     function updateForum($pdo,$dateForum,$debut,$fin,$dureePrincipal,$dureeSecondaire,$jourFin){
         try{
-            $pdo->beginTransaction();
             $maRequete=$pdo->prepare("UPDATE Meeting 
                                     SET 
                                         date = :dateForum,
@@ -89,7 +88,6 @@
             $maRequete->bindParam(':dureeSecondaire', $dureeSecondaire);
             $maRequete->bindParam(':jourFin', $jourFin);
             $maRequete->execute();
-            $pdo->commit();
         }catch(Exception $e){ // Retourne en arrière en cas d'erreur avec la BD
             $pdo->rollBack();
         }
@@ -157,9 +155,11 @@
 
     // Fonction faisant appel à une fonction dans la base de données permettant de générer un planning
     function genererPlanning($pdo) {
+        $pdo->beginTransaction();
         $stmt = $pdo->prepare("SELECT generatePlanning()");
         $stmt->execute();
         return $stmt->fetch()[0];
+        $pdo->commit();
     }
 
     // Fonction permettant de changer de phase pour passer en phase 2.
@@ -171,10 +171,12 @@
     // Fonction permettant d'annuler la génération du planning si celui-ci ne convient pas 
     //à l'administateur en train d'essayer d'en générer un
     function cancelPlanning($pdo) {
+        $pdo->beginTransaction();
         $stmt = $pdo->prepare("DELETE FROM Appointment;");
         $stmt->execute();
         $stmt = $pdo->prepare("UPDATE Meeting SET generated = 0 WHERE meeting_id = 1;");
         $stmt->execute();
+        $pdo->commit();
     }
 
     // Focntion permettant de mettre générated (BIT verifiant si le planning à été générée ou non) à 1 ou 0 selon le choix utilisateur
@@ -187,6 +189,7 @@
     // Ajout d'un nouvel étudiant à la base de données. 
     // Gère aussi l'ajout de lassignement de cet étudiant (la filière à laquelle il est assigné)
     function addNewStudent($pdo, $prenom, $nom, $email, $mdp, $filiere) {
+        $pdo->beginTransaction();
         $nom = strtoupper($nom);
         $prenom = $prenom;
         $email = $email;
@@ -209,11 +212,13 @@
         $stmt->bindParam(':field_id', $filiere);
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
+        $pdo->commit();
     }
 
     // Ajout d'un nouveau gestionnaire à la base de données. 
     // Gère aussi l'ajout des assignements de ce gestionnaires (les filières auxquelles il est assigné)
     function addNewSupervisor($pdo, $prenom, $nom, $email, $mdp, $filiere) {
+        $pdo->beginTransaction();
         $nom = strtoupper($nom);
         $prenom = $prenom;
         $email = $email;
@@ -237,7 +242,7 @@
             $stmt->bindParam(':user_id', $user_id);
             $stmt->execute();
         }
-        
+        $pdo->commit();
     }
 
     // Fonction permettant de supprimer un étudiant et toutes les données qui peuvent le concerner :
@@ -246,9 +251,8 @@
     //     - les filières qui lui sont assignés
     //     - L'utilisateur en question
     function deleteStudent($pdo, $user_id) {
+        $pdo->beginTransaction();
         $user_id = $user_id;
-
-        
         $stmt = $pdo->prepare("DELETE 
                             FROM WishList
                             WHERE WishList.user_id = :user_id;");
@@ -272,6 +276,7 @@
                             WHERE User.user_id = :user_id;");
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
+        $pdo->commit();
     }
 
     // Permet de modifier une entreprise et de la mettre à jour selon les différents paramètres.
@@ -315,19 +320,18 @@
     // Fonction de suppression d'un intervenant. 
     // Permet également de supprimer les assignements de cet intervenant.
     function deleteSupervisor($pdo, $user_id) {
-        $user_id = $user_id;
-
+        $pdo->beginTransaction();
         $stmt = $pdo->prepare("DELETE 
                             FROM AssignmentUser
                             WHERE AssignmentUser.user_id = :user_id;");
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute(); 
-
         $stmt = $pdo->prepare("DELETE 
                             FROM User
                             WHERE User.user_id = :user_id;");
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
+        $pdo->commit();
     }
 
     // Fonction permettant de récupérer les entreprises selon l'identifiant d'un étudiant passé en paramètres.
@@ -696,6 +700,7 @@
     //    - La suppression de tous ses intervenants (et de leurs assignements)
     //    - La suppression des souhaits émis par rapport à cette entreprise.
     function deleteCompany($pdo, $company_id) {
+        $pdo->beginTransaction();
         $stmt = $pdo->prepare("DELETE FROM AssignmentSpeaker
                                WHERE speaker_id IN (SELECT speaker_id
                                                     FROM Speaker
@@ -717,6 +722,7 @@
                                WHERE company_id = :id");
         $stmt->bindParam(':id', $company_id);
         $stmt->execute();
+        $pdo->commit();
     }
 
     // Fonction permettant d'ajouter un nouvel intervenant. 
@@ -724,6 +730,7 @@
     // à une ou plusieurs filières.
     // Son rôle (un titre expliquant sa fonction) n'est pas obligatoire. 
     function addSpeaker($pdo, $company_id, $name, $role, $fields)  {
+        $pdo->beginTransaction();
         // Ajoutez les Intervenants (Speakers) dans la table Speaker
         $stmt = $pdo->prepare("INSERT INTO Speaker (name, role, company_id) VALUES (:nom, :role, :company_id)");
         $stmt->bindParam(':nom', $name);
@@ -741,11 +748,13 @@
             $stmtAddAssignment->bindParam(':filiereId', $field);
             $stmtAddAssignment->execute();
         }
+        $pdo->commit();
     }
 
     // Ajout d'une nouvelle entreprises avec en paramètre tous les paramètres nécessaires.
     // La description et le logo sont facultatifs, et les intervenants sont stockés dans un tableau.
     function addCompany($pdo, $nom, $description, $adresse, $codePostal, $ville, $secteur, $logo, $intervenants) {
+        $pdo->beginTransaction();
         // Vérification du logo : s'il est vide, un logo par défaut est attribué.
         if (!empty($logo['name'])) {
             $newFileName = checkImage($logo, $nom);
@@ -789,11 +798,12 @@
                 $stmtAddAssignment->execute();
             }
         }
-    
+        $pdo->commit();
     }
 
     // Fonction permettant de supprimer un intervenant.
     function deleteSpeaker($pdo, $id, $comp_id) {
+        $pdo->beginTransaction();
         $stmt = $pdo->prepare("DELETE FROM AssignmentSpeaker
                                WHERE AssignmentSpeaker.Speaker_id = :id");
         $stmt->bindParam(':id', $id);
@@ -817,10 +827,12 @@
                                WHERE Speaker.Speaker_id = :id");
         $stmt->bindParam(':id', $id);
         $stmt->execute();
+        $pdo->commit();
     }
 
     // Fonction permettant de modifier un intervenant
     function modifySpeaker($pdo, $nom, $role, $fields, $id) {
+        $pdo->beginTransaction();
         // Verification injection de code
         $nom = $nom;
         $role = $role;
@@ -854,6 +866,7 @@
         foreach ($fields as $field) {
             $stmt->execute([$field, $id]);
         }    
+        $pdo->commit();
     }
 
     // Fonction permettant d'obtenir les rendez-vous par intervenant (grâce à l'identifiant de l'intervenant passé en paramètre).
@@ -1184,7 +1197,7 @@
 
     // Fonction permettant de supprimer une filière
     function deleteField($pdo, $field_id) {
-
+        $pdo->beginTransaction();
         $stmt = $pdo->prepare("DELETE FROM AssignmentUser WHERE field_id = :field_id");
         $stmt->bindParam(':field_id', $field_id);
         $stmt->execute();
@@ -1198,6 +1211,7 @@
         $stmt = $pdo->prepare("DELETE FROM Field WHERE field_id = :field_id");
         $stmt->bindParam(':field_id', $field_id);
         $stmt->execute();
+        $pdo->commit();
     }
 
     // Fonction permettant de modifier une filière
