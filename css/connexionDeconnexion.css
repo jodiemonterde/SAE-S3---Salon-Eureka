@@ -1,43 +1,43 @@
 .centrer{
-    margin-top: 20%;
-    padding:2%;
-    background: white;
-    border : 2px solid #bfbfbf;
-    font-family: 'Montserrat', sans-serif;
+    margin-top: 20%; /* marge exterieur du haut égale à 20% de la page */
+    padding:2%; /* marge intèrieur égale à 2% du contenant */
+    background: white; /* fond blanc */
+    border : 2px solid #bfbfbf; /* bordure de 2pixel et gris clair */
+    font-family: 'Montserrat', sans-serif; /* définition de la police */
 }
 
 .container{
-    max-width: 800px;
+    max-width: 800px;  /* largeur max à 800 pixels */ 
 }
 
 label{
-    font-size: 13px;
+    font-size: 13px; /* taille de la police à 13 pixel */
 }
 
 input{
-    font-family: Arial, FontAwesome;
-    height: 40px;
-    border-bottom: 2px solid #bfbfbf;
-    border-top: 0;
-    border-left: 0;
-    border-right: 0;
+    font-family: Arial, FontAwesome;  /* définit la famille du texte et permet de lire les code hexa des logo fontawesome */
+    height: 40px; /* hauteur de 40 pixel */
+    border-bottom: 2px solid #bfbfbf; /* bordure du bas epaisse de 2 pixel et gris clair */
+    border-top: 0; /* bordure du haut non présente*/
+    border-left: 0; /* bordure de gauche non présente*/
+    border-right: 0; /* bordure de droite non présente*/
 }
 
 input::placeholder{
-    color : #bfbfbf !important;
-    font-size: 16px;
+    color : #bfbfbf !important; /* Met la couleur du texte du placeholder en gris clair */
+    font-size: 16px; /* taille de la police à 16 pixel */
 }
 
 a{
-    color : black;
+    color : black; /* Met la couleur du texte en noir */
 }
 
 .blanc{
-    background-color: white;
-    border:0;
-    width: 40px;
+    background-color: white; /* modifie la couleur de fond */
+    border:0; /* pas de bordure */
+    width: 40px; /* largeur à 40 pixels */ 
 }
 
 .bouton {
-    width: 150px;
+    width: 150px;  /* largeur à 150 pixels */ 
 }

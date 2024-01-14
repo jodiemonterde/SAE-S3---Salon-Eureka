@@ -1,68 +1,68 @@
 
 .ligne {
-    border: 2px solid lightgray;
-    border-radius: 5px;
-    height: fit-content;
-    padding: 5px;
+    border: 2px solid lightgray; /* bordure  epaisse de 2 pixel et gris clair */
+    border-radius: 5px; /* rayon égale à 5 pixel  */
+    height: fit-content; /* hauteur qui s'adapte au contenant */
+    padding: 5px; /* marge intèrieur égale à 5 pixel */
 }
 
 .ligneGauche {
-    border: 2px solid lightgray;
-    border-right: 1px solid lightgray;
-    border-radius: 5px 0px 0px 5px;
+    border: 2px solid lightgray; /* bordure  epaisse de 2 pixel et gris clair */
+    border-right: 1px solid lightgray; /* bordure droite epaisse de 1 pixel et gris clair */
+    border-radius: 5px 0px 0px 5px; /* rayon de chaque angle du cadre */
 }
 
 .ligneDroite {
-    border: 2px solid lightgray;
-    border-left: 1px solid lightgray;
-    border-radius: 0px 5px 5px 0px;
+    border: 2px solid lightgray; /* bordure  epaisse de 2 pixel et gris clair */
+    border-left: 1px solid lightgray; /* bordure gauche epaisse de 1 pixel et gris clair */
+    border-radius: 0px 5px 5px 0px; /* rayon de chaque angle du cadre */
 }
 
 .titreLigne {
-    font-weight: bold;
-    font-size : 1.2em;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    font-weight: bold; /* texte en gras*/
+    font-size : 1.2em; /* taille de la police */
+    margin-top: 5px; /* marge exterieur du haut égale à 5 pixel*/
+    margin-bottom: 5px; /* marge exterieur du bas égale à 5 pixel*/
 }
 
 .sous-ligne {
-    border: 2px solid lightgray;
-    border-radius: 5px;
-    margin-top: 5px;
-    padding: 5px;
+    border: 2px solid lightgray; /* bordure  epaisse de 2 pixel et gris clair */
+    border-radius: 5px; /* rayon de 5 pixel */
+    margin-top: 5px; /* marge exterieur du haut égale à 5 pixel */
+    padding: 5px; /* marge intèrieur égale à 5 pixel */
 }
 
 .listeInfos {
-    margin-bottom: -15px;
+    margin-bottom: -15px; /* marge exterieur du bas égale à -15 pixel */
 }
 
 .liste {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: 29vh;
-    resize: none;
-    margin-top: 5px;
+    list-style-type: none; /* pas de style de liste */
+    padding: 0; /* marge intèrieur non présente */
+    margin: 0; /* marge exterieur non présente */
+    width: 100%; /* largeur égale à 100% du contenant */
+    height: 29vh; /* définition de la taille */
+    resize: none; /* pas de réatribution de taille */
+    margin-top: 5px; /* marge exterieur du haut égale à 5 pixel */
 }
 
 .listeConsole {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    resize: none;
-    margin-top: 5px;
-    text-align: center;
+    list-style-type: none; /* pas de style de liste */
+    padding: 0; /* marge intèrieur non présente */
+    margin: 0;  /* marge exterieur non présente */
+    width: 100%; /* largeur égale à 100% du contenant */
+    resize: none;  /* pas de réatribution de taille */
+    margin-top: 5px; /* marge exterieur du haut égale à 5 pixel */
+    text-align: center; /* texte centrer*/
 }
 
 @media (max-width: 768px) {
     .ligneGauche {
-        border: 2px solid lightgray;
-        border-radius: 5px;
-    }
+        border: 2px solid lightgray; /* bordure  epaisse de 2 pixel et gris clair */
+        border-radius: 5px; /* rayon de 5 pixel */
+    } 
     .ligneDroite {
-        border: 2px solid lightgray;
-        border-radius: 5px;
+        border: 2px solid lightgray; /* bordure  epaisse de 2 pixel et gris clair */
+        border-radius: 5px; /* rayon de 5 pixel  */
     }
 }

@@ -1,67 +1,68 @@
+/* Importation de la police Montserrat */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 * {
-    list-style: none;
+    list-style: none;  /* pas de style de liste */
 }
 
 .company {
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 4px;
-    border-color: #D9D9D9;
-    padding: 16px 8px 8px 8px;
-    margin-top: 16px;
-    cursor: pointer;
+    border-style: solid; /* style de la bordure */
+    border-width: 1px; /* largeur de 1px pour la bordure */
+    border-radius: 4px; /* ange de 4pixel */ 
+    border-color: #D9D9D9; /* couleur grise pour la bordure */
+    padding: 16px 8px 8px 8px; /* marge intèrieur */
+    margin-top: 16px; /* marge extèrieur de 16 pixel */
+    cursor: pointer; /*style du curseur */
 }
 
 .profil-det-img .dp {
-    padding: 16px 8px 8px 8px; 
+    padding: 16px 8px 8px 8px; /* marge intèrieur */
 }
 
 .profil-det-img .dp img {
-    border-radius: 100%;
-    width: 80px;
-    height: 80px;
-    border-style: solid;
-    border-color: #D9D9D9;
+    border-radius: 100%; /* cadre sous forme de rond */
+    width: 80px; /* largeur de 80 pixel */
+    height: 80px; /* hauteur de 80 pixel */
+    border-style: solid; /* style de la bordure */
+    border-color: #D9D9D9; /* bordure grise */
 }
 
 .profil-det-img .pd {
-    padding: 10px;
-    vertical-align: middle;
-    margin: auto 0; 
-}
+    padding: 10px;  /* marge intèrieur */
+    vertical-align: middle; /* alignement verticale du texte */
+    margin: auto 0;  /* marge extèrieur automatique */
+} 
 
 .profil-det-img .pd h2 {
-    font-size: 22px;
-    margin-bottom: 0px; 
+    font-size: 22px; /* taille de la police = 22 pixel */
+    margin-bottom: 0px;  /* pas de marge du bas extèrieur */
 }
 
 @media screen and (max-width: 850px) {
     .profil-det-img .pd h2 {
-        font-size: 18px; 
+        font-size: 18px;  /* taille de la police = 18 pixel */
     } 
 }
 
 .profil-det-img .pd p {
-    font-size: 14px; 
-    margin-bottom: 0px;
+    font-size: 14px;  /* taille de la police = 14 pixel */
+    margin-bottom: 0px; /* pas marge extèrieur du bas */
 }
 
 li, ul {
-    padding: 0;
-    margin: 0;
-    font-size: 13px;
-    font-weight: 500;
+    padding: 0; /* pas de marge intérieur */
+    margin: 0; /* pas de marge extèrieur */
+    font-size: 13px; /* taille de la police = 13 pixel */
+    font-weight: 500; /* poids ou gras du texte = 500 */
 }
 
 h2 {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 20px; /* taille de la police = 20 pixel */
+    font-weight: 600; /* poids ou gras du texte = 600 */
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1000px; /* largeur max de 1000 pixel */
 }
 
 .form-outline {
@@ -70,100 +71,101 @@ h2 {
 }
 
 .form-control {
-    height: 40px;
+    height: 40px; /* hauteur de 40 pixel */
 }
 
 .detailEtudiant {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 14px; /* taille de la police = 14 pixel */
+    font-weight: 600; /* poids ou gras du texte = 600 */
 }
 
 .nomEntreprise {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 5px;
+    font-size: 20px; /* taille de la police = 20 pixel */
+    font-weight: 600; /* poids ou gras du texte = 600 */
+    margin-bottom: 5px; /* marge extèrieur du bas = 5 pixel */
 }
 
 .entreprise {
     border: 2px solid #e9e9e9;
-    border-radius: 5px;
-    margin: 10px 0;
-    padding: 10px 0;
+    border-radius: 5px; /* angle de 5 pixel */
+    margin: 10px 0; /* marge extèrieur  = 10 pixel */
+    padding: 10px 0; /* marge intérieur = 10 pixel */
 }
 
 .logoEntreprise {
-    border-radius: 100%;
-    border: 1px solid #D9D9D9;
+    border-radius: 100%; /*cadre rond */
+    border: 1px solid #D9D9D9; /* bordure de 1 pixel et gris */
 }
 
 button {
-    background-color: white;
+    background-color: white; /* modifie la couleur de fond */
 }
 
 hr {
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* marge extèrieur du bas = 8 pixel */
 }
 
 p {
-    margin-top: 0;
-    margin-bottom: 4px;
+    margin-top: 0; /* pas de marge extèrieur du haut */
+    margin-bottom: 4px; /* marge extèrieur du bas = 4 pixel */
 }
 
 .student {
-    color: #8B2D2D;
-    margin-bottom: 0;
+    color: #8B2D2D; /* texte en rouge foncé */
+    margin-bottom: 0; /* pas marge extèrieur du bas */
 }
 
 .description {
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* marge extèrieur du bas = 8 pixel */
 }
 
 .btn-link {
-    text-decoration: none;
+    text-decoration: none; /* pas d'effet de texte */ 
 }
 
 .btn-link h2 {
-    color: #8B2D2D;
+    color: #8B2D2D; /* texte en rouge foncé */
 }
 
-.btn-link li {
-    color: black;
+.btn-link li { 
+    color: black; /* texte en noir */
 }
 
 .accordion {
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* marge extèrieur du bas = 8 pixel */
 }
 
 .accordion-item {
-    border-radius: 4px;
+    border-radius: 4px; /* angle de 4 pixel */
 }
 
 .accordion-item:not(:first-of-type) {
-    border: 1px solid #D9D9D9 !important;
+    border: 1px solid #D9D9D9 !important; /* bordure de 1 pixel et gris */
 }
 
 .accordion-button:not(.collapsed) {
-    color: black;
-    background-color: white;
+    color: black; /* texte en noir */
+    background-color: white; /* modifie la couleur de fond */
 
 }
 .accordion-button:focus {
-    border-color: #8B2D2D !important;
+    border-color: #8B2D2D !important; /* bordure en rouge foncé */
 }
 
 .accordion-item button {
-    border-radius: 4px;
+    border-radius: 4px; /* angle de 4 pixel */
 }
 
 .title {
-    color: #8B2D2D;
+    color: #8B2D2D; /* texte en rouge foncé */
 }
 
 .accordion-button::after {
+    /* image comme fond */
     background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%238B2D2D'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
 
 }
 
 .erreur {
-    color: red;
+    color: red; /* texte en rouge */
 }

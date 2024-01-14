@@ -44,15 +44,15 @@
         <link rel="stylesheet" href="../../../css/emploiDuTemps.css">
         <link rel="stylesheet" href="../../../css/navbars.css">
         
-        <title>Eurêka - emploi du temps</title>
+        <title>Eurêka - Emploi du temps</title>
     </head>
     <body>
         <!-- Navbar du haut (pas de navbar du bas sur cette page !) -->
         <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
             <div class="container-fluid h-100">
                 <div class="navbar-brand d-flex align-items-center h-100">
-                    <img src="../../../ressources/logo_black.svg" alt="Logo Eureka" class="logo me-2">
-                    <span class="logo">Eureka</span>
+                    <img src="../../../ressources/logo_black.svg" alt="Logo Eurêka" class="logo me-2">
+                    <span class="logo">Eurêka</span>
                 </div>
                 <div class="navbar-right h-100">
                     <ul class="navbar-nav d-flex h-100 align-items-center">
@@ -107,7 +107,7 @@
                     <div class="row mx-1">
                         <div class="col-12">
                             <p><h2>Consulter les rendez-vous non planifiables</h2></p>
-                            <p>Attention, certaines entreprises que vous souhaitiez voir ont reçues trop de demandes : ils n’ont pas pu être intégrés à votre emploi du temps. Si vous souhaitez obtenir un rendez-vous avec eux, il va falloir les contacter directement. </P>
+                            <p>Attention, certaines entreprises que vous souhaitiez voir ont reçues trop de demandes : elles n’ont pas pu être intégrées à votre emploi du temps. Si vous souhaitez obtenir un rendez-vous avec eux, il va falloir les contacter directement. </P>
                         </div>
                     </div>
                 <?php }

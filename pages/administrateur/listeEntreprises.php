@@ -151,7 +151,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <link rel="stylesheet" href="../../css/all.css">
@@ -283,10 +283,10 @@
                 <form action="listeEntreprises.php" method="post" class="col-12 col-md-6 my-2">
                     <div class="row">
                         <div class="col-12 col-md-7 p-0">
-                            <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="entreeUtilisateur"/>    
+                            <input type="search" name="recherche" value="<?php echo $_SESSION['recherche']; ?>" placeholder=" &#xf002 Rechercher une entreprise" class="entreeUtilisateur">    
                         </div>
                         <div class="col-5 d-none d-md-block">
-                            <input type="submit" class="bouton" value="Rechercher"/>
+                            <input type="submit" class="bouton" value="Rechercher">
                         </div>
                     </div>
                 </form>
@@ -327,17 +327,17 @@
                         <div class="modal-body navigue">
                             <form action="listeEntreprises.php" method="post" enctype="multipart/form-data" class="formToCheckField">
                                 <label for="nomEntreprise" class="modalLabel mb-0 mt-2">Nom</label>
-                                <input class="entreeUtilisateur" type="text" name="nomEntreprise" id="nomEntreprise" placeholder="Saisir le nom de l’entreprise" maxlength="50"required/>
+                                <input class="entreeUtilisateur" type="text" name="nomEntreprise" id="nomEntreprise" placeholder="Saisir le nom de l’entreprise" maxlength="50" required>
                                 <label for="descriptionEntreprise" class="modalLabel mb-0 mt-2">Description</label>
-                                <input class="entreeUtilisateur" type="text" name="descriptionEntreprise" id="descriptionEntreprise" placeholder="Saisir un texte permettant de décrire en détail l'entreprise"/>
+                                <input class="entreeUtilisateur" type="text" name="descriptionEntreprise" id="descriptionEntreprise" placeholder="Saisir un texte permettant de décrire en détail l'entreprise">
                                 <label for="adresseEntreprise" class="modalLabel mb-0 mt-2">Adresse</label>
-                                <input class="entreeUtilisateur" type="text" name="adresseEntreprise" id="adresseEntreprise" placeholder="Saisir l'adresse complète de l'entreprise" maxlength="150" required/>
+                                <input class="entreeUtilisateur" type="text" name="adresseEntreprise" id="adresseEntreprise" placeholder="Saisir l'adresse complète de l'entreprise" maxlength="150" required>
                                 <label for="codePostalEntreprise" class="modalLabel mb-0 mt-2">Code Postal</label>
-                                <input class="entreeUtilisateur" type="text" name="codePostalEntreprise" id="codePostalEntreprise" placeholder="Saisir le code postal de l'entreprise" maxlength="5" required/>
+                                <input class="entreeUtilisateur" type="text" name="codePostalEntreprise" id="codePostalEntreprise" placeholder="Saisir le code postal de l'entreprise" maxlength="5" required>
                                 <label for="villeEntreprise" class="modalLabel mb-0 mt-2">Ville</label>
-                                <input class="entreeUtilisateur" type="text" name="villeEntreprise" id="villeEntreprise" placeholder="Saisir la ville où se situe l'entreprise" maxlength="45" required/>
+                                <input class="entreeUtilisateur" type="text" name="villeEntreprise" id="villeEntreprise" placeholder="Saisir la ville où se situe l'entreprise" maxlength="45" required>
                                 <label for="secteurEntreprise" class="modalLabel mb-0 mt-2">Secteur d'activité</label>
-                                <input class="entreeUtilisateur" type="text" name="secteurEntreprise" id="secteurEntreprise" placeholder="Saisir le secteur d'activité" maxlength="50" required/>
+                                <input class="entreeUtilisateur" type="text" name="secteurEntreprise" id="secteurEntreprise" placeholder="Saisir le secteur d'activité" maxlength="50" required>
                                 <label for="logo" class="modalLabel mb-0 mt-2 w-100">Logo de l'entreprise</label>
                                 <input type="file" name="logoEntreprise" id="logo" accept="image/*">
                                 <hr>
@@ -351,15 +351,15 @@
                                                 <button type ="button" class="border-0 icon-title trash" hidden><i class="fa-solid fa-trash icon"></i></button>
                                             </div>
                                             <label for="nomIntervenant" class="modalLabel mb-0 mt-2">Nom</label>
-                                            <input class="entreeUtilisateur" type="text" name="nomIntervenant" id="nomIntervenant" placeholder="Saisir le nom de l’intervenant" value="Intervenant 1" maxlength="50" required/>
+                                            <input class="entreeUtilisateur" type="text" name="nomIntervenant" id="nomIntervenant" placeholder="Saisir le nom de l’intervenant" value="Intervenant 1" maxlength="50" required>
                                             <label for="roleIntervenant" class="modalLabel mb-0 mt-2">Role</label>
-                                            <input class="entreeUtilisateur" type="textarea" name="roleIntervenant" id="roleIntervenant" placeholder="Saisir un rôle pour cet intervenant (facultatif)" maxlength="80" />
+                                            <input class="entreeUtilisateur" type="textarea" name="roleIntervenant" id="roleIntervenant" placeholder="Saisir un rôle pour cet intervenant (facultatif)" maxlength="80" >
                                             <div class="rowForChecks d-flex flex-wrap">
                                                 <?php
                                                     // Obtentions de toutes les filières disponibles sur la BD
                                                     foreach ($fields as $key => $field) {?>
                                                         <label class="buttonToCheck me-2">
-                                                            <input type="checkbox" name="filieresIntervenant[]" value="<?php echo $key;?>" />
+                                                            <input type="checkbox" name="filieresIntervenant[]" value="<?php echo $key;?>" >
                                                             <div class="icon-box">
                                                                 <span><?php echo $field;?></span>
                                                             </div>
@@ -378,7 +378,7 @@
                                 </button>
                                 <div class="row pt-2">
                                     <div class="col-6">
-                                        <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                        <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler">
                                     </div>
                                     <div class="col-6">
                                         <button type="submit" name="addCompany" class="bouton confirmation col-6" value="Valider">Valider</button>
@@ -460,9 +460,9 @@
                                             </div>
                                             <form action="listeEntreprises.php" method="post" enctype="multipart/form-data" class="formToCheckField">
                                                 <label for="nomIntervenantEdit" class="modalLabel mb-0 mt-2">Nom</label>
-                                                <input class="entreeUtilisateur" type="text" name="nomIntervenantEdit" id="nomIntervenantEdit" value="<?php echo $intervenant["nom"]; ?>" maxlength="50"/>
+                                                <input class="entreeUtilisateur" type="text" name="nomIntervenantEdit" id="nomIntervenantEdit" value="<?php echo $intervenant["nom"]; ?>" maxlength="50">
                                                 <label for="roleIntervenantEdit" class="modalLabel mb-0 mt-2">Role</label>
-                                                <input class="entreeUtilisateur" type="textarea" name="roleIntervenantEdit" id="roleIntervenantEdit" value="<?php if (empty($intervenant["fonction"])) { echo '" placeholder="Saisir un rôle"'; } else { echo $intervenant["fonction"];} ?>" maxlength="80" />
+                                                <input class="entreeUtilisateur" type="textarea" name="roleIntervenantEdit" id="roleIntervenantEdit" value="<?php if (empty($intervenant["fonction"])) { echo '" placeholder="Saisir un rôle"'; } else { echo $intervenant["fonction"];} ?>" maxlength="80" >
                                                 <div class="rowForChecks d-flex flex-wrap intervenantContainer">
                                                     <?php
                                                         // Affichage de toutes les filières disponibles dans la BD. Celle qui étaient préalablement selectionnées pour cette intervenant sont pré-selectionnées.
@@ -474,7 +474,7 @@
                                                                         echo 'checked';
                                                                     }
                                                                 }
-                                                                ?> />
+                                                                ?> >
                                                                 <div class="icon-box">
                                                                     <span><?php echo $field;?></span>
                                                                 </div>
@@ -485,7 +485,7 @@
                                                 <hr>      
                                                 <div class="row mt-3">
                                                     <div class="col-6">
-                                                        <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                                        <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler">
                                                     </div>
                                                     <div class="col-6">
                                                         <button type="submit" name="modifySpeaker" class="bouton confirmation col-6" value="Valider">Valider</button>
@@ -510,7 +510,7 @@
                                                 <input type="hidden" name="intervenantID" value="<?php echo $intervenant['id'];?>">         
                                                 <div class="row mt-3">
                                                     <div class="col-6">
-                                                        <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                                        <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler">
                                                     </div>
                                                     <div class="col-6">
                                                         <button type="submit" name="deleteSpeaker" class="bouton confirmation col-6" value="Valider">Valider</button>
@@ -542,15 +542,15 @@
                                         <form action="listeEntreprises.php" method="post" enctype="multipart/form-data" class="formToCheckField">
                                             <input type="hidden" name="companyID" value="<?php echo $ligne['company_id']?>">
                                             <label for="nomIntervenantAdd" class="modalLabel mb-0 mt-2">Nom</label>
-                                            <input class="entreeUtilisateur" type="text" name="nomIntervenantAdd" id="nomIntervenantAdd" placeholder="Saisissez le nom de l'intervenant" maxlength="50" required/>
+                                            <input class="entreeUtilisateur" type="text" name="nomIntervenantAdd" id="nomIntervenantAdd" placeholder="Saisissez le nom de l'intervenant" maxlength="50" required>
                                             <label for="roleIntervenantAdd" class="modalLabel mb-0 mt-2">Role</label>
-                                            <input class="entreeUtilisateur" type="textarea" name="roleIntervenantAdd" id="roleIntervenantAdd" placeholder="Saisir un rôle pour cet intervenant (facultatif)"  maxlength="80" />
+                                            <input class="entreeUtilisateur" type="textarea" name="roleIntervenantAdd" id="roleIntervenantAdd" placeholder="Saisir un rôle pour cet intervenant (facultatif)"  maxlength="80" >
                                             <div class="rowForChecks d-flex flex-wrap intervenantContainer">
                                                 <?php
                                                     // Obtention de toutes les filières disponibles dans la BD
                                                     foreach ($fields as $key => $field) {?>
                                                         <label class="buttonToCheck me-2">
-                                                            <input type="checkbox" name="filieresIntervenant[]" value="<?php echo $key;?>" />
+                                                            <input type="checkbox" name="filieresIntervenant[]" value="<?php echo $key;?>" >
                                                             <div class="icon-box">
                                                                 <span><?php echo $field;?></span>
                                                             </div>
@@ -560,7 +560,7 @@
                                             <hr>    
                                             <div class="row mt-3">
                                                 <div class="col-6">
-                                                    <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                                    <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler">
                                                 </div>
                                                 <div class="col-6">
                                                     <button type="submit" name="addSpeaker" class="bouton confirmation col-6" value="Valider">Valider</button>
@@ -664,17 +664,17 @@
                                     <!-- Formulaire de modification d'une entreprise -->
                                     <form action="listeEntreprises.php" method="post" enctype="multipart/form-data">
                                         <label for="nomEntreprise" class="modalLabel mb-0 mt-2">Nom</label>
-                                        <input class="entreeUtilisateur" type="text" name="nomEntreprise" id="nomEntreprise" placeholder="<?php echo $ligne["name"]; ?>"/>
+                                        <input class="entreeUtilisateur" type="text" name="nomEntreprise" id="nomEntreprise" placeholder="<?php echo $ligne["name"]; ?>">
                                         <label for="descriptionEntreprise" class="modalLabel mb-0 mt-2">Description</label>
-                                        <input class="entreeUtilisateur" type="textarea" name="descriptionEntreprise" id="descriptionEntreprise" placeholder="<?php if (empty($ligne["description"])) { echo 'Saisir une description'; } else { echo $ligne["description"];} ?>"/>
+                                        <input class="entreeUtilisateur" type="textarea" name="descriptionEntreprise" id="descriptionEntreprise" placeholder="<?php if (empty($ligne["description"])) { echo 'Saisir une description'; } else { echo $ligne["description"];} ?>">
                                         <label for="adresseEntreprise" class="modalLabel mb-0 mt-2">Adresse</label>
-                                        <input class="entreeUtilisateur" type="text" name="adresseEntreprise" id="adresseEntreprise" placeholder="<?php echo $ligne["address"]; ?>"/>
+                                        <input class="entreeUtilisateur" type="text" name="adresseEntreprise" id="adresseEntreprise" placeholder="<?php echo $ligne["address"]; ?>">
                                         <label for="codePostalEntreprise" class="modalLabel mb-0 mt-2">Code Postal</label>
-                                        <input class="entreeUtilisateur" type="text" name="codePostalEntreprise" id="codePostalEntreprise" placeholder="<?php echo $ligne["address"]; ?>"/>
+                                        <input class="entreeUtilisateur" type="text" name="codePostalEntreprise" id="codePostalEntreprise" placeholder="<?php echo $ligne["address"]; ?>">
                                         <label for="villeEntreprise" class="modalLabel mb-0 mt-2">Ville</label>
-                                        <input class="entreeUtilisateur" type="text" name="villeEntreprise" id="villeEntreprise" placeholder="<?php echo $ligne["address"]; ?>"/>
+                                        <input class="entreeUtilisateur" type="text" name="villeEntreprise" id="villeEntreprise" placeholder="<?php echo $ligne["address"]; ?>">
                                         <label for="secteurEntreprise" class="modalLabel mb-0 mt-2">Secteur d'activité</label>
-                                        <input class="entreeUtilisateur" type="text" name="secteurEntreprise" id="secteurEntreprise" placeholder="<?php echo $ligne["sector"]; ?>"/>
+                                        <input class="entreeUtilisateur" type="text" name="secteurEntreprise" id="secteurEntreprise" placeholder="<?php echo $ligne["sector"]; ?>">
                                         <label for="logo" class="modalLabel mb-0 mt-2 w-100">Logo de l'entreprise</label>
                                         <input type="file" name="logoEntreprise" id="logo" accept="image/*">
                                         <hr>                         
@@ -683,7 +683,7 @@
                                         <input type="hidden" name="ancienNom" value="<?php echo $ligne['name'];?>">
                                         <div class="row mt-3">
                                             <div class="col-6">
-                                                <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                                <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler">
                                             </div>
                                             <div class="col-6">
                                                 <button type="submit" name="modifyCompany" class="bouton confirmation col-6" value="Valider">Valider</button>
@@ -707,7 +707,7 @@
                                         <input type="hidden" name="companyID" value="<?php echo $ligne['company_id'];?>">
                                         <div class="row mt-3">
                                             <div class="col-6">
-                                                <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler"/>
+                                                <input type="button" class="boutonNegatif confirmation col-6" data-bs-dismiss="modal" value="Annuler">
                                             </div>
                                             <div class="col-6">
                                                 <button type="submit" name="deleteCompany" class="bouton confirmation col-6" value="Valider">Valider</button>

@@ -19,7 +19,7 @@
                         <img src="../ressources/logo_black.svg" alt="logo" class="img-fluid logo">
                     </div>
                     <div class="col-12 d-flex justify-content-center">
-                        <h1 class="text-center">Eureka</h1>
+                        <h1 class="text-center">Eurêka</h1>
                     </div>
                     <div class="col-12 d-flex justify-content-center mt-3">
                         <h5 class="text-center">Le site est actuellement en cours de maintenance, veuillez revenir plus tard.</br> Si le problème persiste, veuillez contacter le service informatique à l'IUT</h5>
