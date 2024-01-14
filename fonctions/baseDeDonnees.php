@@ -187,11 +187,11 @@
     // Ajout d'un nouvel étudiant à la base de données. 
     // Gère aussi l'ajout de lassignement de cet étudiant (la filière à laquelle il est assigné)
     function addNewStudent($pdo, $prenom, $nom, $email, $mdp, $filiere) {
-        $nom = htmlspecialchars(strtoupper($nom));
-        $prenom = htmlspecialchars($prenom);
-        $email = htmlspecialchars($email);
-        $mdp = htmlspecialchars($mdp);
-        $filiere = htmlspecialchars($filiere);
+        $nom = strtoupper($nom);
+        $prenom = $prenom;
+        $email = $email;
+        $mdp = $mdp;
+        $filiere = $filiere;
 
         $stmt = $pdo->prepare("INSERT INTO User (firstname, lastname, password, responsibility, email)
                             VALUES (:prenom, :nom, :password, 'E', :email)");
@@ -214,10 +214,10 @@
     // Ajout d'un nouveau gestionnaire à la base de données. 
     // Gère aussi l'ajout des assignements de ce gestionnaires (les filières auxquelles il est assigné)
     function addNewSupervisor($pdo, $prenom, $nom, $email, $mdp, $filiere) {
-        $nom = htmlspecialchars(strtoupper($nom));
-        $prenom = htmlspecialchars($prenom);
-        $email = htmlspecialchars($email);
-        $mdp = htmlspecialchars($mdp);
+        $nom = strtoupper($nom);
+        $prenom = $prenom;
+        $email = $email;
+        $mdp = $mdp;
 
         $stmt = $pdo->prepare("INSERT INTO User (firstname, lastname, password, responsibility, email)
                             VALUES (:prenom, :nom, :password, 'G', :email)");
@@ -246,7 +246,7 @@
     //     - les filières qui lui sont assignés
     //     - L'utilisateur en question
     function deleteStudent($pdo, $user_id) {
-        $user_id = htmlspecialchars($user_id);
+        $user_id = $user_id;
 
         
         $stmt = $pdo->prepare("DELETE 
@@ -291,10 +291,10 @@
         }
         
         // Vérification de différents paramètres : set à null s'ils sont vides
-        $nom = empty($nom) ? null : htmlspecialchars($nom);
-        $description = empty($description) ? null : htmlspecialchars($description);
-        $adresse = empty($adresse) ? null : htmlspecialchars($adresse . ', ' . $codePostal . ' ' . $ville);
-        $secteur = empty($secteur) ? null : htmlspecialchars($secteur);    
+        $nom = empty($nom) ? null : $nom;
+        $description = empty($description) ? null : $description;
+        $adresse = empty($adresse) ? null : $adresse . ', ' . $codePostal . ' ' . $ville;
+        $secteur = empty($secteur) ? null : $secteur;    
         
         // Requête de modification de l'entreprise
         $stmt = $pdo->prepare("UPDATE Company
@@ -315,7 +315,7 @@
     // Fonction de suppression d'un intervenant. 
     // Permet également de supprimer les assignements de cet intervenant.
     function deleteSupervisor($pdo, $user_id) {
-        $user_id = htmlspecialchars($user_id);
+        $user_id = $user_id;
 
         $stmt = $pdo->prepare("DELETE 
                             FROM AssignmentUser
@@ -498,7 +498,7 @@
     function getInfoStudentsSort($pdo, $recherche, $field_ids, $sort) {
         $field_ids_str = implode(', ', $field_ids);
 
-        $sort = htmlspecialchars($sort);
+        $sort = $sort;
 
         if ($field_ids_str == null) {
             return null;
@@ -754,10 +754,10 @@
         }
     
         // Empêche l'injection de code
-        $nom = htmlspecialchars(strtoupper($nom));
-        $description = htmlspecialchars($description);
-        $adresse = htmlspecialchars($adresse . ', ' . $codePostal . ' ' . strtoupper($ville));
-        $secteur = htmlspecialchars($secteur);
+        $nom = strtoupper($nom);
+        $description = $description;
+        $adresse = $adresse . ', ' . $codePostal . ' ' . strtoupper($ville);
+        $secteur = $secteur;
     
         $stmt = $pdo->prepare("INSERT INTO Company (name, logo_file_name, description, address, sector, excluded, useSecondary)
                                VALUES (:nom, :logo, :description, :adresse, :secteur, 0, 0)");
@@ -822,8 +822,8 @@
     // Fonction permettant de modifier un intervenant
     function modifySpeaker($pdo, $nom, $role, $fields, $id) {
         // Verification injection de code
-        $nom = htmlspecialchars($nom);
-        $role = htmlspecialchars($role);
+        $nom = $nom;
+        $role = $role;
         $fields = array_map('htmlspecialchars', $fields); // permet d'appliquer htmlspecialchars à chaque élément du tableau
     
         // Modification des données dans la table Speaker
@@ -1021,7 +1021,7 @@
     // Fonction permettant de changer le mot de passe d'un utilisateur pour un nouveau passé en paramètre.
     function modifyPassword($pdo, $user_id, $new_password) {
         // Verification injection de code
-        $new_password = htmlspecialchars($new_password);
+        $new_password = $new_password;
     
         $stmt = $pdo->prepare("UPDATE User
                                SET password = :new_password
@@ -1210,10 +1210,10 @@
 
     // Fonction permettant d'ajouter un nouvel utilisateur
     function addAdmin($pdo, $prenom, $nom, $email, $mdp) {
-        $nom = htmlspecialchars(strtoupper($nom));
-        $prenom = htmlspecialchars($prenom);
-        $email = htmlspecialchars($email);
-        $mdp = htmlspecialchars($mdp);
+        $nom = strtoupper($nom);
+        $prenom = $prenom;
+        $email = $email;
+        $mdp = $mdp;
 
         $stmt = $pdo->prepare("INSERT INTO User (firstname, lastname, password, responsibility, email)
                             VALUES (:prenom, :nom, :mdp, 'A', :email)");
@@ -1322,7 +1322,7 @@
         } else {
             // Si tout est correct, essaye de télécharger le fichier
             if (move_uploaded_file($_FILES["logoEntreprise"]["tmp_name"], $targetFile)) {
-                echo "Le fichier " . htmlspecialchars(basename($_FILES["logoEntreprise"]["name"])) . " a été téléchargé.";
+                echo "Le fichier " . basename($_FILES["logoEntreprise"]["name"]) . " a été téléchargé.";
     
                 // retourne $targetFile comme chemin à stocker dans la base de données
                 return $targetFile;

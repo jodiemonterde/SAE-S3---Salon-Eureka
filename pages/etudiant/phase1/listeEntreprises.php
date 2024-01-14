@@ -4,7 +4,7 @@
         session_start();
 
         // Stocke la valeur de $_POST['recherche'] dans $_SESSION['recherche'] si définie
-        $_SESSION['recherche'] = $_POST['recherche'] ?? $_SESSION['recherche'] ?? null;
+        $_SESSION['recherche'] = isset($_POST['recherche']) ? htmlspecialchars($_POST['recherche']) : ($_SESSION['recherche'] ?? null);
         
         /* 
          * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
@@ -22,10 +22,10 @@
 
         // Ajout ou suppression de l'entreprise de la liste des souhaits de l'étudiant lors du clic 
         if (isset($_POST["entreprise_id"]) && isset($_POST["mode"])) {
-            if ($_POST["mode"] == 'add') {
-                addWishStudent($pdo, $_SESSION['idUtilisateur'], $_POST["entreprise_id"]);
+            if (htmlspecialchars($_POST["mode"]) == 'add') {
+                addWishStudent($pdo, $_SESSION['idUtilisateur'], htmlspecialchars($_POST["entreprise_id"]));
             } else {
-                deleteWishStudent($pdo, $_SESSION['idUtilisateur'], $_POST["entreprise_id"]);
+                deleteWishStudent($pdo, $_SESSION['idUtilisateur'], htmlspecialchars($_POST["entreprise_id"]));
             }
             
             header("location: listeEntreprises.php");
@@ -157,7 +157,7 @@
                             <input type="hidden" name="mode" value="<?php if ($ligne['wish'] != null) { echo 'delete';} else { echo 'add';}?>"/>                                         
                                     <div class="profil-det-img d-flex">
                                         <div class="dp">
-                                        <img class="logoEntrerise" src="../../../ressources/logosentreprises/<?php echo htmlspecialchars($ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "no-photo.png")?>" alt="">
+                                        <img class="logoEntrerise" src="../../../ressources/logosentreprises/<?php echo $ligne["logo_file_name"] != "" ? $ligne["logo_file_name"] : "no-photo.png"?>" alt="">
                                         </div>
                                         <div class="pd">
                                             <h2 class="text-accent"><?php echo $ligne["name"]?></h2>

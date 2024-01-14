@@ -19,7 +19,7 @@
 
         // Suppression de l'entreprise de la liste des souhaits de l'étudiant si le formulaire de cette entreprise spécifique a été cliqué
         if (isset($_POST["entreprise_id"])) {
-            removeWishStudent($pdo, $_SESSION['idUtilisateur'], $_POST["entreprise_id"]);
+            removeWishStudent($pdo, $_SESSION['idUtilisateur'], htmlspecialchars($_POST["entreprise_id"]));
         }
 
         $stmt = getEntreprisesPerStudent($pdo, $_SESSION['idUtilisateur']); // Obtention des entreprises avec lesquelles l'étudiant souhaite prendre rendez-vous
@@ -68,12 +68,12 @@
                             <!-- Si sur la liste des rendez-vous, mettre en actif -->
                             <a class="actif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center inactiveLink"> Souhaits </a>
                         </li>
+                        <?php } ?>
                         <li class="nav-item nav-item-haut dropdown p-0 h-100 d-none d-md-block">
                             <!-- Affichage du nom de l'utilisateur -->
                             <a class="dropdown-toggle inactif_haut d-flex align-items-center h-100 px-2 justify-content-center text-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <?php echo $_SESSION['prenom_utilisateur'] . ' ' .$_SESSION['nom_utilisateur']; ?>
                             </a>
-                            <?php } ?>
                             <ul class="dropdown-menu" role="menu">
                                 <li> <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deconnexion"> Se déconnecter </a> </li>
                             </ul>
@@ -140,14 +140,14 @@
                     <i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $ligne["address"]?>
                 </div>
                 <div class="col-2 d-none p-0 m-0 d-md-block">
-                    <?php if ($phase === 1) { ?><input type="button" class="bouton" value="supprimer l'entreprise" data-bs-toggle="modal" data-bs-target="#modal"/> <?php } ?>
+                    <?php if ($phase === 1) { ?><input type="button" class="bouton" value="supprimer l'entreprise" data-bs-toggle="modal" data-bs-target="#modal<?php echo $ligne["company_id"]?>"/> <?php } ?>
                 </div>
                 <div class="col-1 d-block d-md-none">
-                    <?php if ($phase === 1) { ?><input type="button" class="boutonSupprimerMd"data-bs-toggle="modal" data-bs-target="#modal"/><?php } ?>
+                    <?php if ($phase === 1) { ?><input type="button" class="boutonSupprimerMd"data-bs-toggle="modal" data-bs-target="#modal<?php echo $ligne["company_id"]?>"/><?php } ?>
                 </div>
 
                 <!-- Contenu de la modale de deconnexion permettant de suppression d'une entreprise -->
-                <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="modal<?php echo $ligne["company_id"]?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">

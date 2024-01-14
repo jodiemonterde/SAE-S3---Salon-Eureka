@@ -8,8 +8,13 @@
          * connecter à la base de donnée et interagir avec celle-ci.
          */
         require('../../../fonctions/baseDeDonnees.php');
+        require('../../../fonctions/fonctionsImportationExportation.php');
 
         $pdo = connecteBD(); // accès à la Base de données
+
+        if (isset($_POST["download"])) {
+            exportEtudiant($_SESSION['idUtilisateur'], $pdo);
+        }
         
         // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un étudiant correctement identifié.
         if(!isset($_SESSION['idUtilisateur']) || getPhase($pdo) != 2 || $_SESSION['type_utilisateur'] != 'E'){
@@ -71,16 +76,18 @@
         </nav>
 
         <!-- Contenu principal de la page -->
-        <div class="container" id="toPrint">
+        <div class="container">
             <div class="row mx-1">
                 <div class="col-12 col-md-8">
                     <p><h2>Vous pouvez consulter votre planning de rendez-vous !</h2></p>
                     <p>Il est désormais trop tard pour demander de nouveaux rendez-vous. </P>
                 </div>
-
                 <!-- Permet de télecharger sous format pdf le planning d'un étudiant -->
-                <div class="col-4 d-md-block d-none my-auto text-center" id="element-to-hide" data-html2canvas-ignore="true">
-                    <button class="bouton" id="downloadUp">Télécharger l'emploi du temps</button>
+                <div class="col-4 d-md-block d-none my-auto text-center">
+                    <form action="emploiDuTemps.php" method="post">
+                        <input type="hidden" name="download" value="1">
+                        <input type="submit" class="bouton" value="Télécharger l'emploi du temps">
+                    </form>
                 </div>
             </div>
 
@@ -114,8 +121,11 @@
 
                 <!-- Bouton de téléchargement de l'emploi du temps en pdf (en format téléphone) -->
             <div class="row mx-1 fixed-bottom barre-bas">
-                <div class="col-12 d-md-none d-block text-center" id="element-to-hide" data-html2canvas-ignore="true">
-                    <button class="bouton boutonTelechargerBas" id="downloadDown">Télécharger l'emploi du temps</button>
+                <div class="col-12 d-md-none d-block text-center">
+                    <form action="emploiDuTemps.php" method="post">
+                        <input type="hidden" name="download" value="">
+                        <input type="submit" class="bouton boutonTelechargerBas" value="Télécharger l'emploi du temps">
+                    </form>
                 </div>
             </div>
         </div>
@@ -153,6 +163,5 @@
                 </div>
             </div>
         </div>
-        <script src="../../../js/downloadpage.js"></script>
     </body>
 </html>
