@@ -1,4 +1,6 @@
 <?php
+    // Fonction de connexion à la base de données : une BD my sql hebergée sur alwaysdata.net
+    // Retourne le pdo une fois celui-ci crée 
     function connecteBD() {
         // Database configuration
         $host = 'mysql-sae-nmms.alwaysdata.net';
@@ -13,12 +15,18 @@
 
         return $pdo;
     }
+
+    // Fonction de vérification lors d'une tentative de connexion d'un utilisateur.
+    // Si les paramètres correspondent à une ligne dans la table User, cela renvoi vrai.
+    // Sinon, cela renvoi faux. 
     function verifUtilisateur($pdo, $motDepasse, $identifiant){
         try{ 
 			$connecte=false;
 			$maRequete = $pdo->prepare("SELECT user_id, firstname, lastname, password from User where email = :leLogin and password = :lePWD");
 			$maRequete->bindParam(':leLogin', $identifiant);
 			$maRequete->bindParam(':lePWD', $motDepasse);
+            // Boucle sur toutes les lignes de la table User jusqu'à trouver une combinaison de mot de passe/identifiant qui fonctionne
+            // Si c'est le cas, le booléen $connecte passe à vrai.
 			if ($maRequete->execute()) {
 				$maRequete->setFetchMode(PDO::FETCH_OBJ);
 				while ($ligne=$maRequete->fetch()) {				
@@ -26,12 +34,14 @@
 				}
 			}
 			return $connecte;
-		} catch ( Exception $e ) {
+		} catch ( Exception $e ) { // Retourne faux en cas d'erreur avec la BD
 			echo "Connection failed: " . $e->getMessage();
 			return false;
 		} 
     }
 
+    // Récupère les données d'une ligne de la table User en fonction du nom et du mot de passe 
+    // Retourne cette ligne si la requête aboutie, faux s'il y a eu un problème.
     function infoUtilisateur($pdo, $motDepasse, $identifiant){
         try{ 
 			$maRequete = $pdo->prepare("SELECT user_id, responsibility, firstname, lastname FROM User WHERE email = :leLogin AND password = :lePWD");
@@ -40,20 +50,26 @@
 			$maRequete->execute();
 			return $maRequete;
 		}
-		catch ( Exception $e ) {
+		catch ( Exception $e ) {  // Retourne faux en cas d'erreur avec la BD
 			echo "Connection failed: " . $e->getMessage();
 			return false;
 		} 
     }
 
-	
-
+	// Récupère les informations concernant le forum Eurêka.
     function infoForum($pdo){
-        $maRequete=$pdo->prepare('SELECT date,start,end, primary_appointment_duration, secondary_appointment_duration, wish_period_end FROM Meeting');
-        $maRequete->execute();
-        return $maRequete;
+        try{
+            $maRequete=$pdo->prepare('SELECT date,start,end, primary_appointment_duration, secondary_appointment_duration, wish_period_end FROM Meeting');
+            $maRequete->execute();
+            return $maRequete;
+        }
+		catch ( Exception $e ) { // Retourne faux en cas d'erreur avec la BD
+			echo "Connection failed: " . $e->getMessage();
+			return false;
+		} 
     }
 
+    // Fonction permettant de modifier le forum afin d'attribuer de nouvelles valeurs à celui-ci
     function updateForum($pdo,$dateForum,$debut,$fin,$dureePrincipal,$dureeSecondaire,$jourFin){
         try{
             $pdo->beginTransaction();
@@ -74,12 +90,17 @@
             $maRequete->bindParam(':jourFin', $jourFin);
             $maRequete->execute();
             $pdo->commit();
-        }catch(Exception $e){
+        }catch(Exception $e){ // Retourne en arrière en cas d'erreur avec la BD
             $pdo->rollBack();
         }
 
     }
 
+    // Fonction permettant d'obtenir la phase actuelle dans laquelle se trouve le forum actuellement
+    // 3 phases sont possibles :
+    //    - phase 1 : les étudiants peuvent ajouter des entreprises à leur liste de souhaits
+    //    - phase 1.5 : un administrateur manipule les listes de souhaits des étudiants dans le but de créer un planning
+    //    - phase 2 : le planning est généré et les étudiants y ont accès.
     function getPhase($pdo){
         try{ 
             $maRequete = $pdo->prepare("SELECT phase, wish_period_end from Meeting");
@@ -88,12 +109,14 @@
             $phase = $ligne['phase'];
             $phase = $phase == 1 && $ligne['wish_period_end'] < date("Y-m-d") ? 1.5 : $phase;
             return $phase;
-		} catch ( Exception $e ) {
+		} catch ( Exception $e ) { // Retourne faux en cas d'erreur avec la BD
 			echo "Connection failed: " . $e->getMessage();
 			return false;
 		} 
     }
 
+    // Fonction permettant d'obtenir les entreprises que souhaitent rencontrer un étudiant passé en paramètre.
+    // Paramètre recherche : permet d'affiner la recherche selon un champs de recherche
 	function getEntreprisesForStudent($pdo, $user_id, $recherche) {
         $sql = ("SELECT DISTINCT Company.company_id, Company.name, Company.logo_file_name, Company.description, Company.address, Company.sector, WishList.company_id as wish
                 FROM Company
@@ -107,7 +130,7 @@
                 ON Company.company_id = WishList.company_id
                 AND AssignmentUser.user_id = WishList.user_id
                 WHERE AssignmentUser.user_id = :user_id ");
-        if ($recherche != null) {
+        if ($recherche != null) { // Si le paramètre recherche est nul, toutes les entreprises s'affichent alors.
             $sql.= " AND Company.name LIKE :recherche ";
         }
 
@@ -124,6 +147,7 @@
         return $stmt;
     }
 
+    // Fonction permettant de vérifier si un planning est généré.
     function isPlanningGenerated($pdo) {
         $stmt = $pdo->prepare("SELECT generated FROM Meeting WHERE meeting_id = 1");
         $stmt->execute();
@@ -131,17 +155,21 @@
         return $ligne['generated'] === 1;
     }
 
+    // Fonction faisant appel à une fonction dans la base de données permettant de générer un planning
     function genererPlanning($pdo) {
         $stmt = $pdo->prepare("SELECT generatePlanning()");
         $stmt->execute();
         return $stmt->fetch()[0];
     }
 
+    // Fonction permettant de changer de phase pour passer en phase 2.
     function launchPhase2($pdo) {
         $stmt = $pdo->prepare("UPDATE Meeting SET phase = 2 WHERE meeting_id = 1");
         $stmt->execute();
     }
 
+    // Fonction permettant d'annuler la génération du planning si celui-ci ne convient pas 
+    //à l'administateur en train d'essayer d'en générer un
     function cancelPlanning($pdo) {
         $stmt = $pdo->prepare("DELETE FROM Appointment;");
         $stmt->execute();
@@ -149,12 +177,15 @@
         $stmt->execute();
     }
 
+    // TODO aucune idée
     function setPlanningGenerated($pdo, $value) {
         $stmt = $pdo->prepare("UPDATE Meeting SET generated = :value WHERE meeting_id = 1");
         $stmt->bindParam(':value', $value);
         $stmt->execute();
     }
 
+    // Ajout d'un nouvel étudiant à la base de données. 
+    // Gère aussi l'ajout de lassignement de cet étudiant (la filière à laquelle il est assigné)
     function addNewStudent($pdo, $prenom, $nom, $email, $mdp, $filiere) {
         $nom = htmlspecialchars(strtoupper($nom));
         $prenom = htmlspecialchars($prenom);
@@ -180,6 +211,8 @@
         $stmt->execute();
     }
 
+    // Ajout d'un nouveau gestionnaire à la base de données. 
+    // Gère aussi l'ajout des assignements de ce gestionnaires (les filières auxquelles il est assigné)
     function addNewSupervisor($pdo, $prenom, $nom, $email, $mdp, $filiere) {
         $nom = htmlspecialchars(strtoupper($nom));
         $prenom = htmlspecialchars($prenom);
@@ -198,15 +231,20 @@
         $user_id = $pdo->lastInsertId();
 
         foreach($filiere as $value) {
-        $stmt = $pdo->prepare("INSERT INTO AssignmentUser (field_id, user_id)
-                            VALUES (:field_id, :user_id)");
-        $stmt->bindParam(':field_id', $value);
-        $stmt->bindParam(':user_id', $user_id);
-        $stmt->execute();
+            $stmt = $pdo->prepare("INSERT INTO AssignmentUser (field_id, user_id)
+                                VALUES (:field_id, :user_id)");
+            $stmt->bindParam(':field_id', $value);
+            $stmt->bindParam(':user_id', $user_id);
+            $stmt->execute();
         }
         
     }
 
+    // Fonction permettant de supprimer un étudiant et toutes les données qui peuvent le concerner :
+    //     - Ses souhaits de rendez-vous s'il en a émis
+    //     - Ses rendez-vous idem
+    //     - les filières qui lui sont assignés
+    //     - L'utilisateur en question
     function deleteStudent($pdo, $user_id) {
         $user_id = htmlspecialchars($user_id);
 
@@ -236,10 +274,13 @@
         $stmt->execute();
     }
 
+    // Permet de modifier une entreprise et de la mettre à jour selon les différents paramètres.
+    // Si un ou plusieurs paramètres ont une valeur nulle, alors la modification de ce champs spécifique ne remplace pas l'ancienne valeur.
     function modifyCompany($pdo, $company_id, $nom, $description, $secteur, $adresse, $codePostal, $ville, $logo) {
 
+        // Vérification du logo
         if (!empty($logo['name'])) {
-            if (!empty($logo)) {
+            if (!empty($logo)) { // Vérification de s'il y a eu un changement dans le logo
                 $nomPourChemin = $logo['name'];
             } else {
                 $nomPourChemin = $ancienNom;
@@ -248,12 +289,14 @@
         } else {
             $newFileName = null;
         }
-    
+        
+        // Vérification de différents paramètres : set à null s'ils sont vides
         $nom = empty($nom) ? null : htmlspecialchars($nom);
         $description = empty($description) ? null : htmlspecialchars($description);
         $adresse = empty($adresse) ? null : htmlspecialchars($adresse . ', ' . $codePostal . ' ' . $ville);
         $secteur = empty($secteur) ? null : htmlspecialchars($secteur);    
         
+        // Requête de modification de l'entreprise
         $stmt = $pdo->prepare("UPDATE Company
                                SET name = IFNULL(:nom, name), logo_file_name = IFNULL(:newFileName, logo_file_name), description = IFNULL(:description, description), address = IFNULL(:adresse, address), sector = IFNULL(:secteur, sector)
                                WHERE Company.company_id = :id");
@@ -269,6 +312,8 @@
       
     }
 
+    // Fonction de suppression d'un intervenant. 
+    // Permet également de supprimer les assignements de cet intervenant.
     function deleteSupervisor($pdo, $user_id) {
         $user_id = htmlspecialchars($user_id);
 
@@ -285,6 +330,8 @@
         $stmt->execute();
     }
 
+    // Fonction permettant de récupérer les entreprises selon l'identifiant d'un étudiant passé en paramètres.
+    // Il s'agit des entreprises que l'étudiant souhaite rencontrer.
     function getEntreprisesPerStudent($pdo, $user_id) {
         $stmt = $pdo->prepare("SELECT Company.company_id,name,logo_file_name,address,sector
                             FROM Company
@@ -296,6 +343,7 @@
         return $stmt;
     }
 
+    // Fonction permettant d'obtenir toutes les filières stockées dans la base de données
     function getFields($pdo) {
         $sql = "SELECT * FROM `Field` ORDER BY name";
         $stmt = $pdo->prepare($sql);
@@ -303,6 +351,7 @@
         return $stmt;
     }
 
+    // Fonction permettant d'obtenir toutes les filières attribuées à un utilisateur spécifié en paramètre. 
     function getFieldsPerUsers($pdo, $user_id) {
         $sql = "SELECT * FROM `Field` WHERE field_id IN (SELECT field_id FROM AssignmentUser WHERE user_id = :user_id) ORDER BY name";
         $stmt = $pdo->prepare($sql);
@@ -311,6 +360,13 @@
         return $stmt;
     }
 
+    // Fonction permettant d'obtenir les informations liées à un étudiant :
+    //    - son nom
+    //    - son prénom
+    //    - le nombre de souhait qu'il a émi (le nombre d'entreprises qu'il souhaite rencontrer)
+    // Le résultat dépend de deux filtres : un filtre de recherche où les étudiants concernés doivent avoir leur nom
+    // ou prénom contenant ce paramètre et un filtre par filières : seuls les étudiants assignés aux filières correspondantes seront
+    // appelés par la requête. 
     function getInfoStudents($pdo, $recherche, $field_ids) {
         $field_ids_str = implode(', ', $field_ids);
     
@@ -330,7 +386,7 @@
                 AND f.field_id IN (:fields)
                 GROUP BY u.lastname, u.firstname, filiere";
     
-        if ($recherche != null) {
+        if ($recherche != null) { // Si le paramètre recherche est nul, tous les étudiants s'affichent alors.
             $sql .= " HAVING u.firstname LIKE :recherche
                       OR u.lastname LIKE :recherche";
         }
@@ -347,6 +403,7 @@
         return $stmt;
     }
 
+    // TODO : à expliquer
     function setSpecificationCompany($pdo, $action, $comp_id) {
         switch ($action) {
             case 'ajouterEntrepriseReduite' :
@@ -369,6 +426,7 @@
         $stmt->execute();
     }
 
+    // TODO : à expliquer
     function getSpecificationCompany($pdo, $specification, $value) {
         switch ($specification) {
             case 'entrepriseReduite' :
@@ -386,6 +444,7 @@
         return $stmt;
     }
     
+    // Fonction permettant de supprimer le souhait d'un étudiant de sa liste de souhaits.
     function removeWishStudent($pdo, $user_id, $company_id) {
         $stmt = $pdo->prepare("DELETE FROM WishList
                             WHERE user_id = :user_id AND company_id = :company_id");
@@ -394,6 +453,8 @@
         return $stmt->execute();
     }
 
+    // Fonction permettant d'obtenir le planning de l'utilisateur passé en paramètre.
+    // Retourne un tableau contenant les données liés à ce planning : l'heure de début de chaque rdv, l'heure de fin, la nom de l'entreprise...
     function planningPerUser($pdo, $user_id) {
         $requete = $pdo-> prepare("SELECT ap.start, ap.duration, c.name
                                 FROM Appointment ap
@@ -416,6 +477,8 @@
         return $planning;
     }
 
+    // Permet d'obtenir toutes les entreprises dont le planning n'a pas pu être généré
+    // concernant un étudiant spécifique passé en paramètre.
     function unlistedCompanyPerUser($pdo, $user_id) {
         $requete = $pdo-> prepare("SELECT c.name 
                                 FROM Company c
@@ -428,6 +491,10 @@
         return $requete;
     }
 
+    // Permet d'obtenir la liste des étudiants selon les filtres passés en paramètre : 
+    //    - Le champs de recherche
+    //    - les filières
+    // Le tout trié selon le dernier paramètre (soit par ordre alphabétique, soit pas nombre de souhaits)
     function getInfoStudentsSort($pdo, $recherche, $field_ids, $sort) {
         $field_ids_str = implode(', ', $field_ids);
 
@@ -473,6 +540,7 @@
         return $stmt;
     }
 
+    // Fonction permettant d'obtenir la liste des gestionnaires selon les filtres passés en paramètre.
     function getInfosSupervisors($pdo, $recherche, $field_ids) {
         $parameters = $field_ids;
 
@@ -523,6 +591,8 @@
         return $stmt;
     }
 
+
+    // Fonction permettant de supprimer un souhait de la liste des souhaits d'un étudiant
     function deleteWishStudent($pdo, $user_id, $company_id) {
         $stmt = $pdo->prepare("DELETE IGNORE FROM WishList
                                WHERE user_id = :user_id 
@@ -531,7 +601,8 @@
         $stmt->bindParam(':company_id', $company_id);
         return $stmt->execute();
     }
-    
+
+    // Fonction permettant d'ajouter un souhait à la liste des souhaits d'un étudiant
     function addWishStudent($pdo, $user_id, $company_id) {
         $stmt = $pdo->prepare("INSERT IGNORE INTO WishList (user_id, company_id)
                               VALUES (:user_id, :company_id)");
@@ -540,6 +611,7 @@
         return $stmt->execute();
     }
 
+    // Fonction permettant d'obtenir les entreprises en phase 2 : on souhaite ici aussi obtenir la ligne excluded, inutile en phase 1
     function getEntreprisesPhase2($pdo, $field_ids, $recherche) {
         // Utilisez la fonction implode pour convertir le tableau en une chaîne séparée par des virgules
         $field_ids_str = implode(', ', $field_ids);
@@ -578,6 +650,7 @@
         return $stmt;
     }
 
+    // Fonction permettant d'obtenir la liste des intervenants par entreprise. 
     function getSpeakersPerCompany($pdo, $company_id) {
         $stmt = $pdo->prepare("SELECT speaker_id, name, role FROM Speaker WHERE company_id = :company_id ORDER BY name");
         $stmt->bindParam(':company_id', $company_id);
@@ -585,6 +658,8 @@
         return $stmt;
     }
 
+    // Fonction permettant d'obtenir une liste d'intervenant trié dans un tableau
+    // à partir d'un tableau de données brutes où toutes les données sont stockées dans une même ligne.
     function getSpeakersPerCompanyAdministrateur($tableau_intervenants) {
         // Séparer la chaîne principale en utilisant ';' comme délimiteur pour obtenir les intervenants
         $intervenants_array = explode('&#30;', $tableau_intervenants);
@@ -613,11 +688,13 @@
                 'fields' => $fields_array
             );
         }
-    
-        // Utiliser $final_array comme nécessaire
+
         return $final_array;
     }
 
+    // Fonction permettant la suppression d'une entreprise, mais également
+    //    - La suppression de tous ses intervenants (et de leurs assignements)
+    //    - La suppression des souhaits émis par rapport à cette entreprise.
     function deleteCompany($pdo, $company_id) {
         $stmt = $pdo->prepare("DELETE FROM AssignmentSpeaker
                                WHERE speaker_id IN (SELECT speaker_id
@@ -642,6 +719,10 @@
         $stmt->execute();
     }
 
+    // Fonction permettant d'ajouter un nouvel intervenant. 
+    // Cet intervenant est assignée à une entreprise en particulier, et il est également assignés 
+    // à une ou plusieurs filières.
+    // Son rôle (un titre expliquant sa fonction) n'est pas obligatoire. 
     function addSpeaker($pdo, $company_id, $name, $role, $fields)  {
         // Ajoutez les Intervenants (Speakers) dans la table Speaker
         $stmt = $pdo->prepare("INSERT INTO Speaker (name, role, company_id) VALUES (:nom, :role, :company_id)");
@@ -662,13 +743,17 @@
         }
     }
 
+    // Ajout d'une nouvelle entreprises avec en paramètre tous les paramètres nécessaires.
+    // La description et le logo sont facultatifs, et les intervenants sont stockés dans un tableau.
     function addCompany($pdo, $nom, $description, $adresse, $codePostal, $ville, $secteur, $logo, $intervenants) {
+        // Vérification du logo : s'il est vide, un logo par défaut est attribué.
         if (!empty($logo['name'])) {
             $newFileName = checkImage($logo, $nom);
         } else {
             $newFileName = "no-photo.png";
         }
     
+        // Empêche l'injection de code
         $nom = htmlspecialchars(strtoupper($nom));
         $description = htmlspecialchars($description);
         $adresse = htmlspecialchars($adresse . ', ' . $codePostal . ' ' . strtoupper($ville));
@@ -685,7 +770,7 @@
     
         $companyId = $pdo->lastInsertId();
     
-        // Ajoutez les Intervenants (Speakers) dans la table Speaker
+        // Ajout des Intervenants (Speakers) dans la table Speaker
         $stmtAddSpeaker = $pdo->prepare("INSERT INTO Speaker (name, role, company_id) VALUES (:nom, :role, :companyId)");
         foreach ($intervenants as $intervenant) {
             $stmtAddSpeaker->bindParam(':nom', $intervenant['nom']);
@@ -693,10 +778,10 @@
             $stmtAddSpeaker->bindParam(':companyId', $companyId);
             $stmtAddSpeaker->execute();
     
-            // Obtenez l'id du dernier Intervenant ajouté
+            // Obtention de l'id du dernier Intervenant ajouté
             $speakerId = $pdo->lastInsertId();
     
-            // Ajoutez les assignations dans la table AssignmentSpeaker
+            // Ajout des assignations dans la table AssignmentSpeaker
             foreach ($intervenant['filieres'] as $filiereId) {
                 $stmtAddAssignment = $pdo->prepare("INSERT INTO AssignmentSpeaker (speaker_id, field_id) VALUES (:speakerId, :filiereId)");
                 $stmtAddAssignment->bindParam(':speakerId', $speakerId);
@@ -707,6 +792,7 @@
     
     }
 
+    // Fonction permettant de supprimer un intervenant.
     function deleteSpeaker($pdo, $id, $comp_id) {
         $stmt = $pdo->prepare("DELETE FROM AssignmentSpeaker
                                WHERE AssignmentSpeaker.Speaker_id = :id");
@@ -733,10 +819,12 @@
         $stmt->execute();
     }
 
+    // Fonction permettant de modifier un intervenant
     function modifySpeaker($pdo, $nom, $role, $fields, $id) {
+        // Verification injection de code
         $nom = htmlspecialchars($nom);
         $role = htmlspecialchars($role);
-        $fields = array_map('htmlspecialchars', $fields); // Appliquer htmlspecialchars à chaque élément du tableau
+        $fields = array_map('htmlspecialchars', $fields); // permet d'appliquer htmlspecialchars à chaque élément du tableau
     
         // Modification des données dans la table Speaker
         $stmt = $pdo->prepare("UPDATE Speaker
@@ -768,6 +856,7 @@
         }    
     }
 
+    // Fonction permettant d'obtenir les rendez-vous par intervenant (grâce à l'identifiant de l'intervenant passé en paramètre).
     function getAppointmentPerSpeaker($pdo, $speaker_id) {
         $stmt = $pdo->prepare("SELECT TIME_FORMAT(app.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(app.start, app.duration), '%H:%i') as end, us.firstname, us.lastname, fie.name
                                 FROM Appointment app
@@ -783,6 +872,7 @@
         return $stmt;
     }
 
+    // Fonction permettant d'obtenir la liste des étudiants en fonction de la liste de souhaits d'une entreprise.
     function getStudentsPerCompanyWishList($pdo, $company_id) {
         $stmt = $pdo->prepare("SELECT Field.name, User.lastname, User.firstname
                             FROM Company
@@ -800,10 +890,13 @@
         return $stmt;
     }
 
+    // Fonction permettant d'obtenir la liste planning des étudiants en fonction d'une entreprise passée en paramètre
     function getStudentsAppointmentsPerCompany($pdo, $company_id, $isExcluded) {
+        // Si l'entreprise est exclu, fait appel à la fonction permettant d'obtenir la wishlist de cet étudiant concernant cette entreprise
+        // car aucun planning n'a pu être généré.
         if ($isExcluded == 1) {
             return getStudentsPerCompanyWishList($pdo, $company_id);
-        } else {
+        } else { 
             $stmt = $pdo->prepare("SELECT Field.name, User.firstname, User.lastname, TIME_FORMAT(Appointment.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(Appointment.start, Appointment.duration), '%H:%i') as duration
                                 FROM Company
                                 JOIN Speaker 
@@ -823,6 +916,7 @@
         }
     }
 
+    // Fonction permettant d'obtenir la liste des entreprises stockés dans la BD selon les filtres passés en paramètre
     function getEntreprises($pdo, $field_ids, $recherche) {
         // Utilisez la fonction implode pour convertir le tableau en une chaîne séparée par des virgules
         $field_ids_str = implode(', ', $field_ids);
@@ -861,6 +955,8 @@
         return $stmt;
     }
 
+    // Fonction permettant d'obtenir la liste des entreprises stockés dans la BD selon les filtres passés en paramètre
+    // Renvoi également la liste des intervenants liés à chaque entreprise.
     function getEntreprisesAdministrateur($pdo, $field_ids, $recherche) {
         // Utilisez la fonction implode pour convertir le tableau en une chaîne séparée par des virgules
         $field_ids_str = implode(', ', $field_ids);
@@ -904,6 +1000,7 @@
         return $stmt;
     }
 
+    // Fonction permettant d'obtenir la liste des étudiants souhaitant rencontré l'entreprise passée en paramètre
     function getStudentsPerCompany($pdo, $company_id) {
         $stmt = $pdo->prepare("SELECT Field.name, User.firstname, User.lastname
                                FROM Company
@@ -921,7 +1018,9 @@
         return $stmt;
     }
 
+    // Fonction permettant de changer le mot de passe d'un utilisateur pour un nouveau passé en paramètre.
     function modifyPassword($pdo, $user_id, $new_password) {
+        // Verification injection de code
         $new_password = htmlspecialchars($new_password);
     
         $stmt = $pdo->prepare("UPDATE User
@@ -934,6 +1033,7 @@
         $stmt->execute();
     }
 
+    // Fonction permettant d'insérer une liste d'étudiants en une fois avec les filières associées à chaque étudiant
     function inserer_etudiants($pdo, $etudiants, $filieres) {
         $pdo->beginTransaction();
         $stmt = $pdo->prepare("INSERT INTO User (firstname, lastname,  email, password, responsibility)
@@ -956,6 +1056,7 @@
         $pdo->commit();
     }
 
+    // Fonction permettant d'obtenir toutes les entreprises non exclues du planning qui ont des rendez-vous
     function getCompanyNotExcluded($pdo){
         $maRequete = $pdo->prepare("SELECT company_id,name 
                                     FROM Company c1
@@ -969,6 +1070,7 @@
         return $maRequete;
     }
 
+    // Fonction permettant d'obtenir le nom d'une entreprise à partir de son identifiant
     function getCompanyName($pdo, $company_id){
         $maRequete = $pdo->prepare("SELECT name FROM Company WHERE company_id = :company_id");
         $maRequete->bindParam(':company_id', $company_id);
@@ -980,6 +1082,7 @@
         return $res;
     }
 
+    // Fonction permettant d'obtenir le nom d'un étudiant à partir de son identifiant
     function getStudentName($pdo, $user_id){
         $maRequete = $pdo->prepare("SELECT firstname, lastname FROM User WHERE user_id = :user_id");
         $maRequete->bindParam(':user_id', $user_id);
@@ -990,23 +1093,28 @@
         return $res;
     }
 
+    // Fonction permettant d'obtenir toutes les entreprises exclues du planning
     function getCompanyExcluded($pdo){
         $maRequete = $pdo->prepare("SELECT company_id,name FROM Company WHERE excluded = 1 ORDER BY name;");
         $maRequete->execute();
         return $maRequete;
     }
 
+    // Fonction permettant d'obtenir la liste de tous les étudiants
     function getStudent($pdo){
         $maRequete = $pdo->prepare("SELECT user_id, firstname, lastname FROM User WHERE responsibility = 'E'");
         $maRequete->execute();
         return $maRequete;
     }
     
+    // Fonction permettant d'obtenir la liste de tous les étudiants ayant émis au moins un souhait
     function getStudentsWithMeeting($pdo){
         $maRequete = $pdo->prepare("SELECT DISTINCT User.user_id, User.firstname, User.lastname FROM User JOIN WishList ON WishList.user_id = User.user_id WHERE responsibility = 'E' ORDER BY lastname;");
         $maRequete->execute();
         return $maRequete;
     }
+
+    // TODO
     function studentByUnlistedCompany($pdo, $company_id) {
         $requete = $pdo-> prepare("SELECT u.firstname, u.lastname , f.name
                                    FROM Field f
@@ -1019,6 +1127,9 @@
         return $requete;
     }
 
+    // Fonction permettant de réinitialiser l'ensemble des données stockées dans la base de données à l'exception :
+    //    - de la liste des Gestionnaires
+    //    - de la liste des Administrateurs
     function reinitialiserDonnees($pdo) {
         $pdo->beginTransaction();
         $stmt = $pdo->prepare("DELETE FROM Appointment");
@@ -1040,6 +1151,7 @@
         $pdo->commit();
     }
 
+    // Fonction permettant de déterminer si la filière passé en paramètre a des étudiant ou des intervenants qui lui sont attribués
     function isFieldInUse($pdo, $field_id) {
         $stmt = $pdo->prepare("SELECT (
                        (SELECT COUNT(*)
@@ -1063,12 +1175,14 @@
         return $res > 0;
     }
 
+    // Fonction permettant de créer une nouvelle filière
     function newField($pdo, $name) {
         $stmt = $pdo->prepare("INSERT INTO Field (name) VALUES (:name)");
         $stmt->bindParam(':name', $name);
         $stmt->execute();
     }
 
+    // Fonction permettant de supprimer une filière
     function deleteField($pdo, $field_id) {
 
         $stmt = $pdo->prepare("DELETE FROM AssignmentUser WHERE field_id = :field_id");
@@ -1086,6 +1200,7 @@
         $stmt->execute();
     }
 
+    // Fonction permettant de modifier une filière
     function modifyField($pdo, $field_id, $name) {
         $stmt = $pdo->prepare("UPDATE Field SET name = :name WHERE field_id = :field_id");
         $stmt->bindParam(':name', $name);
@@ -1093,6 +1208,7 @@
         $stmt->execute();
     }
 
+    // Fonction permettant d'ajouter un nouvel utilisateur
     function addAdmin($pdo, $prenom, $nom, $email, $mdp) {
         $nom = htmlspecialchars(strtoupper($nom));
         $prenom = htmlspecialchars($prenom);
@@ -1108,6 +1224,7 @@
         $stmt->execute();         
     }
 
+    // Fcntion permettant d'obtenir la liste des administrateurs selon le champs de recherche passé en paramètre
     function getInfosAdmins($pdo, $recherche) {      
         $sql = "SELECT User.firstname, User.lastname, User.user_id
                 FROM User
@@ -1131,6 +1248,7 @@
         return $stmt;
     }
 
+    // Fonction permettant de supprimer un administrateur
     function deleteAdmin($pdo, $user_id) {
         $pdo->beginTransaction();
         $stmt = $pdo->prepare("SELECT * 
@@ -1147,8 +1265,11 @@
         $pdo->commit();
     }
 
+    // Fonction permettant de vérifier si une image est conforme et peut donc être insérer dans la base de données.
+    // Si tel est le cas, cette fonction va upload l'image.
     function checkImage($logo, $nom) {
-                    
+        // Vérification lié à la taille de l'image : si celle-ci est trop grande, alors un resize est effectué pour
+        // rendre l'image plus petite.
         $maxDim = 800;
         $file_name = $logo['tmp_name'];
         list($width, $height, $type, $attr) = getimagesize( $file_name );
@@ -1166,44 +1287,44 @@
             $dst = imagecreatetruecolor( (int) $new_width, (int) $new_height );
             imagecopyresampled( $dst, $src, 0, 0, 0, 0, (int) $new_width, (int) $new_height, $width, $height );
             imagedestroy( $src );
-            imagepng( $dst, $target_filename ); // adjust format as needed
+            imagepng( $dst, $target_filename ); // ajustement du format selon le besoin
             imagedestroy( $dst );
         }
         $targetDirectory = "../../ressources/logosentreprises/";
         $imageFileType = strtolower(pathinfo($logo["name"], PATHINFO_EXTENSION));
 
-        // Générer un nom de fichier unique basé sur le nom de l'entreprise
-        // Supression des caractères non autorisés
+        // Génère un nom de fichier unique basé sur le nom de l'entreprise
+        // Suppression des caractères non autorisés
         $cleanedFileName = preg_replace('/[^\w\d\-_.]/', '', $nom);
 
-        // Limiter la longueur du nom de fichier si nécessaire
+        // Limite la longueur du nom de fichier si nécessaire
         $cleanedFileName = substr($cleanedFileName, 0, 80);
         $newFileName = $cleanedFileName . '_' . uniqid() . '.' . $imageFileType;
         $targetFile = $targetDirectory . $newFileName;
         $uploadOk = 1;
     
-        // Vérifier si le fichier existe déjà
+        // Vérifie si le fichier existe déjà
         if (file_exists($targetFile)) {
             echo "Désolé, le fichier existe déjà.";
             $uploadOk = 0;
         }
 
-        // Autoriser certains formats de fichiers
+        // Autorise les formats d'images uniquement
         $allowedFormats = array("jpg", "jpeg", "png", "gif");
         if (!in_array($imageFileType, $allowedFormats)) {
             echo "Désolé, seuls les fichiers JPG, JPEG, PNG et GIF sont autorisés.";
             $uploadOk = 0;
         }
     
-        // Vérifier si $uploadOk est défini à 0 par une erreur
+        // Vérifie si $uploadOk est défini à 0 par une erreur
         if ($uploadOk == 0) {
             echo "Désolé, votre fichier n'a pas été téléchargé.";
         } else {
-            // Si tout est correct, essayez de télécharger le fichier
+            // Si tout est correct, essaye de télécharger le fichier
             if (move_uploaded_file($_FILES["logoEntreprise"]["tmp_name"], $targetFile)) {
                 echo "Le fichier " . htmlspecialchars(basename($_FILES["logoEntreprise"]["name"])) . " a été téléchargé.";
     
-                // Maintenant, vous pouvez utiliser $targetFile comme chemin à stocker dans la base de données
+                // retourne $targetFile comme chemin à stocker dans la base de données
                 return $targetFile;
     
             } else {
@@ -1212,6 +1333,7 @@
         }
     }
 
+    // Fonction permettant d'obtenir la date à laquelle la phase 1 se termine.
     function getDatePeriodEnd($pdo){
         $reponse = $pdo->query("SET lc_time_names = 'fr_FR'");
         $maRequete=$pdo->prepare('SELECT DATE_FORMAT(wish_period_end, "%e %M %Y") as dateFin FROM Meeting');
