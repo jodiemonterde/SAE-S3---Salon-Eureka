@@ -211,9 +211,11 @@
                     <!-- Accordéon Bootstrap -->
                     <div class="accordion" id="listeGestionnaires">
                         <?php
+                            $derniere = false;
                             // Affichage de toutes les filières stockées dans la BD
-                            if ($fields->rowCount() === 0) { // Vérifie si aucune filière n'est actuellement stocké et affiche un message en conséquence.
-                                echo '<p>Le site ne contient aucune filière.</p>';
+                            if ($fields->rowCount() === 1) { // Vérifie si il ne reste qu'une filière stocker dans la BD
+                                echo '<p>Vous ne pouvez pas suprimer la dernière filière.</p>';
+                                $derniere = true;
                             } else {
                                 while ($ligne = $fields->fetch()) { 
                         ?>
@@ -235,7 +237,7 @@
                                         <div class="row my-3">
                                             <!-- Bouton de déclenchement de la modale permettant de supprimer une filière -->
                                             <div class="col-md-6 py-2">
-                                                <button class="boutonNegatif" data-bs-toggle="modal" data-bs-target="#modalDeleteField<?php echo $ligne['field_id']; ?>" <?php echo isFieldInUse($pdo, $ligne['field_id']) ? "disabled" : ""; ?>>Supprimer</button>
+                                                <button class="boutonNegatif" data-bs-toggle="modal" data-bs-target="#modalDeleteField<?php echo $ligne['field_id']; ?>" <?php echo $derniere ? "disabled" : ""; ?>>Supprimer</button>
                                             </div>
                                             <!-- Bouton de déclenchement de la modale permettant de modifier une filière -->
                                             <div class="col-md-6 py-2">
