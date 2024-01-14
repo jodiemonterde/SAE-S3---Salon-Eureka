@@ -765,7 +765,7 @@
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':adresse', $adresse);
         $stmt->bindParam(':secteur', $secteur);
-        $stmt->bindParam(':logo', $newFileName);
+        $stmt->bindParam(':logo', htmlspecialchars($newFileName));
         $stmt->execute(); 
     
         $companyId = $pdo->lastInsertId();

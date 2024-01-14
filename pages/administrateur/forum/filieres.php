@@ -1,43 +1,47 @@
 <?php
     // Démarrage d'une session
     session_start();
+    try {
+        /* 
+        * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
+        * connecter à la base de donnée et interagir avec celle-ci.
+        */
+        require("../../../fonctions/baseDeDonnees.php");
 
-    /* 
-    * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
-    * connecter à la base de donnée et interagir avec celle-ci.
-    */
-    require("../../../fonctions/baseDeDonnees.php");
+        $pdo = connecteBD(); // accès à la Base de données
 
-    $pdo = connecteBD(); // accès à la Base de données
+        // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un administrateur correctement identifié.
+        if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
+            header('Location: ../../connexion.php');
+            exit();
+        }
 
-    // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un administrateur correctement identifié.
-    if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
-        header('Location: ../../connexion.php');
+        // Ajout d'une nouvelle filière si le formulaire en question a été correctement rempli
+        if (isset($_POST['nom'])) {
+            newField($pdo, htmlspecialchars($_POST['nom']));
+            header('Location: filieres.php');
+            exit();
+        }
+
+        // Suppression d'une filière si le formulaire en question a été correctement rempli
+        if (isset($_POST['supprimer'])) {
+            deleteField($pdo, htmlspecialchars($_POST['supprimer']));
+            header('Location: filieres.php');
+            exit();
+        }
+
+        // Modification d'une filière si le formulaire en question a été correctement rempli
+        if (isset($_POST['modify'])) {
+            modifyField($pdo, htmlspecialchars($_POST['modify']), htmlspecialchars($_POST['newName']));
+            header('Location: filieres.php');
+            exit();
+        }
+
+        $fields = getFields($pdo); // Obtention de toutes les filières de la base de données
+    } catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
+        header('Location: ../../maintenance.php');
         exit();
     }
-
-    // Ajout d'une nouvelle filière si le formulaire en question a été correctement rempli
-    if (isset($_POST['nom'])) {
-        newField($pdo, $_POST['nom']);
-        header('Location: filieres.php');
-        exit();
-    }
-
-    // Suppression d'une filière si le formulaire en question a été correctement rempli
-    if (isset($_POST['supprimer'])) {
-        deleteField($pdo, $_POST['supprimer']);
-        header('Location: filieres.php');
-        exit();
-    }
-
-    // Modification d'une filière si le formulaire en question a été correctement rempli
-    if (isset($_POST['modify'])) {
-        modifyField($pdo, $_POST['modify'], $_POST['newName']);
-        header('Location: filieres.php');
-        exit();
-    }
-
-    $fields = getFields($pdo); // Obtention de toutes les filières de la base de données
 ?>
 <!DOCTYPE html>
 <html lang="fr">

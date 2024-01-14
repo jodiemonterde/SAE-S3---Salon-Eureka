@@ -13,11 +13,11 @@
 
         // Gère l'affichage des étudiants en fonction des filtres
         if (isset($_POST['nouveauFiltre'])) {
-            if (in_array($_POST['nouveauFiltre'], $_SESSION['filtre'])) {
-                $index = array_search($_POST['nouveauFiltre'], $_SESSION['filtre']);
+            if (in_array(htmlspecialchars($_POST['nouveauFiltre']), $_SESSION['filtre'])) {
+                $index = array_search(htmlspecialchars($_POST['nouveauFiltre']), $_SESSION['filtre']);
                 unset($_SESSION['filtre'][$index]);
             } else {
-                array_push($_SESSION['filtre'], $_POST['nouveauFiltre']);
+                array_push($_SESSION['filtre'], htmlspecialchars($_POST['nouveauFiltre']));
             }
             
             header("Location: listeEntreprises.php");
@@ -37,14 +37,14 @@
         
         // Modification d'une entreprise existante si le formulaire en question a été correctement rempli : seuls les champs non vide font un changement
         if (isset($_POST["modifyCompany"])) {
-            modifyCompany($pdo, $_POST["companyID"], $_POST["nomEntreprise"], $_POST["descriptionEntreprise"], $_POST["secteurEntreprise"],$_POST["adresseEntreprise"], $_POST["codePostalEntreprise"], $_POST["villeEntreprise"], $_FILES["logoEntreprise"], $_POST['ancienNom']);
+            modifyCompany($pdo, htmlspecialchars($_POST["companyID"]), htmlspecialchars($_POST["nomEntreprise"]), htmlspecialchars($_POST["descriptionEntreprise"]), htmlspecialchars($_POST["secteurEntreprise"]), htmlspecialchars($_POST["adresseEntreprise"]), htmlspecialchars($_POST["codePostalEntreprise"]), htmlspecialchars($_POST["villeEntreprise"]), $_FILES["logoEntreprise"], htmlspecialchars($_POST['ancienNom']));
             header("Location: listeEntreprises.php");
             exit();
         }
 
         // Suppression d'une entreprise si le formulaire de suppression a été enclenché
         if (isset($_POST["deleteCompany"])) {
-            deleteCompany($pdo, $_POST["companyID"]);
+            deleteCompany($pdo, htmlspecialchars($_POST["companyID"]));
             header("Location: listeEntreprises.php");
             exit();
         }
@@ -61,8 +61,8 @@
         
             // Le premier intervenant est toujours présent
             $intervenant_1 = array(
-                'nom' => $_POST['nomIntervenant'],
-                'role' => $_POST['roleIntervenant'],
+                'nom' => htmlspecialchars($_POST['nomIntervenant']),
+                'role' => htmlspecialchars($_POST['roleIntervenant']),
                 'filieres' => $_POST['filieresIntervenant']
             );
             $intervenants_array[] = $intervenant_1;
@@ -73,8 +73,8 @@
                 
                 while (isset($_POST['nomIntervenant_' . $cpt])) {
                     $intervenant = array(
-                        'nom' => $_POST['nomIntervenant_' . $cpt],
-                        'role' => $_POST['roleIntervenant_' . $cpt],
+                        'nom' => htmlspecialchars($_POST['nomIntervenant_' . $cpt]),
+                        'role' => htmlspecialchars($_POST['roleIntervenant_' . $cpt]),
                         'filieres' => $_POST['filieresIntervenant_' . $cpt]
                     );
                 
@@ -83,30 +83,43 @@
                 }
         
             }
-            addCompany($pdo, $_POST["nomEntreprise"], $_POST["descriptionEntreprise"], $_POST["adresseEntreprise"], $_POST["codePostalEntreprise"], $_POST["villeEntreprise"], $_POST["secteurEntreprise"], $_FILES["logoEntreprise"], $intervenants_array);
-            header("Location: listeEntreprises.php");
-            exit();
+            $isOk = true;
+            foreach ($intervenants_array as $intervenant) {
+                if (empty($intervenant['filieres'])) {
+                    echo "insertion echouée, un intervenant n'a pas de filière";
+                    $isOk = false;
+                }
+            }
+            if ($isOk) {
+                addCompany($pdo, htmlspecialchars($_POST["nomEntreprise"]), htmlspecialchars($_POST["descriptionEntreprise"]), htmlspecialchars($_POST["adresseEntreprise"]), htmlspecialchars($_POST["codePostalEntreprise"]), htmlspecialchars($_POST["villeEntreprise"]), htmlspecialchars($_POST["secteurEntreprise"]), $_FILES["logoEntreprise"], $intervenants_array);
+                header("Location: listeEntreprises.php");
+                exit();
+            }
         } 
 
         // Modification de l'intervenant d'une entreprise. Seuls les champs remplis sont modifiés
         if (isset($_POST['modifySpeaker'])) {
-            modifySpeaker($pdo, $_POST['nomIntervenantEdit'], $_POST['roleIntervenantEdit'], $_POST['filieresIntervenant'], $_POST['intervenantID']);
-            header("Location: listeEntreprises.php");
-            exit();
+            if (!empty($_POST['filieresIntervenant'])) {
+                modifySpeaker($pdo, htmlspecialchars($_POST['nomIntervenantEdit']), htmlspecialchars($_POST['roleIntervenantEdit']), $_POST['filieresIntervenant'], htmlspecialchars($_POST['intervenantID']));
+                header("Location: listeEntreprises.php");
+                exit();
+            }
         }
 
         // Suppression de l'intervenant d'une entreprise
         if (isset($_POST['deleteSpeaker'])) {
-            deleteSpeaker($pdo, $_POST['intervenantID']);
+            deleteSpeaker($pdo, htmlspecialchars($_POST['intervenantID']), htmlspecialchars($_POST['companyID']));
             header("Location: listeEntreprises.php");
             exit();
         }
 
         // Ajout d'un nouvel intervenant lié à une entreprise
         if (isset($_POST['addSpeaker'])) {
-            addSpeaker($pdo, $_POST['companyID'], $_POST['nomIntervenantAdd'], $_POST['roleIntervenantAdd'], $_POST['filieresIntervenant']);
-            header("Location: listeEntreprises.php");
-            exit();
+            if (!empty($_POST['filieresIntervenant'])) {
+                addSpeaker($pdo, htmlspecialchars($_POST['companyID']), htmlspecialchars($_POST['nomIntervenantAdd']), htmlspecialchars($_POST['roleIntervenantAdd']), htmlspecialchars($_POST['filieresIntervenant']));
+                header("Location: listeEntreprises.php");
+                exit();
+            }
         }
 
 
@@ -312,7 +325,7 @@
                             <h2 class="modal-title" id="addCompanyModalLabel">Nouvelle entreprise</h2>
                         </div>
                         <div class="modal-body navigue">
-                            <form action="listeEntreprises.php" method="post" enctype="multipart/form-data" id="myForm">
+                            <form action="listeEntreprises.php" method="post" enctype="multipart/form-data" class="formToCheckField">
                                 <label for="nomEntreprise" class="modalLabel mb-0 mt-2">Nom</label>
                                 <input class="entreeUtilisateur" type="text" name="nomEntreprise" id="nomEntreprise" placeholder="Saisir le nom de l’entreprise" maxlength="50"required/>
                                 <label for="descriptionEntreprise" class="modalLabel mb-0 mt-2">Description</label>
@@ -338,7 +351,7 @@
                                                 <button type ="button" class="border-0 icon-title trash" hidden><i class="fa-solid fa-trash icon"></i></button>
                                             </div>
                                             <label for="nomIntervenant" class="modalLabel mb-0 mt-2">Nom</label>
-                                            <input class="entreeUtilisateur" type="text" name="nomIntervenant" id="nomIntervenant" placeholder="Saisir le nom de l’intervenant" maxlength="50" required/>
+                                            <input class="entreeUtilisateur" type="text" name="nomIntervenant" id="nomIntervenant" placeholder="Saisir le nom de l’intervenant" value="Intervenant 1" maxlength="50" required/>
                                             <label for="roleIntervenant" class="modalLabel mb-0 mt-2">Role</label>
                                             <input class="entreeUtilisateur" type="textarea" name="roleIntervenant" id="roleIntervenant" placeholder="Saisir un rôle pour cet intervenant (facultatif)" maxlength="80" />
                                             <div class="rowForChecks d-flex flex-wrap">
@@ -445,12 +458,12 @@
                                                 <button type="button" class="blanc border-0" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
                                                 <h2 class="modal-title" id="editModalLabel"><?php echo $intervenant["nom"]; ?></h2>
                                             </div>
-                                            <form action="listeEntreprises.php" method="post" enctype="multipart/form-data">
+                                            <form action="listeEntreprises.php" method="post" enctype="multipart/form-data" class="formToCheckField">
                                                 <label for="nomIntervenantEdit" class="modalLabel mb-0 mt-2">Nom</label>
                                                 <input class="entreeUtilisateur" type="text" name="nomIntervenantEdit" id="nomIntervenantEdit" value="<?php echo $intervenant["nom"]; ?>" maxlength="50"/>
                                                 <label for="roleIntervenantEdit" class="modalLabel mb-0 mt-2">Role</label>
                                                 <input class="entreeUtilisateur" type="textarea" name="roleIntervenantEdit" id="roleIntervenantEdit" value="<?php if (empty($intervenant["fonction"])) { echo '" placeholder="Saisir un rôle"'; } else { echo $intervenant["fonction"];} ?>" maxlength="80" />
-                                                <div class="rowForChecks d-flex flex-wrap">
+                                                <div class="rowForChecks d-flex flex-wrap intervenantContainer">
                                                     <?php
                                                         // Affichage de toutes les filières disponibles dans la BD. Celle qui étaient préalablement selectionnées pour cette intervenant sont pré-selectionnées.
                                                         foreach ($fields as $key => $field) {?>
@@ -492,7 +505,8 @@
                                                 <h2 class="modal-title" id="editModalLabel"><?php echo $intervenant["nom"]; ?></h2>
                                             </div>
                                             <p>Êtes-vous sûr(e) de vouloir supprimer cet intervenant ?</p>
-                                            <form action="listeEntreprises.php" method="post" enctype="multipart/form-data"> 
+                                            <form action="listeEntreprises.php" method="post" enctype="multipart/form-data">
+                                                <input type="hidden" name="companyID" value="<?php echo $ligne['company_id'];?>">
                                                 <input type="hidden" name="intervenantID" value="<?php echo $intervenant['id'];?>">         
                                                 <div class="row mt-3">
                                                     <div class="col-6">
@@ -525,13 +539,13 @@
                                             <button type="button" class="blanc border-0" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-arrow-left fa-2x"></i></button>
                                             <h2 class="modal-title" id="addSpeakerModalLabel">Nouvel intervenant</h2>
                                         </div>
-                                        <form action="listeEntreprises.php" method="post" enctype="multipart/form-data">
+                                        <form action="listeEntreprises.php" method="post" enctype="multipart/form-data" class="formToCheckField">
                                             <input type="hidden" name="companyID" value="<?php echo $ligne['company_id']?>">
                                             <label for="nomIntervenantAdd" class="modalLabel mb-0 mt-2">Nom</label>
                                             <input class="entreeUtilisateur" type="text" name="nomIntervenantAdd" id="nomIntervenantAdd" placeholder="Saisissez le nom de l'intervenant" maxlength="50" required/>
                                             <label for="roleIntervenantAdd" class="modalLabel mb-0 mt-2">Role</label>
                                             <input class="entreeUtilisateur" type="textarea" name="roleIntervenantAdd" id="roleIntervenantAdd" placeholder="Saisir un rôle pour cet intervenant (facultatif)"  maxlength="80" />
-                                            <div class="rowForChecks d-flex flex-wrap">
+                                            <div class="rowForChecks d-flex flex-wrap intervenantContainer">
                                                 <?php
                                                     // Obtention de toutes les filières disponibles dans la BD
                                                     foreach ($fields as $key => $field) {?>

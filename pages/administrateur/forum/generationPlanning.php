@@ -1,78 +1,77 @@
 <?php 
     // Démarrage d'une session
     session_start();
+    try {
+        /* 
+        * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
+        * connecter à la base de donnée et interagir avec celle-ci.
+        */
+        require("../../../fonctions/baseDeDonnees.php");
 
-    /* 
-    * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
-    * connecter à la base de donnée et interagir avec celle-ci.
-    */
-    require("../../../fonctions/baseDeDonnees.php");
-
-    $pdo = connecteBD(); // accès à la Base de données
-    
-    // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un administrateur correctement identifié.
-    if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A' || getPhase($pdo) == 2){
-        header('Location: ../../connexion.php');
-        exit();
-    }
-
-    // Modification des données du forum Eureka si le formulaire en question a été correctement rempli
-    if(isset($_POST['dateForum']) && isset($_POST['heureDebut']) && isset($_POST['heureFin']) && isset($_POST['duree']) && isset($_POST['secDuree']) && isset($_POST['dateLim'])){
-        updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['heureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
-    }
-
-    // modification d'un des attributs d'une entreprise (exclu de la génération ou réduit)
-    if (isset($_POST['action']) && isset($_POST['entreprise'])) {
-        setSpecificationCompany($pdo,$_POST['action'],$_POST['entreprise']);
-        HEADER('Location: generationPlanning.php');
-        exit();
-    }
-
-    // Gère la deuxième action de la page (générer le planning, valider le planning ou refuser le planning)
-    if (isset($_POST['action2'])) {
-        switch ($_POST['action2']) {
-            case 'genererPlanning':
-                // Génération du planning
-                $resultatGeneration = genererPlanning($pdo);
-                if ($resultatGeneration === "Génération réussite !") {
-                    setPlanningGenerated($pdo, 1);
-                } else {
-                    $resultatGeneration = "Impossible de générer le planning, l'entreprise ".$resultatGeneration." ne peut pas accepter autant de rendez-vous !";
-                }
-                $_SESSION['resultatGeneration'] = $resultatGeneration;
-                break;
-            case 'acceptPlanning':
-                // Validation du planning
-                launchPhase2($pdo);
-                HEADER('Location: menu.php');
-                exit();
-                break;
-            case 'refusePlanning':
-                // Annulation du planning
-                cancelPlanning($pdo);
-                break;
-        }
-        HEADER('Location: generationPlanning.php');
+        $pdo = connecteBD(); // accès à la Base de données
+        
+        // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un administrateur correctement identifié.
+        if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A' || getPhase($pdo) == 2){
+            header('Location: ../../connexion.php');
             exit();
+        }
+
+        // modification d'un des attributs d'une entreprise (exclu de la génération ou réduit)
+        if (isset($_POST['action']) && isset($_POST['entreprise'])) {
+            setSpecificationCompany($pdo, htmlspecialchars($_POST['action']), htmlspecialchars($_POST['entreprise']));
+            HEADER('Location: generationPlanning.php');
+            exit();
+        }
+
+        // Gère la deuxième action de la page (générer le planning, valider le planning ou refuser le planning)
+        if (isset($_POST['action2'])) {
+            switch (htmlspecialchars($_POST['action2'])) {
+                case 'genererPlanning':
+                    // Génération du planning
+                    $resultatGeneration = genererPlanning($pdo);
+                    if ($resultatGeneration === "Génération réussite !") {
+                        setPlanningGenerated($pdo, 1);
+                    } else {
+                        $resultatGeneration = "Impossible de générer le planning, l'entreprise ".$resultatGeneration." ne peut pas accepter autant de rendez-vous !";
+                    }
+                    $_SESSION['resultatGeneration'] = $resultatGeneration;
+                    break;
+                case 'acceptPlanning':
+                    // Validation du planning
+                    launchPhase2($pdo);
+                    HEADER('Location: menu.php');
+                    exit();
+                    break;
+                case 'refusePlanning':
+                    // Annulation du planning
+                    cancelPlanning($pdo);
+                    break;
+            }
+            HEADER('Location: generationPlanning.php');
+                exit();
+        }
+        // Vérifie si le planning a déjà été généré
+        $isGenerated = isPlanningGenerated($pdo);
+        // Récupère les entreprises exclues et réduites
+        $tmp = [];
+        $entreprisesReduites = getSpecificationCompany($pdo,'entrepriseReduite', 1);
+        while ($entreprise = $entreprisesReduites->fetch()) {
+            $tmp[$entreprise['company_id']] = $entreprise['name'];
+        }
+        $entreprisesReduites = $tmp;
+        $entreprisesExclues = getSpecificationCompany($pdo,'entrepriseExclusion', 1);
+        $tmp = [];
+        while ($entreprise = $entreprisesExclues->fetch()) {
+            $tmp[$entreprise['company_id']] = $entreprise['name'];
+        }
+        $entreprisesExclues = $tmp;
+        // Récupère les entreprises non exclues et non réduites
+        $entreprisesPasExclues = getSpecificationCompany($pdo,'entrepriseExclusion', 0);
+        $entreprisesPasReduites = getSpecificationCompany($pdo,'entrepriseReduite', 0);
+    } catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
+        header('Location: ../../maintenance.php');
+        exit();
     }
-    // Vérifie si le planning a déjà été généré
-    $isGenerated = isPlanningGenerated($pdo);
-    // Récupère les entreprises exclues et réduites
-    $tmp = [];
-    $entreprisesReduites = getSpecificationCompany($pdo,'entrepriseReduite', 1);
-    while ($entreprise = $entreprisesReduites->fetch()) {
-        $tmp[$entreprise['company_id']] = $entreprise['name'];
-    }
-    $entreprisesReduites = $tmp;
-    $entreprisesExclues = getSpecificationCompany($pdo,'entrepriseExclusion', 1);
-    $tmp = [];
-    while ($entreprise = $entreprisesExclues->fetch()) {
-        $tmp[$entreprise['company_id']] = $entreprise['name'];
-    }
-    $entreprisesExclues = $tmp;
-    // Récupère les entreprises non exclues et non réduites
-    $entreprisesPasExclues = getSpecificationCompany($pdo,'entrepriseExclusion', 0);
-    $entreprisesPasReduites = getSpecificationCompany($pdo,'entrepriseReduite', 0);
 ?>
 <!DOCTYPE html>
 <html lang="fr">

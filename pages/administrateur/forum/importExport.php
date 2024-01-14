@@ -1,57 +1,61 @@
 <?php 
     // Démarrage d'une session
     session_start();
+    try {
+        /* 
+        * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
+        * connecter à la base de donnée et interagir avec celle-ci.
+        */
+        require("../../../fonctions/baseDeDonnees.php");
+        require("../../../fonctions/fonctionsImportationExportation.php");
+        
+        $pdo = connecteBD(); // accès à la Base de données
+        
+        // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un administrateur correctement identifié.
+        if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
+            header('Location: ../../connexion.php');
+        }
 
-    /* 
-    * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
-    * connecter à la base de donnée et interagir avec celle-ci.
-    */
-    require("../../../fonctions/baseDeDonnees.php");
-    require("../../../fonctions/fonctionsImportationExportation.php");
-    
-    $pdo = connecteBD(); // accès à la Base de données
-    
-    // Empêche l'accès à cette page et redirige vers la page de connexion si l'utilisateur n'est pas un administrateur correctement identifié.
-    if(!isset($_SESSION['idUtilisateur']) || $_SESSION['type_utilisateur'] != 'A'){
-        header('Location: ../../connexion.php');
-    }
-
-
-    if(isset($_POST['dateForum']) && isset($_POST['heureDebut']) && isset($_POST['heureFin']) && isset($_POST['duree']) && isset($_POST['secDuree']) && isset($_POST['dateLim'])){
-        updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['heureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
-    }
-    $phase = getPhase($pdo);
-    $filieres = array();
-    $stmt = getFields($pdo);
-    while ($ligne = $stmt->fetch())  {
-        $filieres[$ligne["name"]] = $ligne["field_id"];
-    }
-    if(isset($_FILES['file'])) {
-        $_SESSION["reponse import"] = importerEtudiants($_FILES['file']['tmp_name'], $filieres, $pdo);
-        HEADER("Location: importExport.php");
+        $phase = getPhase($pdo);
+        $filieres = array();
+        $stmt = getFields($pdo);
+        while ($ligne = $stmt->fetch())  {
+            $filieres[$ligne["name"]] = $ligne["field_id"];
+        }
+        if(isset($_FILES['file'])) {
+            $_SESSION["reponse import"] = importerEtudiants($_FILES['file']['tmp_name'], $filieres, $pdo);
+            HEADER("Location: importExport.php");
+            exit();
+        }
+        if (isset($_SESSION["reponse import"])) {
+            $reponse = $_SESSION["reponse import"];
+            unset($_SESSION["reponse import"]);
+        }
+        if(isset($_POST["listeEntreprise"]) && $_POST["listeEntreprise"] != 0 && $_POST["listeEntreprise"] != "T" ){
+            exportEntreprise($_POST["listeEntreprise"],$pdo);
+        }
+        if(isset($_POST["listeEtudiant"]) && $_POST["listeEtudiant"] != 0 && $_POST["listeEtudiant"] != "T"){
+            exportEtudiant($_POST["listeEtudiant"],$pdo);
+        }
+        if(isset($_POST["listeEntrepriseExclue"]) && $_POST["listeEntrepriseExclue"] != 0 && $_POST["listeEntrepriseExclue"] != "T"){
+            exportEntrepriseExclu($_POST["listeEntrepriseExclue"],$pdo);
+        }
+        if(isset($_POST["listeEntreprise"]) && $_POST["listeEntreprise"] == "T" ){
+            exportAllEntreprise($pdo);
+        }
+        if(isset($_POST["listeEtudiant"]) && $_POST["listeEtudiant"] == "T"){
+            exportAllEtudiant($pdo);
+        }
+        if(isset($_POST["listeEntrepriseExclue"]) && $_POST["listeEntrepriseExclue"] == "T" ){
+            exportAllEntrepriseExclu($pdo);
+        }
+        
+        $listeEtudiant = getStudentsWithMeeting($pdo);
+        $ListeEntrepriseNonExclue = getCompanyNotExcluded($pdo);
+        $ListeEntrepriseExclue = getCompanyExcluded($pdo);
+    } catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
+        header('Location: ../../maintenance.php');
         exit();
-    }
-    if (isset($_SESSION["reponse import"])) {
-        $reponse = $_SESSION["reponse import"];
-        unset($_SESSION["reponse import"]);
-    }
-    if(isset($_POST["listeEntreprise"]) && $_POST["listeEntreprise"] != 0 && $_POST["listeEntreprise"] != "T" ){
-        exportEntreprise($_POST["listeEntreprise"],$pdo);
-    }
-    if(isset($_POST["listeEtudiant"]) && $_POST["listeEtudiant"] != 0 && $_POST["listeEtudiant"] != "T"){
-        exportEtudiant($_POST["listeEtudiant"],$pdo);
-    }
-    if(isset($_POST["listeEntrepriseExclue"]) && $_POST["listeEntrepriseExclue"] != 0 && $_POST["listeEntrepriseExclue"] != "T"){
-        exportEntrepriseExclu($_POST["listeEntrepriseExclue"],$pdo);
-    }
-    if(isset($_POST["listeEntreprise"]) && $_POST["listeEntreprise"] == "T" ){
-        exportAllEntreprise($pdo);
-    }
-    if(isset($_POST["listeEtudiant"]) && $_POST["listeEtudiant"] == "T"){
-        exportAllEtudiant($pdo);
-    }
-    if(isset($_POST["listeEntrepriseExclue"]) && $_POST["listeEntrepriseExclue"] == "T" ){
-        exportAllEntrepriseExclu($pdo);
     }
 ?>
 <!DOCTYPE html>
@@ -269,7 +273,6 @@
                                             <option value="0">Veuillez sélectionner une entreprise</option>
                                             <option value="T">toutes</option>
                                             <?php
-                                                $ListeEntrepriseNonExclue = getCompanyNotExcluded($pdo);
                                                 while($row = $ListeEntrepriseNonExclue->fetch()){
                                             ?>
                                                     <option value=<?php echo $row["company_id"];?> 
@@ -304,7 +307,6 @@
                             <div class="row">
                                 <div class="col-12">
                                     <?php 
-                                        $ListeEntrepriseExclue = getCompanyExcluded($pdo);
                                         if($ListeEntrepriseExclue->rowCount() > 0){
                                     ?>
                                         <form action="importExport.php" method="post">
@@ -359,7 +361,6 @@
                                             <option value="0">Veuillez selectionner un etudiant</option>
                                             <option value="T">tous</option>
                                             <?php
-                                                $listeEtudiant = getStudentsWithMeeting($pdo);
                                                 while($row = $listeEtudiant->fetch()){
                                             ?>
                                                     <option value=<?php echo $row["user_id"];?> 

@@ -21,11 +21,11 @@
 
         // Gère l'affichage des gestionnaires en fonction des filtres
         if (isset($_POST['nouveauFiltre'])) {
-            if (in_array($_POST['nouveauFiltre'], $_SESSION['filtre'])) {
-                $index = array_search($_POST['nouveauFiltre'], $_SESSION['filtre']);
+            if (in_array(htmlspecialchars($_POST['nouveauFiltre']), $_SESSION['filtre'])) {
+                $index = array_search(htmlspecialchars($_POST['nouveauFiltre']), $_SESSION['filtre']);
                 array_splice($_SESSION['filtre'], $index, 1);
             } else {
-                array_push($_SESSION['filtre'], $_POST['nouveauFiltre']);
+                array_push($_SESSION['filtre'], htmlspecialchars($_POST['nouveauFiltre']));
             }
             
             header("Location: listeGestionnaires.php");
@@ -35,19 +35,19 @@
         // Ajout d'un nouveau gestionnaire si le formulaire en question a été correctement rempli
         if (isset($_POST['nomGestionnaire'])) {
             $_POST['filieresGestionnaire'];
-            addNewSupervisor($pdo, $_POST['prenomGestionnaire'], $_POST['nomGestionnaire'], $_POST['emailGestionnaire'], $_POST['motDePasseGestionnaire'], $_POST['filieresGestionnaire']);
+            addNewSupervisor($pdo, htmlspecialchars($_POST['prenomGestionnaire']), htmlspecialchars($_POST['nomGestionnaire']), htmlspecialchars($_POST['emailGestionnaire']), htmlspecialchars($_POST['motDePasseGestionnaire']), ($_POST['filieresGestionnaire']));
             header("Location: listeGestionnaires.php");
             exit();
         }
 
         // Suppression d'un gestionnaire si le formulaire de suppression a été enclenché
         if (isset($_POST['supprimer'])) {
-            deleteSupervisor($pdo, $_POST['supprimer']);
+            deleteSupervisor($pdo, htmlspecialchars($_POST['supprimer']));
         }
 
         // Modification du mot de passe d'un gestionnaire selon les données entrées dans le formulaire en question
         if (isset($_POST['modifyPassword'])) {
-            modifyPassword($pdo, $_POST['modifyPassword'], $_POST['newPassword']);
+            modifyPassword($pdo, htmlspecialchars($_POST['modifyPassword']), htmlspecialchars($_POST['newPassword']));
         }
         
         $fields = getFields($pdo); // Obtention de toutes les filières de la base de données
@@ -67,7 +67,8 @@
             exit();
         }
     } catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
-        echo $e->getMessage();
+        header("Location: ./../maintenance.php");
+        exit();
     }
 ?>
 <!DOCTYPE html>
@@ -251,7 +252,7 @@
                         <h2 class="modal-title" id="addStudentModalLabel">Nouveau gestionnaire</h2>
                     </div>
                     <h2>Informations sur le gestionnaire</h2>
-                    <form action="listeGestionnaires.php" method="post">
+                    <form action="listeGestionnaires.php" method="post" class="formToCheckField">
                         <label for="email" class="modalLabel mb-0 mt-2">Adresse mail / Identifiant</label>
                         <input class="zoneText" type="email" name="emailGestionnaire" placeholder="Saisir l'adresse mail du gestionnaire" required/>
                         <label for="prenomGestionnaire" class="modalLabel mb-0 mt-2">Prénom</label>
@@ -416,4 +417,5 @@
             </div>
         </div>  
     </body>
+    <script src="../../js/detailEntrepriseAsministrateur.js"></script>
 </html>

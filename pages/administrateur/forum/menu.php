@@ -18,7 +18,7 @@
         }
 
         if(isset($_POST['dateForum']) && isset($_POST['heureDebut']) && isset($_POST['heureFin']) && isset($_POST['duree']) && isset($_POST['secDuree']) && isset($_POST['dateLim'])){
-            updateForum($pdo,$_POST['dateForum'],$_POST['heureDebut'],$_POST['heureFin'],$_POST['duree'],$_POST['secDuree'],$_POST['dateLim']);
+            updateForum($pdo, htmlspecialchars($_POST['dateForum']), htmlspecialchars($_POST['heureDebut']), htmlspecialchars($_POST['heureFin']), htmlspecialchars($_POST['duree']), htmlspecialchars($_POST['secDuree']), htmlspecialchars($_POST['dateLim']));
         }
         if(isset($_POST['confirmation']) && $_POST['confirmation'] == "Je reinitialise les données du site"){
             reinitialiserDonnees($pdo);

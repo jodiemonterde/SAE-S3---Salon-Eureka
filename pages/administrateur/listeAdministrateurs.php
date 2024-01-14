@@ -21,11 +21,11 @@
 
         // Gère l'affichage des administrateurs en fonction des filtres
         if (isset($_POST['nouveauFiltre'])) {
-            if (in_array($_POST['nouveauFiltre'], $_SESSION['filtre'])) {
-                $index = array_search($_POST['nouveauFiltre'], $_SESSION['filtre']);
+            if (in_array(htmlspecialchars($_POST['nouveauFiltre']), $_SESSION['filtre'])) {
+                $index = array_search(htmlspecialchars($_POST['nouveauFiltre']), $_SESSION['filtre']);
                 array_splice($_SESSION['filtre'], $index, 1);
             } else {
-                array_push($_SESSION['filtre'], $_POST['nouveauFiltre']);
+                array_push($_SESSION['filtre'], htmlspecialchars($_POST['nouveauFiltre']));
             }
             
             header("Location: listeAdministrateurs.php");
@@ -34,19 +34,19 @@
         
         // Ajout d'un nouvel administrateur si le formulaire en question a été correctement rempli
         if (isset($_POST['addAdmin'])) {
-            addAdmin($pdo, $_POST['prenom'], $_POST['nom'], $_POST['email'], $_POST['password']);
+            addAdmin($pdo, htmlspecialchars($_POST['prenom']), htmlspecialchars($_POST['nom']), htmlspecialchars($_POST['email']), htmlspecialchars($_POST['password']));
             header("Location: listeAdministrateurs.php");
             exit();
         }
 
         // Suppression d'un administrateur si le formulaire de suppression a été enclenché
         if (isset($_POST['deleteAdmin'])) {
-            deleteAdmin($pdo, $_POST['id']);
+            deleteAdmin($pdo, htmlspecialchars($_POST['id']));
         }
 
         // Modification du mot de passe d'un administrateur selon les données entrées dans le formulaire en question
         if (isset($_POST['modifyPassword'])) {
-            modifyPassword($pdo, $_POST['id'], $_POST['newPassword']);
+            modifyPassword($pdo, htmlspecialchars($_POST['id']), htmlspecialchars($_POST['newPassword']));
         }
         
         $fields = getFields($pdo);// Obtention de toutes les filières de la base de données

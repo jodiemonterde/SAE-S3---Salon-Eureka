@@ -23,11 +23,11 @@
 
         // Gère l'affichage des étudiants en fonction des filtres
         if (isset($_POST['nouveauFiltre'])) {
-            if (in_array($_POST['nouveauFiltre'], $_SESSION['filtre'])) {
-                $index = array_search($_POST['nouveauFiltre'], $_SESSION['filtre']);
+            if (in_array(htmlspecialchars($_POST['nouveauFiltre']), $_SESSION['filtre'])) {
+                $index = array_search(htmlspecialchars($_POST['nouveauFiltre']), $_SESSION['filtre']);
                 unset($_SESSION['filtre'][$index]);
             } else {
-                array_push($_SESSION['filtre'], $_POST['nouveauFiltre']);
+                array_push($_SESSION['filtre'], htmlspecialchars($_POST['nouveauFiltre']));
             }
             
             header("Location: listeEtudiants.php");
@@ -36,21 +36,21 @@
         
         // Ajout d'un nouvel étudiant si le formulaire en question a été correctement rempli
         if (isset($_POST['nomEtudiant'])) {
-            addNewStudent($pdo, $_POST['prenomEtudiant'], $_POST['nomEtudiant'], $_POST['emailEtudiant'], $_POST['motDePasseEtudiant'], $_POST['filiereEtudiant']);
+            addNewStudent($pdo, htmlspecialchars($_POST['prenomEtudiant']), htmlspecialchars($_POST['nomEtudiant']), htmlspecialchars($_POST['emailEtudiant']), htmlspecialchars($_POST['motDePasseEtudiant']), htmlspecialchars($_POST['filiereEtudiant']));
             header("Location: listeEtudiants.php");
             exit();
         }
 
         // Suppression d'un étudiant si le formulaire de suppression a été enclenché
         if (isset($_POST['supprimer'])) {
-            deleteStudent($pdo, $_POST['supprimer']);
+            deleteStudent($pdo, htmlspecialchars($_POST['supprimer']));
             header("Location: listeEtudiants.php");
             exit();
         }
 
         // Modification du mot de passe d'un étudiant selon les données entrées dans le formulaire en question
         if (isset($_POST['modifyPassword'])) {
-            modifyPassword($pdo, $_POST['modifyPassword'], $_POST['newPassword']);
+            modifyPassword($pdo, htmlspecialchars($_POST['modifyPassword']), htmlspecialchars($_POST['newPassword']));
             header("Location: listeEtudiants.php");
             exit();
         }
@@ -65,7 +65,7 @@
 
         // Change l'ordre d'affichage des étudiants selon l'option de tri choisie par l'utilisateur
         if (isset($_POST['triPar'])) {
-            $_SESSION['triPar'] = $_POST['triPar'];
+            $_SESSION['triPar'] = htmlspecialchars($_POST['triPar']);
             header("Location: listeEtudiants.php");
             exit();
         }
@@ -287,12 +287,12 @@
                     <h2 class="mt-2">Informations sur l’étudiant</h2>
                     <form action="listeEtudiants.php" method="post">
                         <label for="email" class="modalLabel mb-0 mt-2">Adresse mail / Identifiant</label>
-                        <input class="zoneText" type="email" name="emailEtudiant" placeholder="Saisir l'adresse mail de l'étudiant" required/>
+                        <input class="zoneText" type="email" id="email" name="emailEtudiant" placeholder="Saisir l'adresse mail de l'étudiant" required/>
                         <label for="prenomEtudiant" class="modalLabel mb-0 mt-2">Prénom</label>
-                        <input class="zoneText" type="text" name="prenomEtudiant" placeholder="Saisir le prénom de l’étudiant" required/>
+                        <input class="zoneText" type="text" id="prenomEtudiant" name="prenomEtudiant" placeholder="Saisir le prénom de l’étudiant" required/>
                         <label for="nomEtudiant" class="modalLabel mb-0 mt-2">Nom</label>
-                        <input class="zoneText" type="text" name="nomEtudiant" placeholder="Saisir le nom de l’étudiant" required/>
-                        <label for="filiereEtudiant" class="modalLabel mb-0 mt-2">Filière</label>
+                        <input class="zoneText" type="text" id="nomEtudiant" name="nomEtudiant" placeholder="Saisir le nom de l’étudiant" required/>
+                        <label class="modalLabel mb-0 mt-2">Filière</label>
                         <select id="FieldValues" name="filiereEtudiant" class="zoneText" required/>
                             <option value="" disabled selected>Sélectionner la filière de l’étudiant</option>
                             <?php 
@@ -396,7 +396,7 @@
                                         <div class="modal-body">
                                             <form action="listeEtudiants.php" method="post">
                                                 <label for="newPassword"  class="modalLabel mb-0 mt-2">Choisir un nouveau mot de passe (à transmettre à l'étudiant !) :</label>
-                                                <input type="text" class="zoneText mb-3" name="newPassword" pattern="^(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$" placeholder="Saisir un mot de passe" required>
+                                                <input type="text" class="zoneText mb-3" name="newPassword" id="newPassword" pattern="^(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$" placeholder="Saisir un mot de passe" required>
                                                 <input type="hidden" name="modifyPassword" value="<?php echo $ligne['user_id'];?>">
                                                 <div class="row">
                                                     <div class="col-6">

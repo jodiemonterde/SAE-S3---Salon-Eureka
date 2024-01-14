@@ -123,17 +123,22 @@ function supprimerIntervenant(intervenantDiv) {
     }
 }
 
-document.getElementById('myForm').addEventListener('submit', function(e) {
-    var intervenantContainers = document.querySelectorAll('.intervenantContainer');
-    for (var i = 0; i < intervenantContainers.length; i++) {
-        var checkboxes = intervenantContainers[i].querySelectorAll('input[type="checkbox"]');
-        var checkedOne = Array.prototype.slice.call(checkboxes).some(x => x.checked);
-        if (!checkedOne) {
-            alert("Veuillez sélectionner au moins une filière pour chaque intervenant.");
-            e.preventDefault();
-            return;
+document.querySelectorAll('.formToCheckField').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+        var intervenantContainers = form.querySelectorAll('.intervenantContainer');
+        if (intervenantContainers.length === 0) {
+            intervenantContainers = form.querySelectorAll('.rowForChecks');
         }
-    }
+        for (var i = 0; i < intervenantContainers.length; i++) {
+            var checkboxes = intervenantContainers[i].querySelectorAll('input[type="checkbox"]');
+            var checkedOne = Array.prototype.slice.call(checkboxes).some(x => x.checked);
+            if (!checkedOne) {
+                alert("Veuillez sélectionner au moins une filière pour chaque intervenant.");
+                e.preventDefault();
+                return;
+            }
+        }
+    });
 });
 
 

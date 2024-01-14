@@ -1,24 +1,2 @@
-Jean Dupont;jean.dupont@example.com;mot_de_passe_123;Informatique
-Marie Dupont;marie.dupont@example.com;mot_de_passe_456;GEA
-Alice Martin;alice.martin@example.com;password123!;Communication
-John Smith;john.smith@example.com;securepassword1!;Informatique
-Emma Johnson;emma.johnson@example.com;pass123!;Carrieres juridiques
-David Wilson;david.wilson@example.com;password4!;QLIO
-Sophie Brown;sophie.brown@example.com;secure123!;Informatique
-Michael Davis;michael.davis@example.com;pass123!;GEA
-Laura Taylor;laura.taylor@example.com;password123!;Communication
-Daniel Anderson;daniel.anderson@example.com;securepassword1!;Carrieres juridiques
-Sarah Thomas;sarah.thomas@example.com;pass123!;Informatique
-Matthew Martinez;matthew.martinez@example.com;password4!;GEA
-Olivia Robinson;olivia.robinson@example.com;secure123!;Communication
-James Clark;james.clark@example.com;pass123!;Carrieres juridiques
-Emily Rodriguez;emily.rodriguez@example.com;password1!;Informatique
-Christopher Lee;christopher.lee@example.com;securepassword1!;GEA
-Ava Lewis;ava.lewis@example.com;pass123!;Communication
-Andrew Walker;andrew.walker@example.com;password456!;Carrieres juridiques
-Grace Hall;grace.hall@example.com;secure123!;Informatique
-Benjamin Young;benjamin.young@example.com;pass123!;GEA
-Lily Hernandez;lily.hernandez@example.com;password123!;Communication
-Logan King;logan.king@example.com;securepassword1!;Carrieres juridiques
-Victoria Wright;victoria.wright@example.com;pass123!;Informatique
-Henry Hill;henry.hill@example.com;password4!;GEA
+test;test;test@test.com;mot_de_passe_123;Informatique
+test2;test2;test2@test2.com;mot_de_passe_123;GEA
