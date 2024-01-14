@@ -84,7 +84,7 @@
                         if (isset($_GET['oubli'])) {
                         ?>
                         <h2 class="text-center"> Mot de passe oublié </h2>
-                        <p>Votre mot de passe se compose d'à minima 8 caractères, dont un symbole et un chiffre. Si vous l'avez oublié, veuillez contacter un le service informatique de l'IUT, afin qu'il ne remplace celui-ci.</p>
+                        <p>Votre mot de passe se compose d'à minima 8 caractères, dont un symbole et un chiffre. Si vous l'avez oublié, veuillez contacter le service informatique de l'IUT, afin qu'il remplace celui-ci.</p>
                         <div class="text-center d-flex justify-content-end">
                             <button type="submit" formaction="connexion.php" class="bouton"> Retour </button>
                         </div>

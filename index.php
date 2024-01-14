@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="./css/all.css">
         <link rel="stylesheet" href="./css/index.css">
 
-        <title> Eureka accueil </title>
+        <title> Eurêka - Page d'accueil </title>
     </head>
     <body>
         <!-- Conteneur principal -->
@@ -27,13 +27,13 @@
             <div class="row" class="img-fluid" style="background-image: url('./ressources/homepage-background.png'); height: 800px; width:100%; background-size: cover;">
                 <!-- Logo et nom du site en haut à droite -->
                 <div class="col-12 eureka-entete">
-                    <img src="./ressources/logo_white.png" alt="Logo Eureka" class="d-inline-block align-text-top">
-                    Eureka
+                    <img src="./ressources/logo_white.png" alt="Logo Eurêka" class="d-inline-block align-text-top">
+                    Eurêka
                 </div>
 
                 <div class="col-12">
                     <p class="texte-bleu text-center"> L'alternance plus simple que jamais ! </p>
-                    <p class="texte-blanc text-center"> Etudiant ou professionnel, facilitez vos échanges grâce au forum Eureka </p>
+                    <p class="texte-blanc text-center"> Etudiant ou professionnel, facilitez vos échanges grâce au forum Eurêka </p>
                 </div>
 
                 <!-- Formulaire de connexion au site (bouton de redirection vers la page de connexion) -->
@@ -50,7 +50,7 @@
                 <div class="row px-2 py-4">
                     <div class="col-md-6 d-flex justify-content-center flex-column"> 
                         <h4 class="m-0">Le forum</h4>
-                        <h2 class="m-0">EUREKA, C'EST QUOI ?</h2> 
+                        <h2 class="m-0">EURÊKA, C'EST QUOI ?</h2> 
                         <hr class="my-2">
                         <span class="subtitle">Venez découvrir un lieu d'échange entre professionnel et étudiant</span>
                     </div>
@@ -71,8 +71,8 @@
             <div class="row pt-4 background">
                 <div class="col-12 p-2">
                     <div class="text-center">
-                        <h4 class="m-0">en quoi</h4>
-                        <h2 class="m-0 text-white">eureka peut vous servir ?</h2>
+                        <h4 class="m-0">En quoi</h4>
+                        <h2 class="m-0 text-white">Eurêka peut vous servir ?</h2>
                         <div class="d-flex justify-content-center"><hr class="my-2 text-center"></div>
                         
                     </div>
@@ -83,11 +83,11 @@
                         </div>
                         <div class="col-md-4 text-center px-3">
                             <p class="m-0 fw-bolder paragraphe">TROUVER UNE ALTERNANCE/STAGE</p>
-                            <p class="paragraphe">En tant qu'étudiant, il peut être difficile de trouver un stage ou une alternance. Simplifiez-vous la vie et rencontrer des entreprises dont vous êtes sûrs d'avoir l'attention !</p>
+                            <p class="paragraphe">En tant qu'étudiant, il peut être difficile de trouver un stage ou une alternance. Simplifiez-vous la vie et rencontrez des entreprises dont vous êtes sûrs d'avoir l'attention !</p>
                         </div>
                         <div class="col-md-4 text-center px-3">
                             <p class="m-0 fw-bolder paragraphe">TROUVER UN ALTERNANT/STAGIAIRE</p>
-                            <p class="paragraphe">Rencontrer des étudiants en vue d'un partenariat peut être chronophage. Grâce à ce forum, vous aller non seulement gagner du temps, mais également rencontrer plus d'étudiants : choisissez parmi les plus convainquant !</p>
+                            <p class="paragraphe">Rencontrer des étudiants en vue d'un partenariat peut être chronophage. Grâce à ce forum, vous allez non seulement gagner du temps, mais également rencontrer plus d'étudiants : choisissez parmi les plus convaincants !</p>
                         </div>
                     </div>
                 </div>

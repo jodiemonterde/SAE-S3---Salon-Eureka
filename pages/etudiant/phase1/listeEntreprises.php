@@ -57,7 +57,7 @@
             <div class="container-fluid h-100">
                 <div class="navbar-brand d-flex align-items-center h-100">
                     <img src="../../../ressources/logo_black.svg" alt="Logo Eureka" class="logo me-2">
-                    <span class="logo">Eureka</span>
+                    <span class="logo">Eurêka</span>
                 </div>
                 <div class="navbar-right h-100">
                     <ul class="navbar-nav d-flex h-100 align-items-center">
@@ -121,7 +121,7 @@
                     ?>
 
                     <h2>Prenez rendez-vous avec les entreprises qui vous correspondent.</h2>
-                    <p>Choisissez toutes les entreprises que vous souhaitez rencontrer au salon Eureka et prenez rendez-vous en un clic ! Dès le <?php  echo $dateFinSouhait["dateFin"]; ?>, vous pourrez venir consulter votre emploi du temps pour le salon créée à partir de vos demandes de rendez-vous. Si vous souhaitez annuler l'un de vos rendez-vous, il suffit de cliquer à nouveau.</p>
+                    <p>Choisissez toutes les entreprises que vous souhaitez rencontrer au salon Eurêka et prenez rendez-vous en un clic ! Dès le <?php  echo $dateFinSouhait["dateFin"]; ?>, vous pourrez venir consulter votre emploi du temps pour le salon créé à partir de vos demandes de rendez-vous. Si vous souhaitez annuler l'un de vos rendez-vous, il suffit de cliquer à nouveau.</p>
                 </div>
 
                 <!-- Formulaire permettant d'entrer une recherche personnalisé qui filtrera l'affichage selon celle-ci -->

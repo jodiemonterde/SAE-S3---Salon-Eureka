@@ -51,8 +51,8 @@
         <nav class="navbar navbar-expand sticky-top border-bottom bg-white p-0">
             <div class="container-fluid h-100">
                 <div class="navbar-brand d-flex align-items-center h-100">
-                    <img src="../../../ressources/logo_black.svg" alt="Logo Eureka" class="logo me-2">
-                    <span class="logo">Eureka</span>
+                    <img src="../../../ressources/logo_black.svg" alt="Logo Eurêka" class="logo me-2">
+                    <span class="logo">Eurêka</span>
                 </div>
                 <div class="navbar-right h-100">
                     <ul class="navbar-nav d-flex h-100 align-items-center">
@@ -123,7 +123,7 @@
                 <div class="col-12">
                     <p><h2>Vos demandes de rendez-vous</h2></p>
                     <!-- Affichage d'un message différent selon la phase -->
-                    <p><?php echo $phase === 1 ? "Au terme de la phase de prise de rendez-vous, Eureka vous proposera un planning avec les entreprises suivantes. Il est encore tout à fait temps de changer d’avis ! " : "La période de prise de rendez-vous est désormais terminé, vous pouvez seulement consulter vos souhaits le temps que le planning soit générée"; ?></P>
+                    <p><?php echo $phase === 1 ? "Au terme de la phase de prise de rendez-vous, Eurêka vous proposera un planning avec les entreprises suivantes. Il est encore tout à fait temps de changer d’avis ! " : "La période de prise de rendez-vous est désormais terminée, vous pouvez seulement consulter vos souhaits le temps que le planning soit généré"; ?></P>
                 </div>
             </div>
             <?php
@@ -140,7 +140,7 @@
                     <i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $ligne["address"]?>
                 </div>
                 <div class="col-2 d-none p-0 m-0 d-md-block">
-                    <?php if ($phase === 1) { ?><input type="button" class="bouton" value="supprimer l'entreprise" data-bs-toggle="modal" data-bs-target="#modal<?php echo $ligne["company_id"]?>"/> <?php } ?>
+                    <?php if ($phase === 1) { ?><input type="button" class="bouton" value="Supprimer l'entreprise" data-bs-toggle="modal" data-bs-target="#modal<?php echo $ligne["company_id"]?>"/> <?php } ?>
                 </div>
                 <div class="col-1 d-block d-md-none">
                     <?php if ($phase === 1) { ?><input type="button" class="boutonSupprimerMd"data-bs-toggle="modal" data-bs-target="#modal<?php echo $ligne["company_id"]?>"/><?php } ?>
