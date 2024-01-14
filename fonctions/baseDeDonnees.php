@@ -160,8 +160,9 @@
         $pdo->beginTransaction();
         $stmt = $pdo->prepare("SELECT generatePlanning()");
         $stmt->execute();
-        return $stmt->fetch()[0];
         $pdo->commit();
+        return $stmt->fetch()[0];
+        
     }
 
     // Fonction permettant de changer de phase pour passer en phase 2.
@@ -869,7 +870,7 @@
 
     // Fonction permettant d'obtenir les rendez-vous par intervenant (grâce à l'identifiant de l'intervenant passé en paramètre).
     function getAppointmentPerSpeaker($pdo, $speaker_id) {
-        $stmt = $pdo->prepare("SELECT TIME_FORMAT(app.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(app.start, app.duration), '%H:%i') as end, us.firstname, us.lastname, fie.name
+        $stmt = $pdo->prepare("SELECT TIME_FORMAT(app.start, '%H:%i') as start, TIME_FORMAT(ADDTIME(app.start, app.duration), '%H:%i') as end, us.firstname, us.lastname, fie.name, us.email
                                 FROM Appointment app
                                 JOIN User us
                                 ON app.user_id = us.user_id

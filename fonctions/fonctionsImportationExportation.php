@@ -4,7 +4,7 @@
     
     function exportEntreprise($company_id,$pdo){
         $nomEntreprise = getCompanyName($pdo,$company_id);
-        $nom = 'planning-'.$nomEntreprise.'.pdf';
+        $nom = 'planning-'.htmlspecialchars_decode($nomEntreprise).'.pdf';
         $pdfEntreprise = new FPDF();
         $pdfEntreprise->AddPage();
         $pdfEntreprise->SetDrawColor(217,217,217);
@@ -14,16 +14,39 @@
             $i = $i+ 1;
             $rendezVous = getAppointmentPerSpeaker($pdo,$row1["speaker_id"]);
             $pdfEntreprise->SetFont('Arial','B',20);
-            $pdfEntreprise->Cell(0, 10, conversion($nomEntreprise), 0, 1, 'C');
+            $pdfEntreprise->Cell(0, 10, conversion(htmlspecialchars_decode($nomEntreprise)), 0, 1, 'C');
             $pdfEntreprise->SetFont('Arial','B',11);
-            $pdfEntreprise->Cell(0, 10, conversion($row1["name"]), 0, 1, 'C');
+            $pdfEntreprise->Cell(0, 10, conversion(htmlspecialchars_decode($row1["name"])), 0, 1, 'C');
+            $pdfEntreprise->SetDrawColor(0,0,0);   
+            $pdfEntreprise->Cell(185, 0, "", 'T', 0, 'C');
+            $pdfEntreprise->SetDrawColor(217,217,217);
+            $pdfEntreprise->Ln();
+            $j = 0;
             while($row2 = $rendezVous->fetch()){
-                $pdfEntreprise->Cell(95, 10, $row2["start"].'-'.$row2["end"], 'LTBR', 0, 'C');
+                if ($j == 12) {
+                    $j = 0;
+                    $pdfEntreprise->AddPage();
+                    $pdfEntreprise->SetDrawColor(0,0,0);
+                    $pdfEntreprise->Cell(185, 0, "", 'T', 0, 'C');
+                    $pdfEntreprise->SetDrawColor(217,217,217);
+                    $pdfEntreprise->Ln();
+                }
+                $pdfEntreprise->Cell(30, 20, $row2["start"].'-'.$row2["end"], 'LR', 0, 'C');
                 $pdfEntreprise->SetFont('Arial','',11);
                 $pdfEntreprise->SetTextColor(139, 45, 45);
-                $pdfEntreprise->Cell(95, 10, conversion($row2["firstname"]." ".$row2["lastname"]) , 'LTBR', 1, 'C');
+                $pdfEntreprise->Cell(155, 10, conversion(htmlspecialchars_decode($row2["firstname"]." ".$row2["lastname"])) , 'LBR', 0, 'C');
+                $pdfEntreprise->Ln();
+                $pdfEntreprise->Cell(30, 10, "", '', 0, 'C');
+                $pdfEntreprise->SetTextColor(139, 45, 45);
+                $pdfEntreprise->Cell(155, 10, conversion(htmlspecialchars_decode($row2['email'])) , 'LTR', 0, 'C');
                 $pdfEntreprise->SetTextColor(0 , 0, 0);
                 $pdfEntreprise->SetFont('Arial','B',11);
+                $pdfEntreprise->Ln();
+                $pdfEntreprise->SetDrawColor(0,0,0);
+                $pdfEntreprise->Cell(185, 0, "", 'T', 0, 'C');
+                $pdfEntreprise->SetDrawColor(217,217,217);
+                $pdfEntreprise->Ln();
+                $j = $j+1;
             }
             if($i < $listeSpeaker->rowCount()){
                 $pdfEntreprise->AddPage();
@@ -39,11 +62,11 @@
 
     function exportEtudiant($student_id,$pdo){
         $nomEtudiant = getStudentName($pdo,$student_id);
-        $nom = 'planning-'.$nomEtudiant.'.pdf';
+        $nom = 'planning-'.htmlspecialchars_decode($nomEtudiant).'.pdf';
         $pdfEtudiant = new FPDF();
         $pdfEtudiant->AddPage();
         $pdfEtudiant->SetFont('Arial','B',20);
-        $pdfEtudiant->Cell(0, 10, conversion($nomEtudiant),0, 1, 'C');
+        $pdfEtudiant->Cell(0, 10, conversion(htmlspecialchars_decode($nomEtudiant)),0, 1, 'C');
         $pdfEtudiant->SetDrawColor(217,217,217);
         $planning = planningPerUser($pdo, $student_id);
         foreach ($planning as $rdv) {
@@ -51,7 +74,7 @@
             $pdfEtudiant->Cell(95, 10, $rdv['start'].'-'.$rdv['end'], 'LTBR', 0, 'C');
             $pdfEtudiant->SetFont('Arial','',11);
             $pdfEtudiant->SetTextColor(139, 45, 45);
-            $pdfEtudiant->Cell(95, 10,conversion($rdv['company_name']) , 'LTBR', 0, 'C');
+            $pdfEtudiant->Cell(95, 10,conversion(htmlspecialchars_decode($rdv['company_name'])) , 'LTBR', 0, 'C');
             $pdfEtudiant->SetTextColor(0 , 0, 0);
             $pdfEtudiant->Ln();
         }
@@ -65,7 +88,7 @@
             $pdfEtudiant->Ln();
 
             while($row = $unlisted->fetch()){
-                $pdfEtudiant->Cell(0, 10,conversion($row["name"]) , 'LTBR', 0, 'C');
+                $pdfEtudiant->Cell(0, 10,conversion(htmlspecialchars_decode($row["name"])) , 'LTBR', 0, 'C');
             }
         }
         $pdfEtudiant->Output($nom,'D');
@@ -73,18 +96,18 @@
 
     function exportEntrepriseExclu($company_id,$pdo){
         $nomEntreprise = getCompanyName($pdo,$company_id);
-        $nom = 'planning-'.$nomEntreprise.'.pdf';
+        $nom = 'planning-'.htmlspecialchars_decode($nomEntreprise).'.pdf';
         $pdfExclu = new FPDF();
         $pdfExclu->AddPage();
         $pdfExclu->SetFont('Arial','B',20);
-        $pdfExclu->Cell(0, 10, conversion($nomEntreprise), 0, 1, 'C');
+        $pdfExclu->Cell(0, 10, conversion(htmlspecialchars_decode($nomEntreprise)), 0, 1, 'C');
         $pdfExclu->SetDrawColor(217,217,217);
         $listeEtudiant = getStudentsPerCompanyWishList($pdo,$company_id);
         while($row = $listeEtudiant->fetch()){
             $pdfExclu->SetFont('Arial','',11);
             $pdfExclu->SetTextColor(139, 45, 45);
-            $pdfExclu->Cell(95, 10,conversion($row["firstname"]." ".$row["lastname"]) , 'LBTR', 0, 'C');
-            $pdfExclu->Cell(95, 10,conversion($row["name"]) , 'LTBR', 0, 'C');
+            $pdfExclu->Cell(95, 10,conversion(htmlspecialchars_decode($row["firstname"]." ".$row["lastname"])) , 'LBTR', 0, 'C');
+            $pdfExclu->Cell(95, 10,conversion(htmlspecialchars_decode($row["name"])) , 'LTBR', 0, 'C');
             $pdfExclu->Ln();
         }
         $pdfExclu->Output($nom,'D');
@@ -103,17 +126,39 @@
                 $i =$i+1;
                 $rendezVous = getAppointmentPerSpeaker($pdo,$row1["speaker_id"]);
                 $pdfEntreprise->SetFont('Arial','B',20);
-                $pdfEntreprise->Cell(0, 10, conversion($ligne["name"]), 0, 1, 'C');
+                $pdfEntreprise->Cell(0, 10, conversion(htmlspecialchars_decode($ligne["name"])), 0, 1, 'C');
                 $pdfEntreprise->SetFont('Arial','B',11);
-                $pdfEntreprise->Cell(0, 10, conversion($row1["name"]), 0, 1, 'C');
+                $pdfEntreprise->Cell(0, 10, conversion(htmlspecialchars_decode($row1["name"])), 0, 1, 'C');
+                $pdfEntreprise->SetDrawColor(0,0,0);
+                $pdfEntreprise->Cell(185, 0, "", 'T', 0, 'C');
+                $pdfEntreprise->SetDrawColor(217,217,217);
+                $pdfEntreprise->Ln();
+                $j = 0;
                 while($row2 = $rendezVous->fetch()){
-                    $pdfEntreprise->Cell(95, 10, $row2["start"].'-'.$row2["end"], 'LTBR', 0, 'C');
+                    if ($j == 12) {
+                        $j = 0;
+                        $pdfEntreprise->AddPage();
+                        $pdfEntreprise->SetDrawColor(0,0,0);
+                        $pdfEntreprise->Cell(185, 0, "", 'T', 0, 'C');
+                        $pdfEntreprise->SetDrawColor(217,217,217);
+                        $pdfEntreprise->Ln();
+                    }
+                    $pdfEntreprise->Cell(30, 20, $row2["start"].'-'.$row2["end"], 'LR', 0, 'C');
                     $pdfEntreprise->SetFont('Arial','',11);
                     $pdfEntreprise->SetTextColor(139, 45, 45);
-                    $pdfEntreprise->Cell(95, 10, conversion($row2["firstname"]." ".$row2["lastname"]) , 'LBTR', 0, 'C');
+                    $pdfEntreprise->Cell(155, 10, conversion(htmlspecialchars_decode($row2["firstname"]." ".$row2["lastname"])) , 'LBR', 0, 'C');
+                    $pdfEntreprise->Ln();
+                    $pdfEntreprise->Cell(30, 10, "", '', 0, 'C');
+                    $pdfEntreprise->SetTextColor(139, 45, 45);
+                    $pdfEntreprise->Cell(155, 10, conversion(htmlspecialchars_decode($row2['email'])) , 'LTR', 0, 'C');
                     $pdfEntreprise->SetTextColor(0 , 0, 0);
                     $pdfEntreprise->SetFont('Arial','B',11);
                     $pdfEntreprise->Ln();
+                    $pdfEntreprise->SetDrawColor(0,0,0);
+                    $pdfEntreprise->Cell(185, 0, "", 'T', 0, 'C');
+                    $pdfEntreprise->SetDrawColor(217,217,217);
+                    $pdfEntreprise->Ln();
+                    $j = $j+1;
                 }
                 if($i < $listeSpeaker->rowCount()){
                     $pdfEntreprise->AddPage();
@@ -134,14 +179,14 @@
             if(count($planning)){
                 $pdfEtudiant->AddPage();
                 $pdfEtudiant->SetFont('Arial','B',20);
-                $pdfEtudiant->Cell(0, 10,conversion($ligne["firstname"]." ".$ligne["lastname"]),0, 1, 'C');
+                $pdfEtudiant->Cell(0, 10,conversion(htmlspecialchars_decode($ligne["firstname"]." ".$ligne["lastname"])),0, 1, 'C');
                 foreach ($planning as $rdv) {
                     $pdfEtudiant->SetFont('Arial','B',11);
                     $pdfEtudiant->SetTextColor(0 , 0, 0);
                     $pdfEtudiant->Cell(95, 10, $rdv['start'].'-'.$rdv['end'], 'LBTR', 0, 'C');
                     $pdfEtudiant->SetFont('Arial','',11);
                     $pdfEtudiant->SetTextColor(139, 45, 45);
-                    $pdfEtudiant->Cell(95, 10,conversion($rdv['company_name']) , 'LTBR', 0, 'C');
+                    $pdfEtudiant->Cell(95, 10,conversion(htmlspecialchars_decode($rdv['company_name'])) , 'LTBR', 0, 'C');
                     $pdfEtudiant->Ln();
                 }
             }
@@ -156,7 +201,7 @@
                 $pdfEtudiant->Ln();
 
                 while($row = $unlisted->fetch()){
-                    $pdfEtudiant->Cell(0, 10,conversion($row["name"]) , 'LTBR', 0, 'C');
+                    $pdfEtudiant->Cell(0, 10,conversion(htmlspecialchars_decode($row["name"])) , 'LTBR', 0, 'C');
                 }
             }
             $pdfEtudiant->SetTextColor(0 , 0, 0);
@@ -173,13 +218,13 @@
             $pdfExclu->AddPage();
             $pdfExclu->SetFont('Arial','',20);
             $pdfExclu->SetTextColor(0 , 0, 0);
-            $pdfExclu->Cell(0, 10,conversion($ligne["name"]), 0, 1, 'C');
+            $pdfExclu->Cell(0, 10,conversion(htmlspecialchars_decode($ligne["name"])), 0, 1, 'C');
             $listeEtudiant = getStudentsPerCompanyWishList($pdo,$ligne["company_id"]);
             while($row = $listeEtudiant->fetch()){
                 $pdfExclu->SetFont('Arial','',11);
                 $pdfExclu->SetTextColor(139, 45, 45);
-                $pdfExclu->Cell(95, 10,conversion($row["firstname"]." ".$row["lastname"]) , 'LTBR', 0, 'C');
-                $pdfExclu->Cell(95, 10,conversion($row["name"]) , 'LTBR', 0, 'C');
+                $pdfExclu->Cell(95, 10,conversion(htmlspecialchars_decode($row["firstname"]." ".$row["lastname"])) , 'LTBR', 0, 'C');
+                $pdfExclu->Cell(95, 10,conversion(htmlspecialchars_decode($row["name"])) , 'LTBR', 0, 'C');
                 $pdfExclu->Ln();
             }
         }
