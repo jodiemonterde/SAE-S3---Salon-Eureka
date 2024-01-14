@@ -203,7 +203,7 @@
         <div class="row d-flex align-items-center h-100">
             <div class="col-12 col-md-6">
                 <h2>Liste des gestionnaires</h2>
-                <p>Voici tous les gestionnaires du forum Eureka de cette année. Cliquez sur l’un des gestionnaires pour pouvoir modifiers son mot de passe ou ses informations personnelles.</p>
+                <p>Voici tous les gestionnaires du forum Eurêka de cette année. Cliquez sur l’un des gestionnaires pour pouvoir modifier son mot de passe ou ses informations personnelles.</p>
             </div>
 
             <!-- Formulaire permettant d'entrer une recherche personnalisé qui filtrera l'affichage selon celle-ci -->
@@ -360,7 +360,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <form action="listeGestionnaires.php" method="post">
-                                                <label for="newPassword"  class="modalLabel mb-0 mt-2">Choisir un nouveau mot de passe (à transmettre au gestionnaire !) :</label>
+                                                <label for="newPassword"  class="modalLabel mb-0 mt-2">Choisir un nouveau mot de passe (8 caractères minimum dont au moins un symbole et un chiffre - à transmettre au gestionnaire !) :</label>
                                                 <input type="text" class="zoneText mb-3" name="newPassword" pattern="^(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$" placeholder="Saisir un mot de passe" required>
                                                 <input type="hidden" name="modifyPassword" value="<?php echo $ligne['user_id'];?>">
                                                 <div class="row mt-3">

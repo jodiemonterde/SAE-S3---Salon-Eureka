@@ -202,7 +202,7 @@
         <div class="row d-flex align-items-center h-100">
             <div class="col-12 col-md-6">
                 <h2>Liste des administrateurs</h2>
-                <p>Voici tous les administrateurs du forum Eureka. Cliquez sur l’un des administrateurs pour pouvoir modifier son mot de passe, ou le supprimer. Vous ne pouvez pas vous supprimer vous-même ! De plus, s'il ne reste qu'un seul administrateur, il est impossible de le supprimer. En effet, il est primordial qu'il reste à minima un administrateur pour gérer le site. Sans cela, la partie administrateur sera bloquée.</p>
+                <p>Voici tous les administrateurs du forum Eurêka. Cliquez sur l’un des administrateurs pour pouvoir le supprimer, ou modifier son mot de passe. Vous ne pouvez pas vous supprimer vous-même ! De plus, s'il ne reste qu'un seul administrateur, il est impossible de le supprimer. En effet, il est primordial qu'il reste à minima un administrateur pour gérer le site. Sans cela, l'administration du site sera impossible.</p>
             </div>
 
             <!-- Formulaire permettant d'entrer une recherche personnalisé qui filtrera l'affichage selon celle-ci -->

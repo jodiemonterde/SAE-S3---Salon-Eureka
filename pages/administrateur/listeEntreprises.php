@@ -276,7 +276,7 @@
             <div class="row d-flex align-items-center h-100">
                 <div class="col-12 col-md-6">
                     <h2>Liste des entreprises</h2>
-                    <p>Voici toutes les entreprises présentes au salon Euréka cette année. Cliquez sur l’une d’elle pour voir tous les étudiants qui veulent un rendez-vous avec celle-ci ! Vous pouvez également filtrer quelles filières vous intéressent grâce à la liste de filtres ci-dessous.</p>
+                    <p>Voici toutes les entreprises présentes au salon Eurêka cette année. Cliquez sur l’une d’elle pour voir tous les étudiants qui veulent un rendez-vous avec celle-ci ! Vous pouvez également filtrer quelles filières vous intéressent grâce à la liste de filtres ci-dessous.</p>
                 </div>
 
                 <!-- Formulaire permettant d'entrer une recherche personnalisé qui filtrera l'affichage selon celle-ci -->
@@ -572,7 +572,7 @@
                             </div>
                         </div>
 
-                        <!-- Gestion de l'affichage des étudiants souhaitant rencontrer les entreprises selon la phase -->
+                        <!-- Gestion de l'affichage des étudiants souhaitants rencontrer les entreprises selon la phase -->
                         <div class="row d-flex justify-content-evenly pt-4">
                             <div class="col-12">
                                 <!-- Si la phase est à 1.5 ou 2 (un planning est généré) -->

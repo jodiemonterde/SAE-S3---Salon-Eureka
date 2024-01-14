@@ -224,7 +224,7 @@
         <div class="row d-flex align-items-center h-100">
             <div class="col-12 col-md-6">
                 <h2>Liste des étudiants</h2>
-                <p>Voici tous les étudiants inscrits au forum Eureka de cette année. Cliquez sur l’un d’eux pour voir la liste des entreprises auprès desquels il souhaite obtenir un rendez-vous ! Vous pouvez également créer un nouvel étudiant, en supprimer un ou modifier le mot de passe d'un étudiant.</p>
+                <p>Voici tous les étudiants inscrits au forum Eurêka de cette année. Cliquez sur l’un d’eux pour voir la liste des entreprises auprès desquelles il souhaite obtenir un rendez-vous ! Vous pouvez également créer un nouvel étudiant, en supprimer un ou modifier le mot de passe d'un étudiant.</p>
             </div>
 
             <!-- Formulaire permettant d'entrer une recherche personnalisé qui filtrera l'affichage selon celle-ci -->
@@ -301,7 +301,7 @@
 
                             <?php } ?>
                         </select>
-                        <p class="modalLabel mb-0 mt-2">Mot de passe (à transmettre à l’étudiant !)</p>
+                        <p class="modalLabel mb-0 mt-2">Mot de passe (8 caractères minimum dont au moins un symbole et un chiffre - à transmettre à l’étudiant !)</p>
                         <input class="zoneText mb-3" type="text" name="motDePasseEtudiant" placeholder="Saisir le mot de passe" pattern="^(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$" required/>
                         <div class="row">
                             <div class="col-6">
@@ -395,7 +395,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <form action="listeEtudiants.php" method="post">
-                                                <label for="newPassword"  class="modalLabel mb-0 mt-2">Choisir un nouveau mot de passe (à transmettre à l'étudiant !) :</label>
+                                                <label for="newPassword"  class="modalLabel mb-0 mt-2">Choisir un nouveau mot de passe (8 caractères minimum dont au moins un symbole et un chiffre - à transmettre à l'étudiant !) :</label>
                                                 <input type="text" class="zoneText mb-3" name="newPassword" id="newPassword" pattern="^(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$" placeholder="Saisir un mot de passe" required>
                                                 <input type="hidden" name="modifyPassword" value="<?php echo $ligne['user_id'];?>">
                                                 <div class="row">
@@ -467,7 +467,7 @@
                                             <div class="col-12">
                                                 <hr>
                                                 <p><h2>Consulter les rendez-vous non planifiables</h2>
-                                                Attention, certaines entreprises ont reçues trop de demandes : ils n’ont pas pu être intégrés à l'emploi du temps des étudiant. Si ils souhaitent obtenir un rendez-vous avec eux, il faudra les contacter directement. </p>
+                                                Attention, certaines entreprises ont reçues trop de demandes : elles n’ont pas pu être intégrées à l'emploi du temps des étudiant. Si vous souhaitez obtenir un rendez-vous avec celles-ci, il faudra les contacter directement. </p>
                                             </div>
                                         </div>
                                     <?php }

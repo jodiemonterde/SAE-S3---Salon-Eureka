@@ -299,7 +299,7 @@
                 <div class="accordion-item my-3">
                     <h2 class="accordion-header" id="headingEtatEntreprises">
                         <button class="accordion-button collapsed text-accent" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEtatEntreprises" aria-expanded="false" aria-controls="collapseEtatEntreprises">
-                            Exporter un etat d'une / des entreprise(s) sans planning
+                            Exporter un état d'une / des entreprise(s) sans planning
                         </button>
                     </h2>
                     <div id="collapseEtatEntreprises" class="accordion-collapse collapse" aria-labelledby="headingEtatEntreprises" data-bs-parent="#exporterEtatEntreprises">
@@ -312,7 +312,7 @@
                                         <form action="importExport.php" method="post">
                                         Entreprise exclue :
                                         <select name="listeEntrepriseExclue">
-                                            <option value="0">Veuillez selectionner une entreprise</option>
+                                            <option value="0">Veuillez sélectionner une entreprise</option>
                                             <option value="T">toutes</option>
                                             <?php
                                                 while($row = $ListeEntrepriseExclue->fetch()){
@@ -333,7 +333,7 @@
                                     <?php
                                         } else {
                                     ?>
-                                        <p class="erreur"> aucune entreprise n'est exclue du planning </p>
+                                        <p class="erreur"> Aucune entreprise n'est exclue du planning </p>
                                     <?php
                                         }
                                     ?>
@@ -358,7 +358,7 @@
                                     <form action="importExport.php" method="post">
                                         Etudiant :
                                         <select name="listeEtudiant">
-                                            <option value="0">Veuillez selectionner un etudiant</option>
+                                            <option value="0">Veuillez sélectionner un étudiant</option>
                                             <option value="T">tous</option>
                                             <?php
                                                 while($row = $listeEtudiant->fetch()){

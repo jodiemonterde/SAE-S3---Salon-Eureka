@@ -76,6 +76,7 @@
 <!DOCTYPE html>
 <html lang="fr">
     <head>
+        <!-- Métadonnées et liens vers les feuilles de style -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -85,7 +86,8 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <link rel="stylesheet" href="../../../css/generationPlanning.css">
-        <title>informations eureka</title>
+        
+        <title>Eurêka - génération du planning</title>
     </head>
     <body>
         <!-- Barre de navigation du haut -->
@@ -213,22 +215,29 @@
                     <p class="text-center text-accent titreLigne ">Génération de l'emploi du temps</p>
                     <p> Etapes de la génération d'un emploi du temps : </p>
                     <ol>
-                        <li class="listeInfos"> <p> Cliquer sur "généré le planning" </p> </li>
-                        <li class="listeInfos"> <p> Verifier si dans la boite de dialog la génération c'est bien passé </p> </li>
-                        <li class="listeInfos"> <p> Si la génération c'est bien passé, vous pouvez aller le consulter dans les autres pages </p> </li>
-                        <li class="listeInfos"> <p> Si la génération ne c'est pas bien passé, vous pouvez prendre des actions adéquates dans la section inferieur de la page </p> </li>
-                        <li class="listeInfos"> <p> Une fois les actions prises, vous pouvez relancer la génération </p> </li>
-                        <li class="listeInfos"> <p> Une fois satisfait du planning généré cliquer sur validé, ou refuser le planning sinon </p> </li>
+                        <li class="listeInfos"> <p> Cliquez sur le bouton "Générer le planning" </p> </li>
+                        <li class="listeInfos"> <p> Vérifiez grâce à la boîte de dialogue que la génération s'est correctement déroulée </p> </li>
+                        <li class="listeInfos"> <p> Si la génération s'est bien passé, vous pouvez aller consulter celui-ci en naviguant dans les autres pages </p> </li>
+                        <li class="listeInfos"> <p> Si la génération ne s'est pas bien passé, il vous faut prendre des mesures via la section inférieure de la page afin par exemple de modifier la durée d'un rendez-vous pour une entreprise</p> </li>
+                        <li class="listeInfos"> <p> Une fois ces mesures prises, vous pouvez relancer la génération </p> </li>
+                        <li class="listeInfos"> <p> Une fois que vous voilà satisfait(e) du planning généré, cliquez sur 'Valider le planning'. Sinon, cliquez sur 'Refuser le planning'. </p> </li>
                     </ol>
                     <div class="row">
                         <div class="col-12 d-flex justify-content-center">
                             <form action="generationPlanning.php" method="post">
                                 <input type="hidden" name="action2" value="genererPlanning">
-                                <button type="submit" class="bouton" <?php echo $isGenerated ? "disabled" : "" ?>>généré le planning</button>
+                                <button type="submit" class="bouton" <?php echo $isGenerated ? "disabled" : "" ?>>Générer le planning</button>
                             </form>
                         </div>
                         <div class="col-12 d-flex justify-content-center">
-                            <textarea name="listeEntreprise" id="listeEntreprise" class="listeConsole mb-2" rows="2" readonly><?php echo "Statut : &#13;&#10;".(isset($_SESSION['resultatGeneration']) ? $_SESSION['resultatGeneration'].($_SESSION['resultatGeneration'] === "Génération réussite !" ? " Veuillez annuler ou valider le planning générée" : "") : ($isGenerated ? "Veuillez annuler ou valider le planning générée" :"Aucune génération n'a encore été lancée !")); unset($_SESSION['resultatGeneration']) ?></textarea>
+                            <textarea 
+                                name="listeEntreprise" id="listeEntreprise" class="listeConsole mb-2" rows="2" readonly>
+                                <?php echo "Statut : &#13;&#10;".(isset($_SESSION['resultatGeneration']) ? 
+                                $_SESSION['resultatGeneration'].($_SESSION['resultatGeneration'] === "Génération réussite !" ? 
+                                " Veuillez annuler ou valider le planning générée" : "") : ($isGenerated ? 
+                                "Veuillez annuler ou valider le planning générée" :"Aucune génération n'a encore été lancée !")); 
+                                unset($_SESSION['resultatGeneration']) ?>
+                            </textarea>
                         </div>
                         <div class="col-6 d-flex justify-content-center">
                             <form action="generationPlanning.php" method="post">
@@ -252,7 +261,7 @@
                             <div class="row">
                                 <div class="col-8">
                                     <select name="entreprise" id="entreprise" class="form-control">
-                                        <option value="0" selected disabled>Selectionnez une entreprise</option>
+                                        <option value="0" selected disabled>Sélectionnez une entreprise</option>
                                         <?php while ($ligne = $entreprisesPasReduites->fetch()) { ?>
                                             <option value="<?php echo $ligne['company_id'] ?>"><?php echo $ligne['name'] ?></option>
                                         <?php } ?>
@@ -266,13 +275,13 @@
                     </div>
                     <div class="col-12 sous-ligne">
                         <!-- Retrait d'une entreprise à la liste des entreprises réduites -->
-                        <p class="text-center text-accent titreLigne"> Retirer une entreprise à la liste</p>
+                        <p class="text-center text-accent titreLigne"> Retirer une entreprise de la liste</p>
                         <form action="generationPlanning.php" method="post" class="col-12">
                             <input type="hidden" name="action" value="retirerEntrepriseReduite">
                             <div class="row">
                                 <div class="col-8">
                                     <select name="entreprise" id="entreprise" class="form-control">
-                                        <option value="0" selected disabled>Selectionnez une entreprise</option>
+                                        <option value="0" selected disabled>Sélectionnez une entreprise</option>
                                         <?php foreach ($entreprisesReduites as $key => $value) { ?>
                                             <option value="<?php echo $key ?>"><?php echo $value ?></option>
                                         <?php } ?>
@@ -285,12 +294,12 @@
                         </form>
                     </div>
                     <!-- Affichage de la liste des entreprises réduites -->
-                    <p class="text-center text-accent titreLigne"> Liste des entreprise concernées : </p>
+                    <p class="text-center text-accent titreLigne"> Liste des entreprises concernées : </p>
                     <textarea name="listeEntreprise" id="listeEntreprise" class="liste" readonly><?php foreach ($entreprisesReduites as $value) { echo $value."&#13;&#10;"; } ?></textarea>
                 </div>
                 <!-- Zone de séléction des entreprises exclues -->
                 <div class="col-12 col-md-6 mt-3 ligneDroite">
-                    <p class="text-center text-accent titreLigne">Exclus du planning</p>
+                    <p class="text-center text-accent titreLigne">Exclues du planning</p>
                     <!-- Ajout d'une entreprise à la liste des entreprises exclues -->
                     <div class="col-12 sous-ligne">
                         <p class="text-center text-accent titreLigne"> Ajouter une entreprise à la liste</p>
@@ -299,7 +308,7 @@
                             <div class="row">
                                 <div class="col-8">
                                     <select name="entreprise" id="entreprise" class="form-control">
-                                        <option value="0" selected disabled>Selectionnez une entreprise</option>
+                                        <option value="0" selected disabled>Sélectionnez une entreprise</option>
                                         <?php while ($ligne = $entreprisesPasExclues->fetch()) { ?>
                                             <option value="<?php echo $ligne['company_id'] ?>"><?php echo $ligne['name'] ?></option>
                                         <?php } ?>
@@ -313,7 +322,7 @@
                     </div>
                     <!-- Retrait d'une entreprise à la liste des entreprises exclues -->
                     <div class="col-12 sous-ligne">
-                        <p class="text-center text-accent titreLigne"> Retirer une entreprise à la liste</p>
+                        <p class="text-center text-accent titreLigne"> Retirer une entreprise de la liste</p>
                         <form action="generationPlanning.php" method="post" class="col-12">
                             <input type="hidden" name="action" value="retirerEntrepriseExclusion">
                             <div class="row">
@@ -346,7 +355,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Est vous sûr de vouloir valider l'emploi du temps ? <br><span class="erreur">ATTENTION : CETTE ACTION EST IRREVERSIBLE</span>
+                        Êtes-vous sûr(e) de vouloir valider cet emploi du temps ? <br><span class="erreur">ATTENTION : CETTE ACTION EST IRREVERSIBLE</span>
                     </div>
                     <div class="modal-footer">
                         <form action="generationPlanning.php" method="post">

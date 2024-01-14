@@ -45,7 +45,8 @@
 ?>
 <!DOCTYPE html>
 <html lang="fr">
-    <head><!-- Métadonnées et liens vers les feuilles de style -->
+    <head>
+        <!-- Métadonnées et liens vers les feuilles de style -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -252,7 +253,7 @@
                                                 <h2 class="modal-title" id="DeleteFieldModalLabel"><?php echo $ligne['name'];?></h2>
                                             </div>
                                             <div class="modal-body">
-                                                <h2>Êtes-vous sûr(e) de vouloir supprimer ce gestionnaire ?</h2>
+                                                <h2>Êtes-vous sûr(e) de vouloir supprimer cette filière ?</h2>
                                                 <form action="filieres.php" method="post">
                                                     <input type="hidden" name="supprimer" value="<?php echo $ligne['field_id'];?>">
                                                     <div class="row mt-3">
@@ -279,8 +280,8 @@
                                             </div>
                                             <div class="modal-body">
                                                 <form action="filieres.php" method="post">
-                                                    <label for="newName"  class="modalLabel mb-0 mt-2">Choisir un nouveau nom pour la filière :</label>
-                                                    <input type="text" class="zoneText mb-3" name="newName" maxlength="50" placeholder="Saisir le nom" required>
+                                                    <label for="newName"  class="modalLabel mb-0 mt-2">Nouveau nom</label>
+                                                    <input type="text" class="zoneText mb-3" name="newName" maxlength="50" placeholder="Saisir le nouveau nom de la filière" required>
                                                     <input type="hidden" name="modify" value="<?php echo $ligne['field_id'];?>">
                                                     <div class="row mt-3">
                                                         <div class="col-6">

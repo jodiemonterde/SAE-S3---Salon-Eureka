@@ -240,8 +240,8 @@
                             </div>
                             <div class = "row">
                                 <div class="col-12">
-                                    <P class="text-center">Êtes-vous sûr(e) de vouloir réinitialiser les données ? <span class="erreur">Cela supprimera TOUTES les données du site SAUF les administrateurs</span></P>
-                                    <P class="text-center">Taper "Je reinitialise les données du site" pour confirmer</P>
+                                    <P class="text-center">Êtes-vous sûr(e) de vouloir réinitialiser les données ? <span class="erreur">Cela supprimera TOUTES les données du site SAUF les administrateurs et les gestionnaires</span></P>
+                                    <P class="text-center">Tapez "Je réinitialise les données du site" pour confirmer</P>
                                 </div>
                             </div>
                             <form action="menu.php" method="POST">
