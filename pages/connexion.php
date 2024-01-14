@@ -2,50 +2,38 @@
 <?php
     try {
         session_start(); 
-
         /* 
          * Fichier indispensable au bon fonctionnement du site, contenant toutes les fonctions utilisés notamment pour se
          * connecter à la base de donnée et interagir avec celle-ci.
          */
         require("../fonctions/baseDeDonnees.php");
         $pdo = connecteBD(); // accès à la Base de données
-        $tentative = false; // boolean à false par défaut qui empêche l'accès aux autres pages du site tant qu'il n'est pas passé à true
-        $_SESSION['connexion'] = false;
+        $tentative = false; // Permettra d'affiche un message expliquant que la connexion a échoué.
 
         /* 
          * Permet d'obtenir la phase dans laquelle se trouve actuellement le site : 
          *     - phase 1 s'il est possible de prendre des rendez-vous
-         *     - phase 1.5 si un administrateur est en train d'essayer de générer un planning
+         *     - phase 1.5 si la période de prise de rendez-vous est terminée mais que les étudiants peuvent consulter les plannings
          *     - phase 2 s'il est possible de consulter les plannings
           */
         $phase = getPhase($pdo);
-
         // L'utilisateur a soumis le formulaire de connexion
         if (isset($_POST["motDePasse"]) && isset($_POST["identifiant"])) {
             // Vérification de si l'utilisateur existe et de si son mot de passe est correct
-            $_SESSION['connexion'] = verifUtilisateur($pdo, htmlspecialchars($_POST["motDePasse"]),
-                                                            htmlspecialchars($_POST["identifiant"]));
-            if ($_SESSION['connexion'] == false) {
+            $resultat = verifUtilisateur($pdo, htmlspecialchars($_POST["motDePasse"]),
+                                               htmlspecialchars($_POST["identifiant"]));
+            if ($resultat == []) {
                 $tentative = true; // Permettra d'affiche un message expliquant que la connexion a échoué.
+            } else {
+                $_SESSION['idUtilisateur'] = $resultat['user_id'];
+                $_SESSION['type_utilisateur'] = $resultat['responsibility'];
+                $_SESSION['prenom_utilisateur'] = $resultat['firstname'];
+                $_SESSION['nom_utilisateur'] = $resultat['lastname'];
             }
-        }
-
-        /* 
-         * L'utilisateur a entré un mot de passe et un identifiant qui correspondent à un utilisateur : 
-         * on stocke donc ces informations dans des variables de sessions
-         */
-        if($_SESSION['connexion']==true){
-            $info = infoUtilisateur($pdo, htmlspecialchars($_POST["motDePasse"]),
-                                          htmlspecialchars($_POST["identifiant"]));
-            $ligne = $info->fetch();
-            $_SESSION['idUtilisateur'] = $ligne['user_id'];
-            $_SESSION['type_utilisateur'] = $ligne['responsibility'];
-            $_SESSION['prenom_utilisateur'] = $ligne['firstname'];	
-            $_SESSION['nom_utilisateur'] = $ligne['lastname'];
         }
         
         /* Redirige l'utilisateur selon la phase et le type d'utilisateur (étudiant, gestionnaire, administrateur) */
-        if ((isset($_SESSION['idUtilisateur']) && $_SESSION['idUtilisateur'] != null) || $_SESSION['connexion'] == true) {
+        if ((isset($_SESSION['idUtilisateur']) && $_SESSION['idUtilisateur'] != null)) {
             if ($_SESSION['type_utilisateur'] == 'E'){ // L'utilisateur est un étudiant
                 if ($phase == 1) {
                     header('Location: etudiant/phase1/listeEntreprises.php');
@@ -65,7 +53,6 @@
             }
             exit();
         }
-        
     } catch (Exception $e) {
         header('Location: maintenance.php'); // En cas d'erreur, redirige vers la page de site en maintenance
         exit();

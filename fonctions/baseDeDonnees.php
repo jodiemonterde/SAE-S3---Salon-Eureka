@@ -19,9 +19,10 @@
     // Fonction de vérification lors d'une tentative de connexion d'un utilisateur.
     // Si les paramètres correspondent à une ligne dans la table User, cela renvoi vrai.
     // Sinon, cela renvoi faux. 
-    function verifUtilisateur($pdo, $motDepasse, $identifiant){
+    function verifUtilisateurOld($pdo, $motDepasse, $identifiant){
         try{ 
 			$connecte=false;
+            $motDepasse = password_hash($motDepasse, PASSWORD_DEFAULT);
 			$maRequete = $pdo->prepare("SELECT user_id, firstname, lastname, password from User where email = :leLogin and password = :lePWD");
 			$maRequete->bindParam(':leLogin', $identifiant);
 			$maRequete->bindParam(':lePWD', $motDepasse);
@@ -38,6 +39,31 @@
 			echo "Connection failed: " . $e->getMessage();
 			return false;
 		} 
+    }
+
+    // Fonction de vérification lors d'une tentative de connexion d'un utilisateur.
+    // Si les paramètres correspondent à une ligne dans la table User, cela renvoi vrai.
+    // Sinon, cela renvoi faux. 
+    function verifUtilisateur($pdo, $motDepasse, $identifiant){
+        $connecte = array();
+        $maRequete = $pdo->prepare("SELECT user_id, responsibility, firstname, lastname, password from User where email = :leLogin");
+        $maRequete->bindParam(':leLogin', $identifiant);
+        if ($maRequete->execute()) {
+            while ($ligne = $maRequete->fetch()) {	
+                if (strlen($ligne['password']) < 50 && $ligne["password"] == $motDepasse) { // Si le mot de passe n'est pas hashé, on le hash
+                    $connecte['user_id'] = $ligne['user_id'];
+                    $connecte['responsibility'] = $ligne['responsibility'];
+                    $connecte['firstname'] = $ligne['firstname'];
+                    $connecte['lastname'] = $ligne['lastname'];
+                } else if (password_verify($motDepasse, $ligne['password'])) {
+                    $connecte['user_id'] = $ligne['user_id'];
+                    $connecte['responsibility'] = $ligne['responsibility'];
+                    $connecte['firstname'] = $ligne['firstname'];
+                    $connecte['lastname'] = $ligne['lastname'];
+                }
+            }
+        }
+        return $connecte;
     }
 
     // Récupère les données d'une ligne de la table User en fonction du nom et du mot de passe 
@@ -191,9 +217,7 @@
     function addNewStudent($pdo, $prenom, $nom, $email, $mdp, $filiere) {
         $pdo->beginTransaction();
         $nom = strtoupper($nom);
-        $prenom = $prenom;
-        $email = $email;
-        $mdp = $mdp;
+        $mdp = password_hash($mdp, PASSWORD_DEFAULT);
         $filiere = $filiere;
 
         $stmt = $pdo->prepare("INSERT INTO User (firstname, lastname, password, responsibility, email)
@@ -220,9 +244,7 @@
     function addNewSupervisor($pdo, $prenom, $nom, $email, $mdp, $filiere) {
         $pdo->beginTransaction();
         $nom = strtoupper($nom);
-        $prenom = $prenom;
-        $email = $email;
-        $mdp = $mdp;
+        $mdp = password_hash($mdp, PASSWORD_DEFAULT);
 
         $stmt = $pdo->prepare("INSERT INTO User (firstname, lastname, password, responsibility, email)
                             VALUES (:prenom, :nom, :password, 'G', :email)");
@@ -1034,7 +1056,7 @@
     // Fonction permettant de changer le mot de passe d'un utilisateur pour un nouveau passé en paramètre.
     function modifyPassword($pdo, $user_id, $new_password) {
         // Verification injection de code
-        $new_password = $new_password;
+        $new_password = password_hash($new_password, PASSWORD_DEFAULT);
     
         $stmt = $pdo->prepare("UPDATE User
                                SET password = :new_password
@@ -1059,7 +1081,7 @@
             $stmt->bindParam(':prenom', $etudiant[1]);
             $stmt->bindParam(':nom', $etudiant[0]);
             $stmt->bindParam(':email', $etudiant[2]);
-            $stmt->bindParam(':password', $etudiant[3]);
+            $stmt->bindParam(':password', password_hash($etudiant[3], PASSWORD_DEFAULT));
             $stmt->execute();
             $user_id = $pdo->lastInsertId();
             $stmt2->bindParam(':user_id', $user_id);
@@ -1225,9 +1247,7 @@
     // Fonction permettant d'ajouter un nouvel utilisateur
     function addAdmin($pdo, $prenom, $nom, $email, $mdp) {
         $nom = strtoupper($nom);
-        $prenom = $prenom;
-        $email = $email;
-        $mdp = $mdp;
+        $mdp = password_hash($mdp, PASSWORD_DEFAULT);
 
         $stmt = $pdo->prepare("INSERT INTO User (firstname, lastname, password, responsibility, email)
                             VALUES (:prenom, :nom, :mdp, 'A', :email)");
