@@ -276,7 +276,7 @@
             <div class="row d-flex align-items-center h-100">
                 <div class="col-12 col-md-6">
                     <h2>Liste des entreprises</h2>
-                    <p>Voici toutes les entreprises présentes au salon Eurêka cette année. Cliquez sur l’une d’elle pour voir tous les étudiants qui veulent un rendez-vous avec celle-ci ! Vous pouvez également filtrer quelles filières vous intéressent grâce à la liste de filtres ci-dessous.</p>
+                    <p>Voici toutes les entreprises présentes au salon Eurêka cette année. Cliquez sur l’une d’elles pour voir tous les étudiants qui veulent un rendez-vous avec celle-ci ! Vous pouvez également filtrer quelles filières vous intéressent grâce à la liste de filtres ci-dessous.</p>
                 </div>
 
                 <!-- Formulaire permettant d'entrer une recherche personnalisé qui filtrera l'affichage selon celle-ci -->
@@ -338,7 +338,7 @@
                                 <input class="entreeUtilisateur" type="text" name="villeEntreprise" id="villeEntreprise" placeholder="Saisir la ville où se situe l'entreprise" maxlength="45" required>
                                 <label for="secteurEntreprise" class="modalLabel mb-0 mt-2">Secteur d'activité</label>
                                 <input class="entreeUtilisateur" type="text" name="secteurEntreprise" id="secteurEntreprise" placeholder="Saisir le secteur d'activité" maxlength="50" required>
-                                <label for="logo" class="modalLabel mb-0 mt-2 w-100">Logo de l'entreprise</label>
+                                <label for="logo" class="modalLabel mb-0 mt-2 w-100">Logo de l'entreprise (privilégiez une image carrée pour un affichage optimal)</label>
                                 <input type="file" name="logoEntreprise" id="logo" accept="image/*">
                                 <hr>
 
@@ -675,7 +675,7 @@
                                         <input class="entreeUtilisateur" type="text" name="villeEntreprise" id="villeEntreprise" placeholder="<?php echo $ligne["address"]; ?>">
                                         <label for="secteurEntreprise" class="modalLabel mb-0 mt-2">Secteur d'activité</label>
                                         <input class="entreeUtilisateur" type="text" name="secteurEntreprise" id="secteurEntreprise" placeholder="<?php echo $ligne["sector"]; ?>">
-                                        <label for="logo" class="modalLabel mb-0 mt-2 w-100">Logo de l'entreprise</label>
+                                        <label for="logo" class="modalLabel mb-0 mt-2 w-100">Logo de l'entreprise (privilégiez une image carrée pour un affichage optimal)</label>
                                         <input type="file" name="logoEntreprise" id="logo" accept="image/*">
                                         <hr>                         
                                         
