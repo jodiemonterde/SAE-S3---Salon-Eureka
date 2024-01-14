@@ -1,102 +1,103 @@
+/* Importation de la police Montserrat */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', sans-serif; /* Définit la police du body comme étant Montserrat */
 }
 
 .row {
-    margin: 0px !important;
+    margin: 0px !important; /* pas de marge exterieur pourla classe rox de bootstrap */
 }
 
 
 
 @media screen and (min-width: 768px) {
     .eureka-entete {
-        color: #FFFFFF;
-        font-size: 32px;
-        font-weight: 600;
+        color: #FFFFFF; /* Met la couleur du texte en blanc */
+        font-size: 32px; /* taille de la police égale à 32 pixel */
+        font-weight: 600; /* poids ou gras du texte égale à 600 */
     }
     .texte-bleu {
-        color: #39E2F8;
-        font-size: 64px;
-        font-weight: 900;
+        color: #39E2F8; /* Met la couleur du texte en bleu */
+        font-size: 64px; /* taille de la police égale à 64 pixel */
+        font-weight: 900; /* poids ou gras du texte égale à 900 */
     }
     
     .texte-blanc {
-        color: #FFFFFF;
-        font-size: 24px;
-        font-weight: 700;
+        color: #FFFFFF; /* Met la couleur du texte en blanc */
+        font-size: 24px; /* taille de la police égale à 24 pixel */
+        font-weight: 700; /* poids ou gras du texte égale à 700 */
     }
     
     .bouton-connexion {
-        height: 50px;
-        width: 300px;
+        height: 50px; /* hauteur de 50 pixel */
+        width: 300px; /* largeur de 300 pixels */
         
     }
 }
 @media screen and (max-width: 768px) {
-    .eureka-entete {
-        color: #FFFFFF;
-        font-size: 24px;
-        font-weight: 600;
+    .eureka-entete { 
+        color: #FFFFFF; /* Met la couleur du texte en blanc */
+        font-size: 24px; /* taille de la police égale à 24 pixel */
+        font-weight: 600; /* poids ou gras du texte égale à 600 */
     }
 
     .texte-bleu {
-        color: #39E2F8;
-        font-size: 32px;
-        font-weight: 900;
+        color: #39E2F8; /* Met la couleur du texte en bleu */
+        font-size: 32px; /* taille de la police égale à 32 pixel */
+        font-weight: 900; /* poids ou gras du texte égale à 900 */
     }
 
     .texte-blanc {
-        color: #FFFFFF;
-        font-size: 14px;
-        font-weight: 700;
+        color: #FFFFFF; /* Met la couleur du texte en blanc */
+        font-size: 14px; /* taille de la police égale à 14 pixel */
+        font-weight: 700; /* poids ou gras du texte égale à 700 */
     }
 
     .bouton-connexion {
-        height: 40px;
-        width: 200px;
-        font-size: 14px;
+        height: 40px; /* hauteur de 40 pixel */
+        width: 200px; /* largeur de 200 pixels */
+        font-size: 14px; /* taille de la police égale à 14 pixel */
     }
 }
 
 hr {
-    border-top: 3px solid #39E2F8;
-    width: 100px;
-    opacity: 100;
+    border-top: 3px solid #39E2F8; /* bordure en haut épaisse de 3 pixel et bleu */
+    width: 100px; /* largeur de 100 pixels */
+    opacity: 100; /* opacité à 100 */
 }
 
 .subtitle {
-    color: rgb(170, 170, 170);
-    font-style: italic;
-    font-size: 1.25em;
-    font-weight: 500;
-    line-height: 1.2;
-    font-size: 16px;
+    color: rgb(170, 170, 170); /* Met la couleur du texte en gris */
+    font-style: italic; /* texte en italic */
+    font-size: 1.25em; /* taille de la police égale à 1.25 em */
+    font-weight: 500; /* poids ou gras du texte égale à 500 */
+    line-height: 1.2; /* hauteur de la ligne */
+    font-size: 16px; /* taille de la police égale à 16 pixel */
 }
 
 h4 {
-    color: #39E2F8;
-    font-weight: 600;
-    text-transform: uppercase;
+    color: #39E2F8; /* Met la couleur du texte en bleu */
+    font-weight: 600; /* poids ou gras du texte égale à 600 */
+    text-transform: uppercase; /* texte en majuscule */
 }
 
 h2 {
-    font-weight: 1000;
-    text-transform: uppercase;
-    font-size: 35px;
+    font-weight: 1000; /* poids ou gras du texte égale à 1000 */
+    text-transform: uppercase; /* texte en majuscule */
+    font-size: 35px; /* taille de la police égale à 35 pixel */
 }
 
 .paragraphe {
-    font-size: 16px;
-    line-height: 1.7;
+    font-size: 16px; /* taille de la police égale à 16 pixel */
+    line-height: 1.7; /* hauteur de la ligne */
 }
 
 .presentation-icone {
-    width: 60px;
-    height: auto;
+    width: 60px; /* largeur de 60 pixels */
+    height: auto; /* hauteur auto */
 }
 
 .background {
-    background-color: #606060;
+    background-color: #606060; /* modifie la couleur de fond */
 }

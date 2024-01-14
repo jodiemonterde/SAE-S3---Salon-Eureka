@@ -1,21 +1,24 @@
 
 .texte {
+    /* aligne le texte verticalement et met une marge extérieur à gauche */
     vertical-align: middle;
     margin-left: 5px;
 }
 
 .colEntreprise {
-    margin-left: 20px;
+    margin-left: 20px; /* marge à gauche */
 }
 
 .logoEntreprise {
+    /* cadre rond blanc*/
     border-radius: 100%;
     border: 2px solid #e9e9e9;
 }
 
 .boutonSupprimerMd {
+    /* image de poubelle en fond, fond transparent, élément de 30 pixel sur 30 pixel*/
     background-image: url("../ressources/supprimer.png");
-    background-color: transparent;
+    background-color: transparent; /* modifie la couleur de fond */
     background-repeat: no-repeat;  
     background-position: 0px 0px; 
     width: 30px;
@@ -25,15 +28,18 @@
 }
 
 .bouton {
-    font-size: 13px;
+    /* texte taille 13*/
+    font-size: 13px; /* taille de la police */
 }
 
 .confirmation {
+    /* largeur */
     width: 75px;
 }
 
 
 .entreprise {
+    /* bordure blanche avec un arrondie de 5 pixel dans ses angles */
     border: 2px solid #e9e9e9;
     border-radius: 5px;
     margin: 10px !important;

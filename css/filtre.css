@@ -1,31 +1,31 @@
 .bouton-filtre {
-    border-radius: 50px;
-    min-width: 122px;
-    font-weight: 400;
-    font-size: 12px;
-    border: #8B2D2D solid 1px;
-    margin-bottom: 8px;
-    color: white;
+    border-radius: 50px; /* attribut un rayon de 50 pixel aux coins de l'élément */
+    min-width: 122px; /* largeur minimale de 122 pixel */
+    font-weight: 400; /* poids ou gras de la police à 400 */
+    font-size: 12px; /* taille de la police à 12 pixel */
+    border: #8B2D2D solid 1px; /* définis la couleur de la bordure en rouge foncé, sa taille à 1 pixel et son style  */
+    margin-bottom: 8px; /* marge exterieur en bas à 8 pixel */
+    color: white; /* Met la couleur du texte en blanc */
 }
 
 .bouton-filtre-selectionner {
-    background-color: #8B2D2D;
+    background-color: #8B2D2D; /* modifie la couleur de fond */
 }
 
 .bouton-filtre-selectionner:hover {
-    background-color: #A03939;
-    border-color: #A03939;
+    background-color: #A03939; /* modifie la couleur de fond */
+    border-color: #A03939; 
 }
 
 .bouton-filtre-deselectionner {
-    background-color: #FFFFFF;
-    color: #8B2D2D;  
+    background-color: #FFFFFF; /* modifie la couleur de fond */
+    color: #8B2D2D;  /* Met la couleur du texte en rouge foncé */
 }
 
 .bouton-filtre-deselectionner:hover {
-    background-color: #dfdfdf;
+    background-color: #dfdfdf; /* modifie la couleur de fond */
 }
 
 form {
-    display:inline;
+    display:inline; /* affiche les élément comme faisant partit d'une ligne*/
 }

@@ -5,10 +5,11 @@
 }
 
 .profil-det-img .dp {
-    padding: 16px 8px 8px 8px; 
+    padding: 16px 8px 8px 8px;   /*marge intérieur  */
 }
 
 .profil-det-img .dp img {
+    /*cadre de 80pixel par 80pixel rond et blanc */
     border-radius: 100%;
     width: 80px;
     height: 80px;
@@ -17,167 +18,176 @@
 }
 
 .profil-det-img .pd {
-    padding: 10px;
+    padding: 10px; /*marge intérieur  */
     vertical-align: middle;
-    margin: auto 0; 
+    margin: auto 0; /*marge exterieur */
 }
 
 .profil-det-img .pd h2 {
-    font-size: 22px;
-    margin-bottom: 0px; 
+    font-size: 22px; /* taille de la police */
+    margin-bottom: 0px;  /*marge exterieur */
 }
 
 @media screen and (max-width: 850px) {
     .profil-det-img .pd h2 {
-        font-size: 18px; 
+        font-size: 18px;  /* taille de la police */
     } 
 }
 
 .profil-det-img .pd p {
-    font-size: 14px; 
-    margin-bottom: 0px;
+    font-size: 14px;  /* taille de la police */
+    margin-bottom: 0px; /*marge exterieur */
 }
 
 li, ul {
     padding: 0;
     margin: 0;
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 13px;  /* taille de la police */
+    font-weight: 500; /* gras du texte */
 }
 
 h2 {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 20px; /* taille de la police */
+    font-weight: 600; /* gras du texte */
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1000px; /* largeur maximal */
 }
 
 .form-outline {
     /*margin-top: 4em;*/
-    height: 40px;
+    height: 40px; /* hauteur */
 }
 
 .form-control {
-    height: 40px;
+    height: 40px; /* hauteur */
 }
 
 .detailEtudiant {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 14px; /* taille de la police */
+    font-weight: 600; /* gras du texte */
 }
 
 .nomEntreprise {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 20px; /* taille de la police */
+    font-weight: 600; /* gras du texte */
     margin-bottom: 5px;
 }
 
 .entreprise {
+    /* cadre blanc avec angle de 5 pixel */
     border: 2px solid #e9e9e9;
     border-radius: 5px;
+    /* marge exterieur et interieur */
     margin: 10px 0;
     padding: 10px 0;
 }
 
 .logoEntreprise {
+    /* cadre rond blanc */
     border-radius: 100%;
     border: 1px solid #D9D9D9;
 }
 
 .bouton {
+    /* définit la hauteur, la couleur du fond, le texte en majuscule, les différente marges et les angles du cadres */
     height: 40px;
-    background-color: #8B2D2D;
+    background-color: #8B2D2D; /* modifie la couleur de fond */
     text-transform: uppercase;
     border-style: none;
     border-radius: 40px 20px 40px 20px;
     padding: 10px 16px;
-    font-size: 13px;
+    font-size: 13px; /* taille de la police */
     font-weight: 500;
     width: 100%;
 }
 
 button {
-    background-color: white;
+    background-color: white; /* modifie la couleur de fond */
 }
 
 hr {
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* marge extèrieur */
 }
 
 p {
+    /* marge extèrieur */
     margin-top: 0;
     margin-bottom: 4px;
 }
 
 .student {
-    color: #8B2D2D;
-    margin-bottom: 0;
+    color: #8B2D2D;  /* texte rouge foncé */
+    margin-bottom: 0; /* marge extèrieur */
 }
 
 .description {
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* marge extèrieur */
 }
 
 .btn-link {
-    text-decoration: none;
+    text-decoration: none; /* pas de décoration de texte */
 }
 
 .btn-link h2 {
-    color: #8B2D2D;
+    color: #8B2D2D; /* texte rouge foncé */
 }
 
 .btn-link li {
-    color: black;
+    color: black; /* texte noir */
 }
 
 .accordion {
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* marge extèrieur */
 }
 
-.accordion-item {
-    border-radius: 4px;
-}
+.accordion-item { 
+    border-radius: 4px; /* angle de 4 pixel */
+} 
 
 .accordion-item:not(:first-of-type) {
-    border: 1px solid #D9D9D9 !important;
+    border: 1px solid #D9D9D9 !important; /* definit la couleur et l'épaisseur du cadre*/
 }
 
 .accordion-button:not(.collapsed) {
+    /*fond blanc et texte noir */
     color: black;
-    background-color: white;
+    background-color: white; /* modifie la couleur de fond */
 
 }
 .accordion-button:focus {
-    border-color: #8B2D2D !important;
+    border-color: #8B2D2D !important; /* cadre rouge foncé*/
 }
 
 .accordion-item button {
-    border-radius: 4px;
+    border-radius: 4px; /* angle de 4 pixel */
 }
 
 .title {
-    color: #8B2D2D;
+    color: #8B2D2D; /*couleur du texte en rouge */
+}
 }
 
 .accordion-button::after {
+    /* définit une image comme fond*/
     background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%238B2D2D'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
 
 }
 
 .erreur {
-    color: red;
+    color: red; /* texte en rouge */
 }
 
 .sort {
+    /* Met le texte en rouge avce une taille de 13 pixel, passe le fond en blanc et sans cadre */
     font-size: 13px;
     color: #8B2D2D;
-    background-color: white;
+    background-color: white; /* modifie la couleur de fond */
     border: none;
     cursor: pointer;
 }
 
 .sort:hover {
-    color: #A03939;
+    color: #A03939; /*couleur du texte en rouge */
 }
