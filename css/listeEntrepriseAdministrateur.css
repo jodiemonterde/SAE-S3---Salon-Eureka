@@ -1,209 +1,212 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 * {
-    list-style: none;
+    list-style: none; /* pas de style de liste */
 }
 
 .profil-det-img .dp {
-    padding: 16px 8px 8px 8px; }
+    padding: 16px 8px 8px 8px; /* marge intérieur */
+}
 .profil-det-img .dp img {
-    border-radius: 100%;
-    width: 80px;
+    border-radius: 100%; /* cadre en forme de cercle */
+    width: 80px; /* largeur de 80 pixel */
     height: 80px;
-    border-style: solid;
-    border-color: #D9D9D9;
+    border-style: solid; /* style de la bordure  */
+    border-color: #D9D9D9; /* couleur de la bordure */
 }
 .profil-det-img .pd {
-    padding: 10px;
+    padding: 10px; /* marge intérieur de 10 pixels */
     vertical-align: middle;
-    margin: auto 0; }
+    margin: auto 0; /* marge extèrieur automatique pour le haut et le bas et pas présente pour les cotés */ }
 .profil-det-img .pd h2 {
-    font-size: 22px;
-    margin-bottom: 0px; }
+    font-size: 22px; /* taille du texte à 22 pixel*/
+    margin-bottom: 0px; /* marge extérieur en bas de 0 pixel */
+}
 
 @media screen and (max-width: 850px) {
     .profil-det-img .pd h2 {
-        font-size: 18px; } 
+        font-size: 18px; /* taille du texte à 18 pixel*/ } 
 }
 
 .profil-det-img .pd p {
-    font-size: 14px; 
-    margin-bottom: 0px;}
+    font-size: 14px;  /* taille du texte à 14 pixel*/
+    margin-bottom: 0px; /* marge extérieur en bas de 0 pixel */}
 
 
 li, ul {
-    padding: 0;
-    margin: 0;
-    font-size: 13px;
-    font-weight: 500;
+    padding: 0; /* marge intérieur pas présente */
+    margin: 0; /* marge extèrieur pas présente */ 
+    font-size: 13px; /* taille du texte à 13 pixel*/
+    font-weight: 500; /* poids ou gars du texte égale à 500 */
 }
 
 h2 {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 20px; /* taille du texte à 20 pixel*/
+    font-weight: 600; /* poids ou gars du texte égale à 600 */
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1000px; /* largeur maximal de 1000 pixel */
 }
 
 .bouton {
-    width: 100%;
-}
+    width: 100%; /* largeur de 100% du contenant */
+} 
 
 hr {
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* marge extérieur en bas de 8 pixel */
 }
 
 p {
-    margin-top: 0;
-    margin-bottom: 4px;
+    margin-top: 0; /* marge extèrieur pas présente */ 
+    margin-bottom: 4px; /* marge extérieur en bas de 8 pixel */
 }
 
 .student {
     color: #8B2D2D;
-    margin-bottom: 0;
+    margin-bottom: 0; /* marge extérieur en bas de 8 pixel */
 }
 
 .description {
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* marge extérieur en bas de 8 pixel */
 }
 
 .accordion {
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* marge extérieur en bas de 8 pixel */
 }
 
 .accordion-item {
-    border-radius: 4px;
+    border-radius: 4px; /* angles de 4px */ 
 }
 
 .accordion-item:not(:first-of-type) {
-    border: 1px solid #D9D9D9 !important;
+    border: 1px solid #D9D9D9 !important; /* bordure de 1 pixel et gris */
 }
 
 .accordion-button:not(.collapsed) {
-    color: black;
-    background-color: white;
+    color: black; /* texte en noir */ 
+    background-color: white; /* modifie la couleur de fond */
 
 }
 .accordion-button:focus {
-    border-color: #8B2D2D !important;
+    border-color: #8B2D2D !important; /* couleur de la bordure */
 }
 
 .title {
-    color: #8B2D2D;
+    color: #8B2D2D; /* texte en rouge */
 }
 
 .accordion-button::after {
+    /* défini une image de fond*/
     background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%238B2D2D'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
 
 }
 
 .addStudent {
-    background-color: white;
-    border: solid 1px #8B2D2D;
-    color: #8B2D2D;
-    border-radius: 4px;
+    background-color: white; /* modifie la couleur de fond */
+    border: solid 1px #8B2D2D; /* bordure de 1 pixel et rouge foncé */
+    color: #8B2D2D; /* texte en rouge */ 
+    border-radius: 4px; /* angles de 4px */ 
 }
 
 .addStudent:hover:enabled {
-    background-color: #eee;
+    background-color: #eee; /* modifie la couleur de fond */
 }
 
 .addStudent:disabled {
-    background-color:;
-    border-color: lightgray;
-    color: lightgray;
+    
+    border-color: lightgray; /* couleur de la bordure */
+    color: lightgray; /* texte en rouge */
 }
 
 .tag {
-    border-radius: 50px;
-    margin: 0 2px;
-    padding: 2px 4px;
-    min-width: 100px;
-    font-weight: 600;
-    font-size: 8px;
-    border: #39E2F8 solid 1px;
-    background-color: #39E2F8;
-    width: auto;
-    height: fit-content;
+    border-radius: 50px; /* angles de 50px */ 
+    margin: 0 2px; /* marge extèrieur sur les cotés de 2 pixel */ 
+    padding: 2px 4px; /* marge intérieur en haut et en bas de 2pixel et sur les coté de 4 pixels*/
+    min-width: 100px; /* largeur minimale de 100 pixel */
+    font-weight: 600; /* poids ou gars du texte égale à 600 */
+    font-size: 8px; /* taille du texte à 8 pixel*/
+    border: #39E2F8 solid 1px; /* bordure bleu de 1 pixel */
+    background-color: #39E2F8; /* modifie la couleur de fond */
+    width: auto;  /* largeur automatique */
+    height: fit-content; /* hauteur s'adapte au contenue*/
 }
 
 .speakerName {
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 14px; /* taille du texte à 14 pixel*/
+    font-weight: 500; /* poids ou gars du texte égale à 500 */
 }
 
 .speakerRole {
-    font-size: 12px;
-    font-weight: 400;
+    font-size: 12px; /* taille du texte à 12 pixel*/
+    font-weight: 400; /* poids ou gars du texte égale à 400 */
 }
 
 .boutonNegatif {
-    width: 100%;
+    width: 100%; /* largeur égale à 100% du contenant */
 }
 
 
 .buttonToCheck {
-    cursor: pointer;
-    display: flex;
-    margin-top: 12px;
+    cursor: pointer; /* aparence du curseur */
+    display: flex; /*élément flexible */
+    margin-top: 12px; /* marge extèrieur du haut de 12 pixel */ 
 }
   
 .buttonToCheck input[type="checkbox"] {
-    display: none;
+    display: none; /* pas de style */
 }
   
 .buttonToCheck .icon-box {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: 0.5s;
-    user-select: none;
+    position: relative; /* position de l'élément */
+    display: flex; /* élément flexible */
+    flex-direction: column; /*élément placé en colonne*/
+    align-items: center; /* item centrer */
+    transition: 0.5s; /* temps de transition */
+    user-select: none; /* pas d'apparence de selection*/
 
-    background-color: #FFFFFF;
-    color: #8B2D2D;  
-    border-radius: 50px;
-    min-width: 122px;
-    font-weight: 400;
-    font-size: 12px;
-    border: #8B2D2D solid 1px;
-    margin-bottom: 4px;
+    background-color: #FFFFFF; /* modifie la couleur de fond */
+    color: #8B2D2D;  /* texte en rouge */
+    border-radius: 50px; /* angles de 50px */ 
+    min-width: 122px; /* largeur minimale de 122 pixel */
+    font-weight: 400; /* poids ou gars du texte égale à 400 */
+    font-size: 12px; /* taille du texte à 12 pixel*/
+    border: #8B2D2D solid 1px; /* bordure rouge de 1 pixel */
+    margin-bottom: 4px; /* marge extérieur en bas de 4 pixel */
 }
 
 
 .buttonToCheck .icon-box:hover {
-    background-color: #dfdfdf;
+    background-color: #dfdfdf; /* modifie la couleur de fond */
 }
   
 .buttonToCheck input[type="checkbox"]:checked ~ .icon-box {
-    background-color: #8B2D2D;
-    color: white;
+    background-color: #8B2D2D; /* modifie la couleur de fond */
+    color: white; /* texte en blanc */
 }
 .buttonToCheck input[type="checkbox"]:checked ~ .icon-box:hover {
-    background-color: #A03939;
-    border-color: #A03939;
+    background-color: #A03939; /* modifie la couleur de fond */
+    border-color: #A03939; /* couleur de la bordure */
 }
   
 .buttonToCheck .icon-box span {
-    font-size: 12px;
+    font-size: 12px; /* taille de la police à 12*/
 }
 
 .icon {
-    color: #8B2D2D;
-    font-size: 1.5em;
+    color: #8B2D2D; /* texte en rouge */
+    font-size: 1.5em; /* taille de la police */
 }
 
 .navigue {
-    overflow-y: scroll; /* Add the ability to scroll */
+    overflow-y: scroll; /* possibilité de scroll  */
 }
   
 .navigue::-webkit-scrollbar {
-    display: none;
+    display: none; /* enlève visuel de la barre de défilement */
 }
 
 .icon-title {
-    margin-bottom: 0.5em;
-    background-color: white;
+    margin-bottom: 0.5em; /* marge exterieur du bas égale à 0.5 em */
+    background-color: white; /* modifie la couleur de fond */
 }

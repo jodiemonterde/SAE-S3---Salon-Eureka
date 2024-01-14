@@ -1,44 +1,45 @@
+/* Importation de la police Montserrat */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 .bouton {
-    margin-top: 8px;
+    margin-top: 8px; /* marge exterieur du haut égale à 8 pixel*/
 }
 
 label{
-    font-weight: bold;
+    font-weight: bold; /* met le texte en gras */
 }
 
 .container {
-    max-width: 1100px;
+    max-width: 1100px;  /* largeur max à 1100 pixels */ 
 }
 
 .boutonBas{
-    width: 100%;
+    width: 100%;  /* largeur à 100% du contenant */ 
     
 }
 
 .formulaire{
-    margin-top: 20px;
-    padding: 2%;
-    border: 2px solid #bfbfbf;
+    margin-top: 20px; /* marge exterieur du haut égale à 20 pixel */
+    padding: 2%; /* marge intèrieur égale à 2% du contenant */
+    border: 2px solid #bfbfbf;  /* bordure de 2pixel et gris clair */
 }
 
 .marge {
-    margin-top: 8px;
+    margin-top: 8px; /* marge exterieur du haut égale à 8 pixel*/
 }
 
 * {
-    font-family: 'Montserrat', sans-serif;
-    list-style: none;
-    font-size: 12px;
+    font-family: 'Montserrat', sans-serif; /* définition de la police */
+    list-style: none; /* pas de style */
+    font-size: 12px;  /* taille de la police à 11 pixel */
 }
 
 input{
-    height: 40px;
-    width: 100%;
-    border-bottom: 2px solid #bfbfbf;
-    border-top: 0;
-    border-left: 0;
-    border-right: 0;
-    border-radius: 0;
+    height: 40px; /* hauteur de 40 pixel */
+    width: 100%; /* largeur à 100% du contenant */ 
+    border-bottom: 2px solid #bfbfbf; /* bordure du bas de 2pixel et gris clair */
+    border-top: 0; /* bordure du haut non présente*/
+    border-left: 0; /* bordure de gauche non présente*/
+    border-right: 0; /* bordure de droite non présente*/
+    border-radius: 0; /* rayon égale à 0 */
 }

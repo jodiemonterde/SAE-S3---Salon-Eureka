@@ -1,97 +1,99 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 .titre {
-    font-size: 22px;
-    margin-bottom: 0px;
+    font-size: 22px; /* taille de la police */
+    margin-bottom: 0px;  /*marge extèrieur  */
 }
 
 li, ul {
+    /* pas de marges texte en taille 13 et définition du gras du texte */
     padding: 0;
     margin: 0;
-    font-size: 13px;
+    font-size: 13px; /* taille de la police */
     font-weight: 500;
 }
 
 h2 {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 20px; /* taille de la police */
+    font-weight: 600; /* gras du texte */
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1000px; /* largeur max */
 }
 
 .form-outline {
     /*margin-top: 4em;*/
-    height: 40px;
+    height: 40px; /*heuteur */
 }
 
 .form-control {
-    height: 40px;
+    height: 40px; /*hauteur */
 }
 
 .detailEtudiant {
-    font-size: 14px;
+    font-size: 14px; /* taille de la police */
     font-weight: 600;
 }
 
 hr {
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* marge extérieur */
 }
 
 p {
-    margin-top: 0;
-    margin-bottom: 4px;
+    margin-top: 0; /* marge extérieur */
+    margin-bottom: 4px; /* marge extérieur */
 }
 
 .student {
     color: #8B2D2D;
-    margin-bottom: 0;
+    margin-bottom: 0; /* marge extérieur */
 }
 
 .description {
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* marge extérieur */
 }
 
 .btn-link {
-    text-decoration: none;
+    text-decoration: none; /* pas de décoration de texte */
 }
 
 .btn-link h2 {
-    color: #8B2D2D;
+    color: #8B2D2D; /* texte rouge */
 }
 
 .btn-link li {
-    color: black;
+    color: black; /* texte noir */
 }
 
 .accordion {
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* marge extérieur */
 }
 
 .accordion-item {
-    border-radius: 4px;
+    border-radius: 4px; /* angles de 4 pixel */
 }
 
 .accordion-item:not(:first-of-type) {
-    border: 1px solid #D9D9D9 !important;
+    border: 1px solid #D9D9D9 !important; /* cadre de 1px et blanc*/
 }
 
 .accordion-button:not(.collapsed) {
+    /*fond blanc et texte noir */
     color: black;
-    background-color: white;
+    background-color: white; /* modifie la couleur de fond */
 
 }
-.accordion-button:focus {
-    border-color: #8B2D2D !important;
+.accordion-button:focus { 
+    border-color: #8B2D2D !important; /* cadre en rouge */
 }
 
 .accordion-item button {
-    border-radius: 4px;
+    border-radius: 4px; /* angle de 4 pixel*/
 }
 
 .title {
-    color: #8B2D2D;
+    color: #8B2D2D; /* texte rouge  */
 }
 
 .accordion-button::after {
@@ -100,13 +102,13 @@ p {
 }
 
 .sort {
-    font-size: 13px;
-    color: #8B2D2D;
-    background-color: white;
+    font-size: 13px; /* taille de la police */
+    color: #8B2D2D; /* texte rouge  */
+    background-color: white; /* modifie la couleur de fond */
     border: none;
     cursor: pointer;
 }
 
 .sort:hover {
-    color: #A03939;
+    color: #A03939;  /* texte rouge  */
 }

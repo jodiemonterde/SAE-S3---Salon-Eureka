@@ -1,103 +1,105 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+/* Importation de la police Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap'); 
 body {
+    /* Définit la police du body comme étant Montserrat et de taille 12 pixel*/
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;
 }
 
 .row {
-    margin: 0px !important;
+    margin: 0px !important; /* met la valeur de la marge exterieur de la classe row de bootstrap à 0 */
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1000px; /* définit la largeur maximum à 1000 pixel*/
 }
 
 .bouton {
-    background-color: #8B2D2D;
-    text-transform: uppercase;
-    color: white;
-    border-style: none;
-    border-radius: 40px 20px 40px 20px;
-    padding: 10px 16px;
-    font-size: 13px;
-    font-weight: 500;
+    background-color: #8B2D2D; /* modifie la couleur de fond */
+    text-transform: uppercase; /* met le texte en majuscule */
+    color: white; /* Met la couleur du texte en blanc */
+    border-style: none; /* Enlève le style de la bordure qui entoure l'élément */
+    border-radius: 40px 20px 40px 20px; /* modifie la valeur des angles de la bordure de l'élément */
+    padding: 10px 16px; /* définit la marge à l'iterieur de l'élément. 13 pixel pour le haut et le bas et 16 pixel pour les cotés*/
+    font-size: 13px; /* Met la taille du texte à 13 pixel */
+    font-weight: 500; /* définit le poids(le gras) du texte à une valeur de 500(moyen)*/
 }
 
 .bouton:hover {
-    background-color: #A03939;
+    background-color: #A03939; /* modifie la couleur de fond */
 }
 
 .bouton:disabled {
-    background-color: lightgray;
+    background-color: lightgray; /* modifie la couleur de fond */
 }
 
 .boutonNegatif {
-    color: #8B2D2D;
-    background-color: white;
-    text-transform: uppercase;
-    border-width : 2px;
-    border-style: solid;
-    border-color : #8B2D2D;
-    border-radius: 40px 20px 40px 20px;
-    padding: 10px 16px;
-    font-size: 13px;
-    font-weight: 500;
+    color: #8B2D2D; /* Met la couleur du texte en rouge foncé */
+    background-color: white; /* modifie la couleur de fond */
+    text-transform: uppercase; /* met le texte en majuscule */
+    border-width : 2px; /* largeur de la bordure égale à 2 pixel */
+    border-style: solid; /* bordure sous forme d'une seule ligne */
+    border-color : #8B2D2D; /* couleur rouge foncé pour la bordure  */
+    border-radius: 40px 20px 40px 20px; /* valeur des différent angle du cadre */
+    padding: 10px 16px;  /* définit la marge à l'iterieur de l'élément. 13 pixel pour le haut et le bas et 16 pixel pour les cotés*/
+    font-size: 13px; /* Met la taille du texte à 13 pixel */
+    font-weight: 500; /* définit le poids(le gras) du texte à une valeur de 500(moyen)*/
 }
 
 .boutonNegatif:hover:enabled {
-    background-color: #eee;
+    background-color: #eee; /* modifie la couleur de fond */
 }
 
 .boutonNegatif:disabled {
-    color: lightgray;
-    border-color: lightgray;
+    color: lightgray;  /* Met la couleur du texte en gris clair */
+    border-color: lightgray; /* couleur de la bordure en gris clair */
 }
 
 .erreur{
-    color: red;
-}
+    color: red; /* Met la couleur du texte en rouge */
+} 
 
 .text-accent {
-    color: #8B2D2D;
-    text-transform: uppercase;
-    font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 0px;
+    color: #8B2D2D; /* Met la couleur du texte en rouge foncé */
+    text-transform: uppercase; /* met le texte en majuscule */
+    font-size: 20px; /* taille de la police à 20 pixel*/
+    font-weight: 500; /* définit le poids(le gras) du texte à une valeur de 500(moyen)*/
+    margin-bottom: 0px; /* marge exterieur du bas égale à 0 pixel */
 }
 
 .blanc{
-    background-color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
+    background-color: white; /* modifie la couleur de fond */
+    border: none; /* pas de bordure */
+    border-radius: 50%; /* rayon de 50 % (forme ovale) */
+    width: 40px; /* largeur à 40% du contenant */
 }
 
 .blanc:hover{
-    background-color: #eee;
+    background-color: #eee; /* modifie la couleur de fond */
 }
 
 .entreeUtilisateur {
-    font-family: 'Montserrat', FontAwesome;
-    height: 40px;
-    border-bottom: 2px solid #bfbfbf;
-    border-top: 0;
-    border-left: 0;
-    border-right: 0;
-    border-radius: 0;
-    width: 100%;
+    font-family: 'Montserrat', FontAwesome; /* définit la famille du texte et permet de lire les code hexa des logo fontawesome */
+    height: 40px; /* hauteur de 40 pixel */
+    border-bottom: 2px solid #bfbfbf; /* bordure du bas epaisse de 2 pixel et gris clair */
+    border-top: 0; /* bordure du haut non présente*/
+    border-left: 0; /* bordure de gauche non présente*/
+    border-right: 0; /* bordure de droite non présente*/
+    border-radius: 0; /* rayon égale à 0 */
+    width: 100%; /* largeur à 100% du contenant */
 }
 
 .entreeUtilisateur::placeholder {
-    color: #bfbfbf !important;
+    color: #bfbfbf !important; /* Met la couleur du texte du placeholder en gris clair */
 }
 
 .boutonDeconnexion{
-    width: 180px !important;
-    text-align: center !important;
+    width: 180px !important; /* largeur égal à 180 pixel et est prioritaire */
+    text-align: center !important; /* texte centrer dans le bouton et est prioritaire */
 }
 
 .logoEntrerise {
-    width: 80px;
-    border: 2px solid lightgray;
-    border-radius: 100%;
+    width: 80px; /* largeur égale à 80 pixel*/
+    border: 2px solid lightgray; /* bordure solide, gris clair et 2 pixel d'épaisseur*/
+    border-radius: 100%; /* bordure en forme de cercles*/
 }

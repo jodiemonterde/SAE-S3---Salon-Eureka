@@ -1,154 +1,156 @@
+/* */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 * {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', sans-serif; /* famille de la police */
     list-style: none;
-    font-size: 12px;
+    font-size: 12px; /* taille de la police */
 }
 
 .zoneText {
-    font-family: 'Montserrat', FontAwesome;
-    height: 40px;
-    border-bottom: 2px solid #bfbfbf;
+    font-family: 'Montserrat', FontAwesome; /* famille de la police */
+    height: 40px; /* hauteur de 40 px*/
+    border-bottom: 2px solid #bfbfbf; /* bordure du bas  du bas */
+    /* les autre bordure sont pas utilisé */
     border-top: 0;
     border-left: 0;
     border-right: 0;
-    border-radius: 0;
-    width: 100%;
+    border-radius: 0; 
+    width: 100%; /* largeur de 100% */
 }
 
 .zoneText select { 
-    color: #bfbfbf; 
+    color: #bfbfbf;  /* texte blanc */
 }
 
 input ::placeholder {
-    color: #bfbfbf !important;
+    color: #bfbfbf !important; /* texte blanc */
 }
 
 .rounded-circle {
-    width: 75px;
-    height: 75px;
-    border-radius: 50%;
-    border-style: solid;
-    border-color: #D9D9D9;
+    width: 75px; /* largeur de 75 pixel */
+    height: 75px; /*hauteur de 75 pixel */
+    border-radius: 50%; /* angle de 50%*/
+    border-style: solid; /* style du cadre */
+    border-color: #D9D9D9 ; /* cadre blanc */
 }
 
 .company {
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 4px;
-    border-color: #D9D9D9;
-    padding: 16px 8px 8px 8px;
-    margin-top: 16px;
-    cursor: pointer;
+    border-style: solid;  /* style du cadre */
+    border-width: 1px; /* largeur du cadre */
+    border-radius: 4px; /* angle de 4 pixel */
+    border-color: #D9D9D9; /* couleur du cadre */
+    padding: 16px 8px 8px 8px; /* marge intèrieur */
+    margin-top: 16px; /* marge extèrieur */
+    cursor: pointer; /* style du curseur */
 }
 
 .profil-det-img .dp {
-    padding: 16px 8px 8px 8px; }
+    padding: 16px 8px 8px 8px; /* marge intèrieur */ }
 .profil-det-img .dp img {
-    border-radius: 100%;
-    width: 80px;
-    height: 80px;
-    border-style: solid;
-    border-color: #D9D9D9;
+    border-radius: 100%; /* cadre rond */
+    width: 80px; /* largeur de 80 pixel */
+    height: 80px; /* hauteur de 80 pixel*/
+    border-style: solid; /* style du cadre */
+    border-color: #D9D9D9; /* couleur du cadre */
 }
 .profil-det-img .pd {
-    padding: 10px;
-    vertical-align: middle;
+    padding: 10px; 
+    vertical-align: middle; /* alignement verticale*/
     margin: auto 0; }
 .profil-det-img .pd h2 {
-    font-size: 22px;
+    font-size: 22px; /* taille de la police */
     margin-bottom: 0px; }
 @media screen and (max-width: 850px) {
     .profil-det-img .pd h2 {
-        font-size: 18px; } }
+        font-size: 18px; /* taille de la police */ } }
 .profil-det-img .pd p {
-    font-size: 14px; 
+    font-size: 14px; /* taille de la police */ 
     margin-bottom: 0px;}
 
 li, ul {
-    padding: 0;
-    margin: 0;
-    font-size: 13px;
-    font-weight: 500;
+    padding: 0; /* marge intèrieur */
+    margin: 0; /* marge exterieur */
+    font-size: 13px; /* taille de la police */
+    font-weight: 500; /* poids ou gras du texte */
 }
 
 h2 {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 20px; /* taille de la police */
+    font-weight: 600; /* poids ou gras du texte */
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1000px; /* largeur max de 1000 pixel */
 }
 
 .form-outline {
-    height: 40px;
+    height: 40px; /* hauteur de 40 px*/
 }
 
 .form-control {
-    height: 40px;
+    height: 40px; /* hauteur de 40 px*/
 }
 
 .detailEtudiant {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 14px; /* taille de la police */
+    font-weight: 600; /* poids du texte */
 }
 
 .nomEntreprise {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 5px;
+    font-size: 20px; /* taille de la police */
+    font-weight: 600; /* poids du texte */
+    margin-bottom: 5px; /* marge intèrieur */
 }
 
 .entreprise {
-    border: 2px solid #e9e9e9;
-    border-radius: 5px;
-    margin: 10px 0;
-    padding: 10px 0;
+    border: 2px solid #e9e9e9; /* cadre de 2px et gris */
+    border-radius: 5px; /* angle de 5px */
+    margin: 10px 0; /* marge exterieur */
+    padding: 10px 0; /* marge intèrieur */
 }
 
 .logoEntreprise {
-    border-radius: 100%;
-    border: 1px solid #D9D9D9;
+    border-radius: 100%; /* cadre rond*/
+    border: 1px solid #D9D9D9; /* cadre gris de 1 px*/
 }
 
 .bouton {
-    height: 40px;
-    background-color: #8B2D2D;
-    text-transform: uppercase;
-    border-style: none;
-    border-radius: 40px 20px 40px 20px;
-    padding: 10px 16px;
-    font-size: 13px;
-    font-weight: 500;
-    width: 100%;
+    height: 40px; /* hauteur 40 pixel */
+    background-color: #8B2D2D; /* modifie la couleur de fond */
+    text-transform: uppercase; /* texte en majuscule */
+    border-style: none; /* pas de cadre */
+    border-radius: 40px 20px 40px 20px; /* angle des coins du cadre*/
+    padding: 10px 16px;  /* marge intèrieur */
+    font-size: 13px; /* taille de la police */
+    font-weight: 500;  /* poids du texte */
+    width: 100%;   /* largeur de 100%*/
 }
 
 .boutonNegatif {
-    height: 40px;
-    background-color: white;
-    text-transform: uppercase;
-    border: solid 1px #8B2D2D;
-    color: #8B2D2D;
-    border-radius: 40px 20px 40px 20px;
-    padding: 10px 16px;
-    font-size: 13px;
-    font-weight: 500;
-    width: 100%;
+    height: 40px; /* hauteur 40 pixel */
+    background-color: white; /* modifie la couleur de fond */
+    text-transform: uppercase; /* texte en majuscule */
+    border: solid 1px #8B2D2D; /* bordure de 1 pixel et rouge */
+    color: #8B2D2D; /* marge exterieur du bas de 8 pixel */
+    border-radius: 40px 20px 40px 20px; /* angle des coins du cadre*/
+    padding: 10px 16px; /* marge intèrieur */
+    font-size: 13px; /* taille de la police */
+    font-weight: 500; /* poids du texte */
+    width: 100%; /* largeur de 100%*/
 }
 
 button {
-    background-color: white;
+    background-color: white; /* modifie la couleur de fond */
 }
 
 hr {
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* marge exterieur du bas de 8 pixel */
 }
 
 p {
     margin-top: 0;
-    margin-bottom: 4px;
+    margin-bottom: 4px; /* marge exterieur du bas de 4 pixel */
 }
 
 .student {
@@ -157,154 +159,154 @@ p {
 }
 
 .modalLabel {
-    font-size: 10px;
-    font-weight: 700;
+    font-size: 10px; /* taille de la police */
+    font-weight: 700; 
 }
 
 .addStudent {
-    background-color: white;
-    border: solid 1px #8B2D2D;
-    color: #8B2D2D;
-    border-radius: 4px;
+    background-color: white; /* modifie la couleur de fond */
+    border: solid 1px #8B2D2D; /* cadre de 1 pixel et rouge*/
+    color: #8B2D2D; /* texte en rouge */
+    border-radius: 4px; /* angle de 4 pixel */
 }
 
 .addStudent:hover:enabled {
-    background-color: #eee;
+    background-color: #eee; /* modifie la couleur de fond */
 }
 
 .addStudent:disabled {
-    background-color:;
-    border-color: lightgray;
-    color: lightgray;
+    border-color: lightgray; /* cadre gris*/
+    color: lightgray; /* texte en gris */
 }
 
 .description {
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* marge exterieur du bas de 8 pixel */
 }
 
 .btn-link {
-    text-decoration: none;
+    text-decoration: none; /* pas de décoration de texte*/
 }
 
 .btn-link h2 {
-    color: #8B2D2D;
+    color: #8B2D2D; /* texte en rouge */
 }
 
 .btn-link li {
-    color: black;
+    color: black; /*texte en noir*/ 
 }
 
 .accordion {
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* marge exterieur du bas de 8 pixel */
 }
 
 .accordion-item {
-    border-radius: 4px;
+    border-radius: 4px; /* angle de 4 pixel */
 }
 
 .accordion-header {
-    padding: 1px;
+    padding: 1px; /* marge intèrieur de 1 pixel*/
 }
 
 .accordion-item:not(:first-of-type) {
-    border: 1px solid #D9D9D9 !important;
+    border: 1px solid #D9D9D9 !important; /* cadre de 1 pixel et gris*/
 }
 
 .accordion-button:not(.collapsed) {
-    color: black;
-    background-color: white;
+    color: black; /* texte en noir */
+    background-color: white; /* modifie la couleur de fond */
 
 }
 .accordion-button:focus {
-    border-color: #8B2D2D !important;
-}
+    border-color: #8B2D2D !important; /* cadre rouge foncé */
+} 
 
 
 
 .title {
-    color: #8B2D2D;
+    color: #8B2D2D; /* texte rouge foncé*/
 }
 
 .accordion-button::after {
+    /* Mets une image comme fond */
     background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%238B2D2D'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
 
 }
 
 .erreur {
-    color: red;
+    color: red; /* texte en rouge*/
 }
 
 .blanc{
-    background-color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    background-color: white; /* modifie la couleur de fond */
+    border: none; /* pas de cadre*/
+    border-radius: 50%; /* angle de 50 % */
+    width: 40px; /* largeur de 40 pixel */
+    height: 40px; /* hauteur de 40 pixel*/
 }
 
 .blanc:hover{
-    background-color: #eee;
+    background-color: #eee; /* modifie la couleur de fond */
 }
 
 .buttonToCheck {
-    cursor: pointer;
-    display: flex;
+    cursor: pointer; /* style du curseur */
+    display: flex; /* élément flexible */
 }
   
 .buttonToCheck input[type="checkbox"] {
-    display: none;
+    display: none; /* pas d'affichage */
 }
   
 .buttonToCheck .icon-box {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: 0.5s;
-    user-select: none;
+    position: relative; /* position de l'élément */
+    display: flex; /* élément flexible */
+    flex-direction: column; /*élément placé en colonne*/
+    align-items: center; /* item centrer */
+    transition: 0.5s; /* temps de transition */
+    user-select: none; /* pas d'apparence de selection*/
 
-    background-color: #FFFFFF;
-    color: #8B2D2D;  
-    border-radius: 50px;
-    min-width: 122px;
-    font-weight: 400;
-    font-size: 12px;
-    border: #8B2D2D solid 1px;
-    margin-bottom: 4px;
+    background-color: #FFFFFF; /* modifie la couleur de fond */
+    color: #8B2D2D;  /* texte en rouge */
+    border-radius: 50px; /* angles de 50px */ 
+    min-width: 122px; /* largeur minimale de 122 pixel */
+    font-weight: 400; /* poids ou gars du texte égale à 400 */
+    font-size: 12px; /* taille du texte à 12 pixel*/
+    border: #8B2D2D solid 1px; /* bordure rouge de 1 pixel */
+    margin-bottom: 4px; /* marge extérieur en bas de 4 pixel */
 }
 
 
 .buttonToCheck .icon-box:hover {
-    background-color: #dfdfdf;
+    background-color: #dfdfdf; /* modifie la couleur de fond */
 }
 
 .buttonToCheck input[type="checkbox"]:checked ~ .icon-box {
-    background-color: #8B2D2D;
-    color: black;
+    background-color: #8B2D2D; /* modifie la couleur de fond */
+    color: black; /* texte en noir*/
 }
 
 .buttonToCheck input[type="checkbox"]:checked ~ .icon-box:hover {
-    background-color: #A03939;
-    border-color: #A03939;
+    background-color: #A03939; /* modifie la couleur de fond */
+    border-color: #A03939; /* bordure en rouge foncé */
 }
   
 .buttonToCheck .icon-box span {
-    font-size: 12px;
+    font-size: 12px; /* taille de la police */
 }
   
 .rowForChecks {
-    display: grid;
+    display: grid; /* affichage en forme de grille */
     grid-template-columns: auto auto auto;
 }
 
 .sort {
-    font-size: 13px;
-    color: #8B2D2D;
-    background-color: white;
-    border: none;
-    cursor: pointer;
+    font-size: 13px; /* taille de la police */
+    color: #8B2D2D; /* texte en rouge foncé */
+    background-color: white; /* modifie la couleur de fond */
+    border: none; /* pas de cadre */
+    cursor: pointer; /* style du curseur*/
 }
 
 .sort:hover {
-    color: #A03939;
+    color: #A03939; /* couleur rouge foncés*/
 }
