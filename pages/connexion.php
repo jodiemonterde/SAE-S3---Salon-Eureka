@@ -19,28 +19,6 @@
          *     - phase 2 s'il est possible de consulter les plannings
           */
         $phase = getPhase($pdo);
-        
-        /* Redirige l'utilisateur selon la phase et le type d'utilisateur (étudiant, gestionnaire, administrateur) */
-        if ((isset($_SESSION['idUtilisateur']) && $_SESSION['idUtilisateur'] != null) || $_SESSION['connexion'] == true) {
-            if ($_SESSION['type_utilisateur'] == 'E'){ // L'utilisateur est un étudiant
-                if ($phase == 1) {
-                    header('Location: etudiant/phase1/listeEntreprises.php');
-                } else if ($phase == 1.5) {
-                    header('Location: etudiant/phase1/listeRendezVous.php');
-                } else {
-                    header('Location: etudiant/phase2/emploiDuTemps.php');
-                }
-            } elseif ($_SESSION['type_utilisateur'] == 'G') { // L'utilisateur est un gestionnaire
-                if ($phase == 1) {
-                    header('Location: gestionnaire/phase1/listeEntreprise.php');
-                } else {
-                    header('Location: gestionnaire/phase2/listeEntreprise.php');
-                }
-            } else { // L'utilisateur est un administrateur
-                header('Location: administrateur/listeEntreprises.php');
-            }
-            exit();
-        }
 
         // L'utilisateur a soumis le formulaire de connexion
         if (isset($_POST["motDePasse"]) && isset($_POST["identifiant"])) {
@@ -65,7 +43,29 @@
             $_SESSION['prenom_utilisateur'] = $ligne['firstname'];	
             $_SESSION['nom_utilisateur'] = $ligne['lastname'];
         }
-
+        
+        /* Redirige l'utilisateur selon la phase et le type d'utilisateur (étudiant, gestionnaire, administrateur) */
+        if ((isset($_SESSION['idUtilisateur']) && $_SESSION['idUtilisateur'] != null) || $_SESSION['connexion'] == true) {
+            if ($_SESSION['type_utilisateur'] == 'E'){ // L'utilisateur est un étudiant
+                if ($phase == 1) {
+                    header('Location: etudiant/phase1/listeEntreprises.php');
+                } else if ($phase == 1.5) {
+                    header('Location: etudiant/phase1/listeRendezVous.php');
+                } else {
+                    header('Location: etudiant/phase2/emploiDuTemps.php');
+                }
+            } elseif ($_SESSION['type_utilisateur'] == 'G') { // L'utilisateur est un gestionnaire
+                if ($phase == 1) {
+                    header('Location: gestionnaire/phase1/listeEntreprise.php');
+                } else {
+                    header('Location: gestionnaire/phase2/listeEntreprise.php');
+                }
+            } else { // L'utilisateur est un administrateur
+                header('Location: administrateur/listeEntreprises.php');
+            }
+            exit();
+        }
+        
     } catch (Exception $e) {
         header('Location: maintenance.php'); // En cas d'erreur, redirige vers la page de site en maintenance
         exit();

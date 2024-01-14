@@ -25,7 +25,6 @@
     $stmt = getFields($pdo);
     while ($ligne = $stmt->fetch())  {
         $filieres[$ligne["name"]] = $ligne["field_id"];
-        
     }
     if(isset($_FILES['file'])) {
         $_SESSION["reponse import"] = importerEtudiants($_FILES['file']['tmp_name'], $filieres, $pdo);
@@ -218,10 +217,10 @@
                                     <p>
                                     Cette section vous permet d'importer une grande quantité d'étudiants à l'aide d'un fichier csv.<br/>
                                     Ce fichier devra être formaté de la manière suivante :<br/>
-                                    nom d'utilisateur;adresse mail;mot de passe;filière</br>
+                                    nom;prénom;adresse mail;mot de passe;filière</br>
                                     Voici un exemple de contenu de fichier :<br/>
-                                    Jean Dupont;jean.dupont@example.com;mot_de_passe_123;Informatique<br/>
-                                    Marie Dupont;marie.dupont@example.com;mot_de_passe_456;GEA<br/>
+                                    Dupont;Jean;jean.dupont@example.com;mot_de_passe_123;Informatique<br/>
+                                    Dupont;Marie;marie.dupont@example.com;mot_de_passe_456;GEA<br/>
                                     ATTENTION : le fichier ne doit pas contenir d'entête !<br/>
                                     RAPPEL : le mot de passe doit : <br/>
                                     - contenir au moins 8 caractères <br/>
@@ -229,8 +228,8 @@
                                     - contenir au moins un caractère spécial <br/>
                                     Les noms de filières doivent faire partie de cette liste : <?php 
                                     
-                                    while ($ligne = $stmt->fetch())  {
-                                        echo $ligne["name"].", "; }?>
+                                    foreach ($filieres as $key => $value) {
+                                        echo $key.", "; }?>
                                     </p>
                                     
                                     <form action="importExport.php" method="post" enctype="multipart/form-data">

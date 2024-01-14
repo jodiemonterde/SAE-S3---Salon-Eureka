@@ -177,7 +177,7 @@
         $stmt->execute();
     }
 
-    // TODO aucune idée
+    // Focntion permettant de mettre générated (BIT verifiant si le planning à été générée ou non) à 1 ou 0 selon le choix utilisateur
     function setPlanningGenerated($pdo, $value) {
         $stmt = $pdo->prepare("UPDATE Meeting SET generated = :value WHERE meeting_id = 1");
         $stmt->bindParam(':value', $value);
@@ -403,7 +403,7 @@
         return $stmt;
     }
 
-    // TODO : à expliquer
+    // Fonction permettant de changer les propriétées d'une entreprise, selon l'action passée en paramètre. Fonction utilisée dans la page de génération du planning.
     function setSpecificationCompany($pdo, $action, $comp_id) {
         switch ($action) {
             case 'ajouterEntrepriseReduite' :
@@ -426,7 +426,7 @@
         $stmt->execute();
     }
 
-    // TODO : à expliquer
+    /// Fonction permettant d'obtenir les entreprises selon une spécification passée en paramètre et la valeur de cette spécification passée en paramètre.
     function getSpecificationCompany($pdo, $specification, $value) {
         switch ($specification) {
             case 'entrepriseReduite' :
@@ -1088,7 +1088,7 @@
         $maRequete->bindParam(':user_id', $user_id);
         $maRequete->execute();
         while($row = $maRequete->fetch()){
-            $res = $row["prenom"] . ' ' . $row['nom'];
+            $res = $row["firstname"] . ' ' . $row['lastname'];
         }
         return $res;
     }
@@ -1114,7 +1114,7 @@
         return $maRequete;
     }
 
-    // TODO
+    
     function studentByUnlistedCompany($pdo, $company_id) {
         $requete = $pdo-> prepare("SELECT u.firstname, u.lastname , f.name
                                    FROM Field f
