@@ -16,34 +16,10 @@
         return $pdo;
     }
 
-    // Fonction de vérification lors d'une tentative de connexion d'un utilisateur.
-    // Si les paramètres correspondent à une ligne dans la table User, cela renvoi vrai.
-    // Sinon, cela renvoi faux. 
-    function verifUtilisateurOld($pdo, $motDepasse, $identifiant){
-        try{ 
-			$connecte=false;
-            $motDepasse = password_hash($motDepasse, PASSWORD_DEFAULT);
-			$maRequete = $pdo->prepare("SELECT user_id, firstname, lastname, password from User where email = :leLogin and password = :lePWD");
-			$maRequete->bindParam(':leLogin', $identifiant);
-			$maRequete->bindParam(':lePWD', $motDepasse);
-            // Boucle sur toutes les lignes de la table User jusqu'à trouver une combinaison de mot de passe/identifiant qui fonctionne
-            // Si c'est le cas, le booléen $connecte passe à vrai.
-			if ($maRequete->execute()) {
-				$maRequete->setFetchMode(PDO::FETCH_OBJ);
-				while ($ligne=$maRequete->fetch()) {				
-					$connecte=true;
-				}
-			}
-			return $connecte;
-		} catch ( Exception $e ) { // Retourne faux en cas d'erreur avec la BD
-			echo "Connection failed: " . $e->getMessage();
-			return false;
-		} 
-    }
 
     // Fonction de vérification lors d'une tentative de connexion d'un utilisateur.
-    // Si les paramètres correspondent à une ligne dans la table User, cela renvoi vrai.
-    // Sinon, cela renvoi faux. 
+    // Si les paramètres correspondent à une ligne dans la table User, cela renvoi les données de cette ligne.
+    // Sinon, cela renvoi un tableau vide.
     function verifUtilisateur($pdo, $motDepasse, $identifiant){
         $connecte = array();
         $maRequete = $pdo->prepare("SELECT user_id, responsibility, firstname, lastname, password from User where email = :leLogin");
