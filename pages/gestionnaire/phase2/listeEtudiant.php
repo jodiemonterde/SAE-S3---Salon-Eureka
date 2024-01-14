@@ -151,7 +151,7 @@
         <div class="row d-flex align-items-center h-100">
             <div class="col-12 col-md-6">
                 <h2>Liste des étudiants</h2>
-                <p>Voici tous les étudiants inscrits au forum Eureka de cette année. Cliquez sur l’un d’eux pour voir leur planning de rendez-vous !</p>
+                <p>Voici tous les étudiants inscrits au forum Eurêka de cette année. Cliquez sur l’un d’eux pour voir son planning de rendez-vous !</p>
             </div>
             <!-- Formulaire permettant d'entrer une recherche personnalisé qui filtrera l'affichage selon celle-ci -->
             <form action="listeEtudiant.php" method="post" class="col-12 col-md-6 my-2">
@@ -248,7 +248,7 @@
                                         <div class="col-12">
                                             <hr>
                                             <p><h2>Consulter les rendez-vous non planifiables</h2>
-                                            Attention, certaines entreprises ont reçues trop de demandes : ils n’ont pas pu être intégrés à l'emploi du temps des étudiant. Si ils souhaitent obtenir un rendez-vous avec eux, il faudra les contacter directement. </p>
+                                            Attention, certaines entreprises ont reçues trop de demandes : elles n’ont pas pu être intégrées à l'emploi du temps des étudiant. S'ils souhaitent obtenir un rendez-vous avec celles-ci, il faudra les contacter directement. </p>
                                         </div>
                                     </div>
                                 <?php }
@@ -267,7 +267,7 @@
                             ?>
                                 <div class="row mx-1">
                                         <div class="col-12">
-                                            <h5 class="erreur">L'étudiant n'as pas de rendez-vous</h5>
+                                            <h5 class="erreur">L'étudiant n'a pas de rendez-vous</h5>
                                         </div>
                                 </div>
                                 <div class="row mx-1 fixed-bottom barre-bas">

@@ -76,7 +76,7 @@
     <link rel="stylesheet" href="../../../css/filtre.css">
     <link rel="stylesheet" href="../../../css/navbars.css">
 
-    <title>Eureka - Liste des étudiants</title>
+    <title>Eurêka - Liste des étudiants</title>
 </head>
 <body>
     <!-- Navbar du haut -->
@@ -148,7 +148,7 @@
         <div class="row d-flex align-items-center h-100">
             <div class="col-12 col-md-6">
                 <h2>Liste des étudiants</h2>
-                <p>Voici tous les étudiants inscrits au forum Eureka de cette année. Cliquez sur l’un d’eux pour voir la liste des entreprises auprès desquels il souhaite obtenir un rendez-vous !</p>
+                <p>Voici tous les étudiants inscrits au forum Eurêka de cette année. Cliquez sur l’un d’eux pour voir la liste des entreprises auprès desquels il souhaite obtenir un rendez-vous !</p>
             </div>
             <!-- Formulaire permettant d'entrer une recherche personnalisé qui filtrera l'affichage selon celle-ci -->
             <form action="listeEtudiant.php" method="post" class="col-12 col-md-6 my-2">

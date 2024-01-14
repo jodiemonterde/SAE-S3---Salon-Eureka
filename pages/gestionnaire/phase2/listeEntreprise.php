@@ -61,7 +61,7 @@
     <link rel="stylesheet" href="../../../css/navbars.css">
     <link rel="stylesheet" href="../../../css/filtre.css">
     
-    <title>Eureka - Liste des entreprises</title>
+    <title>Eurêka - Liste des entreprises</title>
 </head>
     <body>
         <!-- Navbar du haut -->
@@ -133,7 +133,7 @@
             <div class="row d-flex align-items-center h-100">
                 <div class="col-12 col-md-6">
                     <h2>Liste des entreprises</h2>
-                    <p>Voici toutes les entreprises présentes au salon Euréka cette année. Cliquez sur l’une d’elle pour voir tous les étudiants qui veulent un rendez-vous avec celle-ci ! Vous pouvez également filtrer quelles filières vous intéressent grâce à la liste de filtres ci-dessous.</p>
+                    <p>Voici toutes les entreprises présentes au salon Eurêka cette année. Cliquez sur l’une d’elle pour voir tous les étudiants qui veulent un rendez-vous avec celle-ci ! Vous pouvez également filtrer quelles filières vous intéressent grâce à la liste de filtres ci-dessous.</p>
                 </div>
 
                 <!-- Formulaire permettant d'entrer une recherche personnalisé qui filtrera l'affichage selon celle-ci -->
