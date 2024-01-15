@@ -29,7 +29,7 @@
                 case 'genererPlanning':
                     // Génération du planning
                     $resultatGeneration = genererPlanning($pdo);
-                    if ($resultatGeneration === "Génération réussite !") {
+                    if ($resultatGeneration === "Génération réussie !") {
                         setPlanningGenerated($pdo, 1);
                     } else {
                         $resultatGeneration = "Impossible de générer le planning, l'entreprise ".$resultatGeneration." ne peut pas accepter autant de rendez-vous !";
@@ -230,14 +230,7 @@
                             </form>
                         </div>
                         <div class="col-12 d-flex justify-content-center">
-                            <textarea 
-                                name="listeEntreprise" id="listeEntreprise" class="listeConsole mb-2" rows="2" readonly>
-                                <?php echo "Statut : &#13;&#10;".(isset($_SESSION['resultatGeneration']) ? 
-                                $_SESSION['resultatGeneration'].($_SESSION['resultatGeneration'] === "Génération réussite !" ? 
-                                " Veuillez annuler ou valider le planning générée" : "") : ($isGenerated ? 
-                                "Veuillez annuler ou valider le planning générée" :"Aucune génération n'a encore été lancée !")); 
-                                unset($_SESSION['resultatGeneration']) ?>
-                            </textarea>
+                            <textarea name="listeEntreprise" id="listeEntreprise" class="listeConsole mb-2" rows="2" readonly><?php echo "Statut : &#13;&#10;".(isset($_SESSION['resultatGeneration']) ? $_SESSION['resultatGeneration'].($_SESSION['resultatGeneration'] === "Génération réussite !" ? " Veuillez annuler ou valider le planning générée" : "") : ($isGenerated ? "Veuillez annuler ou valider le planning générée" :"Aucune génération n'a encore été lancée !")); unset($_SESSION['resultatGeneration']) ?></textarea>
                         </div>
                         <div class="col-6 d-flex justify-content-center">
                             <form action="generationPlanning.php" method="post">
