@@ -7,6 +7,7 @@
         * connecter à la base de donnée et interagir avec celle-ci.
         */
         require("../../../fonctions/baseDeDonnees.php");
+        require("../../../fonctions/fonctions.php");
 
         $pdo = connecteBD(); // accès à la Base de données
 
@@ -236,7 +237,11 @@
                                         <div class="row my-3">
                                             <!-- Bouton de déclenchement de la modale permettant de supprimer une filière -->
                                             <div class="col-md-6 py-2">
-                                                <button class="boutonNegatif" data-bs-toggle="modal" data-bs-target="#modalDeleteField<?php echo $ligne['field_id']; ?>" <?php echo $derniere ? "disabled" : ""; ?>>Supprimer</button>
+                                                <?php try { ?>
+                                                <button class="boutonNegatif" data-bs-toggle="modal" data-bs-target="#modalDeleteField<?php echo $ligne['field_id']; ?>" <?php echo $derniere ? "disabled" : ""; ?> <?php echo isFieldInUse($pdo, $ligne['field_id']) ? "disabled" : ""; ?>>Supprimer</button>
+                                                <?php } catch (Exception $e) { // En cas d'erreur, redirige vers la page de site en maintenance
+                                                    redirect("../../maintenance.php");
+                                                } ?>
                                             </div>
                                             <!-- Bouton de déclenchement de la modale permettant de modifier une filière -->
                                             <div class="col-md-6 py-2">
