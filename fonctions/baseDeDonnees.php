@@ -1070,7 +1070,7 @@
 
     // Fonction permettant d'obtenir toutes les entreprises non exclues du planning qui ont des rendez-vous
     function getCompanyNotExcluded($pdo){
-        $maRequete = $pdo->prepare("SELECT Company.company_id,name 
+        $maRequete = $pdo->prepare("SELECT c1.company_id, c1.name 
                                     FROM Company c1
                                     WHERE excluded = 0 AND (SELECT count(*)
                                                             FROM Appointment ap
